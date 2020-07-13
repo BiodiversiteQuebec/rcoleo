@@ -9,3 +9,4 @@ extdata/
 examples/
 ^pkgdown$
 ^\.github$
+vignettes/
