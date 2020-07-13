@@ -27,7 +27,7 @@ navbar:
       text: Fonctions du paquet
       href: reference/index.html
     articles:
-    - title: Obtenir les données
+    - title: Obtenir
       navbar: ~
       contents:
       - telecharge-sites
