@@ -5,3 +5,4 @@ extdata/
 ^docs$
 ^appveyor\.yml$
 ^\.travis\.yml$
+^rcoleo\.Rproj$
