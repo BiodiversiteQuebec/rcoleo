@@ -28,21 +28,9 @@ navbar:
       href: reference/index.html
     articles:
     - title: Obtenir les données
-        navbar: ~
-        contents:
-        - telecharge-sites
-    text: Exemples d'utilisation
-      menu:
-      - text: Obtenir les données
-        href: reference/index.html
-      - text: Télécharger les médias (images et sons) d'une campagne
-        href: reference/index.html
-      - text: Exporter les données d'observations en ESRI Shapefiles
-        href: reference/index.html
-      - text: Exporter les cellules en ESRI Shapefiles
-        href: reference/index.html
-      - text: Exporter les repères sur le terrain en ESRI Shapefiles
-        href: reference/index.html
+      navbar: ~
+      contents:
+      - telecharge-sites
     github:
       icon: fa-github fa-lg
       href: https://github.com/TheoreticalEcosystemEcology/rcoleo
