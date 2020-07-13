@@ -6,3 +6,4 @@ extdata/
 ^appveyor\.yml$
 ^\.travis\.yml$
 ^rcoleo\.Rproj$
+examples/

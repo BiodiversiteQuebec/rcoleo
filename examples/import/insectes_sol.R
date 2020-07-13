@@ -3,19 +3,28 @@
 ###################################
 sheet <- "Carabes_Installation"
 
-nms <- names(read_excel("./extdata/V3_CompilationDonnées_2016-2018.xlsx",sheet=sheet))
+library(readxl)
+library(tidyverse)
+library(geojsonio)
+
+nms <- names(read_excel("./V3_CompilationDonnées_2016-2018.xlsx",sheet=sheet))
 
 ## Gerer les dates (eviter la conversion automatique)
 ct <- ifelse(grepl("^Date|Heure", nms, ignore.case = TRUE), "date", "guess")
 
 ## deuxieme lecture de la page et ignore le type dans la ligne 2
-df <- read_excel("./extdata/V3_CompilationDonnées_2016-2018.xlsx",sheet=sheet,col_types = ct)[-1,]
+df <- read_excel("./V3_CompilationDonnées_2016-2018.xlsx",sheet=sheet,col_types = ct)[-1,]
 
 ## replacer les espaces par des barres de soulignement dans les noms de colonnes
-names(df) <- str_replace_all(names(df)," ", "_")
+names(df) <- stringr::str_replace_all(names(df)," ", "_")
 
 ## On sélectionne les colonnes d'intérêts
 sites <- unique(select(df,cell_id=No_de_référence_de_la_cellule,site_code=No_de_référence_de_site,type_de_milieu=Type_de_milieu,opened_at="Date_d'installation",latA="latitude_P-A", lonA="Longiture_P-A",latB="latitude_P-B",lonB="Longiture_P-B", latC="latitude_P-C", lonC="Longiture_P-C"))
+
+
+sites
+# what is this latA, lonA, business?! why are there three
+
 
 ## Remplacer les barres de soulignement par des tirets
 sites$site_code <- str_replace_all(sites$site_code,"-", "_")
@@ -46,6 +55,18 @@ geom <- apply(sites,1, function(x){
   return(NA)
 }})
 
+
+sites_purr_ls <- purrr::transpose(sites)
+
+all.equal(sites_ls, sites_purr_ls) # ok so there is some variation 
+
+library(purrr)
+geom %>% map(is.list)
+
+crs_ls <- list(type="name",properties=list(name="EPSG:4326"))
+
+geom %>% map_if(is.list, append, list(crs = crs_ls))
+
 # Fusionner les deux listes (geomations + sites)
 for(i in 1:length(sites_ls)){
   sites_ls[[i]]$geom <- geom[i][[1]]
@@ -54,7 +75,22 @@ for(i in 1:length(sites_ls)){
   }
 }
 
-responses <- post_sites(sites_ls)
+sites_ls
+
+sites_ls_test <- sites_ls[1]
+
+str(sites_ls_test)
+
+sites_ls_test[[1]]["opened_at"] <- "2020-07-10"
+
+sites_ls_test[[1]]["site_code"] <- "135_104_Q99"
+
+sites_ls_test
+
+library(rcoleo)
+responses <- post_sites(sites_ls_test)
+
+responses
 ###################################
 ##### PREP POST sur campaigns #####
 ###################################
