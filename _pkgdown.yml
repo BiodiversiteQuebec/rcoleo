@@ -9,28 +9,54 @@ navbar:
     left:
     - home
     - intro
-    - doc
     - reference
     - articles
-    - tutorials
     - news
-    right:
-    - github
+    right: github
   components:
-    doc:
-      icon: fa-book fa-lg
-      href: https://coleo.biodiversite-quebec.ca/docs/
     home:
-      icon: fa-home fa-lg
+      icon: fas fa-home fa-lg
       href: index.html
     reference:
-      text: Fonctions du paquet
-      href: reference/index.html
-    articles:
-    - title: Obtenir
-      navbar: ~
-      contents:
-      - telecharge-sites
+    - title: All functions
+        contents:
+        - '`as.data.frame.coleoGetResp`'
+        - '`cl_to_sf`'
+        - '`diagnostic`'
+        - '`get_campaigns`'
+        - '`get_cells`'
+        - '`get_devices`'
+        - '`get_gen`'
+        - '`get_landmarks`'
+        - '`get_lures`'
+        - '`get_medias`'
+        - '`get_obs`'
+        - '`get_samples`'
+        - '`get_sites`'
+        - '`get_species`'
+        - '`get_traps`'
+        - '`is.coleoGetResp`'
+        - '`is.coleoPostResp`'
+        - '`list_medias`'
+        - '`post_attributes`'
+        - '`post_campaigns`'
+        - '`post_cells`'
+        - '`post_devices`'
+        - '`post_gen`'
+        - '`post_landmarks`'
+        - '`post_lures`'
+        - '`post_obs`'
+        - '`post_samples`'
+        - '`post_sites`'
+        - '`post_traps`'
+        - '`sf_cells`'
+        - '`sf_landmarks`'
+        - '`sf_sites`'
     github:
-      icon: fa-github fa-lg
-      href: https://github.com/TheoreticalEcosystemEcology/rcoleo
+      icon: fab fa-github fa-lg
+      href: https://github.com/TheoreticalEcosystemEcology/rcoleo/
+    articles:
+      text: Articles
+      menu:
+      - text: Telecharger les sites
+        href: articles/telecharge-sites.html
