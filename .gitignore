@@ -30,3 +30,6 @@ inst/doc
 *.code-workspace
 *.vscode
 docs/*
+
+# example data
+*.xlsx
