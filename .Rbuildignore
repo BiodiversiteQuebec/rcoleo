@@ -7,3 +7,5 @@ extdata/
 ^\.travis\.yml$
 ^rcoleo\.Rproj$
 examples/
+^pkgdown$
+^\.github$
