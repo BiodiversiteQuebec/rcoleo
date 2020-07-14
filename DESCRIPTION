@@ -15,11 +15,11 @@ Imports:
   stringr,
   dplyr,
   plyr,
-  sf,
   tibble
 Suggests: knitr,
     rmarkdown,
     RPostgreSQL,
-    pkgdown
+    pkgdown,
+    sf
 RoxygenNote: 6.1.0
 Roxygen: list(markdown = TRUE)
