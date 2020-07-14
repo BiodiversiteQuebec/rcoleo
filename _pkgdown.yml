@@ -8,6 +8,7 @@ navbar:
   structure:
     left:
     - home
+    - doc
     - intro
     - reference
     - articles
@@ -17,6 +18,9 @@ navbar:
     home:
       icon: fas fa-home fa-lg
       href: index.html
+    doc:
+      icon: fa-book fa-lg
+      href: https://coleo.biodiversite-quebec.ca/docs/
     reference:
     - title: 'All functions'
       contents:
