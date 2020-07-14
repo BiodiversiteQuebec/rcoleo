@@ -3,20 +3,33 @@ title: "Telecharger les sites"
 output: rmarkdown::html_vignette
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
 
-```{r setup}
+
+
+```r
 library(rcoleo)
 library(purrr)
 
 all_taxa <- get_species()
+#> Error in get_gen(endpoint, ...): La clé d'api est invalide
+all_taxa_df <- map_df(all_taxa[[1]], 1)
+knitr::kable(head(all_taxa_df))
+```
 
-knitr::kable(head(map_df(all_taxa[[1]], 1)))
 
+
+|name                    |vernacular_fr       |rank        |category    |    tsn| vascan_id|bryoquel_id |created_at               |updated_at               |
+|:-----------------------|:-------------------|:-----------|:-----------|------:|---------:|:-----------|:------------------------|:------------------------|
+|Lethe eurydice eurydice |satyre ocellé       |sous-espèce |arthropodes | 779471|        NA|NA          |2020-06-03T00:00:00.000Z |2020-06-03T19:58:22.036Z |
+|Molothrus ater          |vacher à tête brune |espèce      |oiseaux     | 179112|        NA|NA          |2020-06-03T00:00:00.000Z |2020-06-04T12:46:07.480Z |
+|Lycaena phlaeas         |cuivré d'amérique   |espèce      |arthropodes | 777788|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
+|Lycaena cuprea          |NA                  |espèce      |arthropodes | 777789|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
+|Lycaena dione           |NA                  |espèce      |arthropodes | 777792|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
+|Lycaena rubida          |NA                  |espèce      |arthropodes | 777796|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
+
+```r
+
+dim(all_taxa_df)
+#> [1] 1200    9
 ```
 
