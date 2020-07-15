@@ -6,6 +6,36 @@ author:
 output: html_document
 ---
 
+
+```r
+library(rcoleo)
+library(purrr)
+
+all_taxa <- get_species()
+all_taxa_df <- map_df(all_taxa[[1]], 1)
+knitr::kable(head(all_taxa_df))
+```
+
+
+
+|name                    |vernacular_fr       |rank        |category    |    tsn| vascan_id|bryoquel_id |created_at               |updated_at               |
+|:-----------------------|:-------------------|:-----------|:-----------|------:|---------:|:-----------|:------------------------|:------------------------|
+|Lethe eurydice eurydice |satyre ocellé       |sous-espèce |arthropodes | 779471|        NA|NA          |2020-06-03T00:00:00.000Z |2020-06-03T19:58:22.036Z |
+|Molothrus ater          |vacher à tête brune |espèce      |oiseaux     | 179112|        NA|NA          |2020-06-03T00:00:00.000Z |2020-06-04T12:46:07.480Z |
+|Lycaena phlaeas         |cuivré d'amérique   |espèce      |arthropodes | 777788|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
+|Lycaena cuprea          |NA                  |espèce      |arthropodes | 777789|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
+|Lycaena dione           |NA                  |espèce      |arthropodes | 777792|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
+|Lycaena rubida          |NA                  |espèce      |arthropodes | 777796|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
+
+```r
+dim(all_taxa_df)
+```
+
+```
+## [1] 1200    9
+```
+
+
 ## 1. Créer une base de données excel
 Les colonnes de ce fichier excel doivent être les suivantes
 
@@ -73,26 +103,10 @@ library(dplyr)
 
 ```r
 taxa_list <- get_species()
-```
 
-```
-## Error in get_gen(endpoint, ...): La clé d'api est invalide
-```
-
-```r
 str(taxa_list, max.level = 3)
-```
 
-```
-## Error in str(taxa_list, max.level = 3): object 'taxa_list' not found
-```
-
-```r
 all_things <- purrr::map_df(taxa_list[[1]],1)
-```
-
-```
-## Error in map(.x, .f, ...): object 'taxa_list' not found
 ```
 * **7.3** Cette étape permet d'intégrer les données de la base de données des organismes vivants à ajouter à Coléo
 
@@ -149,4 +163,4 @@ correctionstoupload <- purrr::transpose(correctionscol)
 rcoleo:::post_species(correctionstoupload)
 ```
 
-test
+

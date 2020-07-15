@@ -6,6 +6,18 @@ author:
 output: html_document
 ---
 
+```{r setuptest}
+library(rcoleo)
+library(purrr)
+
+all_taxa <- get_species()
+all_taxa_df <- map_df(all_taxa[[1]], 1)
+knitr::kable(head(all_taxa_df))
+
+dim(all_taxa_df)
+```
+
+
 ## 1. Créer une base de données excel
 Les colonnes de ce fichier excel doivent être les suivantes
 
