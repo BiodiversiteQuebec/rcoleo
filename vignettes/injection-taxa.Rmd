@@ -12,6 +12,17 @@ library(rcoleo)
 library(purrr)
 
 all_taxa <- get_species()
+```
+
+```
+## Warning: `as.tibble()` is deprecated as of tibble 2.0.0.
+## Please use `as_tibble()` instead.
+## The signature and semantics have changed, see `?as_tibble`.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_warnings()` to see where this warning was generated.
+```
+
+```r
 all_taxa_df <- map_df(all_taxa[[1]], 1)
 knitr::kable(head(all_taxa_df))
 ```
@@ -163,4 +174,5 @@ correctionstoupload <- purrr::transpose(correctionscol)
 rcoleo:::post_species(correctionstoupload)
 ```
 
+fini!
 
