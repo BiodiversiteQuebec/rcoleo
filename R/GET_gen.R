@@ -16,84 +16,67 @@
 #' length(resp) # Nombre de pages retourné par l'appel sur le point d'accès de l'API.
 #' str(resp[[1]])
 #' class(resp[[1]])
-#' } 
+#' }
 #' @export
 
-get_gen <- function(endpoint = NULL, query = NULL, flatten = TRUE, output = 'data.frame', token = bearer(),...) {
-
-  stopifnot(exists("endpoint"))
+get_gen <- function(endpoint, query = NULL, limit = 100, verbose = TRUE, ...) {
 
   url <- httr::modify_url(server(), path = paste0(base(), endpoint))
+  query <- as.list(query)
 
-  # On remplace les NAs dans l'objet query avec des NULLs
-  if(!is.null(query)) query[which(is.na(query) | query == "NA")] <- NULL
+  # Add number of entries to the param
+  query$count <- limit
 
-  # Premier appel pour avoir le nombre de page
-  resp <- httr::GET(url, config = httr::add_headers(`Content-type` = "application/json",
-    Authorization = paste("Bearer", token)),ua, query = query, ...)
-  
-  # On prépare la liste pour le renvoi de la fonction
+  # First call used to set pages
+  # ua defined in zzz.R
+  resp <- mem_get(url,
+                  config = httr::add_headers(`Content-type` = "application/json"), ua,
+                  query = query, ...)
+
+  # Prep output object
   responses <- list()
+  errors <- NULL
 
-  # On couvre le code d'erreur 401 (Unauthorized)
-  if(httr::status_code(resp) == 401){
-    stop(httr::content(resp)$message)
-  }
+  # Get # pages
+  tmp <- unlist(strsplit(httr::headers(resp)$"content-range", split = "\\D"))
+  rg <- as.numeric(tmp[grepl("\\d", tmp)])
+  pages <- rg[3L] %/% limit
 
-  # Denombrement du nombre de page
-  rg <- as.numeric(stringr::str_extract_all(httr::headers(resp)["content-range"],
-    simplify=TRUE,
-    "\\(?[0-9,.]+\\)?"))
-
-  # Préparation de l'itérateur
-  limit <- 100
-  pages <- floor(rg[3] / limit) - 1
-  if(pages < 0) pages <- 0
-
-
-  # Boucle sur les pages
+  # Loop over pages
   for (page in 0:pages) {
-    # Ajouter les pages à la requête
+    if (verbose)
+      message("Data retrieval ", signif(100*(page+1)/(pages+1), 3), "%   \r",
+              appendLF = FALSE)
+    # cat("Data retrieval", signif(100*(page+1)/(pages+1), 3), "%   \r")
     query$page <- page
-
-    resp <- httr::GET(url, config = httr::add_headers(`Content-type` = "application/json",
-      Authorization = paste("Bearer", token)), ua, query = query, ...)
-
-    if (httr::http_type(resp) != "application/json") {
-      stop("L'API n'a pas retourné un JSON", call. = FALSE)
-    }
-
-    # On spécifie le type de sortie
-    if(output == 'json'){
-      body <- httr::content(resp, type = "text", encoding = "UTF-8")
-    } else if(output == 'list') {
-      body <- jsonlite::fromJSON(httr::content(resp, type = "text", encoding = "UTF-8"), simplify = FALSE)
-    } else if(output == 'data.frame') {
-      body <- tibble::as.tibble(jsonlite::fromJSON(httr::content(resp, type = "text", encoding = "UTF-8"), flatten = TRUE, simplifyDataFrame = TRUE))
-    }
-
-    # On regarde la longueur du jeu de données renvoyer pour faire les tests logiques
-    if(is.data.frame(body)) n_matches <- nrow(body)
-    if(is.list(body)) n_matches <- length(body)
+    resp <- mem_get(url,
+                    config = httr::add_headers(`Content-type` = "application/json"), ua,
+                    query = query, ...)
 
     if (httr::http_error(resp)) {
-      message(sprintf("La requête sur l'API a échouée: [%s]\n%s", httr::status_code(resp),
-        body$message), call. = FALSE)
-
-      responses[[page + 1]] <- structure(list(body = NULL, response = resp),
-          class = "getError")
-
+      if (verbose) msg_request_fail(resp)
+      responses[[page + 1]] <- list(body = NULL, response = resp)
+      errors <- append(errors, page + 1)
     } else {
-
-      responses[[page + 1]] <- structure(list(body = body, response = resp),
-        class = "getSuccess")
-
+      responses[[page + 1]] <- list(body = resp_raw(resp), response = resp)
     }
-
-    attr(responses[[page + 1]]$body, "n_records") <- n_matches
-
   }
+  if (verbose) empty_line()
 
-  return(responses)
+  if (!is.null(errors))
+    warning("Failed request(s) for page(s): ", paste0(errors, ", "))
 
+  # check error here if desired;
+  out <- list(
+    body = unlist(purrr::map(responses, "body"), recursive = FALSE),
+    response = purrr::map(responses, "response")
+  )
+  # in rcoleo the class is usually set by the function that *calls* get_gen
+  #class(out) <- "mgGetResponses"
+  out
 }
+
+
+
+## Set memoise httr::GET
+mem_get <- memoise::memoise(httr::GET)
