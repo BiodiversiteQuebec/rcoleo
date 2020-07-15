@@ -64,3 +64,5 @@ navbar:
       menu:
       - text: Telecharger les sites
         href: articles/telecharge-sites.html
+      - text: Injecter taxa
+        href: articles/injection-taxa.html

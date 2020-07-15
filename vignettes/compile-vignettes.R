@@ -2,3 +2,5 @@
 
 library(knitr)
 knit("vignettes/telecharge-sites.Rmd.orig", "vignettes/telecharge-sites.Rmd")
+
+knit("vignettes/injection-taxa.Rmd.orig", "vignettes/injection-taxa.Rmd")
