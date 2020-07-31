@@ -29,6 +29,36 @@ knitr::kable(head(all_taxa_df))
 ```r
 
 dim(all_taxa_df)
-#> [1] 1200    9
+#> [1] 1300    9
 ```
 
+
+
+```r
+library(rcoleo)
+library(purrr)
+library(tidyverse)
+
+all_sites <- get_sites()
+
+# on extract le body
+donnees <- all_sites[[1]][[1]]$body
+
+
+pap <-  select(donnees, cell.name, milieu=type, campaigns) %>% 
+  unnest(campaigns) %>% 
+  filter(type == "papilionidés")
+
+knitr::kable(head(pap))
+```
+
+
+
+|cell.name                                    |milieu    | id| site_id|type         |technicians                                |opened_at  |closed_at  |notes |created_at               |updated_at               |
+|:--------------------------------------------|:---------|--:|-------:|:------------|:------------------------------------------|:----------|:----------|:-----|:------------------------|:------------------------|
+|Le Fjord-du-Saguenay (K)                     |tourbière | 28|      10|papilionidés |Pierre-Alexis Drolet, Caroline Dubé        |2016-06-28 |2016-06-28 |NA    |2018-11-07T18:53:22.332Z |2018-11-07T18:53:22.332Z |
+|Mékinac (B)                                  |marais    | 27|       1|papilionidés |Caroline Dubé       , Pierre-Alexis Drolet |2016-06-23 |2016-06-23 |NA    |2018-11-07T18:53:22.103Z |2018-11-07T18:53:22.103Z |
+|Parc des Hautes-Gorges-de-la-Rivière-Malbaie |tourbière | 34|      34|papilionidés |Caroline Dubé, Adine Séguin                |2017-07-20 |2017-07-20 |NA    |2018-11-07T18:53:23.835Z |2019-05-08T21:01:03.696Z |
+|La Jacques-Cartier                           |marais    | 40|      12|papilionidés |Caroline Dubé     , Guillaume Tremblay     |2017-06-22 |2017-06-22 |NA    |2018-11-07T18:53:25.473Z |2018-11-07T18:53:25.473Z |
+|La Jacques-Cartier                           |tourbière | 39|      11|papilionidés |Caroline Dubé, Anouk Simard                |2017-06-26 |2017-06-26 |NA    |2018-11-07T18:53:25.260Z |2018-11-07T18:53:25.260Z |
+|Forêt Montmorency                            |tourbière | 30|       4|papilionidés |Caroline Dubé       , Pierre-Alexis Drolet |2016-07-11 |2016-07-11 |NA    |2018-11-07T18:53:22.817Z |2020-01-23T19:34:07.751Z |

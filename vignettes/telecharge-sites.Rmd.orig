@@ -21,3 +21,21 @@ knitr::kable(head(all_taxa_df))
 dim(all_taxa_df)
 ```
 
+
+```{r}
+library(rcoleo)
+library(purrr)
+library(tidyverse)
+
+all_sites <- get_sites()
+
+# on extract le body
+donnees <- all_sites[[1]][[1]]$body
+
+
+pap <-  select(donnees, cell.name, milieu=type, campaigns) %>% 
+  unnest(campaigns) %>% 
+  filter(type == "papilionidés")
+
+knitr::kable(head(pap))
+```
