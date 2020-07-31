@@ -33,9 +33,26 @@ all_sites <- get_sites()
 donnees <- all_sites[[1]][[1]]$body
 
 
-pap <-  select(donnees, cell.name, milieu=type, campaigns) %>% 
-  unnest(campaigns) %>% 
+pap <-  select(donnees, cell.name, milieu=type, campaigns) %>%
+  unnest(campaigns) %>%
   filter(type == "papilionidés")
 
 knitr::kable(head(pap))
+```
+
+**Is this supposed to work??!**
+
+```{r}
+
+
+all_site_pap <- get_obs(site_id = "", type = "papilionidés")
+
+all.equal(one_site_pap[[1]][[1]]$body, all_site_pap[[1]][[1]]$body)
+
+
+pap_df <- all_site_pap %>% map_df(~ .x[[1]][["body"]])
+
+knitr::kable(pap_df)
+
+## write.csv(pap_df)
 ```
