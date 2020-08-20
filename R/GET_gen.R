@@ -19,7 +19,7 @@
 #' }
 #' @export
 
-get_gen <- function(endpoint, query = NULL, limit = 100, verbose = TRUE, ...) {
+get_gen <- function(endpoint, query = NULL, limit = 100, verbose = TRUE, token = bearer(),...) {
 
   url <- httr::modify_url(server(), path = paste0(base(), endpoint))
   query <- as.list(query)
@@ -27,11 +27,18 @@ get_gen <- function(endpoint, query = NULL, limit = 100, verbose = TRUE, ...) {
   # Add number of entries to the param
   query$count <- limit
 
+  request_header <- httr::add_headers(`Content-type` = "application/json",
+                                      Authorization = paste("Bearer", token))
   # First call used to set pages
   # ua defined in zzz.R
   resp <- mem_get(url,
-                  config = httr::add_headers(`Content-type` = "application/json"), ua,
+                  config = request_header,
+                  ua,
                   query = query, ...)
+
+  if (httr::status_code(resp) == 401){
+    stop("Aucune autorisation détectée! Assurez-vous d'avoir enregistré votre jeton d'accès dans un fichier appelé `.httr-oauth`")
+  }
 
   # Prep output object
   responses <- list()
@@ -50,7 +57,8 @@ get_gen <- function(endpoint, query = NULL, limit = 100, verbose = TRUE, ...) {
     # cat("Data retrieval", signif(100*(page+1)/(pages+1), 3), "%   \r")
     query$page <- page
     resp <- mem_get(url,
-                    config = httr::add_headers(`Content-type` = "application/json"), ua,
+                    config = request_header,
+                    ua,
                     query = query, ...)
 
     if (httr::http_error(resp)) {
@@ -58,7 +66,7 @@ get_gen <- function(endpoint, query = NULL, limit = 100, verbose = TRUE, ...) {
       responses[[page + 1]] <- list(body = NULL, response = resp)
       errors <- append(errors, page + 1)
     } else {
-      responses[[page + 1]] <- list(body = resp_raw(resp), response = resp)
+      responses[[page + 1]] <- list(body = resp_df(resp), response = resp)
     }
   }
   if (verbose) empty_line()
@@ -66,17 +74,25 @@ get_gen <- function(endpoint, query = NULL, limit = 100, verbose = TRUE, ...) {
   if (!is.null(errors))
     warning("Failed request(s) for page(s): ", paste0(errors, ", "))
 
-  # check error here if desired;
-  out <- list(
-    body = unlist(purrr::map(responses, "body"), recursive = FALSE),
-    response = purrr::map(responses, "response")
-  )
+  # browser()
+  out <- purrr::transpose(responses)
   # in rcoleo the class is usually set by the function that *calls* get_gen
   #class(out) <- "mgGetResponses"
-  out
+  return(out)
 }
 
 
 
 ## Set memoise httr::GET
 mem_get <- memoise::memoise(httr::GET)
+
+resp_raw <- function(x) jsonlite::fromJSON(
+  httr::content(x, as = "text", encoding = "UTF-8"),
+  simplifyVector = FALSE, flatten = TRUE)
+
+resp_df <- function(x){
+  textresp <- httr::content(x, type = "text", encoding = "UTF-8")
+  df_from_json <- jsonlite::fromJSON(textresp, flatten = TRUE, simplifyDataFrame = TRUE)
+  tibble::as_tibble(df_from_json)
+
+}
