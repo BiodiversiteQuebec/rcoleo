@@ -6,17 +6,6 @@ author:
 output: html_document
 ---
 
-```{r setuptest}
-library(rcoleo)
-library(purrr)
-
-all_taxa <- get_species()
-all_taxa_df <- map_df(all_taxa[[1]], 1)
-knitr::kable(head(all_taxa_df))
-
-dim(all_taxa_df)
-```
-
 
 ## 1. Créer une base de données excel
 Les colonnes de ce fichier excel doivent être les suivantes
@@ -78,12 +67,12 @@ library(rcoleo)
 library(dplyr)
 ```
 * **7.2** L'étape suivante permet d'extraire la liste d'espèces déjà sur Coléo
-```{r get_species, results ='hide', warning=FALSE}
+```{r get_species, results ='hide', warning=FALSE, message = FALSE}
 taxa_list <- get_species()
 
 str(taxa_list, max.level = 3)
 
-all_things <- purrr::map_df(taxa_list[[1]],1)
+all_things <- dplyr::bind_rows(taxa_list[[1]]$body)
 ```
 * **7.3** Cette étape permet d'intégrer les données de la base de données des organismes vivants à ajouter à Coléo
 ```{r eval = FALSE}
