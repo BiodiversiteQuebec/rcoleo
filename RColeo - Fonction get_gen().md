@@ -149,3 +149,27 @@ notes | texte | Commentaires | |
 *id* | | nombre entier | Identifiant unique | |
 *created_at* | date-heure | Date et heure de création | |
 *updated_at*| date-heure | Date et heure de mise à jour | |
+
+***
+
+## endpoints = "/devices"
+Point d'accès: /api/v1/devices
+Connexion à la base de données: Valide
+Similaire à la table cells dans COLEO: Oui
+Sortie de la requête: 
+     - $body[[1]] = 12 entrées
+     - 13 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+Champs | Type | Description | Options
+------------ | ------------- | ------------- | -------------
+campaing_id | nombre entier | Numéro d'identification de la campagne | |
+sd_card_codes | ARRAY(texte) | Numéro d'identification des cartes SD utilisées |  |
+cam_code | ARRAY(texte) | Numéro d'identification de la caméra utilisée |  |
+cam_h_cm | nombre décimal | Hauteur de la camera en centimètres | |
+mic_logger_code | texte| Numéro d'identification du enregistreur utilisé | |
+mic_acc_code | texte | Numéro d'identification du microphone accoustique utilisé | |
+mic_h_cm_acc | nombre décimal | Hauteur du microphone ultrason utilisé en centimètres | |
+mic_ultra_code | texte | Hauteur du microphone ultrason utilisé en centimètres | |
+mic_orientation | choix | Orientation du dispositif | 'n', 's', 'e', 'o', 'ne', 'no', 'se', 'so' |
+*id* | | nombre entier | Identifiant unique | |
+*created_at* | date-heure | Date et heure de création | |
+*updated_at*| date-heure | Date et heure de mise à jour | |
