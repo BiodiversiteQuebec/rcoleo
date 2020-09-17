@@ -255,6 +255,7 @@ Similaire à la table cells dans COLEO: Oui
 Sortie de la requête: 
      - $body[[1]] = 81 entrées
      - 7 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
 *id* | nombre entier | Identifiant unique | |
 sample_code | texte | Numéro de l'échantillon | |
@@ -279,5 +280,111 @@ Point d'accès: /api/v1/?
 Connexion à la base de données: Invalide
 Similaire à la table cells dans COLEO: Non
 Sortie de la requête: 
-     **Error in strsplit(httr::headers(resp)$"content-range", split = "_\_\D") : 
+     **Error in strsplit(httr::headers(resp)$"content-range", split = "\\D") : 
   l'argument n'est pas une chaîne de caractères**
+
+  ***
+
+## endpoints = "/obs_species"
+Point d'accès: /api/v1/obs_species
+Connexion à la base de données: Valide
+Similaire à la table cells dans COLEO: Oui
+Sortie de la requête: 
+     - $body[[1:27]] = 297 entrées
+     - 21 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+Champs | Type | Description | Options
+------------ | ------------- | ------------- | -------------
+*id* | nombre entier | Identifiant unique | |
+taxa_name | texte | Nom complet de l'espèce observée | |
+variable | texte | Référence vers la table t'attributs | |
+value | nombre décimal | Valeur de l'attribut | | 
+observation_id | nombre entier | Identifiant unique de la table d'observations| 
+*created_at* | date-heure | Date et heure de création | |
+*updated_at*| date-heure | Date et heure de mise à jour | |
+**attribute.variable** | | | |
+**attribute.description** | | | |
+**attribute.unit** | | | |
+**attribute.created_at** | | | | 
+**attribute.updated_at** | | | |
+**ref_species.name** | | | |
+**ref_species.vernacular_fr** | | | |
+**ref_species.rank** | | | |
+**ref_species.category** | | | | 
+**ref_species.tsn** | | | |
+**ref_species.vascan_id** | | | | 
+**ref_species.bryoquel_id** | | | | 
+**ref_species.created_at** | | | |
+**ref_species.updated_at** | | | | 
+
+  ***
+
+## endpoints = "/attributes"
+Point d'accès: /api/v1/attributes
+Connexion à la base de données: Valide
+Similaire à la table cells dans COLEO: Oui
+Sortie de la requête: 
+     - $body[[1]] = 3 entrées
+     - 5 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD). **Pas de id ici**
+
+Champs | Type | Description | Options
+------------ | ------------- | ------------- | -------------
+variable | texte | Nom de la variable attribuée | |
+description | texte | Description de la variable attribuée | |
+unit | texte | Unité de la variable attribuée | |
+*created_at* | date-heure | Date et heure de création | |
+*updated_at*| date-heure | Date et heure de mise à jour | |
+
+  ***
+
+## endpoints = "/ref_species"
+Point d'accès: /api/v1/?
+Connexion à la base de données: Invalide
+Similaire à la table cells dans COLEO: Non
+Sortie de la requête: 
+     **Error in strsplit(httr::headers(resp)$"content-range", split = "\\D") : 
+  l'argument n'est pas une chaîne de caractères**
+
+    ***
+
+## endpoints = "/obs_soil_decomposition"
+Point d'accès: /api/v1/obs_soil_decomposition
+Connexion à la base de données: Valide
+Similaire à la table cells dans COLEO: ?
+Sortie de la requête: 
+     AUCUNE
+
+***
+
+## endpoints = "/media"
+Point d'accès: /api/v1/media
+Connexion à la base de données: Valide
+Similaire à la table cells dans COLEO: Oui
+Sortie de la requête: 
+     - $body[[1:1000]]
+     - 12 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+
+
+Champs | Type | Description | Options
+------------ | ------------- | ------------- | -------------
+*id* | nombre entier | Identifiant unique | |
+type | choix | Type de média | 'image', 'audio', 'video' | |
+recorder | choix | Type d'enregistreur | 'ultrasound', 'audible' |
+og_format | texte | Original format (jpeg, png, etc) | |
+og_extention | texte | Original extension (.jpg, .png, etc.) | |
+uuid | texte | UUID, Identifiant unique généré par Coléo | | 
+name | texte | Nom du fichier original | | 
+*created_at* | date-heure | Date et heure de création | |
+*updated_at*| date-heure | Date et heure de mise à jour | |
+**site_id** | | | |
+**campaign_id** | | | |
+**observations** | | | |
+
+***
+
+## endpoints = "/obs_media"
+Point d'accès: /api/v1/obs_media
+Connexion à la base de données: Valide
+Similaire à la table cells dans COLEO: ?
+Sortie de la requête: 
+     AUCUNE
+***
