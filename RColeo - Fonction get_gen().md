@@ -11,11 +11,14 @@ updated_at | date-heure | Date et heure de mise à jour | |
 
 ## endpoints = "/cells"
 Point d'accès: /api/v1/cells
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: Non
+
 Sortie de la requête: 
-     - $body[[1:7]] = 768 entrées
-     - 8 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+    * $body[[1:7]] = 768 entrées
+    * 8 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
 *id* | nombre entier | Identifiant unique | |
