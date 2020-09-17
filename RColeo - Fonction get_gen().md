@@ -17,8 +17,10 @@ Connexion à la base de données: Valide
 Similaire à la table cells dans COLEO: Non
 
 Sortie de la requête: 
-    * $body[[1:7]] = 768 entrées
-    * 8 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+
+* $body[[1:7]] = 768 entrées
+* 8 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
 *id* | nombre entier | Identifiant unique | |
@@ -35,11 +37,16 @@ geom | geometry | Localisation de la cellule | |
 
 ## endpoints = "/sites"
 Point d'accès: /api/v1/sites
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: Non
+
 Sortie de la requête: 
+
      - $body[[1]] = 68 entrées
      - 19 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
 *id*| nombre entier | Identifiant unique | |
@@ -67,11 +74,16 @@ notes | texte | Commentaires | |
 
 ## endpoints = "/campaigns"
 Point d'accès: /api/v1/campaigns
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: Non
+
 Sortie de la requête: 
+
      - $body[[1]] = 80 entrées
      - 34 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
 *id* | nombre entier | Identifiant unique | |
@@ -113,11 +125,16 @@ notes | texte | Commentaires | |
 
 ## endpoints = "/efforts"
 Point d'accès: /api/v1/efforts
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: Oui
+
 Sortie de la requête: 
+
      - $body[[1:2]] = 110 entrées
      - 10 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
 *id* | nombre entier | Identifiant unique | |
@@ -135,11 +152,16 @@ notes | texte | Commentaires | |
 
 ## endpoints = "/environment"
 Point d'accès: /api/v1/environment
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: Non
+
 Sortie de la requête: 
+
      - $body[[1]] = 29 entrées
      - 8 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
 *id* | nombre entier | Identifiant unique | |
@@ -157,11 +179,16 @@ notes | texte | Commentaires | |
 
 ## endpoints = "/devices"
 Point d'accès: /api/v1/devices
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: Oui
+
 Sortie de la requête: 
+
      - $body[[1]] = 12 entrées
      - 13 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
 *id* | nombre entier | Identifiant unique | |
@@ -181,11 +208,16 @@ mic_orientation | choix | Orientation du dispositif | 'n', 's', 'e', 'o', 'ne', 
 
 ## endpoints = "/lures"
 Point d'accès: /api/v1/lures
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: non
+
 Sortie de la requête: 
+
      - $body[[1]] = 34 entrées
      - 6 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
 *id* | nombre entier | Identifiant unique | |
@@ -199,11 +231,16 @@ campaign_id | | | |
 
 ## endpoints = "/traps"
 Point d'accès: /api/v1/traps
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: non
+
 Sortie de la requête: 
+
      - $body[[1]] = 44 entrées
      - 8 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+
      Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
 *id* | nombre entier | Identifiant unique | |
@@ -219,11 +256,16 @@ notes | texte | Commentaires | |
 
 ## endpoints = "/landmarks"
 Point d'accès: /api/v1/landmarks
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: non
+
 Sortie de la requête: 
+
      - $body[[1]] = 63 entrées
      - 21 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
 *id* | nombre entier | Identifiant unique | |
@@ -253,11 +295,16 @@ notes | texte | Commentaires | |
 
 ## endpoints = "/samples"
 Point d'accès: /api/v1/samples
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: Oui
+
 Sortie de la requête: 
+
      - $body[[1]] = 81 entrées
      - 7 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
 *id* | nombre entier | Identifiant unique | |
@@ -272,29 +319,42 @@ notes | texte | Commentaires | |
 
 ## endpoints = "/thermographs"
 Point d'accès: /api/v1/thermographs
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: ?
+
 Sortie de la requête: 
+
      AUCUNE
 ***
 
 ## endpoints = "/observations"
 Point d'accès: /api/v1/?
+
 Connexion à la base de données: Invalide
+
 Similaire à la table cells dans COLEO: Non
+
 Sortie de la requête: 
-     **Error in strsplit(httr::headers(resp)$"content-range", split = "\\D") : 
-  l'argument n'est pas une chaîne de caractères**
+
+     ~~Error in strsplit(httr::headers(resp)$"content-range", split = "\\D") : 
+  l'argument n'est pas une chaîne de caractères~~
 
   ***
 
 ## endpoints = "/obs_species"
 Point d'accès: /api/v1/obs_species
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: Oui
+
 Sortie de la requête: 
+
      - $body[[1:27]] = 297 entrées
      - 21 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
 *id* | nombre entier | Identifiant unique | |
@@ -323,11 +383,16 @@ observation_id | nombre entier | Identifiant unique de la table d'observations|
 
 ## endpoints = "/attributes"
 Point d'accès: /api/v1/attributes
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: Oui
+
 Sortie de la requête: 
+
      - $body[[1]] = 3 entrées
      - 5 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD). **Pas de id ici**
+
 
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
@@ -341,31 +406,42 @@ unit | texte | Unité de la variable attribuée | |
 
 ## endpoints = "/ref_species"
 Point d'accès: /api/v1/?
+
 Connexion à la base de données: Invalide
+
 Similaire à la table cells dans COLEO: Non
+
 Sortie de la requête: 
-     **Error in strsplit(httr::headers(resp)$"content-range", split = "\\D") : 
-  l'argument n'est pas une chaîne de caractères**
+
+```Error in strsplit(httr::headers(resp)$"content-range", split = "\\D") : 
+  l'argument n'est pas une chaîne de caractères```
 
     ***
 
 ## endpoints = "/obs_soil_decomposition"
 Point d'accès: /api/v1/obs_soil_decomposition
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: ?
+
 Sortie de la requête: 
+
      AUCUNE
 
 ***
 
 ## endpoints = "/media"
 Point d'accès: /api/v1/media
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: Oui
+
 Sortie de la requête: 
+
      - $body[[1:1000]]
      - 12 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
-
 
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
@@ -386,8 +462,12 @@ name | texte | Nom du fichier original | |
 
 ## endpoints = "/obs_media"
 Point d'accès: /api/v1/obs_media
+
 Connexion à la base de données: Valide
+
 Similaire à la table cells dans COLEO: ?
+
 Sortie de la requête: 
+
      AUCUNE
 ***
