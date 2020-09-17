@@ -18,10 +18,10 @@ Sortie de la requête:
      - 8 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
+*id* | nombre entier | Identifiant unique | |
 name | texte | Nom de la cellule | |
 cell_code | texte | Code de la cellule | |
 geom | geometry | Localisation de la cellule | |
-*id* | | nombre entier | Identifiant unique | |
 *created_at* | date-heure | Date et heure de création | |
 *updated_at*| date-heure | Date et heure de mise à jour | |
 **sites**| | | |
@@ -39,6 +39,7 @@ Sortie de la requête:
      - 19 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
+*id*| nombre entier | Identifiant unique | |
 cell_id | nombre entier | Identifiant de la cellule | |
 off_station_code_id | texte |  | |
 site_code | texte | Identifiant unique du site | |
@@ -46,7 +47,6 @@ type | choix | Type d'inventaire réalisé sur le site | 'lac', 'rivière', 'for
 opened_at | date | Date de l'ouverture du site | |
 --geom-- | geometry | Localisation du site | |
 notes | texte | Commentaires | |
-*id* | | nombre entier | Identifiant unique | |
 *created_at* | date-heure | Date et heure de création | |
 *updated_at*| date-heure | Date et heure de mise à jour | |
 **campaigns** | | | |
@@ -71,13 +71,13 @@ Sortie de la requête:
      - 34 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
+*id* | nombre entier | Identifiant unique | |
 site_id | texte | Identifiant unique du site attaché à la campagne d'échantillonnage | |
 type | choix | Le type campagne réalisé | 'végétation', 'végétation_transect', 'sol', 'acoustique', 'phénologie', 'mammifères', 'papilionidés', 'odonates', 'insectes_sol', 'ADNe','zooplancton', 'température_eau', 'température_sol', 'marais_profondeur_température' |
 technicians | ARRAY(texte) | Noms des technicien(ne)s | |
 opened_at | date | Date d'ouverture de la campagne d'échantillonnage | |
 closed_at | date | Date de fermeture de la campagne d'échantillonnage | |
 notes | texte | Commentaires | |
-*id* | | nombre entier | Identifiant unique | |
 *created_at* | date-heure | Date et heure de création | |
 *updated_at*| date-heure | Date et heure de mise à jour | |
 **efforts** | | | |
@@ -117,6 +117,7 @@ Sortie de la requête:
      - 10 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
+*id* | nombre entier | Identifiant unique | |
 campaing_id | nombre entier | Numéro d'identification de la campagne | |
 stratum | choix | Strate de végétation concernée par l'effort d'échantillonage | 'arbres', 'arbustes/herbacées', 'bryophytes' |
 time_start | date et heure | Date et heure de début de l'inventaire | |
@@ -124,7 +125,6 @@ time_finish | date et heure | Date et heure de fin de l'inventaire | |
 samp_surf | nombre décimal| Taille de la surface d'échantillonage | |
 samp_surf_unit | choix | Unité de mesure utilisé pour la surface d'échantillonnage | 'cm2', 'm2', 'km2' |
 notes | texte | Commentaires | |
-*id* | | nombre entier | Identifiant unique | |
 *created_at* | date-heure | Date et heure de création | |
 *updated_at*| date-heure | Date et heure de mise à jour | |
 
@@ -139,6 +139,7 @@ Sortie de la requête:
      - 8 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
+*id* | nombre entier | Identifiant unique | |
 campaing_id | nombre entier | Numéro d'identification de la campagne | |
 wind | choix | Vent en km/h | 'calme (moins de 1 km/h)', 'très légère brise (1 à 5 km/h)', 'légère brise (6 à 11 km/h)', 'petite brise (12 à 19 km/h)', 'jolie brise (20 à 28 km/h)' |
 sky | choix | Allure du ciel | 'dégagé (0 à 10 %)', 'nuageux (50 à 90 %)', 'orageux', 'partiellement nuageux (10 à 50 %)', 'pluvieux' |
@@ -146,7 +147,6 @@ temp_c | nombre décimal | Date et heure de fin de l'inventaire | |
 --samp_surf-- | nombre décimal| Température en celsius | |
 --samp_surf_unit-- | choix | Unité de mesure utilisé pour la surface d'échantillonnage | 'cm2', 'm2', 'km2' |
 notes | texte | Commentaires | |
-*id* | | nombre entier | Identifiant unique | |
 *created_at* | date-heure | Date et heure de création | |
 *updated_at*| date-heure | Date et heure de mise à jour | |
 
@@ -161,6 +161,7 @@ Sortie de la requête:
      - 13 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
+*id* | nombre entier | Identifiant unique | |
 campaing_id | nombre entier | Numéro d'identification de la campagne | |
 sd_card_codes | ARRAY(texte) | Numéro d'identification des cartes SD utilisées |  |
 cam_code | ARRAY(texte) | Numéro d'identification de la caméra utilisée |  |
@@ -170,6 +171,113 @@ mic_acc_code | texte | Numéro d'identification du microphone accoustique utilis
 mic_h_cm_acc | nombre décimal | Hauteur du microphone ultrason utilisé en centimètres | |
 mic_ultra_code | texte | Hauteur du microphone ultrason utilisé en centimètres | |
 mic_orientation | choix | Orientation du dispositif | 'n', 's', 'e', 'o', 'ne', 'no', 'se', 'so' |
-*id* | | nombre entier | Identifiant unique | |
 *created_at* | date-heure | Date et heure de création | |
 *updated_at*| date-heure | Date et heure de mise à jour | |
+
+***
+
+## endpoints = "/lures"
+Point d'accès: /api/v1/lures
+Connexion à la base de données: Valide
+Similaire à la table cells dans COLEO: non
+Sortie de la requête: 
+     - $body[[1]] = 34 entrées
+     - 6 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+Champs | Type | Description | Options
+------------ | ------------- | ------------- | -------------
+*id* | nombre entier | Identifiant unique | |
+lure | nombre entier | Numéro d'identification de la campagne | |
+installed_at | date | Date d'installation de l'appât/leurre | |
+*created_at* | date-heure | Date et heure de création | |
+*updated_at*| date-heure | Date et heure de mise à jour | |
+campaign_id | | | |
+
+***
+
+## endpoints = "/traps"
+Point d'accès: /api/v1/traps
+Connexion à la base de données: Valide
+Similaire à la table cells dans COLEO: non
+Sortie de la requête: 
+     - $body[[1]] = 44 entrées
+     - 8 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+     Champs | Type | Description | Options
+------------ | ------------- | ------------- | -------------
+*id* | nombre entier | Identifiant unique | |
+trap_code | texte | Code du piège | |
+campaign_id | texte | Code d'identification de la campagne | |
+notes | texte | Commentaires | |
+*created_at* | date-heure | Date et heure de création | |
+*updated_at*| date-heure | Date et heure de mise à jour | |
+**landmarks**| | | |
+**samples**| | | |
+
+***
+
+## endpoints = "/landmarks"
+Point d'accès: /api/v1/landmarks
+Connexion à la base de données: Valide
+Similaire à la table cells dans COLEO: non
+Sortie de la requête: 
+     - $body[[1]] = 63 entrées
+     - 21 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+Champs | Type | Description | Options
+------------ | ------------- | ------------- | -------------
+*id* | nombre entier | Identifiant unique | |
+campaing_id | nombre entier | Numéro d'identification de la campagne | |
+tree_code | texte | Identifiant unique de l'arbre repère | |
+taxa_name | texte | Espèce de l'arbre repère | |
+dbh | nombre entier | DHP de l'arbre repère | |
+dbh_unit | choix | Unité pour le DHP | 'mm','cm','m' |
+axis | choix | L'axe du transect pour la végétation | 'n','se','so' |
+azimut | nombre entier | Azimut du dispositif/appât/borne depuis le repère (arbre ou borne), entre 0 et 360 | |
+distance | nombre décimal | Distance du dispositif/appât/borne depuis le repère (arbre ou borne) | | 
+distance_unit | choix | Distance du dispositif/appât/borne depuis le repère (arbre ou borne) | 'mm','cm','m' |
+--geom-- | geometry(POINT) | Position du repère |  |
+type | choix |  Type de repère | 'gps', 'arbre', 'gps+arbre', 'borne_axe', 'thermographe' | 
+thermograph_type | choix | Type de thermographe | 'eau', 'eau_extérieur', 'sol', 'sol_extérieur', 'puit_marais' |
+notes | texte | Commentaires | |
+*created_at* | date-heure | Date et heure de création | |
+*updated_at*| date-heure | Date et heure de mise à jour | |
+**trap_id**| | | |
+**device_id**| | | |
+**lure_id**| | | |
+**thermographs**| | | |
+**geom.type**| | | |
+**geom.coordinates**| | | |
+
+***
+
+## endpoints = "/samples"
+Point d'accès: /api/v1/samples
+Connexion à la base de données: Valide
+Similaire à la table cells dans COLEO: Oui
+Sortie de la requête: 
+     - $body[[1]] = 81 entrées
+     - 7 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+------------ | ------------- | ------------- | -------------
+*id* | nombre entier | Identifiant unique | |
+sample_code | texte | Numéro de l'échantillon | |
+date_samp | date | Date de collecte de l'échantillon | |
+trap_id | nombre entier | Numéro d'identification unique du piège | |
+notes | texte | Commentaires | |
+*created_at* | date-heure | Date et heure de création | |
+*updated_at*| date-heure | Date et heure de mise à jour | |
+
+***
+
+## endpoints = "/thermographs"
+Point d'accès: /api/v1/thermographs
+Connexion à la base de données: Valide
+Similaire à la table cells dans COLEO: ?
+Sortie de la requête: 
+     AUCUNE
+***
+
+## endpoints = "/observations"
+Point d'accès: /api/v1/?
+Connexion à la base de données: Invalide
+Similaire à la table cells dans COLEO: Non
+Sortie de la requête: 
+     **Error in strsplit(httr::headers(resp)$"content-range", split = "_\_\D") : 
+  l'argument n'est pas une chaîne de caractères**
