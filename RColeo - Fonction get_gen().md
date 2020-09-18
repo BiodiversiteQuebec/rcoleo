@@ -111,7 +111,7 @@ notes | texte | Commentaires | |
 **device.campaign_id** | | | |
 **device.sd_card_codes** | | | |
 **device.cam_code** | | | |
-**device.cam_h_cm **| | | |
+**device.cam_h_cm**| | | |
 **device.mic_logger_code** | | | |
 **device.mic_acc_code** | | | |
 **device.mic_h_cm_acc** | | | |
