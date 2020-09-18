@@ -44,8 +44,8 @@ Similaire à la table cells dans COLEO: Non
 
 Sortie de la requête: 
 
-     - $body[[1]] = 68 entrées
-     - 19 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+* $body[[1]] = 68 entrées
+* 19 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
@@ -81,8 +81,8 @@ Similaire à la table cells dans COLEO: Non
 
 Sortie de la requête: 
 
-     - $body[[1]] = 80 entrées
-     - 34 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+* $body[[1]] = 80 entrées
+* 34 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
@@ -132,8 +132,8 @@ Similaire à la table cells dans COLEO: Oui
 
 Sortie de la requête: 
 
-     - $body[[1:2]] = 110 entrées
-     - 10 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+* $body[[1:2]] = 110 entrées
+* 10 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
@@ -159,8 +159,8 @@ Similaire à la table cells dans COLEO: Non
 
 Sortie de la requête: 
 
-     - $body[[1]] = 29 entrées
-     - 8 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+* $body[[1]] = 29 entrées
+* 8 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
@@ -186,8 +186,8 @@ Similaire à la table cells dans COLEO: Oui
 
 Sortie de la requête: 
 
-     - $body[[1]] = 12 entrées
-     - 13 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+* $body[[1]] = 12 entrées
+* 13 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
@@ -215,8 +215,8 @@ Similaire à la table cells dans COLEO: non
 
 Sortie de la requête: 
 
-     - $body[[1]] = 34 entrées
-     - 6 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+* $body[[1]] = 34 entrées
+* 6 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
@@ -238,8 +238,8 @@ Similaire à la table cells dans COLEO: non
 
 Sortie de la requête: 
 
-     - $body[[1]] = 44 entrées
-     - 8 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+* $body[[1]] = 44 entrées
+* 8 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 
      Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
@@ -263,8 +263,8 @@ Similaire à la table cells dans COLEO: non
 
 Sortie de la requête: 
 
-     - $body[[1]] = 63 entrées
-     - 21 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+* $body[[1]] = 63 entrées
+* 21 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
@@ -302,8 +302,8 @@ Similaire à la table cells dans COLEO: Oui
 
 Sortie de la requête: 
 
-     - $body[[1]] = 81 entrées
-     - 7 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+* $body[[1]] = 81 entrées
+* 7 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
@@ -338,8 +338,8 @@ Similaire à la table cells dans COLEO: Non
 
 Sortie de la requête: 
 
-     ~~Error in strsplit(httr::headers(resp)$"content-range", split = "\\D") : 
-  l'argument n'est pas une chaîne de caractères~~
+    Error in strsplit(httr::headers(resp)$"content-range", split = "\\D") : 
+    l'argument n'est pas une chaîne de caractères~~
 
   ***
 
@@ -352,8 +352,8 @@ Similaire à la table cells dans COLEO: Oui
 
 Sortie de la requête: 
 
-     - $body[[1:27]] = 297 entrées
-     - 21 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+* $body[[1:27]] = 297 entrées
+* 21 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
@@ -390,8 +390,8 @@ Similaire à la table cells dans COLEO: Oui
 
 Sortie de la requête: 
 
-     - $body[[1]] = 3 entrées
-     - 5 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD). **Pas de id ici**
+* $body[[1]] = 3 entrées
+* 5 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD). **Pas de id ici**
 
 
 Champs | Type | Description | Options
@@ -413,10 +413,10 @@ Similaire à la table cells dans COLEO: Non
 
 Sortie de la requête: 
 
-```Error in strsplit(httr::headers(resp)$"content-range", split = "\\D") : 
-  l'argument n'est pas une chaîne de caractères```
+    Error in strsplit(httr::headers(resp)$"content-range", split = "\\D") : 
+    l'argument n'est pas une chaîne de caractères
 
-    ***
+***
 
 ## endpoints = "/obs_soil_decomposition"
 Point d'accès: /api/v1/obs_soil_decomposition
@@ -440,8 +440,8 @@ Similaire à la table cells dans COLEO: Oui
 
 Sortie de la requête: 
 
-     - $body[[1:1000]]
-     - 12 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
+* $body[[1:1000]]
+* 12 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD)
 
 Champs | Type | Description | Options
 ------------ | ------------- | ------------- | -------------
