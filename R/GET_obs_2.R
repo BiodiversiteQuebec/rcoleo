@@ -1,4 +1,4 @@
-funRcoleo <- list.files(path = "/home/claire/PostDoc_COLEO/GitHub/rcoleo_CCJ/R", full.names = TRUE)
+funRcoleo <- list.files(path = "/home/claire/PostDoc_COLEO/GitHub/rcoleo_CCJ/R", full.names = TRUE)[-c(3, 11)]
 lapply(funRcoleo, source)
 
 
@@ -9,6 +9,8 @@ get_obs_2 <- function (site_code = NULL, opened_at = NULL, closed_at = NULL,
   token <- ifelse(is.na(bearer()), list(...)$token, bearer())
   responses <- list()
   class(responses) <- "coleoGetResp"
+
+  # ----------------------------------------------------------------- #
   if (all(is.null(site_code), is.null(opened_at), is.null(closed_at),
           is.null(type))) {
     responses[[1]] <- get_gen(endpoint, ...)
@@ -66,15 +68,29 @@ get_obs_2 <- function (site_code = NULL, opened_at = NULL, closed_at = NULL,
 
   ###########################  end of function lapply(responses[[1]], page)##############################################
   }
-  ############################# end of first if ########################################
+  ############################# end of first if condition ################################
   else {
+    #browser()
     len <- max(c(length(site_code), length(opened_at), length(closed_at),
                  length(type)))
+
+    #------------------------- 21 sept 2020 ----------- #
     for (r in 1:len) {
-      campaigns_ids <- as.data.frame(get_campaigns(site_code = site_code[r],
-                                                   opened_at = opened_at[r], closed_at = closed_at[r],
-                                                   type = type[r]))$id
+      #browser()
+      # campaigns_ids <- as.data.frame(get_campaigns_2(site_code = site_code[r],
+      #                                              opened_at = opened_at[r],
+      #                                              closed_at = closed_at[r],
+      #                                              type = type[r]))$id
+
+      cc <- get_campaigns_2(site_code = site_code[r],
+                            opened_at = opened_at[r],
+                            closed_at = closed_at[r],
+                            type = type[r])
+      ccc <- lapply(cc, function(x) x$body[[1]]$id)
+      campaigns_ids <- unlist(ccc)
     }
+    #------------------------- 21 sept 2020 ----------- #
+    browser()
     for (i in 1:length(campaigns_ids)) responses[[i]] <- get_gen(endpoint,
                                                                  query = list(campaign_id = campaigns_ids[i]), ...)
     responses <- lapply(responses, function(response) {
@@ -82,9 +98,11 @@ get_obs_2 <- function (site_code = NULL, opened_at = NULL, closed_at = NULL,
         campaign_id <- unique(page$campaign_id)
         stopifnot(length(campaign_id) == 1)
         campaign_info <- httr::content(httr::GET(url = paste0(server(),
-                                                              "/api/v1/campaigns/", campaign_id), config = httr::add_headers(`Content-type` = "application/json",
-                                                                                                                             Authorization = paste("Bearer", ifelse(is.na(bearer()),
-                                                                                                                                                                    token, bearer()))), ua), simplify = TRUE)
+                                                              "/api/v1/campaigns/",
+                                                              campaign_id),
+                                                 config = httr::add_headers(`Content-type` = "application/json",
+                                                                            Authorization = paste("Bearer", ifelse(is.na(bearer()),
+                                                                                                                   token, bearer()))), ua), simplify = TRUE)
         site_info <- httr::content(httr::GET(url = paste0(server(),
                                                           "/api/v1/sites/", campaign_info$site_id),
                                              config = httr::add_headers(`Content-type` = "application/json",
@@ -112,6 +130,8 @@ get_obs_2 <- function (site_code = NULL, opened_at = NULL, closed_at = NULL,
 # <bytecode: 0x000000001eddc510>
 #   <environment: namespace:rcoleo>
 obj <- get_obs_2()
+obj <- do.call("rbind", obj[[1]])
+names(obj)
 traceback()
 debug(get_obs_2)
 

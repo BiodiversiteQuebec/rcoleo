@@ -1,4 +1,4 @@
-funRcoleo <- list.files(path = "/home/claire/PostDoc_COLEO/GitHub/rcoleo_CCJ/R", full.names = TRUE)[-10]
+funRcoleo <- list.files(path = "/home/claire/PostDoc_COLEO/GitHub/rcoleo_CCJ/R", full.names = TRUE)[-c(3,11)]
 lapply(funRcoleo, source)
 
 #' Obtenir l'ensemble des campagnes attachées à un site
@@ -17,7 +17,7 @@ lapply(funRcoleo, source)
 #' }
 #' @export
 
-get_campaigns <- function(site_code = NULL, opened_at = NULL, closed_at = NULL, type = NULL, ...){
+get_campaigns_2 <- function(site_code = NULL, opened_at = NULL, closed_at = NULL, type = NULL, ...){
 
   # Preparation de l'objet de sortie
   responses <- list()
@@ -34,8 +34,9 @@ get_campaigns <- function(site_code = NULL, opened_at = NULL, closed_at = NULL, 
 
     # Retrieve the site id
     if(!is.null(site_code)){
-      sites <- get_sites(site_code=site_code, endpoint=endpoints()$sites)
-      site_code <- sapply(sites,function(x) x[[1]]$body[,"id"])
+      sites <- get_sites(site_code=site_code#, endpoint=endpoints()$sites
+                         )
+      site_code <- sapply(sites,function(x) x$body[[1]][,"id"])
     } else {
       site_code <- NULL
     }
