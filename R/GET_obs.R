@@ -7,7 +7,7 @@
 #' \dontrun{
 #' get_obs()
 #' get_obs(type = 'mammifères')
-#' } 
+#' }
 #' @export
 
 # TODO: ne couvre pas les observations de sol
@@ -88,15 +88,20 @@ get_obs <- function(site_code = NULL, opened_at = NULL, closed_at = NULL, type =
 
     # Loop sur les campagnes demandees
     for(r in 1:len){
-      campaigns_ids <- as.data.frame(get_campaigns(site_code=site_code[r],
+
+      camps <- get_campaigns(site_code=site_code[r],
                     opened_at = opened_at[r],
                     closed_at = closed_at[r],
-                    type = type[r]))$id
+                    type = type[r])
+
+      campaigns_ids <- as.data.frame(camps[[1]]$body[[1]])$id
     }
+
 
     # On récupère les observations pour la campagne concernée
     for(i in 1:length(campaigns_ids)) responses[[i]] <- get_gen(endpoint, query=list(campaign_id=campaigns_ids[i]), ...)
 
+    if(FALSE){
     # TODO: Fonction d'extend plus generic
     responses <- lapply(responses, function(response){
 
@@ -148,6 +153,7 @@ get_obs <- function(site_code = NULL, opened_at = NULL, closed_at = NULL, type =
       })
 
     })
+    }
   }
 
   return(responses)
