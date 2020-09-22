@@ -90,9 +90,12 @@ get_obs_2 <- function (site_code = NULL, opened_at = NULL, closed_at = NULL,
       campaigns_ids <- unlist(ccc)
     }
     #------------------------- 21 sept 2020 ----------- #
-    browser()
+    #browser()
+    # On récupère les observations pour la campagne concernée
     for (i in 1:length(campaigns_ids)) responses[[i]] <- get_gen(endpoint,
                                                                  query = list(campaign_id = campaigns_ids[i]), ...)
+    if(FALSE){
+      # TODO: Fonction d'extend plus generic
     responses <- lapply(responses, function(response) {
       lapply(response, function(page) {
         campaign_id <- unique(page$campaign_id)
@@ -124,6 +127,7 @@ get_obs_2 <- function (site_code = NULL, opened_at = NULL, closed_at = NULL,
         return(page)
       })
     })
+    }
   }
   return(responses)
 }
