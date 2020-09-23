@@ -18,7 +18,7 @@ Similaire à la table cells dans COLEO: Non
 
 Sortie de la requête: 
 
-* $body[[1:7]] = 768 entrées
+* $body[[1:7]] = 568 entrées ($body[[7]] = a tibble: 0 x 0)
 * 8 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD; --champs-- = champs absent par rapport à la table)
 
 Champs | Type | Description | Options
@@ -132,7 +132,7 @@ Similaire à la table cells dans COLEO: Oui
 
 Sortie de la requête: 
 
-* $body[[1:2]] = 110 entrées
+* $body[[1:2]] = 105 entrées
 * 10 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD; --champs-- = champs absent par rapport à la table)
 
 Champs | Type | Description | Options
@@ -322,24 +322,57 @@ Point d'accès: /api/v1/thermographs
 
 Connexion à la base de données: Valide
 
-Similaire à la table cells dans COLEO: ?
-
-Sortie de la requête: 
-
-     AUCUNE
-***
-
-## endpoints = "/observations"
-Point d'accès: /api/v1/?
-
-Connexion à la base de données: Invalide
-
 Similaire à la table cells dans COLEO: Non
 
 Sortie de la requête: 
 
-    Error in strsplit(httr::headers(resp)$"content-range", split = "\\D") : 
-    l'argument n'est pas une chaîne de caractères~~
+     AUCUNE (A tibble: 0 x 0)
+***
+
+## endpoints = "/observations"
+Point d'accès: /api/v1/observations
+
+Connexion à la base de données: Valide
+
+Similaire à la table cells dans COLEO: Non
+
+**Inclus dans le résultat**: media, obs_soil, obs_species, obs_soil_decomposition
+
+Cette table est la table principale qui contient les informations communes à toutes les observations. Dépendamment du type de campagne, les informations complémentaires sont dans les tables obs_*
+
+Sortie de la requête: 
+
+* $body[[1:27]] = 2638 entrées
+* 25 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD; --champs-- = champs absent par rapport à la table)
+
+Champs | Type | Description | Options
+------------ | ------------- | ------------- | -------------
+*id* | nombre entier | Identifiant unique | |
+date_obs | date | Date d'observation à l'intérieur de la campagne d'inventaire | |
+time_obs | heure HH:mm:ss| Heure de l'observation à l'intérieur de la campagne d'inventaire | |
+stratum | choix | Strate de végétation inventoriée (spécifique aux campagnes de type végétation) | 'arborescente', 'arbustive', 'herbacées', 'bryophytes' |
+axis | choix | L\'axe du transect pour la végétation | 'n','se','so' |
+distance | nombre décimal| La distance le long du transect pour la végétation | | 
+distance_unit | choix | Unité de mesure utilisé pour la distance le long du transect | |
+depth | nombre décimal | Profondeur pour les observations de zooplancton | |
+sample_id | nombre entier | numéro de l'échantillon | |
+is_valid | booléen 1/0 | L'observation est-elle valide?| par défaut: 1 |
+campaing_id | nombre entier | Numéro d'identification de la campagne | |
+--campaing_info-- | champs virtuel | Informations sur la campagne | |
+thermograph_id | nombre entier | Numéro du thermographe | |
+notes | texte | Commentaires | |
+*created_at* | date-heure | Date et heure de création | |
+*updated_at*| date-heure | Date et heure de mise à jour | |
+**media** | | | |
+**obs_soil** | | | |
+**obs_soil_decomposition** | | | |
+**obs_species.id** | | | |
+**obs_species.taxa_name** | | | |
+**obs_species.variable** | | | |
+**obs_species.value** | | | |
+**obs_species.observation_id** | | | |
+**obs_species.created_at** | | | |
+**obs_species.updated_at** | | | |
 
   ***
 
@@ -352,7 +385,7 @@ Similaire à la table cells dans COLEO: Oui
 
 Sortie de la requête: 
 
-* $body[[1:27]] = 297 entrées
+* $body[[1:27]] = 2637 entrées
 * 21 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD; --champs-- = champs absent par rapport à la table)
 
 Champs | Type | Description | Options
@@ -427,7 +460,7 @@ Similaire à la table cells dans COLEO: ?
 
 Sortie de la requête: 
 
-     AUCUNE
+     AUCUNE (A tibble: 0 x 0)
 
 ***
 
@@ -440,7 +473,7 @@ Similaire à la table cells dans COLEO: Oui
 
 Sortie de la requête: 
 
-* $body[[1:1000]]
+* $body[[1:1256]] = 125 575 entrées
 * 12 champs (en italique = champs générée par la BD; en gras = champs en plus que ceux trouvés dans la table de la BD; --champs-- = champs absent par rapport à la table)
 
 Champs | Type | Description | Options
