@@ -1,4 +1,4 @@
-funRcoleo <- list.files(path = "/home/claire/PostDoc_COLEO/GitHub/rcoleo_CCJ/R", full.names = TRUE)[-c(3, 11)]
+funRcoleo <- list.files(path = "/home/claire/PostDoc_COLEO/GitHub/rcoleo_CCJ/R", full.names = TRUE)[-10]
 lapply(funRcoleo, source)
 
 
@@ -132,8 +132,7 @@ get_obs_2 <- function (site_code = NULL, opened_at = NULL, closed_at = NULL,
   }
   return(responses)
 }
-# <bytecode: 0x000000001eddc510>
-#   <environment: namespace:rcoleo>
+
 obj <- get_obs_2()
 obj <- do.call("rbind", obj[[1]])
 names(obj)
