@@ -77,15 +77,16 @@ get_obs_2 <- function (site_code = NULL, opened_at = NULL, closed_at = NULL,
     #------------------------- 21 sept 2020 ----------- #
     for (r in 1:len) {
       #browser()
-      # campaigns_ids <- as.data.frame(get_campaigns_2(site_code = site_code[r],
-      #                                              opened_at = opened_at[r],
-      #                                              closed_at = closed_at[r],
-      #                                              type = type[r]))$id
-
-      cc <- get_campaigns_2(site_code = site_code[r],
+      cc <- rcoleo::get_campaigns(site_code = site_code[r],
                             opened_at = opened_at[r],
                             closed_at = closed_at[r],
                             type = type[r])
+      # cc <- get_campaigns_2(site_code = site_code[r],
+      #                             opened_at = opened_at[r],
+      #                             closed_at = closed_at[r],
+      #                             type = type[r])
+
+      # sortie similaire avec rcoleo::get_campaigns & get_campaigns_2
       ccc <- lapply(cc, function(x) x$body[[1]]$id)
       campaigns_ids <- unlist(ccc)
     }
