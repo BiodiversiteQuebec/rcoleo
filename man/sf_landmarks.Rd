@@ -4,8 +4,13 @@
 \alias{sf_landmarks}
 \title{Fonction retournant les repères utilisé dans le cadre d'une campagne dans un objet de classe spatiale (sf)}
 \usage{
-sf_landmarks(site_code = NULL, opened_at = NULL, closed_at = NULL,
-  type = NULL, ...)
+sf_landmarks(
+  site_code = NULL,
+  opened_at = NULL,
+  closed_at = NULL,
+  type = NULL,
+  ...
+)
 }
 \arguments{
 \item{site_code}{\code{character} vecteur contenant les codes de sites pour lesquelles ont désire récupérer les campagnes (ex. 134_111_F01)}
