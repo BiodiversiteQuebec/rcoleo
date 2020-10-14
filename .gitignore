@@ -34,3 +34,5 @@ docs/*
 # example data
 *.xlsx
 docs
+
+test_download.R
