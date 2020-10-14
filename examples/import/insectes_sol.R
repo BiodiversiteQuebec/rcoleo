@@ -1,3 +1,5 @@
+
+
 ###################################
 ####### PREP POST sur sites #######
 ###################################
@@ -7,13 +9,13 @@ library(readxl)
 library(tidyverse)
 library(geojsonio)
 
-nms <- names(read_excel("./V3_CompilationDonnées_2016-2018.xlsx",sheet=sheet))
+nms <- names(read_excel("./examples/import/V3_CompilationDonnées_2016-2018.xlsx",sheet=sheet))
 
 ## Gerer les dates (eviter la conversion automatique)
 ct <- ifelse(grepl("^Date|Heure", nms, ignore.case = TRUE), "date", "guess")
 
 ## deuxieme lecture de la page et ignore le type dans la ligne 2
-df <- read_excel("./V3_CompilationDonnées_2016-2018.xlsx",sheet=sheet,col_types = ct)[-1,]
+df <- read_excel("./examples/import/V3_CompilationDonnées_2016-2018.xlsx",sheet=sheet,col_types = ct)[-1,]
 
 ## replacer les espaces par des barres de soulignement dans les noms de colonnes
 names(df) <- stringr::str_replace_all(names(df)," ", "_")
@@ -58,7 +60,7 @@ geom <- apply(sites,1, function(x){
 
 sites_purr_ls <- purrr::transpose(sites)
 
-all.equal(sites_ls, sites_purr_ls) # ok so there is some variation 
+all.equal(sites_ls, sites_purr_ls) # ok so there is some variation
 
 library(purrr)
 geom %>% map(is.list)
@@ -85,10 +87,10 @@ sites_ls_test[[1]]["opened_at"] <- "2020-07-10"
 
 sites_ls_test[[1]]["site_code"] <- "135_104_Q99"
 
-sites_ls_test
+sites_ls[[1]] %>% dput
 
 library(rcoleo)
-responses <- post_sites(sites_ls_test)
+#responses <- post_sites(sites_ls_test)
 
 responses
 ###################################
@@ -100,36 +102,37 @@ library(reshape2)
 # On séléctionne les champs: site_code, type, techs, opened_at, closed_at
 campaigns <- unique(select(
   df,
-  site_code = No_de_référence_de_site,
-  Nom_observateur_2,
-  Nom_observateur_1,
-  Nom_observateur_2__1,
-  Nom_observateur_2__1,
-  opened_at="Date_d'installation",
-  closed_at="Date_de_récolte_2_et_retrait",
-  No_piège_A,
-  No_piège_B,
-  No_piège_C,
-  latA="latitude_P-A",
-  lonA="Longiture_P-A",
-  latB="latitude_P-B",
-  lonB="Longiture_P-B",
-  latC="latitude_P-C",
-  lonC="Longiture_P-C"
+  site_code = `No de référence de site`,
+  `Nom observateur 2...7`,
+  `Nom observateur 1...6`,
+  `Nom observateur 1...9`,
+  `Nom observateur 1...9`,
+  `Nom observateur 2...10`,
+  opened_at=`Date d'installation`,
+  closed_at="Date de récolte 2 et retrait",
+  "No piège A" ,
+  "No piège B" ,
+  "No piège C" ,
+  latA="latitude P-A",
+  lonA="Longiture P-A",
+  latB="latitude P-B",
+  lonB="Longiture P-B",
+  latC="latitude P-C",
+  lonC="Longiture P-C"
 ))
 
 campaigns$type <- "insectes_sol"
 campaigns$key <- rownames(campaigns)
 
 ## On prépare le jeux de données pour le POST
-campaigns <- melt(data=campaigns, id.vars=c("site_code","type","opened_at","closed_at","key", "No_piège_A","No_piège_B","No_piège_C","latA", "lonA","latB", "lonB","latC", "lonC"),na.rm=TRUE)
+campaigns <- melt(data=campaigns, id.vars=c("site_code","type","opened_at","closed_at","key", "No piège A","No piège B","No piège C","latA", "lonA","latB", "lonB","latC", "lonC"),na.rm=TRUE)
 campaigns <- select(campaigns, -variable)
 names(campaigns)[ncol(campaigns)] <- "tech"
 campaigns <- melt(data=campaigns, id.vars=c("site_code","type","opened_at","closed_at","key","tech","latA", "lonA","latB", "lonB","latC", "lonC"),na.rm=TRUE)
 names(campaigns)[ncol(campaigns)] <- "traps"
 
 # On récupère l'ID du piège
-campaigns$variable <- str_remove_all(campaigns$variable,"No_piège_")
+campaigns$variable <- str_remove_all(campaigns$variable,"No piège ")
 
 # On attribut les bonnes coordonnées
 campaigns$lat_trap <- as.numeric(apply(campaigns, 1, function(x){
@@ -138,6 +141,8 @@ campaigns$lat_trap <- as.numeric(apply(campaigns, 1, function(x){
 campaigns$lon_trap <- as.numeric(apply(campaigns, 1, function(x){
   x[paste0("lon",x["variable"])]
 }))
+
+campaigns$variable[1]
 
 # On retire ce que l'on a plus besoins
 campaigns <- unique(select(campaigns,-latA,-lonA,-latB,-lonB,-latC,-lonC,-variable))
@@ -160,17 +165,32 @@ for(l in 1:length(campaigns_ls)){
   campaigns_ls[[l]]$technicians <- as.list(tech_add$tech)
 }
 
-responses <- post_campaigns(campaigns_ls)
+campaigns_ls[[1]] %>% dput
 
-#### Traps + landmarks (GPS)
+
+#responses <- post_campaigns(campaigns_ls)
+
+#### Traps + landmarks (GPS) ===========
 # On prépare le jeux de données pour insertion dans la table Traps
 
+
+traps <- unique(select(campaigns, site_code, opened_at, closed_at, trap_code=traps, lat_trap, lon_trap))
+
+library(rcoleo)
+
+new_camps <- get_campaigns(
+  site_code=traps$site_code,
+  opened_at=traps$opened_at,
+  closed_at=traps$closed_at,
+  type=rep("insectes_sol",nrow(traps)))
+
+new_camp_df <- new_camps[[1]] %>% map_df("body")
+
+new_camp_df$id
+
+
 ## On le transforme en liste pour l'injection finale
-traps$campaign_id <- as.data.frame(get_campaigns(
-                        site_code=traps$site_code,
-                        opened_at=traps$opened_at,
-                        closed_at=traps$closed_at,
-                        type=rep("insectes_sol",nrow(traps))))$id
+traps$campaign_id <- as.data.frame(new_camp_df)$id
 
 traps_ls <- apply(traps,1,as.list)
 names(traps_ls) <- NULL
@@ -192,25 +212,30 @@ traps_ls <- lapply(traps_ls, function(x) {
 
 })
 
-responses <- post_traps(traps_ls)
+
+traps_ls[[1]] %>% dput
+
+# responses <- post_traps(traps_ls)
 
 ##### Ajout des échantillons dans la table
 library(reshape2)
 
+names(df)
+
 samples <- unique(select(df,
-  site_code=No_de_référence_de_site,
-  opened_at="Date_d'installation",
-  piège_A="No_piège_A",
-  piège_B="No_piège_B",
-  piège_C="No_piège_C",
-  date_1=Date_de_récolte_1,
-  date_2=Date_de_récolte_2_et_retrait,
-  ech_A_1="No_échantillon_1",
-  ech_B_1="No_échantillon_2",
-  ech_C_1="No_échantillon_3",
-  ech_A_2="No_échantillon_4",
-  ech_B_2="No_échantillon_5",
-  ech_C_2="No_échantillon_6"))
+  site_code="No de référence de site",
+  opened_at="Date d'installation",
+  piège_A="No piège A",
+  piège_B="No piège B",
+  piège_C="No piège C",
+  date_1 ="Date de récolte 1",
+  date_2 ="Date de récolte 2 et retrait",
+  ech_A_1="No échantillon 1",
+  ech_B_1="No échantillon 2",
+  ech_C_1="No échantillon 3",
+  ech_A_2="No échantillon 4",
+  ech_B_2="No échantillon 5",
+  ech_C_2="No échantillon 6"))
 
 samples$closed_at <- samples$date_2
 
@@ -229,6 +254,10 @@ for(i in 1:nrow(samples)){
   samples[i,"trap_code"] <- samples[i,paste("piège",str_code[1],sep="_")]
 }
 
+## the above programatically generates column names
+glimpse(df)
+# i.e. it picks which of no piege C for example is required.. oof hard to read and think about!
+
 samples <- unique(select(samples,site_code,opened_at,closed_at,sample_code,date_samp,trap_code))
 # samples$year <- format(as.Date(samples$date_samp),"%Y")
 # year_samp <- rep(paste0(samples$year,"%"),nrow(samples))
@@ -237,20 +266,22 @@ samples <- unique(select(samples,site_code,opened_at,closed_at,sample_code,date_
 samples_ls <- apply(samples,1,as.list)
 names(samples_ls) <- NULL
 
-responses <- post_samples(samples_ls)
+samples_ls[[5]] %>% dput
+
+# responses <- post_samples(samples_ls)
 
 ########## RESHAPING #######
 #### Observations + ObsSpecies
 
 sheet <- "Carabes_Tri"
 
-nms <- names(read_excel("./extdata/V3_CompilationDonnées_2016-2018.xlsx",sheet=sheet))
+nms <- names(read_excel("./examples/import/V3_CompilationDonnées_2016-2018.xlsx",sheet=sheet))
 
 ## Gerer les dates (eviter la conversion automatique)
 ct <- ifelse(grepl("^Date|Heure", nms, ignore.case = TRUE), "date", "guess")
 
 ## deuxieme lecture de la page et ignore le type dans la ligne 2
-df <- read_excel("./extdata/V3_CompilationDonnées_2016-2018.xlsx",sheet=sheet,col_types = ct)
+df <- read_excel("./examples/import/V3_CompilationDonnées_2016-2018.xlsx",sheet=sheet,col_types = ct)
 
 ## replacer les espaces par des barres de soulignement dans les noms de colonnes
 names(df) <- str_replace_all(names(df)," ", "_")
@@ -272,8 +303,10 @@ df$groupe_taxonomique <- str_replace_all(df$groupe_taxonomique, "de", "mollusque
 obs <- unique(select(df,date_obs=Date_de_récolte,sample_code=No_échantillon, site_code="No_réf._du_site", vernacular_fr=groupe_taxonomique, value=abondance, trap_code=No_de_piège))
 obs$type <- "insectes_sol"
 
+
+# search with steve list
 ## On regarde si toutes les taxons sont présent dans la BD
-resp_taxon <- get_species(vernacular_fr=obs$vernacular_fr)
+# resp_taxon <- get_species(vernacular_fr=obs$vernacular_fr)
 sp_id <- unlist(lapply(resp_taxon, function(x) return(x[[1]]$body[,c("name")])))
 
 ## On récupère les identifiants unique d'échantillon
@@ -314,22 +347,26 @@ for(i in 1:nrow(obs)){
   )
 }
 
-responses <- post_obs(injection_obs)
+# responses <- post_obs(injection_obs)
 
 ## Injection des carabes identifie à l'espèce en laboratoire
 
 sheet <- "Carabidae_ID"
 
-nms <- names(read_excel("./extdata/V2_CompilationDonnées_2016-2018.xlsx",sheet=sheet))
+nms <- names(read_excel("./examples/import/V3_CompilationDonnées_2016-2018.xlsx",sheet=sheet))
 
 ## Gerer les dates (eviter la conversion automatique)
 ct <- ifelse(grepl("^Date|Heure", nms, ignore.case = TRUE), "date", "guess")
 
 ## deuxieme lecture de la page et ignore le type dans la ligne 2
-df <- read_excel("./extdata/V2_CompilationDonnées_2016-2018.xlsx",sheet=sheet,col_types = ct)[-1,]
+df <- read_excel("./examples/import/V3_CompilationDonnées_2016-2018.xlsx",sheet=sheet,col_types = ct)[-1,]
 
+glimpse(df)
 ## replacer les espaces par des barres de soulignement dans les noms de colonnes
 names(df) <- str_replace_all(names(df)," ", "_")
+
+glimpse(df)
+
 
 ### On normalise la taxonomie
 df_taxa <- data.frame(famille=df$Famille,species=paste(df$Genre, df$Espèce),stringsAsFactors=FALSE)
@@ -339,28 +376,50 @@ df_taxa[which(df_taxa$taxa_lookup == "Platynus decentis (decens)"),"taxa_lookup"
 ## On ajoute la nouvelle colonne de taxonomie
 df$taxa <- df_taxa$taxa_lookup
 
+glimpse(df)
+# on n'a plus besoin faire ça
+
 ## On sélectionne les champs dont on a besoin pour l'injection
 ## On prépare les données pour injection autre qu'à l'échelle de l'espèce
-obs <- unique(select(df,date_obs=Date_récolte,sample_code=Échantillon, site_code="No._Site", taxa, value=Nombre))
+obs <- unique(select(df,
+                     date_obs=Date_récolte,
+                     sample_code=Échantillon,
+                     site_code="No._Site",
+                     taxa,
+                     value=Nombre))
+glimpse(obs)
+obs <- as.data.frame(obs)
 obs$type <- "insectes_sol"
 
+head(obs)
 ## On regarde si toutes les taxons sont présent dans la BD
 resp_taxon <- get_species(name=obs$taxa)
-obs$sp_id <- unlist(lapply(resp_taxon, function(x) return(x[[1]]$body[,c("name")])))
+
+sp_id <- unlist(lapply(resp_taxon, function(x) return(x[[1]]$body[,c("name")])))
+cbind(obs$taxa, sp_id)
+
+obs$sp_id <- sp_id
 
 ## On récupère les identifiants unique d'échantillon
 resp_samples <- get_samples(sample_code=obs$sample_code)
 obs$sample_id <- unlist(lapply(resp_samples, function(x) return(x[[1]]$body[,c("id")])))
 obs$trap_id <- unlist(lapply(resp_samples, function(x) return(x[[1]]$body[,c("trap_id")])))
 
+glimpse(obs)
+
 ## On récupère le code de campaign à partir des traps
 resp_traps <- list()
 for(i in 1:length(obs$trap_id)){
-  resp_traps[[i]] <- httr::content(httr::GET(url=paste0(server(),"/api/v1/traps/",obs$trap_id[i]), config = httr::add_headers(`Content-type` = "application/json",Authorization = paste("Bearer", bearer())),ua), simplify = TRUE)
+  resp_traps[[i]] <- httr::content(httr::GET(url=paste0(rcoleo:::server(),"/api/v1/traps/",obs$trap_id[i]), config = httr::add_headers(`Content-type` = "application/json",Authorization = paste("Bearer", rcoleo:::bearer())),httr::user_agent("rcoleo")), simplify = TRUE)
 }
+
+## where are the campaign ids??!
+resp_traps[[1]]
 
 obs$campaign_id <- unlist(lapply(resp_traps, function(x) return(x$campaign_id)))
 obs <- as.data.frame(obs)
+glimpse(obs)
+tail(obs)
 
 injection_obs <- list()
 
@@ -378,4 +437,23 @@ for(i in 1:nrow(obs)){
   )
 }
 
-responses <- post_obs(injection_obs)
+obs
+
+dput(injection_obs[[1]])
+
+obs[1,]
+
+# responses <- post_obs(injection_obs)
+
+# dput(injection_obs[1])
+
+test_obs <- list(list(
+  date_obs = "2020-12-25",
+  is_valid = "true",
+  campaign_id = 45,
+  sample_id = 5,
+  obs_species = list(taxa_name = "Platynus decentis",
+                     variable = "abondance",
+                     value = 400)))
+
+post_obs(test_obs)
