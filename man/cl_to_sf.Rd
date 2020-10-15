@@ -27,7 +27,7 @@ L'objet d'entrée doit contenir les colonnes \code{geom.type} & \code{geom.coord
 \examples{
 \dontrun{
 plot(cl_to_sf(get_sites()))
-}
+} 
 }
 \seealso{
 \code{\link[=sf_cells]{sf_cells()}}, \code{\link[=sf_sites]{sf_sites()}}
