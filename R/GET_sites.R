@@ -7,7 +7,7 @@
 #' \dontrun{
 #' get_sites(site_code=c('135_104_H01'))
 #' head(get_sites())
-#' } 
+#' }
 #' @export
 
 
