@@ -4,17 +4,10 @@
 \alias{list_medias}
 \title{Téléverse l'ensemble des médias appartenant à une campagnes}
 \usage{
-list_medias(site_code = NULL, opened_at = NULL, closed_at = NULL,
-  type = NULL, ...)
+list_medias(x, ...)
 }
 \arguments{
-\item{site_code}{\code{character} vecteur contenant les codes de sites pour lesquelles ont désire récupérer les campagnes (ex. 134_111_F01)}
-
-\item{opened_at}{\code{character} vecteur contenant les dates de début de campagnes (ex. 2017-01-30)}
-
-\item{closed_at}{\code{character} vecteur contenant les dates de fin de campagnes (ex. 2017-01-30)}
-
-\item{type}{\code{character} vecteur contenant le type de campagnes d'inventaires réalisé (ex. végétation)}
+\item{x}{\code{vector} of campaign ids}
 
 \item{...}{httr options; arguments de la fonction \code{httr::GET()}}
 }

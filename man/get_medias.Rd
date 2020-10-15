@@ -4,18 +4,9 @@
 \alias{get_medias}
 \title{Télécharge l'ensemble des médias appartenant à une campagnes}
 \usage{
-get_medias(site_code = NULL, opened_at = NULL, closed_at = NULL,
-  type = NULL, output_dir = "./media", verbose = TRUE, ...)
+get_medias(media, output_dir = "./media", verbose = TRUE, ...)
 }
 \arguments{
-\item{site_code}{\code{character} vecteur contenant les codes de sites pour lesquelles ont désire récupérer les campagnes (ex. 134_111_F01)}
-
-\item{opened_at}{\code{character} vecteur contenant les dates de début de campagnes (ex. 2017-01-30)}
-
-\item{closed_at}{\code{character} vecteur contenant les dates de fin de campagnes (ex. 2017-01-30)}
-
-\item{type}{\code{character} vecteur contenant le type de campagnes d'inventaires réalisé (ex. végétation)}
-
 \item{output_dir}{\code{character} contenant le chemin d'accès vers le répetoire d'écriture des médias}
 
 \item{verbose}{\code{logical} mode verbose}

@@ -4,8 +4,13 @@
 \alias{get_landmarks}
 \title{Retourne les entrées pour les repères sur le terrain spécifique à une campagne d'inventaires}
 \usage{
-get_landmarks(site_code = NULL, opened_at = NULL, closed_at = NULL,
-  type = NULL, ...)
+get_landmarks(
+  site_code = NULL,
+  opened_at = NULL,
+  closed_at = NULL,
+  type = NULL,
+  ...
+)
 }
 \arguments{
 \item{site_code}{\code{character} vecteur contenant les codes de sites pour lesquelles ont désire récupérer les campagnes (ex. 134_111_F01)}

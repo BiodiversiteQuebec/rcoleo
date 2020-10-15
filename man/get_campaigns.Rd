@@ -4,8 +4,13 @@
 \alias{get_campaigns}
 \title{Obtenir l'ensemble des campagnes attachées à un site}
 \usage{
-get_campaigns(site_code = NULL, opened_at = NULL, closed_at = NULL,
-  type = NULL, ...)
+get_campaigns(
+  site_code = NULL,
+  opened_at = NULL,
+  closed_at = NULL,
+  type = NULL,
+  ...
+)
 }
 \arguments{
 \item{site_code}{\code{character} vecteur contenant les codes de sites pour lesquelles ont désire récupérer les campagnes (ex. 134_111_F01)}
