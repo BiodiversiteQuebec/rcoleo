@@ -1,0 +1,93 @@
+---
+title: "Injection de taxons de référence dans Coléo"
+output: html_document
+---
+
+## 1. Créer une base de données excel
+Les colonnes de ce fichier excel doivent être les suivantes
+
+* **name**: les noms latins de chacune des espèces/famille/genre/..., ex. Plebejus idas
+* **vernacular_fr**: le nom français associé au nom latin, sans majuscule et avec les accents, ex. martre d'amérique
+* **rank**: le rang taxonomique, les options sont: 'sous-embranchement', 'embranchement', 'sous-classe', 'classe', 'sous-ordre', 'ordre', 'super-famille', 'famille', 'genre', 'espèce', 'sous-espèce'
+* **category**: la catégorie d'organisme vivant, les options sont: 'poissons','plantes','oiseaux','amphibiens','arthropodes','mammifères','reptiles','autres','mollusques'
+* **tsn**: Taxonomic serial number (TSN) fournis par ITIS
+* **vascan_id**: NA si l'organisme vivant n'est pas une plante, si l'organisme vivant est une plante: entrer son numéro d'identifiant vascan
+* **bryoquel_id**: NA si l'organisme vivant n'est pas un bryophyte, si l'organisme vivant est un bryophyte: entrer son numéro d'identifiant bryoquel
+* **created_at**: y écrire la date du jour sous le format AAAA-MM-JJ
+* **updated_at**: y écrire la date du jour sous le format AAAA-MM-JJ
+
+Note:
+
+* ne pas laisser de case vide, inscrire NA lorsque nécessaire
+* si vous avez des colonnes supplémentaires dans votre base de données, ex. nom anglais et commentaires, voir l'étape 7.8 pour qu'elles ne soient pas prises en compte lors de l'injection
+
+## 2. Corriger la base de données
+Il est très important de s'assurer que la base de données excel est sans erreur **avant** de l'injecter dans Coléo. Coléo n'a pas de système de correction et va prendre toutes les entrées, même si elles contiennent des erreurs. 
+
+
+## 3. Créer un projet R
+Dans RStudio,
+
+* Aller dans File > New Project > New Directory > New Project
+* Choisir un nom de projet et un lieu dans les fichiers pour le projet
+
+Les projets permettent de travailler dans un working directory. La base de données doit donc être sauvegardée dans le même dossier que le projet afin de faire parti du working directory.
+
+## 4. Sauvegarder la base de données en format .csv dans le même dossier que le projet R
+
+## 5. Installer les packages devtools, dplyr et rcoleo
+Dans RStudio,
+
+```r
+install.packages("devtools")
+install.packages("dplyr")
+```
+pour installer le package rcoleo, il faut utiliser le packages devtools, il faut donc l'appeller avec library()
+
+```r
+library(devtools)
+devtools::install_github("TheoreticalEcosystemEcology/rcoleo")
+```
+## 6. Mettre en cache son jeton d'accès
+Ce jeton permet d'apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l'utilisateur dans le menu à gauche.Ce jeton sera sauvegardé dans votre working directory.
+```r
+saveRDS("votrejeton",".httr-oauth")
+```
+Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d'injection. Le jeton est confidentiel. 
+
+## 7. Injection des taxons de référence dans Coléo
+
+* **7.1** Cette étape appelle les packages installés afin qu'ils puissent être utilisés
+
+```r
+library(rcoleo)
+library(dplyr)
+```
+* **7.2** L'étape suivante permet d'extraire la liste d'espèces déjà sur Coléo
+
+```r
+taxa_list <- get_species()
+```
+
+```
+## Data retrieval 5.88% Data retrieval 11.8% Data retrieval 17.6% Data retrieval 23.5% Data
+## retrieval 29.4% Data retrieval 35.3% Data retrieval 41.2% Data retrieval 47.1% Data retrieval
+## 52.9% Data retrieval 58.8% Data retrieval 64.7% Data retrieval 70.6% Data retrieval 76.5%
+## Data retrieval 82.4% Data retrieval 88.2% Data retrieval 94.1% Data retrieval 100%
+```
+
+```r
+str(taxa_list, max.level = 3)
+
+all_things <- dplyr::bind_rows(taxa_list[[1]]$body)
+```
+* **7.3** Cette étape permet d'intégrer les données de la base de données des organismes vivants à ajouter à Coléo
+```r
+corrections <- read.csv("./lenomdevotrebasededonnées.csv", header = TRUE, sep = ',', stringsAsFactors = FALSE, fileEncoding = "UTF-8-BOM") #l'encoding UTF-8 permet de garder les accents
+```
+
+
+
+
+
+

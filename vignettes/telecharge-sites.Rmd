@@ -11,25 +11,18 @@ library(rcoleo)
 library(purrr)
 
 all_taxa <- get_species()
+#> Data retrieval 5.88% Data retrieval 11.8% Data retrieval 17.6% Data retrieval 23.5% Data
+#> retrieval 29.4% Data retrieval 35.3% Data retrieval 41.2% Data retrieval 47.1% Data retrieval
+#> 52.9% Data retrieval 58.8% Data retrieval 64.7% Data retrieval 70.6% Data retrieval 76.5%
+#> Data retrieval 82.4% Data retrieval 88.2% Data retrieval 94.1% Data retrieval 100%
 all_taxa_df <- map_df(all_taxa[[1]], 1)
+#> Error: All columns in a tibble must be vectors.
+#> x Column `response` is a `response` object.
 knitr::kable(head(all_taxa_df))
-```
-
-
-
-|name                    |vernacular_fr       |rank        |category    |    tsn| vascan_id|bryoquel_id |created_at               |updated_at               |
-|:-----------------------|:-------------------|:-----------|:-----------|------:|---------:|:-----------|:------------------------|:------------------------|
-|Lethe eurydice eurydice |satyre ocellé       |sous-espèce |arthropodes | 779471|        NA|NA          |2020-06-03T00:00:00.000Z |2020-06-03T19:58:22.036Z |
-|Molothrus ater          |vacher à tête brune |espèce      |oiseaux     | 179112|        NA|NA          |2020-06-03T00:00:00.000Z |2020-06-04T12:46:07.480Z |
-|Lycaena phlaeas         |cuivré d'amérique   |espèce      |arthropodes | 777788|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
-|Lycaena cuprea          |NA                  |espèce      |arthropodes | 777789|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
-|Lycaena dione           |NA                  |espèce      |arthropodes | 777792|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
-|Lycaena rubida          |NA                  |espèce      |arthropodes | 777796|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
-
-```r
+#> Error in head(all_taxa_df): object 'all_taxa_df' not found
 
 dim(all_taxa_df)
-#> [1] 1300    9
+#> Error in eval(expr, envir, enclos): object 'all_taxa_df' not found
 ```
 
 
@@ -38,8 +31,20 @@ dim(all_taxa_df)
 library(rcoleo)
 library(purrr)
 library(tidyverse)
+#> ── Attaching packages ──────────────────────────────────────────────────── tidyverse 1.3.0 ──
+#> ✓ ggplot2 3.3.2     ✓ readr   1.3.1
+#> ✓ tibble  3.0.3     ✓ stringr 1.4.0
+#> ✓ tidyr   1.1.0     ✓ forcats 0.5.0
+#> Warning: package 'tibble' was built under R version 4.0.2
+#> ── Conflicts ─────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#> x dplyr::filter() masks stats::filter()
+#> x dplyr::lag()    masks stats::lag()
 
 all_sites <- get_sites()
+#> Data retrieval 100%
+#> ```
+
+```r
 
 # on extract le body
 donnees <- all_sites[[1]][[1]]$body
@@ -48,20 +53,15 @@ donnees <- all_sites[[1]][[1]]$body
 pap <-  select(donnees, cell.name, milieu=type, campaigns) %>%
   unnest(campaigns) %>%
   filter(type == "papilionidés")
+#> Warning: `select_()` is deprecated as of dplyr 0.7.0.
+#> Please use `select()` instead.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_warnings()` to see where this warning was generated.
+#> Error in UseMethod("select_"): no applicable method for 'select_' applied to an object of class "NULL"
 
 knitr::kable(head(pap))
+#> Error in head(pap): object 'pap' not found
 ```
-
-
-
-|cell.name                                    |milieu    | id| site_id|type         |technicians                                |opened_at  |closed_at  |notes |created_at               |updated_at               |
-|:--------------------------------------------|:---------|--:|-------:|:------------|:------------------------------------------|:----------|:----------|:-----|:------------------------|:------------------------|
-|Le Fjord-du-Saguenay (K)                     |tourbière | 28|      10|papilionidés |Pierre-Alexis Drolet, Caroline Dubé        |2016-06-28 |2016-06-28 |NA    |2018-11-07T18:53:22.332Z |2018-11-07T18:53:22.332Z |
-|Mékinac (B)                                  |marais    | 27|       1|papilionidés |Caroline Dubé       , Pierre-Alexis Drolet |2016-06-23 |2016-06-23 |NA    |2018-11-07T18:53:22.103Z |2018-11-07T18:53:22.103Z |
-|Parc des Hautes-Gorges-de-la-Rivière-Malbaie |tourbière | 34|      34|papilionidés |Caroline Dubé, Adine Séguin                |2017-07-20 |2017-07-20 |NA    |2018-11-07T18:53:23.835Z |2019-05-08T21:01:03.696Z |
-|La Jacques-Cartier                           |marais    | 40|      12|papilionidés |Caroline Dubé     , Guillaume Tremblay     |2017-06-22 |2017-06-22 |NA    |2018-11-07T18:53:25.473Z |2018-11-07T18:53:25.473Z |
-|La Jacques-Cartier                           |tourbière | 39|      11|papilionidés |Caroline Dubé, Anouk Simard                |2017-06-26 |2017-06-26 |NA    |2018-11-07T18:53:25.260Z |2018-11-07T18:53:25.260Z |
-|Forêt Montmorency                            |tourbière | 30|       4|papilionidés |Caroline Dubé       , Pierre-Alexis Drolet |2016-07-11 |2016-07-11 |NA    |2018-11-07T18:53:22.817Z |2020-01-23T19:34:07.751Z |
 
 **Is this supposed to work??!**
 
@@ -70,79 +70,24 @@ knitr::kable(head(pap))
 
 
 all_site_pap <- get_obs(site_id = "", type = "papilionidés")
+#> Data retrieval 100%
+#> Warning: `as.tibble()` is deprecated as of tibble 2.0.0.
+#> Please use `as_tibble()` instead.
+#> The signature and semantics have changed, see `?as_tibble`.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_warnings()` to see where this warning was generated.
+#> Warning: Unknown or uninitialised column: `id`.
+#> Error in strsplit(httr::headers(resp)$"content-range", split = "\\D"): non-character argument
 
 all.equal(one_site_pap[[1]][[1]]$body, all_site_pap[[1]][[1]]$body)
-#> [1] TRUE
+#> Error in all.equal(one_site_pap[[1]][[1]]$body, all_site_pap[[1]][[1]]$body): object 'one_site_pap' not found
 
 
 pap_df <- all_site_pap %>% map_df(~ .x[[1]][["body"]])
+#> Error in eval(lhs, parent, parent): object 'all_site_pap' not found
 
 knitr::kable(pap_df)
+#> Error in knitr::kable(pap_df): object 'pap_df' not found
+
+## write.csv(pap_df)
 ```
-
-
-
-|  id|cell_code |site_code   |opened_at  |closed_at  |type         |axis |distance |distance_unit |sample_id |date_obs   |obs_species.taxa_name |obs_species.variable | obs_species.value|is_valid |media |notes |created_at               |updated_at               |
-|---:|:---------|:-----------|:----------|:----------|:------------|:----|:--------|:-------------|:---------|:----------|:---------------------|:--------------------|-----------------:|:--------|:-----|:-----|:------------------------|:------------------------|
-| 466|135_104   |135_104_H01 |2016-06-23 |2016-06-23 |papilionidés |NA   |NA       |m             |NA        |2016-06-23 |Papilio canadensis    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:33.008Z |2018-11-07T18:53:33.008Z |
-| 468|135_104   |135_104_H01 |2016-06-23 |2016-06-23 |papilionidés |NA   |NA       |m             |NA        |2016-06-23 |Papilio canadensis    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:33.229Z |2018-11-07T18:53:33.229Z |
-| 467|135_104   |135_104_H01 |2016-06-23 |2016-06-23 |papilionidés |NA   |NA       |m             |NA        |2016-06-23 |Limenitis arthemis    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:33.132Z |2018-11-07T18:53:33.132Z |
-| 518|137_107   |137_107_H01 |2017-06-26 |2017-06-26 |papilionidés |NA   |NA       |m             |NA        |2017-06-26 |Papilio canadensis    |abondance            |                 2|TRUE     |NULL  |NA    |2018-11-07T18:53:38.600Z |2018-11-07T18:53:38.600Z |
-| 523|137_107   |137_107_H01 |2017-06-26 |2017-06-26 |papilionidés |NA   |NA       |m             |NA        |2017-06-26 |Coenonympha tullia    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:39.299Z |2018-11-07T18:53:39.299Z |
-| 519|137_107   |137_107_H01 |2017-06-26 |2017-06-26 |papilionidés |NA   |NA       |m             |NA        |2017-06-26 |Boloria eunomia       |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:38.864Z |2018-11-07T18:53:38.864Z |
-| 520|137_107   |137_107_H01 |2017-06-26 |2017-06-26 |papilionidés |NA   |NA       |m             |NA        |2017-06-26 |Limenitis arthemis    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:38.986Z |2018-11-07T18:53:38.986Z |
-| 521|137_107   |137_107_H01 |2017-06-26 |2017-06-26 |papilionidés |NA   |NA       |m             |NA        |2017-06-26 |Papilio canadensis    |abondance            |                 2|TRUE     |NULL  |NA    |2018-11-07T18:53:39.099Z |2018-11-07T18:53:39.099Z |
-| 522|137_107   |137_107_H01 |2017-06-26 |2017-06-26 |papilionidés |NA   |NA       |m             |NA        |2017-06-26 |Limenitis arthemis    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:39.200Z |2018-11-07T18:53:39.200Z |
-| 483|145_102   |145_102_H01 |2017-07-06 |2017-07-06 |papilionidés |NA   |NA       |m             |NA        |2017-07-06 |Colias interior       |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:34.995Z |2018-11-07T18:53:34.995Z |
-| 481|145_102   |145_102_H01 |2017-07-06 |2017-07-06 |papilionidés |NA   |NA       |m             |NA        |2017-07-06 |Lycaena epixanthe     |abondance            |                30|TRUE     |NULL  |NA    |2018-11-07T18:53:34.727Z |2018-11-07T18:53:34.727Z |
-| 482|145_102   |145_102_H01 |2017-07-06 |2017-07-06 |papilionidés |NA   |NA       |m             |NA        |2017-07-06 |Polites themistocles  |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:34.890Z |2018-11-07T18:53:34.890Z |
-| 478|148_101   |148_101_H01 |2016-06-30 |2016-06-30 |papilionidés |NA   |NA       |m             |NA        |2016-06-30 |Papilio canadensis    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:34.250Z |2018-11-07T18:53:34.250Z |
-| 474|148_101   |148_101_H01 |2016-06-30 |2016-06-30 |papilionidés |NA   |NA       |m             |NA        |2016-06-30 |Celastrina ladon      |abondance            |                 2|TRUE     |NULL  |NA    |2018-11-07T18:53:33.815Z |2018-11-07T18:53:33.815Z |
-| 475|148_101   |148_101_H01 |2016-06-30 |2016-06-30 |papilionidés |NA   |NA       |m             |NA        |2016-06-30 |Speyeria atlantis     |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:33.889Z |2018-11-07T18:53:33.889Z |
-| 477|148_101   |148_101_H01 |2016-06-30 |2016-06-30 |papilionidés |NA   |NA       |m             |NA        |2016-06-30 |Limenitis arthemis    |abondance            |                 2|TRUE     |NULL  |NA    |2018-11-07T18:53:34.119Z |2018-11-07T18:53:34.119Z |
-| 476|148_101   |148_101_H01 |2016-06-30 |2016-06-30 |papilionidés |NA   |NA       |m             |NA        |2016-06-30 |Pieris rapae          |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:33.989Z |2018-11-07T18:53:33.989Z |
-| 486|136_116   |136_116_H01 |2017-07-20 |2017-07-20 |papilionidés |NA   |NA       |m             |NA        |2017-07-20 |Papilio canadensis    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:35.284Z |2018-11-07T18:53:35.284Z |
-| 489|136_116   |136_116_H01 |2017-07-20 |2017-07-20 |papilionidés |NA   |NA       |m             |NA        |2017-07-20 |Callophrys augustinus |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:35.573Z |2018-11-07T18:53:35.573Z |
-| 484|136_116   |136_116_H01 |2017-07-20 |2017-07-20 |papilionidés |NA   |NA       |m             |NA        |2017-07-20 |Colias interior       |abondance            |                 2|TRUE     |NULL  |NA    |2018-11-07T18:53:35.091Z |2018-11-07T18:53:35.091Z |
-| 485|136_116   |136_116_H01 |2017-07-20 |2017-07-20 |papilionidés |NA   |NA       |m             |NA        |2017-07-20 |Lycaeides idas        |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:35.186Z |2018-11-07T18:53:35.186Z |
-| 487|136_116   |136_116_H01 |2017-07-20 |2017-07-20 |papilionidés |NA   |NA       |m             |NA        |2017-07-20 |Limenitis arthemis    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:35.380Z |2018-11-07T18:53:35.380Z |
-| 488|136_116   |136_116_H01 |2017-07-20 |2017-07-20 |papilionidés |NA   |NA       |m             |NA        |2017-07-20 |Colias interior       |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:35.476Z |2018-11-07T18:53:35.476Z |
-| 491|136_116   |136_116_H01 |2017-07-20 |2017-07-20 |papilionidés |NA   |NA       |m             |NA        |2017-07-20 |Lycaeides idas        |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:35.771Z |2018-11-07T18:53:35.771Z |
-| 490|136_116   |136_116_H01 |2017-07-20 |2017-07-20 |papilionidés |NA   |NA       |m             |NA        |2017-07-20 |Boloria chariclea     |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:35.667Z |2018-11-07T18:53:35.667Z |
-| 526|137_107   |137_107_H02 |2017-06-22 |2017-06-22 |papilionidés |NA   |NA       |m             |NA        |2017-06-22 |Papilio canadensis    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:39.717Z |2018-11-07T18:53:39.717Z |
-| 524|137_107   |137_107_H02 |2017-06-22 |2017-06-22 |papilionidés |NA   |NA       |m             |NA        |2017-06-22 |Papilio canadensis    |abondance            |                 3|TRUE     |NULL  |NA    |2018-11-07T18:53:39.432Z |2018-11-07T18:53:39.432Z |
-| 525|137_107   |137_107_H02 |2017-06-22 |2017-06-22 |papilionidés |NA   |NA       |m             |NA        |2017-06-22 |Boloria eunomia       |abondance            |                 2|TRUE     |NULL  |NA    |2018-11-07T18:53:39.585Z |2018-11-07T18:53:39.585Z |
-| 527|137_107   |137_107_H02 |2017-06-22 |2017-06-22 |papilionidés |NA   |NA       |m             |NA        |2017-06-22 |Hemaris diffinis      |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:39.846Z |2018-11-07T18:53:39.846Z |
-| 511|139_111   |139_111_H01 |2017-06-29 |2017-06-29 |papilionidés |NA   |NA       |m             |NA        |2017-06-29 |Poanes hobomok        |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:37.858Z |2018-11-07T18:53:37.858Z |
-| 510|139_111   |139_111_H01 |2017-06-29 |2017-06-29 |papilionidés |NA   |NA       |m             |NA        |2017-06-29 |Papilio canadensis    |abondance            |                 2|TRUE     |NULL  |NA    |2018-11-07T18:53:37.754Z |2018-11-07T18:53:37.754Z |
-| 479|145_102   |145_102_H02 |2017-07-12 |2017-07-12 |papilionidés |NA   |NA       |m             |NA        |2017-07-12 |Ctenucha virginica    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:34.441Z |2018-11-07T18:53:34.441Z |
-| 480|145_102   |145_102_H02 |2017-07-12 |2017-07-12 |papilionidés |NA   |NA       |m             |NA        |2017-07-12 |Satyrodes eurydice    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:34.595Z |2018-11-07T18:53:34.595Z |
-| 512|139_103   |139_103_H01 |2017-06-28 |2017-06-28 |papilionidés |NA   |NA       |m             |NA        |2017-06-28 |Chlosyne harrisii     |abondance            |                 2|TRUE     |NULL  |NA    |2018-11-07T18:53:38.003Z |2018-11-07T18:53:38.003Z |
-| 515|139_103   |139_103_H01 |2017-06-28 |2017-06-28 |papilionidés |NA   |NA       |m             |NA        |2017-06-28 |Poanes hobomok        |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:38.308Z |2018-11-07T18:53:38.308Z |
-| 514|139_103   |139_103_H01 |2017-06-28 |2017-06-28 |papilionidés |NA   |NA       |m             |NA        |2017-06-28 |Satyrodes eurydice    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:38.221Z |2018-11-07T18:53:38.221Z |
-| 513|139_103   |139_103_H01 |2017-06-28 |2017-06-28 |papilionidés |NA   |NA       |m             |NA        |2017-06-28 |Megisto cymela        |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:38.106Z |2018-11-07T18:53:38.106Z |
-| 516|139_103   |139_103_H01 |2017-06-28 |2017-06-28 |papilionidés |NA   |NA       |m             |NA        |2017-06-28 |Hemaris thysbe        |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:38.398Z |2018-11-07T18:53:38.398Z |
-| 517|139_103   |139_103_H01 |2017-06-28 |2017-06-28 |papilionidés |NA   |NA       |m             |NA        |2017-06-28 |Papilio canadensis    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:38.494Z |2018-11-07T18:53:38.494Z |
-| 470|132_116   |132_116_H01 |2016-06-28 |2016-06-28 |papilionidés |NA   |NA       |m             |NA        |2016-06-28 |Limenitis arthemis    |abondance            |                 2|TRUE     |NULL  |NA    |2018-11-07T18:53:33.434Z |2018-11-07T18:53:33.434Z |
-| 469|132_116   |132_116_H01 |2016-06-28 |2016-06-28 |papilionidés |NA   |NA       |m             |NA        |2016-06-28 |Papilio canadensis    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:33.332Z |2018-11-07T18:53:33.332Z |
-| 473|137_111   |137_111_H01 |2016-07-11 |2016-07-11 |papilionidés |NA   |NA       |m             |NA        |2016-07-11 |Papilio canadensis    |abondance            |                 2|TRUE     |NULL  |NA    |2018-11-07T18:53:33.718Z |2018-11-07T18:53:33.718Z |
-| 472|137_111   |137_111_H01 |2016-07-11 |2016-07-11 |papilionidés |NA   |NA       |m             |NA        |2016-07-11 |Papilio canadensis    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:33.629Z |2018-11-07T18:53:33.629Z |
-| 471|141_108   |141_108_H01 |2016-07-05 |2016-07-05 |papilionidés |NA   |NA       |m             |NA        |2016-07-05 |Lycaena epixanthe     |abondance            |                 2|TRUE     |NULL  |NA    |2018-11-07T18:53:33.532Z |2018-11-07T18:53:33.532Z |
-| 508|142_111   |142_111_H01 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Colias interior       |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:37.549Z |2018-11-07T18:53:37.549Z |
-| 504|142_111   |142_111_H01 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Coenonympha tullia    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:37.123Z |2018-11-07T18:53:37.123Z |
-| 505|142_111   |142_111_H01 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Papilio canadensis    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:37.219Z |2018-11-07T18:53:37.219Z |
-| 507|142_111   |142_111_H01 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Celastrina ladon      |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:37.447Z |2018-11-07T18:53:37.447Z |
-| 500|142_111   |142_111_H01 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Everes amyntula       |abondance            |                 7|TRUE     |NULL  |NA    |2018-11-07T18:53:36.727Z |2018-11-07T18:53:36.727Z |
-| 506|142_111   |142_111_H01 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Limenitis arthemis    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:37.330Z |2018-11-07T18:53:37.330Z |
-| 502|142_111   |142_111_H01 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Lycaena epixanthe     |abondance            |                 2|TRUE     |NULL  |NA    |2018-11-07T18:53:36.927Z |2018-11-07T18:53:36.927Z |
-| 501|142_111   |142_111_H01 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Euphydryas phaeton    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:36.827Z |2018-11-07T18:53:36.827Z |
-| 509|142_111   |142_111_H01 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Lycaena epixanthe     |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:37.656Z |2018-11-07T18:53:37.656Z |
-| 503|142_111   |142_111_H01 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Polites mystic        |abondance            |                 2|TRUE     |NULL  |NA    |2018-11-07T18:53:37.024Z |2018-11-07T18:53:37.024Z |
-| 497|142_111   |142_111_H02 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Speyeria atlantis     |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:36.349Z |2018-11-07T18:53:36.349Z |
-| 496|142_111   |142_111_H02 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Boloria eunomia       |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:36.251Z |2018-11-07T18:53:36.251Z |
-| 499|142_111   |142_111_H02 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Ancyloxypha numitor   |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:36.628Z |2018-11-07T18:53:36.628Z |
-| 498|142_111   |142_111_H02 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Phyciodes cocyta      |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:36.525Z |2018-11-07T18:53:36.525Z |
-| 493|142_111   |142_111_H02 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Phyciodes cocyta      |abondance            |                 2|TRUE     |NULL  |NA    |2018-11-07T18:53:35.955Z |2018-11-07T18:53:35.955Z |
-| 492|142_111   |142_111_H02 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Boloria selene        |abondance            |                 2|TRUE     |NULL  |NA    |2018-11-07T18:53:35.857Z |2018-11-07T18:53:35.857Z |
-| 494|142_111   |142_111_H02 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Polites mystic        |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:36.058Z |2018-11-07T18:53:36.058Z |
-| 495|142_111   |142_111_H02 |2017-07-05 |2017-07-05 |papilionidés |NA   |NA       |m             |NA        |2017-07-05 |Limenitis arthemis    |abondance            |                 1|TRUE     |NULL  |NA    |2018-11-07T18:53:36.151Z |2018-11-07T18:53:36.151Z |

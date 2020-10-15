@@ -1,11 +1,7 @@
 ---
 title: "Injection de taxons de référence dans Coléo"
-author:
-  - "Joelle Spooner"
-  - "Andrew MacDonald"
 output: html_document
 ---
-
 
 ## 1. Créer une base de données excel
 Les colonnes de ce fichier excel doivent être les suivantes
@@ -26,7 +22,7 @@ Note:
 * si vous avez des colonnes supplémentaires dans votre base de données, ex. nom anglais et commentaires, voir l'étape 7.8 pour qu'elles ne soient pas prises en compte lors de l'injection
 
 ## 2. Corriger la base de données
-Il est très important de s'assurer que la base de données excel est sans erreur **avant** de l'injecter dans Coléo. Coléo n'a pas de système de correction et va prendre toutes les entrées, même si elles contiennent des erreurs.
+Il est très important de s'assurer que la base de données excel est sans erreur **avant** de l'injecter dans Coléo. Coléo n'a pas de système de correction et va prendre toutes les entrées, même si elles contiennent des erreurs. 
 
 
 ## 3. Créer un projet R
@@ -42,41 +38,32 @@ Les projets permettent de travailler dans un working directory. La base de donn�
 ## 5. Installer les packages devtools, dplyr et rcoleo
 Dans RStudio,
 
-
 ```r
 install.packages("devtools")
 install.packages("dplyr")
 ```
 pour installer le package rcoleo, il faut utiliser le packages devtools, il faut donc l'appeller avec library()
 
-
 ```r
 library(devtools)
-install_github("TheoreticalEcosystemEcology/rcoleo") #installe le package rcoleo à partir de github
+devtools::install_github("TheoreticalEcosystemEcology/rcoleo")
 ```
 ## 6. Mettre en cache son jeton d'accès
-Ce jeton permet d'apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l'utilisateur dans le menu à gauche.
-
+Ce jeton permet d'apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l'utilisateur dans le menu à gauche.Ce jeton sera sauvegardé dans votre working directory.
 ```r
 saveRDS("votrejeton",".httr-oauth")
 ```
-Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d'injection. Le jeton est confidentiel.
+Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d'injection. Le jeton est confidentiel. 
 
 ## 7. Injection des taxons de référence dans Coléo
 
 * **7.1** Cette étape appelle les packages installés afin qu'ils puissent être utilisés
-
-```r
+```{r message=FALSE}
 library(rcoleo)
 library(dplyr)
 ```
-
-```
-## Warning: package 'dplyr' was built under R version 4.0.2
-```
 * **7.2** L'étape suivante permet d'extraire la liste d'espèces déjà sur Coléo
-
-```r
+```{r results ='hide', warning=FALSE}
 taxa_list <- get_species()
 
 str(taxa_list, max.level = 3)
@@ -84,42 +71,35 @@ str(taxa_list, max.level = 3)
 all_things <- dplyr::bind_rows(taxa_list[[1]]$body)
 ```
 * **7.3** Cette étape permet d'intégrer les données de la base de données des organismes vivants à ajouter à Coléo
-
 ```r
-corrections <- read.csv("./lenomdevotrebasededonnées.csv", header = TRUE, sep = ',', stringsAsFactors = FALSE, encoding = "UTF-8") #l'encoding UTF-8 permet de garder les accents
+corrections <- read.csv("./lenomdevotrebasededonnées.csv", header = TRUE, sep = ',', stringsAsFactors = FALSE, fileEncoding = "UTF-8-BOM") #l'encoding UTF-8 permet de garder les accents
 ```
-
-```r
-corrections <- read.csv("./corrections_liste_sp_JS.csv", header = TRUE, sep = ',', stringsAsFactors = FALSE, encoding = "UTF-8")
+```{r include = FALSE}
+corrections <- read.csv("./esp-compilation-donnees.csv", header = TRUE, sep = ',', stringsAsFactors = FALSE, fileEncoding = "UTF-8-BOM")
 ```
 si votre ordinateur est en français, le séparateur de votre base de données pourrait être un ; dans ce cas, changer sep = ',' pour sep = ';' dans l'argument ci-haut
 
 
 
 * **7.4** Cette étape permet de s'assurer que les noms de colonnes sont les mêmes dans Coléo que dans votre base de données
-
-```r
+```{r}
 glimpse(all_things)
 glimpse(corrections)
 ```
-* **7.4.1** Étape facultative, elle permet de changer des noms de colonnes si ils ne sont pas écrits de la même façon que Coléo. Comme dans l'exemple ci-haut, la colonne name du fichier de corrections est écrite X.U.FEFF.name, ce qui n'est pas adéquat.
-
-```r
+* **7.4.1** Étape facultative, elle permet de changer des noms de colonnes si ils ne sont pas écrits de la même façon que Coléo.
+```{r}
 names(corrections)[1] <- "name"
 ```
 * **7.5** Cette étape permet de visualiser quelles entrées de la base de données se retrouvent déjà dans Coléo en fonction du nom latin. Elle permet donc d'éviter les répétitions d'entrées.
-
 ```r
 semi_join(corrections, all_things, by = "name")
 ```
 * **7.6** En lien avec l'étape précédente, celle-ci permet de sélectionner toutes les entrées qui ne se trouvent pas dans Coléo en fonction du nom latin afin d'éviter les répétitions.
-
 ```r
 correctionsuniques <- anti_join(corrections, all_things, by = "name")
 ```
 
 * **7.8** Cette étape est seulement nécessaire si la base de données comprend des colonnes qui ne sont pas dans Coléo, ou si les colonnes tsn et/ou bryoquel comprennent des valeurs NA
-
 ```r
 correctionscol <- select(correctionsuniques, name, vernacular_fr, rank, category, tsn, vascan_id, bryoquel_id, created_at, updated_at)
 ```
@@ -127,16 +107,11 @@ correctionscol <- select(correctionsuniques, name, vernacular_fr, rank, category
 Note: L'injection ne fonctionnera pas pour les entrées avec des valeurs de tsn et/ou bryoquel de NA. Après avoir injecté toutes les espèces qui ont un tsn et/ou bryoquel, enlever tsn et/ou bryoquel de la fonction si haut. De cette façon, l'injection se fera sans le tsn/bryoquel_id pour les espèces qui n'en ont pas.
 
 * **7.9** Transposer le dataframe afin de l'injecter
-
 ```r
 correctionstoupload <- purrr::transpose(correctionscol)
 ```
 
 **Cette dernière étape injecte les données de la base de données dans Coléo**
-
 ```r
 rcoleo:::post_species(correctionstoupload)
 ```
-
-fini!
-
