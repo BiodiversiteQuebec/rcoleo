@@ -63,7 +63,7 @@ get_obs <- function (site_code = NULL, opened_at = NULL, closed_at = NULL,
                             "date_obs", "obs_species.taxa_name",
                             "obs_species.variable", "obs_species.value",
                             "is_valid", "media", "notes",
-                            "createdAt", "updatedAt")
+                            "created_at", "updated_at")
       return(page)
     })
 
@@ -119,7 +119,7 @@ get_obs <- function (site_code = NULL, opened_at = NULL, closed_at = NULL,
                                 "date_obs", "obs_species.taxa_name",
                                 "obs_species.variable", "obs_species.value",
                                 "is_valid", "media", "notes",
-                                "createdAt", "updatedAt")
+                                "created_at", "updated_at")
           return(page)
         })
       })
