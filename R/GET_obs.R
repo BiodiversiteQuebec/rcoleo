@@ -13,8 +13,7 @@
 # TODO: ne couvre pas les observations de sol
 
 get_obs <- function (site_code = NULL, opened_at = NULL, closed_at = NULL,
-                       type = NULL, ...)
-{
+                       type = NULL, ...){
   endpoint <- endpoints()$observations
   token <- ifelse(is.na(bearer()), list(...)$token, bearer())
   responses <- list()
@@ -139,8 +138,9 @@ get_obs <- function (site_code = NULL, opened_at = NULL, closed_at = NULL,
 
         return(page)
 
-      })
-    }
+      })})
+    }# ends FALSE
+
+    return(responses)
   }
-  return(responses)
 }
