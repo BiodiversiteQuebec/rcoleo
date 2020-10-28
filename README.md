@@ -14,7 +14,7 @@ Ce paquet R expose les services `RESTFull` de l'API de Coléo. Colée est un sys
 ## Installer le paquet `rcoleo`
 
 ```r
-devtools::install_github(" ReseauBiodiversiteQuebec/rcoleo")
+devtools::install_github("ReseauBiodiversiteQuebec/rcoleo")
 ```
 
 ## S'authentifier auprès de l'API
