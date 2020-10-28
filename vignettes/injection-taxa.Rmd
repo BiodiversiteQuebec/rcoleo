@@ -17,8 +17,7 @@ Les colonnes de ce fichier excel doivent être les suivantes
 * **tsn**: Taxonomic serial number (TSN) fournis par ITIS
 * **vascan_id**: NA si l'organisme vivant n'est pas une plante, si l'organisme vivant est une plante: entrer son numéro d'identifiant vascan
 * **bryoquel_id**: NA si l'organisme vivant n'est pas un bryophyte, si l'organisme vivant est un bryophyte: entrer son numéro d'identifiant bryoquel
-* **created_at**: y écrire la date du jour sous le format AAAA-MM-JJ
-* **updated_at**: y écrire la date du jour sous le format AAAA-MM-JJ
+
 
 Note:
 
