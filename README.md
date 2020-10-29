@@ -6,7 +6,7 @@
 
 `rcoleo` un paquet R permettant le retrait et l'analyse des données collectées dans le cadre du programme de suivi de la biodiversité (BdQc).
 
-Ce paquet R expose les services `RESTFull` de l'API de Coléo. Colée est un système d'information sur la biodiversité du Québec développé par le laboratoire d'Écologie Intégrative de l'Université de Sherbrooke.
+Ce paquet R expose les services `RESTFull` de l'API de Coléo. Coléo est un système d'information sur la biodiversité du Québec développé par le laboratoire d'Écologie Intégrative de l'Université de Sherbrooke.
 
 [Pour en savoir davantage...](https://coleo.biodiversite-quebec.ca/docs/)
 
