@@ -1,6 +1,6 @@
 ---
 title: "Injection de taxons de référence dans Coléo"
-output: html_document
+output: rmarkdown::html_vignette
 ---
 
 ## 1. Créer une base de données excel
@@ -22,7 +22,7 @@ Note:
 * si vous avez des colonnes supplémentaires dans votre base de données, ex. nom anglais et commentaires, voir l'étape 7.8 pour qu'elles ne soient pas prises en compte lors de l'injection
 
 ## 2. Corriger la base de données
-Il est très important de s'assurer que la base de données excel est sans erreur **avant** de l'injecter dans Coléo. Coléo n'a pas de système de correction et va prendre toutes les entrées, même si elles contiennent des erreurs. 
+Il est très important de s'assurer que la base de données excel est sans erreur **avant** de l'injecter dans Coléo. Coléo n'a pas de système de correction et va prendre toutes les entrées, même si elles contiennent des erreurs.
 
 
 ## 3. Créer un projet R
@@ -53,7 +53,7 @@ Ce jeton permet d'apporter des modifications dans Coléo. Il est unique et se re
 ```r
 saveRDS("votrejeton",".httr-oauth")
 ```
-Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d'injection. Le jeton est confidentiel. 
+Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d'injection. Le jeton est confidentiel.
 
 ## 7. Injection des taxons de référence dans Coléo
 
@@ -74,7 +74,7 @@ all_things <- dplyr::bind_rows(taxa_list[[1]]$body)
 ```r
 corrections <- read.csv("./lenomdevotrebasededonnées.csv", header = TRUE, sep = ',', stringsAsFactors = FALSE, fileEncoding = "UTF-8-BOM") #l'encoding UTF-8 permet de garder les accents
 ```
-```{r include = FALSE}
+```{r include = FALSE, eval = FALSE}
 corrections <- read.csv("./esp-compilation-donnees.csv", header = TRUE, sep = ',', stringsAsFactors = FALSE, fileEncoding = "UTF-8-BOM")
 ```
 si votre ordinateur est en français, le séparateur de votre base de données pourrait être un ; dans ce cas, changer sep = ',' pour sep = ';' dans l'argument ci-haut
@@ -82,12 +82,12 @@ si votre ordinateur est en français, le séparateur de votre base de données p
 
 
 * **7.4** Cette étape permet de s'assurer que les noms de colonnes sont les mêmes dans Coléo que dans votre base de données
-```{r}
+```{r eval = FALSE}
 glimpse(all_things)
 glimpse(corrections)
 ```
 * **7.4.1** Étape facultative, elle permet de changer des noms de colonnes si ils ne sont pas écrits de la même façon que Coléo.
-```{r}
+```{r, eval = FALSE}
 names(corrections)[1] <- "name"
 ```
 * **7.5** Cette étape permet de visualiser quelles entrées de la base de données se retrouvent déjà dans Coléo en fonction du nom latin. Elle permet donc d'éviter les répétitions d'entrées.
