@@ -14,9 +14,6 @@ post_sites <- function(data, ...) {
   endpoint <- endpoints()$sites
 
   for (i in 1:length(data)) {
-    # On retourne l'id unique de la table cell
-    # Le unlist c'est pour les pages, mais je sais que la réponse contient une seule page (match sur un code)
-    data[[i]]$cell_id <- as.data.frame(get_cells(data[[i]]$cell_id))$id
     responses[[i]] <- post_gen(endpoint, data[[i]], ...)
   }
 
