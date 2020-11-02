@@ -58,7 +58,7 @@ navbar:
         - '`sf_sites`'
     github:
       icon: fab fa-github fa-lg
-      href: https://github.com/TheoreticalEcosystemEcology/rcoleo/
+      href: https://github.com/ReseauBiodiversiteQuebec/rcoleo
     articles:
       text: Articles
       menu:

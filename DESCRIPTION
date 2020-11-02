@@ -4,8 +4,8 @@ Version: 1.0.2
 Authors@R: person("Steve", "Vissault", email = "steve.vissault@usherbrooke.ca", role = c("aut", "cre"), comment = c(ORCID = "0000-0002-0866-4376"))
 Description: rcoleo un paquet R permettant le retrait des données collectées dans le cadre du programme de suivi de la biodiversité. Ce paquet R s'appuie sur l'API de Coléo [](), un système d'information sur la biodiversité du Québec.
 Depends: R (>= 3.4.2)
-URL: https://github.com/TheoreticalEcosystemEcology/rcoleo
-BugReports: https://github.com/TheoreticalEcosystemEcology/rcoleo/issues
+URL: https://github.com/ReseauBiodiversiteQuebec/rcoleo
+BugReports: https://github.com/ReseauBiodiversiteQuebec/rcoleo/issues
 License: MIT
 Encoding: UTF-8
 LazyData: true
