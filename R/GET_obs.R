@@ -139,8 +139,8 @@ get_obs <- function (site_code = NULL, opened_at = NULL, closed_at = NULL,
         return(page)
 
       })})
-    }# ends FALSE
+    #}# ends FALSE
 
     return(responses)
   }
-}
+}}
