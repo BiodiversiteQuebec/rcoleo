@@ -1,0 +1,59 @@
+---
+title: "Tutoriel pour injections dans COLEO"
+author: "Claire"
+date: "6 novembre 2020"
+output: html_document
+---
+```{r, echo = FALSE}
+library(DiagrammeR)
+grViz("
+      digraph boxes_and_circles{
+
+# add node statements
+      node [shape = box]
+      Existence_cellules;
+      Vignette_cellules;
+      Existence_sites;
+      Vignette_sites;
+      Existence_campagnes;
+      Vignette_campagnes;
+      Injections_repères/pièges/échantillons;
+      Injections_observations;
+      Existence_nom_espèce;
+      Vignette_nom_espèce;
+      Injections_observations_espèce
+      
+      node[shape = circle]
+      oui1;
+      oui2;
+      oui3;
+      non1;
+      non2;
+      non3;
+
+# add edge statements
+      Existence_cellules -> oui1;
+      Existence_cellules -> non1 ;
+      non1 -> Vignette_cellules;
+      {Vignette_cellules oui1} -> Existence_sites ;
+      Existence_sites -> {oui2 non2};
+      non2 -> Vignette_sites ;
+      {Vignette_sites oui2} -> Existence_campagnes
+      Existence_campagnes -> {oui3 non3};
+      non3 -> Vignette_campagnes;
+      {Vignette_campagnes oui3} -> Observations;
+
+
+# Vertical alignment of nodes
+      Existence_cellules [group=g1]
+      {rank = same; oui1 [group=g2]; non1 [group=g3]; Vignette_cellules [group=g4]}
+      Existence_sites [group=g1]
+      {rank = same; oui2 [group=g2]; non2 [group=g3]; Vignette_sites [group=g4]}
+      Existence_campagnes [group=g1]
+      {rank = same; oui3 [group=g2]; non3 [group=g3]; Vignette_campagnes [group=g4]}
+      Observations [group=g1]
+
+
+}
+      ")
+```
