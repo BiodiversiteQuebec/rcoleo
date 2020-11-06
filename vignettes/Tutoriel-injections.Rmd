@@ -17,9 +17,9 @@ grViz("
       Vignette_sites;
       Existence_campagnes;
       Vignette_campagnes;
-      Injections_repères/pièges/échantillons;
+      Injections_repères_pièges_échantillons;
       Injections_observations;
-      Existence_nom_espèce;
+      Existence_référence_nom_espèce;
       Vignette_nom_espèce;
       Injections_observations_espèce
       
@@ -27,9 +27,12 @@ grViz("
       oui1;
       oui2;
       oui3;
+      oui4;
       non1;
       non2;
       non3;
+      non4;
+
 
 # add edge statements
       Existence_cellules -> oui1;
@@ -41,17 +44,19 @@ grViz("
       {Vignette_sites oui2} -> Existence_campagnes
       Existence_campagnes -> {oui3 non3};
       non3 -> Vignette_campagnes;
-      {Vignette_campagnes oui3} -> Observations;
+      {Vignette_campagnes oui3} -> Injections_repères_pièges_échantillons;
+      Injections_repères_pièges_échantillons -> Injections_observations;
+      Injections_observations -> Existence_référence_nom_espèce;
+      Existence_référence_nom_espèce -> {oui4 non4};
+      non4 -> Vignette_nom_espèce;
+      {oui4 Vignette_nom_espèce} -> Injections_observations_espèce
 
 
 # Vertical alignment of nodes
-      Existence_cellules [group=g1]
       {rank = same; oui1 [group=g2]; non1 [group=g3]; Vignette_cellules [group=g4]}
-      Existence_sites [group=g1]
       {rank = same; oui2 [group=g2]; non2 [group=g3]; Vignette_sites [group=g4]}
-      Existence_campagnes [group=g1]
       {rank = same; oui3 [group=g2]; non3 [group=g3]; Vignette_campagnes [group=g4]}
-      Observations [group=g1]
+      {rank = same; oui4 [group=g2]; non4 [group=g3]; Vignette_nom_espèce [group=g4]}
 
 
 }
