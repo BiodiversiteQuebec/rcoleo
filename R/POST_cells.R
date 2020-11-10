@@ -7,18 +7,24 @@
 #' @return Un objet \code{list}, dont chacun des niveaux corresponds à la réponse de l'API. La réponse peut être de classe \code{postError} ou \code{postSuccess}.
 #' @seealso \code{\link{post_gen}} pour la structure de sortie de la fonction.
 #' @export
-post_cells <- function(data, ...) {
-
-  # Preparation de l'objet de sortie
+post_cells <- function (data)
+{
   responses <- list()
+  status_code <- NULL
   class(responses) <- "coleoPostResp"
-
-  endpoint <- endpoints()$cells
+  endpoint <- endpoints()$cellules
 
   for (i in 1:length(data)) {
-    responses[[i]] <- post_gen(endpoint, data[[i]], ...)
+    responses[[i]] <- rcoleo::post_gen(endpoint, data[[i]])
+    status_code <- c(status_code, responses[[i]]$response$status_code)
   }
 
+  if(all(status_code == 201)){
+    print("Good job ! Toutes les insertions ont été crées dans COLEO")
+  }else{
+    print("Oups... un problème est survenu")
+    print(status_code)
+  }
   return(responses)
 
 }

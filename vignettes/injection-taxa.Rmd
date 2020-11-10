@@ -1,5 +1,5 @@
 ---
-title: "Injection de taxons de référence dans Coléo"
+title: "Injection des espèces de référence dans Coléo"
 author:
   - "Joelle Spooner"
   - "Andrew MacDonald"
@@ -17,7 +17,8 @@ Les colonnes de ce fichier excel doivent être les suivantes
 * **tsn**: Taxonomic serial number (TSN) fournis par ITIS
 * **vascan_id**: NA si l'organisme vivant n'est pas une plante, si l'organisme vivant est une plante: entrer son numéro d'identifiant vascan
 * **bryoquel_id**: NA si l'organisme vivant n'est pas un bryophyte, si l'organisme vivant est un bryophyte: entrer son numéro d'identifiant bryoquel
-
+* **created_at**: y écrire la date du jour sous le format AAAA-MM-JJ
+* **updated_at**: y écrire la date du jour sous le format AAAA-MM-JJ
 
 Note:
 
@@ -69,18 +70,30 @@ Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton d
 library(rcoleo)
 library(dplyr)
 ```
-
-```
-## Warning: package 'dplyr' was built under R version 4.0.2
-```
 * **7.2** L'étape suivante permet d'extraire la liste d'espèces déjà sur Coléo
 
 ```r
 taxa_list <- get_species()
+```
 
+```
+## Error in get_gen(endpoint, ...): Aucune autorisation détectée! Assurez-vous d'avoir enregistré votre jeton d'accès dans un fichier appelé `.httr-oauth`
+```
+
+```r
 str(taxa_list, max.level = 3)
+```
 
+```
+## Error in str(taxa_list, max.level = 3): object 'taxa_list' not found
+```
+
+```r
 all_things <- dplyr::bind_rows(taxa_list[[1]]$body)
+```
+
+```
+## Error in list2(...): object 'taxa_list' not found
 ```
 * **7.3** Cette étape permet d'intégrer les données de la base de données des organismes vivants à ajouter à Coléo
 

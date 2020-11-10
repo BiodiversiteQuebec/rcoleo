@@ -8,13 +8,13 @@ output: html_document
 ## 1. Créer une base de données excel
 Les colonnes de ce fichier excel doivent correspondrent aux champs contenus dans la base de données Coléo, qui sont les suivants:  
   
-* **cell_id** : indispensable - numéro unique de chaque cellule - peut-être récupéré à l'aide de la fonction `get_cells()`
-* **off_station_code_id** : facultative - **Need more information**
-* **site_code** : indispensable - code alpha-numérique unique pour chaque site
-* **type** : indispensable - type d'habitat où se situe le site. Les options sont : "lac", "tourbière", "forestier", "rivière", "marais", "toundrique", "marais côtier"
-* **opened_at** : indispensable - date de création du site sous le format AAAA-MM-JJ
-* *lat* : indispensable - latitude du site, nécessaire à la création de la varible **geom**
-* *lon* : indispensable - latitude du site, nécessaire à la création de la varible **geom**
+* **cell_id** : obligatoire - numéro unique de chaque cellule - peut-être récupéré à l'aide de la fonction `get_cells()`
+* **off_station_code_id** : facultative
+* **site_code** : obligatoire - code alpha-numérique unique pour chaque site
+* **type** : obligatoire - type d'habitat où se situe le site. Les options sont : "lac", "tourbière", "forestier", "rivière", "marais", "toundrique", "marais côtier"
+* **opened_at** : obligatoire - date de création du site sous le format AAAA-MM-JJ
+* *lat* : obligatoire - latitude du site, nécessaire à la création de la variable **geom**
+* *lon* : obligatoire - latitude du site, nécessaire à la création de la variable **geom**
 * **notes** : facultative
 
 Note:

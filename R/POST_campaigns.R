@@ -8,7 +8,6 @@
 post_campaigns <- function (data)
 {
   responses <- list()
-  #status_code <- vector(mode = "logical", length = length(data))
   status_code <- NULL
   class(responses) <- "coleoPostResp"
   endpoint <- endpoints()$sites
@@ -16,11 +15,6 @@ post_campaigns <- function (data)
   for (i in 1:length(data)) {
     responses[[i]] <- rcoleo::post_gen(endpoint, data[[i]])
     status_code <- c(status_code, responses[[i]]$response$status_code)
-    # if(responses[[i]]$response$status_code == 201){
-    #   status_code[i] <- TRUE
-    # }else{
-    #   status_code[[i]] <- FALSE
-    # }
   }
 
   if(all(status_code == 201)){
