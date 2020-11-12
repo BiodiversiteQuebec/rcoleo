@@ -18,7 +18,7 @@ post_landmarks <- function (data)
   }
 
   if(all(status_code == 201)){
-    print("Good job ! Toutes les insertions ont été crées dans COLEO")
+    print("Good job ! Toutes les insertions ont été créées dans COLEO")
   }else{
     print("Oups... un problème est survenu")
     print(status_code)
