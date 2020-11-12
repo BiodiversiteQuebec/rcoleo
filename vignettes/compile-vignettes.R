@@ -2,9 +2,6 @@
 
 library(knitr)
 
-knit("vignettes/tutoriel.Rmd.orig", "vignettes/tutoriel.Rmd`")
-knit("vignettes/tutoriel-injections.Rmd.orig", "vignettes/tutoriel-injections.Rmd`")
-
 # Téléchargement
 knit("vignettes/telecharge-sites.Rmd.orig", "vignettes/telecharge-sites.Rmd")
 
@@ -14,5 +11,6 @@ knit("vignettes/injection-cellules.Rmd.orig", "vignettes/injection-cellules.Rmd"
 knit("vignettes/injection-sites.Rmd.orig", "vignettes/injection-sites.Rmd")
 
 # Injections CAMPAGNES
+knit("vignettes/tutoriel-injections.Rmd.orig", "vignettes/tutoriel-injections.Rmd`")
 knit("vignettes/CAMPAGNE_zooplancton_injection.Rmd.orig", "vignettes/CAMPAGNE_zooplancton_injection.Rmd")
 

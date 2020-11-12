@@ -11,13 +11,9 @@ library(rcoleo)
 library(purrr)
 
 all_taxa <- get_species()
-#> Data retrieval 5.88% Data retrieval 11.8% Data retrieval 17.6% Data retrieval 23.5% Data
-#> retrieval 29.4% Data retrieval 35.3% Data retrieval 41.2% Data retrieval 47.1% Data retrieval
-#> 52.9% Data retrieval 58.8% Data retrieval 64.7% Data retrieval 70.6% Data retrieval 76.5%
-#> Data retrieval 82.4% Data retrieval 88.2% Data retrieval 94.1% Data retrieval 100%
+#> Error in get_gen(endpoint, ...): Aucune autorisation détectée! Assurez-vous d'avoir enregistré votre jeton d'accès dans un fichier appelé `.httr-oauth`
 all_taxa_df <- map_df(all_taxa[[1]], 1)
-#> Error: All columns in a tibble must be vectors.
-#> x Column `response` is a `response` object.
+#> Error in map(.x, .f, ...): object 'all_taxa' not found
 knitr::kable(head(all_taxa_df))
 #> Error in head(all_taxa_df): object 'all_taxa_df' not found
 
@@ -31,33 +27,26 @@ dim(all_taxa_df)
 library(rcoleo)
 library(purrr)
 library(tidyverse)
-#> ── Attaching packages ──────────────────────────────────────────────────── tidyverse 1.3.0 ──
-#> ✓ ggplot2 3.3.2     ✓ readr   1.3.1
-#> ✓ tibble  3.0.3     ✓ stringr 1.4.0
-#> ✓ tidyr   1.1.0     ✓ forcats 0.5.0
-#> Warning: package 'tibble' was built under R version 4.0.2
-#> ── Conflicts ─────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#> -- Attaching packages -------------------------------- tidyverse 1.3.0 --
+#> v ggplot2 3.3.2     v readr   1.4.0
+#> v tibble  3.0.4     v stringr 1.4.0
+#> v tidyr   1.1.2     v forcats 0.5.0
+#> -- Conflicts ----------------------------------- tidyverse_conflicts() --
 #> x dplyr::filter() masks stats::filter()
 #> x dplyr::lag()    masks stats::lag()
 
 all_sites <- get_sites()
-#> Data retrieval 100%
-#> ```
-
-```r
+#> Error in get_gen(endpoint, ...): Aucune autorisation détectée! Assurez-vous d'avoir enregistré votre jeton d'accès dans un fichier appelé `.httr-oauth`
 
 # on extract le body
 donnees <- all_sites[[1]][[1]]$body
+#> Error in eval(expr, envir, enclos): object 'all_sites' not found
 
 
 pap <-  select(donnees, cell.name, milieu=type, campaigns) %>%
   unnest(campaigns) %>%
   filter(type == "papilionidés")
-#> Warning: `select_()` is deprecated as of dplyr 0.7.0.
-#> Please use `select()` instead.
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_warnings()` to see where this warning was generated.
-#> Error in UseMethod("select_"): no applicable method for 'select_' applied to an object of class "NULL"
+#> Error in select(donnees, cell.name, milieu = type, campaigns): object 'donnees' not found
 
 knitr::kable(head(pap))
 #> Error in head(pap): object 'pap' not found
@@ -70,14 +59,9 @@ knitr::kable(head(pap))
 
 
 all_site_pap <- get_obs(site_id = "", type = "papilionidés")
-#> Data retrieval 100%
-#> Warning: `as.tibble()` is deprecated as of tibble 2.0.0.
-#> Please use `as_tibble()` instead.
-#> The signature and semantics have changed, see `?as_tibble`.
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_warnings()` to see where this warning was generated.
-#> Warning: Unknown or uninitialised column: `id`.
-#> Error in strsplit(httr::headers(resp)$"content-range", split = "\\D"): non-character argument
+#> Warning in rep(yes, length.out = len): 'x' is NULL so the result will be
+#> NULL
+#> Error in ans[ypos] <- rep(yes, length.out = len)[ypos]: replacement has length zero
 
 all.equal(one_site_pap[[1]][[1]]$body, all_site_pap[[1]][[1]]$body)
 #> Error in all.equal(one_site_pap[[1]][[1]]$body, all_site_pap[[1]][[1]]$body): object 'one_site_pap' not found
