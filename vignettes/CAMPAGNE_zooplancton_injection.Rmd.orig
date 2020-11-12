@@ -7,7 +7,7 @@ output: html_document
 
 ## 1. Créer une base de données excel
 
-Les colonnes de ce fichier doivent être les suivantes:
+Afin d'injecter des nouvelles campagnes *zooplancton* dans la base de données Coléo, vous devez regrouper les informations suivantes dans un fichier excel :
 
 * **nom_cellule**
 * **no_de_reference_de_la_cellule**: code numérique unique pour chaque cellule
@@ -29,13 +29,15 @@ Les colonnes de ce fichier doivent être les suivantes:
 Note : ne pas laisser de case vide, inscrire NA lorsque nécessaire
 
 ## 2. Corriger la base de données
-Il est très important de s'assurer que la base de données excel est sans erreur **avant** de l'injecter dans Coléo. Coléo n'a pas de système de correction et va prendre toutes les entrées, même si elles contiennent des erreurs.
+
+Il est très important de s'assurer que la base de données excel soit sans erreur **avant** de l'injecter dans Coléo. Coléo n'a pas de système de correction et va prendre toutes les entrées, même si elles contiennent des erreurs.
 
 
 ## 3. Créer un projet R
+
 Dans RStudio,
 
-* Aller dans File > New Project > New Directory > New Project
+* Aller dans `File` > `New Project` > `New Directory` > `New Project`
 * Choisir un nom de projet et un lieu dans les fichiers pour le projet
 
 Les projets permettent de travailler dans un répertoire de travail (*working directory*). La base de données doit donc être sauvegardée dans le même dossier que le projet afin de faire parti du répertoire de travail.
@@ -43,26 +45,29 @@ Les projets permettent de travailler dans un répertoire de travail (*working di
 ## 4. Sauvegarder la base de données en format .csv dans le même dossier que le projet R
 
 ## 5. Installer les packages nécessaires
-Dans RStudio,
 
+Dans RStudio,
 
 ```r
 install.packages("devtools")
 install.packages("dplyr")
 ```
-pour installer le package rcoleo, il faut utiliser le packages devtools, il faut donc l'appeller avec `library()`
 
+Pour installer le package `rcoleo`, il faut utiliser le package `devtools`, il faut donc l'appeller avec `library()`
 
 ```r
 library(devtools)
-install_github("TheoreticalEcosystemEcology/rcoleo") #installation du package rcoleo à partir de github
+install_github("TheoreticalEcosystemEcology/rcoleo") # installation du package rcoleo à partir de github
 ```
+
 ## 6. Mettre en cache son jeton d'accès
+
 Ce jeton permet d'apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l'utilisateur dans le menu à gauche.
 
 ```r
 saveRDS("votrejeton",".httr-oauth")
 ```
+
 Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d'injection. Le jeton est confidentiel.
 
 ## 7. Vérification pré-injection
@@ -72,9 +77,10 @@ La succession d'étape qui suivent permettent de vérifier si les cellules, les 
 ### 7.1 Création d'un objet R avec les nouvelles campagnes à insérer dans Coléo
 
 ```r
-camp_zoopl <- read.csv("./lenomdevotrebasededonnées.csv", header = TRUE, sep = ',', stringsAsFactors = FALSE, encoding = "UTF-8") #l'encoding UTF-8 permet de garder les accents
+camp_zoopl <- read.csv("./lenomdevotrebasededonnées.csv", header = TRUE, sep = ',', stringsAsFactors = FALSE, encoding = "UTF-8") # l'encoding UTF-8 permet de garder les accents
 ```
-### 7.2 Acquisition de la liste des cellules, des sites et des noms d'espèce de référence déjà présentes dans Coléo et création d'un objet R pour chacune
+
+### 7.2 Acquisition de la liste des cellules, des sites, des noms d'espèce de référence et des attributs déjà présentes dans Coléo et création d'un objet R pour chacune
 
 ```r
 # Acquisition cellules COLEO
@@ -90,7 +96,7 @@ species <- rcoleo::get_species()
 species <- do.call("rbind", species[[1]]$body)
 ```
 
-### 7.3 Vérification de l'existence des cellules, sites et noms d'espèces associés aux nouvelles campagnes *zooplancton* dans Coléo
+### 7.3 Vérification de l'existence des cellules, sites, noms d'espèces et des attributs associés aux nouvelles campagnes *zooplancton* dans Coléo
 
 #### 7.3.1 Pour les cellules
 
@@ -120,6 +126,7 @@ rcoleo::COLEO_comp(unique(camp_zoopl$nom_scientifique) %in% unique(species$name)
 La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains noms d'espèces n'existent pas dans Coléo, il sera nécessaire d'importer ces noms avant de continuer l'insertions des nouvelles campagnes *zooplancton*. Pour ce faire, vous pouvez suivre les étapes détaillées dans la vignette [*Injection des noms d'espèce*](file:///C:/Users/HP_9470m/Desktop/PostDoc_COLEO/GitHub/rcoleo/docs/articles/injection-taxa.html).
 
 #### 7.3.4 Pour les attributs
+
 ```r
 #### Variables tables "attributes" ####
 rcoleo::get_gen("/attributes")
@@ -127,17 +134,17 @@ rcoleo::get_gen("/attributes")
 
 Vous pouvez vérifier ici si la variable `abondance` est présente dans ce tableau.
 
-## 8 Injections des nouvelles campagnes *zooplancton*
+## 8. Injections des nouvelles campagnes *zooplancton*
 
 Pour une injection complète d'une campagne, il est nécessaire de passer par l'importation d'informations successives dans différentes tables de Coléo. La hiérarchie des tables à renseigner est cruciale, sans quoi l'injection de la campagne est vouée à l'échec. Les prochaines étapes détaillent l'ajout d'information dans les tables:
 
-* 1- Campagnes ("*/campaigns*")
-* 2- Repères ("*/landmarks*")
-* 3- Observations ("*/observations*")
-* 4- Observations des espèces ("*/obs_species*")
+1. Campagnes ("*/campaigns*")
+2. Repères ("*/landmarks*")
+3. Observations ("*/observations*")
+4. Observations des espèces ("*/obs_species*")
 
 ### 8.1 Injections des informations sur les nouvelles campagnes
-Les champs qui peuvent être remplis dans Coléo sont les suivants (les champs en gras sont obligatoires) :
+Les champs qui peuvent être remplis dans la table **campagnes** ("/campaigns") de Coléo sont les suivants (les champs en gras sont obligatoires) :
 
 * **site_id** : à récupérer dans Coléo
 * **type** : nom de la campagne, ici "zooplanctons"
@@ -146,54 +153,54 @@ Les champs qui peuvent être remplis dans Coléo sont les suivants (les champs e
 * **closed_at** : correspond à "date_fin"
 * *notes*
 
-On séléctionne les champs d'interêts & on matche les noms de variables avec celles de Coléo.
+  + On commence par séléctionner les champs d'interêts & on matche les noms de variables avec celles de Coléo.
 
 ```r
 inj_camp_zoop <- dplyr::select(camp_zoopl, site_code=no_de_reference_du_site, opened_at=date_debut, closed_at=date_fin, technicien_1, technicien_2)
 ```
-On garde une ligne unique par nouvelle campagne.
+   + On garde une ligne unique par nouvelle campagne.
 
 ```r
 inj_camp_zoop <- inj_camp_zoop[!duplicated(inj_camp_zoop),]
 ```
 
-On récupère le site_id nécessaire à l'injection
+  + On récupère le `site_id` nécessaire à l'injection.
 
 ```r
 inj_camp_zoop <- dplyr::left_join(inj_camp_zoop, sites[, c(1,4)], by = "site_code")
 names(inj_camp_zoop)[6] <- "site_id"
 ```
 
-Création de la liste de techniciens
+  + On créé une liste pour le nom des technicien/ne/s.
 
 ```r
-tech <- list()
+tech <- list() # Création d'un objet `list` vide
+
 for(i in 1:length(inj_camp_zoop$site_code)){
   tech[[i]] <- list(inj_camp_zoop$technicien_1[[i]], inj_camp_zoop$technicien_2[[i]])
-}
-tech
-inj_camp_zoop$technicians <- tech
+} # Chaque niveau de la liste correspond à une association des deux noms des technicien/ne/s pour chaque ligne du tableau
+
+inj_camp_zoop$technicians <- tech # Ajout de la liste au tableau à injecter dans Coléo
 ```
 
-Création du type de campagnes - zooplanctons - ATTENTION - Vérifier l'appellation du type de campagne - 'végétation', 'végétation_transect', 'sol', 'acoustique', 'phénologie', 'mammifères', 'papilionidés', 'odonates', 'insectes_sol', 'ADNe','zooplancton', 'sol','décomposition_sol','température_eau', 'température_sol', 'marais_profondeur_température'
+  + On renseigne le type de campagnes, ici **zooplancton**. Prenez garde à bien conserver la même orthographe.
 
 ```r
 inj_camp_zoop$type <- "zooplancton"
 ```
 
-Tansformer en liste pour injection
+  + On tansforme le tableau en liste afin de pouvoir l'injecter dans Coléo.
 
 ```r
 camp_ls <- apply(inj_camp_zoop,1,as.list)
 str(camp_ls)
 ```
-Injections
+  + Il est maintenant possible de procéder à l'injection.
 
 ```r
-#COLEO_camp_inj <- postpost_campaigns(camp_ls) # Fonctionnel
-# str(COLEO_camp_inj, max.level = 3)
-# COLEO_camp_inj[[1]]
+COLEO_camp_inj <- post_campaigns(camp_ls)
 ```
+La sortie R vous informe sur le déroulement de l'insertion. `Good job ! Toutes les insertions ont été crées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/))
 
 ### 8.2 Injections des repères associés aux nouvelles campagnes
 
