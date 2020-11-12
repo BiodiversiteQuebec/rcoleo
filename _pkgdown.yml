@@ -62,12 +62,8 @@ navbar:
     articles:
       text: Articles
       menu:
-      - text: Tutoriel
-        href: articles/tutoriel.html
       - text: Téléchargement des sites
         href: articles/telecharge-sites.html
-      - text: Tutoriel injection de campagnes
-        href: articles/Tutoriel-injections.html
       - text: Injection des cellules
         href: articles/injection-cellules.html
       - text: Injection des sites
