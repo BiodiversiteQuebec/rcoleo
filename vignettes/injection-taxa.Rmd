@@ -1,5 +1,5 @@
 ---
-title: "Injection de taxons de référence dans Coléo"
+title: "Injection des espèces de référence dans Coléo"
 author:
   - "Joelle Spooner"
   - "Andrew MacDonald"
@@ -70,11 +70,15 @@ Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton d
 library(rcoleo)
 library(dplyr)
 ```
+* **7.2** L'étape suivante permet d'extraire la liste d'espèces déjà sur Coléo
+
+```r
+taxa_list <- get_species()
+```
 
 ```
-## Warning: package 'dplyr' was built under R version 4.0.2
+## Error in get_gen(endpoint, ...): Aucune autorisation détectée! Assurez-vous d'avoir enregistré votre jeton d'accès dans un fichier appelé `.httr-oauth`
 ```
-* **7.2** L'étape suivante permet d'extraire la liste d'espèces déjà sur Coléo
 
 ```r
 taxa_list <- get_species()

@@ -62,11 +62,17 @@ navbar:
     articles:
       text: Articles
       menu:
-      - text: Telecharger les sites
+      - text: Téléchargement des sites
         href: articles/telecharge-sites.html
-      - text: Injecter taxa
+      - text: Injection des cellules
+        href: articles/injection-cellules.html
+      - text: Injection des sites
+        href: articles/injection-sites.html
+      - text: Injection des noms d'espèce
         href: articles/injection-taxa.html
       - text: Tutoriel
         href: articles/tutoriel.html
       - text: Injecter sites
         href: articles/injection-sites.html
+      - text: Injection des campagnes ZOOPLANCTON
+        href: articles/CAMPAGNE_zooplancton_injection.html

@@ -1,0 +1,10 @@
+---
+title: "Tutoriel pour injections dans COLEO"
+author: "Claire"
+date: "6 novembre 2020"
+output: html_document
+---
+
+```
+## Error in loadNamespace(name): there is no package called 'webshot'
+```

@@ -1,0 +1,156 @@
+---
+  title: "Tutoriel pour injection des campagnes papillon"
+author: "Claire-Cécile Juhasz"
+date: "12 novembre 2020"
+output: html_document
+---
+
+  ## 1. Créer une base de données excel
+
+  Afin d'injecter des nouvelles campagnes *papillon* dans la base de données Coléo, vous devez regrouper les informations suivantes dans un fichier excel :
+
+* **nom_cellule**
+* **no_de_reference_de_la_cellule**: code numérique unique pour chaque cellule
+* **no_de_reference_du_site**: code alpha-numérique unique du site
+* **type_milieu**: 'lac', 'rivière', 'forestier', 'marais', 'marais côtier', 'toundrique', 'tourbière'
+* **nom_lac**
+* **latitude**: latitude du site d'échantillonnage
+* **longitude**: longitude du site d'échantillonnage
+* **date_debut**: date du début du prélèvement
+* **date_fin**: date de la fin du prélèvement
+* **technicien_1**
+* **technicien_2**
+* *heure_debut* : ?
+* *heure_fin* : ?
+* **temperature**
+* **ciel**
+* **vent**
+* **nom_commun**
+* **nom_scientifique**
+* **abondance**
+* *media* : ?
+* *note*
+
+Note : ne pas laisser de case vide, inscrire NA lorsque nécessaire
+
+## 2. Corriger la base de données
+
+Il est très important de s'assurer que la base de données excel soit sans erreur **avant** de l'injecter dans Coléo. Coléo n'a pas de système de correction et va prendre toutes les entrées, même si elles contiennent des erreurs.
+
+
+## 3. Créer un projet R
+
+Dans RStudio,
+
+* Aller dans `File` > `New Project` > `New Directory` > `New Project`
+* Choisir un nom de projet et un lieu dans les fichiers pour le projet
+
+Les projets permettent de travailler dans un répertoire de travail (*working directory*). La base de données doit donc être sauvegardée dans le même dossier que le projet afin de faire parti du répertoire de travail.
+
+## 4. Sauvegarder la base de données en format .csv dans le même dossier que le projet R
+
+## 5. Installer les packages nécessaires
+
+Dans RStudio,
+
+```r
+install.packages("devtools")
+install.packages("dplyr")
+```
+
+Pour installer le package `rcoleo`, il faut utiliser le package `devtools`, il faut donc l'appeller avec `library()`
+
+```r
+library(devtools)
+install_github("TheoreticalEcosystemEcology/rcoleo") # installation du package rcoleo à partir de github
+```
+
+## 6. Mettre en cache son jeton d'accès
+
+Ce jeton permet d'apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l'utilisateur dans le menu à gauche.
+
+```r
+saveRDS("votrejeton",".httr-oauth")
+```
+
+Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d'injection. Le jeton est confidentiel.
+
+## 7. Vérification pré-injection
+
+La succession d'étape qui suivent permettent de vérifier si les cellules, les sites et les noms d'espèces associés aux campagnes à injecter existent déjà dans Coléo.
+
+### 7.1. Création d'un objet R avec les nouvelles campagnes à insérer dans Coléo
+
+```r
+camp_odo <- read.csv("./lenomdevotrebasededonnées.csv", header = TRUE, sep = ',', stringsAsFactors = FALSE, encoding = "UTF-8") # l'encoding UTF-8 permet de garder les accents
+```
+
+### 7.2. Acquisition de la liste des cellules, des sites, des noms d'espèce de référence et des attributs déjà présentes dans Coléo et création d'un objet R pour chacune
+
+```r
+# Acquisition cellules COLEO
+cells <- rcoleo::get_cells()
+cells <- do.call("rbind", cells[[1]]$body)
+
+# Acquisition sites COLEO
+sites <- rcoleo::get_sites()
+sites <- do.call("rbind", sites[[1]]$body)
+
+# Acquisition nom espèces COLEO
+species <- rcoleo::get_species()
+species <- do.call("rbind", species[[1]]$body)
+```
+
+### 7.3. Vérification de l'existence des cellules, sites, noms d'espèces et des attributs associés aux nouvelles campagnes *odonate* dans Coléo
+
+#### 7.3.1. Pour les cellules
+
+```r
+#### Test pour vérifier l'existence des cellules dans Coléo ####
+rcoleo::COLEO_comp(unique(camp_zoopl$no_de_reference_de_la_cellule) %in% unique(cells$cell_code))
+```
+
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire d'importer ces cellules avant de continuer l'insertions des nouvelles campagnes *zooplancton*. Pour ce faire, vous pouvez suivre les étapes détaillées dans la vignette [*Injection des cellules*](file:///C:/Users/HP_9470m/Desktop/PostDoc_COLEO/GitHub/rcoleo/docs/articles/injection-cellules.html).
+
+#### 7.3.2. Pour les sites
+
+```r
+#### Test pour vérifier l'existence des sites dans Coléo ####
+rcoleo::COLEO_comp(unique(camp_zoopl$no_de_reference_du_site) %in% unique(sites$site_code))
+```
+
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains sites n'existent pas dans Coléo, il sera nécessaire d'importer ces sites avant de continuer l'insertions des nouvelles campagnes *zooplancton*. Pour ce faire, vous pouvez suivre les étapes détaillées dans la vignette [*Injection des sites*](file:///C:/Users/HP_9470m/Desktop/PostDoc_COLEO/GitHub/rcoleo/docs/articles/injection-sites.html).
+
+#### 7.3.3. Pour les noms d'espèces
+
+```r
+#### Test pour vérifier l'existence des noms des espèces dans Coléo ####
+rcoleo::COLEO_comp(unique(camp_zoopl$nom_scientifique) %in% unique(species$name))
+```
+
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains noms d'espèces n'existent pas dans Coléo, il sera nécessaire d'importer ces noms avant de continuer l'insertions des nouvelles campagnes *zooplancton*. Pour ce faire, vous pouvez suivre les étapes détaillées dans la vignette [*Injection des noms d'espèce*](file:///C:/Users/HP_9470m/Desktop/PostDoc_COLEO/GitHub/rcoleo/docs/articles/injection-taxa.html).
+
+#### 7.3.4. Pour les attributs
+
+```r
+#### Variables tables "attributes" ####
+rcoleo::get_gen("/attributes")
+```
+
+Vous pouvez vérifier ici si la variable `abondance` est présente dans ce tableau.
+
+## 8. Injections des nouvelles campagnes *odonate*
+
+Pour une injection complète d'une campagne, il est nécessaire de passer par l'importation d'informations successives dans différentes tables de Coléo. La hiérarchie des tables à renseigner est cruciale, sans quoi l'injection de la campagne est vouée à l'échec. Les prochaines étapes détaillent l'ajout d'information dans les tables:
+
+1. Campagnes ("*/campaigns*")
+2. Environnements ("*/environments*")
+3. Repères ("*/landmarks*")
+4. Médias ("*/media*") ?
+5. Observations médias ("/obs_media") ?
+6. Observations ("*/observations*")
+7. Observations des espèces ("*/obs_species*")
+
+### 8.1. Injections des informations sur les nouvelles campagnes
+Les champs qui peuvent être remplis dans la table **campagnes** ("/campaigns") de Coléo sont les suivants (les champs en gras sont obligatoires) :
+
