@@ -10,7 +10,7 @@ post_campaigns <- function (data)
   responses <- list()
   status_code <- NULL
   class(responses) <- "coleoPostResp"
-  endpoint <- endpoints()$sites
+  endpoint <- endpoints()$campaigns
 
   for (i in 1:length(data)) {
     responses[[i]] <- rcoleo::post_gen(endpoint, data[[i]])
