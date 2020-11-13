@@ -12,7 +12,7 @@ post_cells <- function (data)
   responses <- list()
   status_code <- NULL
   class(responses) <- "coleoPostResp"
-  endpoint <- endpoints()$cellules
+  endpoint <- endpoints()$cells
 
   for (i in 1:length(data)) {
     responses[[i]] <- rcoleo::post_gen(endpoint, data[[i]])
