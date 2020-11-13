@@ -1,5 +1,5 @@
 ---
-  title: "Tutoriel pour injection des campagnes papillon"
+title: "Tutoriel pour injection des campagnes papillon"
 author: "Claire-Cécile Juhasz"
 date: "12 novembre 2020"
 output: html_document
