@@ -105,7 +105,7 @@ species <- do.call("rbind", species[[1]]$body)
 rcoleo::COLEO_comp(unique(camp_zoopl$no_de_reference_de_la_cellule) %in% unique(cells$cell_code))
 ```
 
-La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire d'importer ces cellules avant de continuer l'insertions des nouvelles campagnes *zooplancton*. Pour ce faire, vous pouvez suivre les étapes détaillées dans la vignette [*Injection des cellules*](injection-cellules.html).
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire d'importer ces cellules avant de continuer l'insertions des nouvelles campagnes *zooplancton*. Pour ce faire, vous pouvez suivre les étapes détaillées dans la vignette [*Injection des cellules*](https://reseaubiodiversitequebec.github.io/rcoleo/articles/injection-cellules.html).
 
 #### 7.3.2. Pour les sites
 
