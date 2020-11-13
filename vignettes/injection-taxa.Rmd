@@ -25,42 +25,9 @@ Note:
 * ne pas laisser de case vide, inscrire NA lorsque nécessaire
 * si vous avez des colonnes supplémentaires dans votre base de données, ex. nom anglais et commentaires, voir l'étape 7.8 pour qu'elles ne soient pas prises en compte lors de l'injection
 
-## 2. Corriger la base de données
-Il est très important de s'assurer que la base de données excel est sans erreur **avant** de l'injecter dans Coléo. Coléo n'a pas de système de correction et va prendre toutes les entrées, même si elles contiennent des erreurs.
-
-
-## 3. Créer un projet R
-Dans RStudio,
-
-* Aller dans File > New Project > New Directory > New Project
-* Choisir un nom de projet et un lieu dans les fichiers pour le projet
-
-Les projets permettent de travailler dans un working directory. La base de données doit donc être sauvegardée dans le même dossier que le projet afin de faire parti du working directory.
-
-## 4. Sauvegarder la base de données en format .csv dans le même dossier que le projet R
-
-## 5. Installer les packages devtools, dplyr et rcoleo
-Dans RStudio,
-
-
-```r
-install.packages("devtools")
-install.packages("dplyr")
+```{r, child="etape2_to_6.Rmd"}
 ```
-pour installer le package rcoleo, il faut utiliser le packages devtools, il faut donc l'appeller avec library()
 
-
-```r
-library(devtools)
-install_github("TheoreticalEcosystemEcology/rcoleo") #installe le package rcoleo à partir de github
-```
-## 6. Mettre en cache son jeton d'accès
-Ce jeton permet d'apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l'utilisateur dans le menu à gauche.
-
-```r
-saveRDS("votrejeton",".httr-oauth")
-```
-Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d'injection. Le jeton est confidentiel.
 
 ## 7. Injection des taxons de référence dans Coléo
 
