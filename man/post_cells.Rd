@@ -4,7 +4,7 @@
 \alias{post_cells}
 \title{Publication d'une cellule sur la base de données de Coléo}
 \usage{
-post_cells(data, ...)
+post_cells(data)
 }
 \arguments{
 \item{data}{une liste ou chacun des niveaux corresponds aux données attribuées au ednpoint.}
