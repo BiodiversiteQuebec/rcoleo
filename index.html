@@ -69,16 +69,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/telecharge-sites.html">Telecharger les sites</a>
+      <a href="articles/telecharge-sites.html">Téléchargement des sites</a>
     </li>
     <li>
-      <a href="articles/injection-taxa.html">Injecter taxa</a>
+      <a href="articles/injection-cellules.html">Injection des cellules</a>
     </li>
     <li>
-      <a href="articles/tutoriel.html">Tutoriel</a>
+      <a href="articles/injection-taxa.html">Injection des noms d'espèce</a>
     </li>
     <li>
       <a href="articles/injection-sites.html">Injecter sites</a>
+    </li>
+    <li>
+      <a href="articles/CAMPAGNE_zooplancton_injection.html">Injection des campagnes ZOOPLANCTON</a>
     </li>
   </ul>
 </li>
@@ -120,8 +123,8 @@
 <h2 class="hasAnchor">
 <a href="#installer-le-paquet-rcoleo" class="anchor"></a>Installer le paquet <code>rcoleo</code>
 </h2>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ReseauBiodiversiteQuebec/rcoleo"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ReseauBiodiversiteQuebec/rcoleo"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="sauthentifier-auprès-de-lapi" class="section level2">
 <h2 class="hasAnchor">
@@ -131,17 +134,17 @@
 <a href="#strat%C3%A9gie-1-mise-en-cache" class="anchor"></a>Stratégie 1: Mise en cache</h3>
 <p>Il est <strong>fortement recommandé</strong> de mettre en cache votre jeton d’accès (jeton d’accès stocké dans un fichier <code>rds</code>) afin de s’assurer qu’il ne soit pas visible ou transmis avec votre code à un autre utilisateur. Ce jeton d’accès est unique et révocable.</p>
 <p>Pour cela, il vous suffit simplement d’enregistrer le jeton d’accès directement dans votre répertoire/projet R utilisant la librairie <code>rcoleo</code>.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="st">"7f8df438e1be96a18436e9dab5d97d68ed0e0441d9b68f59e0ce631b2919f3aa"</span>,<span class="st">".httr-oauth"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="st">"7f8df438e1be96a18436e9dab5d97d68ed0e0441d9b68f59e0ce631b2919f3aa"</span>,<span class="st">".httr-oauth"</span><span class="op">)</span></code></pre></div>
 <p><em>Le jeton d’accès est un exemple ici et n’est aucunement valide.</em></p>
 </div>
 <div id="stratégie-2-argument" class="section level3">
 <h3 class="hasAnchor">
 <a href="#strat%C3%A9gie-2-argument" class="anchor"></a>Stratégie 2: Argument</h3>
 <p>Vous pouvez également passer votre jeton d’accès comme un argument pour chacune des fonctions <code>GET</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_sites.html">get_sites</a></span><span class="op">(</span>token<span class="op">=</span><span class="st">"7f8df438e1be96a18436e9dab5d97d68ed0e0441d9b68f59e0ce631b2919f3aa"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_sites.html">get_sites</a></span><span class="op">(</span>token<span class="op">=</span><span class="st">"7f8df438e1be96a18436e9dab5d97d68ed0e0441d9b68f59e0ce631b2919f3aa"</span><span class="op">)</span></code></pre></div>
 <p><em>Le jeton d’accès est un exemple ici et n’est aucunement valide.</em></p>
 </div>
 <div id="roadmap-to-200" class="section level3">

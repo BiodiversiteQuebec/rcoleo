@@ -69,16 +69,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/telecharge-sites.html">Telecharger les sites</a>
+      <a href="../articles/telecharge-sites.html">Téléchargement des sites</a>
     </li>
     <li>
-      <a href="../articles/injection-taxa.html">Injecter taxa</a>
+      <a href="../articles/injection-cellules.html">Injection des cellules</a>
     </li>
     <li>
-      <a href="../articles/tutoriel.html">Tutoriel</a>
+      <a href="../articles/injection-taxa.html">Injection des noms d'espèce</a>
     </li>
     <li>
       <a href="../articles/injection-sites.html">Injecter sites</a>
+    </li>
+    <li>
+      <a href="../articles/CAMPAGNE_zooplancton_injection.html">Injection des campagnes ZOOPLANCTON</a>
     </li>
   </ul>
 </li>
@@ -106,8 +109,7 @@
 
       
 
-      </header><script src="injection-sites_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="injection-sites_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="injection-sites_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="injection-sites_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Injection de nouveaux sites dans Coléo</h1>
@@ -127,22 +129,21 @@
 <p>Les colonnes de ce fichier excel doivent correspondrent aux champs contenus dans la base de données Coléo, qui sont les suivants:</p>
 <ul>
 <li>
-<strong>cell_id</strong> : indispensable - numéro unique de chaque cellule - peut-être récupéré à l’aide de la fonction <code><a href="../reference/get_cells.html">get_cells()</a></code>
+<strong>cell_id</strong> : obligatoire - numéro unique de chaque cellule - peut-être récupéré à l’aide de la fonction <code><a href="../reference/get_cells.html">get_cells()</a></code>
 </li>
 <li>
-<strong>off_station_code_id</strong> : facultative - <strong>Need more information</strong>
+<strong>off_station_code_id</strong> : facultative</li>
+<li>
+<strong>site_code</strong> : obligatoire - code alpha-numérique unique pour chaque site</li>
+<li>
+<strong>type</strong> : obligatoire - type d’habitat où se situe le site. Les options sont : “lac”, “tourbière”, “forestier”, “rivière”, “marais”, “toundrique”, “marais côtier”</li>
+<li>
+<strong>opened_at</strong> : obligatoire - date de création du site sous le format AAAA-MM-JJ</li>
+<li>
+<em>lat</em> : obligatoire - latitude du site, nécessaire à la création de la variable <strong>geom</strong>
 </li>
 <li>
-<strong>site_code</strong> : indispensable - code alpha-numérique unique pour chaque site</li>
-<li>
-<strong>type</strong> : indispensable - type d’habitat où se situe le site. Les options sont : “lac”, “tourbière”, “forestier”, “rivière”, “marais”, “toundrique”, “marais côtier”</li>
-<li>
-<strong>opened_at</strong> : indispensable - date de création du site sous le format AAAA-MM-JJ</li>
-<li>
-<em>lat</em> : indispensable - latitude du site, nécessaire à la création de la varible <strong>geom</strong>
-</li>
-<li>
-<em>lon</em> : indispensable - latitude du site, nécessaire à la création de la varible <strong>geom</strong>
+<em>lon</em> : obligatoire - latitude du site, nécessaire à la création de la variable <strong>geom</strong>
 </li>
 <li>
 <strong>notes</strong> : facultative</li>
@@ -176,20 +177,20 @@
 <h2 class="hasAnchor">
 <a href="#installer-les-packages-devtools-dplyr-et-rcoleo" class="anchor"></a>5. Installer les packages devtools, dplyr et rcoleo</h2>
 <p>Dans RStudio,</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span><span class="op">)</span></code></pre></div>
 <p>pour installer le package rcoleo, il faut utiliser le packages devtools, il faut donc l’appeller avec library()</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">devtools</span><span class="op">)</span>
-<span class="fu">install_github</span><span class="op">(</span><span class="st">"RéseauBiodiversiteQuebec/rcoleo"</span><span class="op">)</span> <span class="co">#installe le package rcoleo à partir de github</span></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">devtools</span><span class="op">)</span>
+<span class="fu">install_github</span><span class="op">(</span><span class="st">"RéseauBiodiversiteQuebec/rcoleo"</span><span class="op">)</span> <span class="co">#installe le package rcoleo à partir de github</span></code></pre></div>
 </div>
 <div id="mettre-en-cache-son-jeton-daccès" class="section level2">
 <h2 class="hasAnchor">
 <a href="#mettre-en-cache-son-jeton-dacc%C3%A8s" class="anchor"></a>6. Mettre en cache son jeton d’accès</h2>
 <p>Ce jeton permet d’apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l’utilisateur dans le menu à gauche.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="st">"votrejeton"</span>,<span class="st">".httr-oauth"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="st">"votrejeton"</span>,<span class="st">".httr-oauth"</span><span class="op">)</span></code></pre></div>
 <p>Cette étape n’est faite qu’une fois et permet l’enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d’injection. Le jeton est confidentiel.</p>
 </div>
 <div id="injection-des-sites-dans-coléo" class="section level2">
@@ -199,54 +200,54 @@
 <li>
 <strong>7.1</strong> Cette étape appelle les packages installés afin qu’ils puissent être utilisés</li>
 </ul>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo">rcoleo</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo">rcoleo</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></code></pre></div>
 <pre><code>## Warning: package 'dplyr' was built under R version 4.0.2</code></pre>
 <ul>
 <li>
 <strong>7.2</strong> L’étape suivante permet d’extraire la liste des sites déjà existant dans Coléo</li>
 </ul>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="va">sites_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_sites.html">get_sites</a></span><span class="op">(</span><span class="op">)</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">sites_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_sites.html">get_sites</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">sites_list</span>, max.level <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
-<span class="va">all_things</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">sites_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></pre></div>
+<span class="va">all_things</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">sites_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 <ul>
 <li>
 <strong>7.3</strong> Cette étape permet d’enregistrer un objet dans R avec les sites à ajouter dans Coléo</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="va">corrections</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"./lenomdevotrebasededonnées.csv"</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">','</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span>, encoding <span class="op">=</span> <span class="st">"UTF-8"</span><span class="op">)</span> <span class="co">#l'encoding UTF-8 permet de garder les accents</span></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="va">corrections</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"./corrections_liste_sp_JS.csv"</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">','</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span>, encoding <span class="op">=</span> <span class="st">"UTF-8"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">corrections</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"./lenomdevotrebasededonnées.csv"</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">','</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span>, encoding <span class="op">=</span> <span class="st">"UTF-8"</span><span class="op">)</span> <span class="co">#l'encoding UTF-8 permet de garder les accents</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">corrections</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"./corrections_liste_sp_JS.csv"</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">','</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span>, encoding <span class="op">=</span> <span class="st">"UTF-8"</span><span class="op">)</span></code></pre></div>
 <p>si votre ordinateur est en français, le séparateur de votre base de données pourrait être un ; dans ce cas, changer sep = ‘,’ pour sep = ‘;’ dans l’argument ci-haut</p>
 <ul>
 <li>
 <strong>7.4</strong> Cette étape permet de s’assurer que les noms de colonnes sont les mêmes dans Coléo que dans votre base de données</li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">all_things</span><span class="op">)</span>
-<span class="fu"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">corrections</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">all_things</span><span class="op">)</span>
+<span class="fu"><a href="https://tibble.tidyverse.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">corrections</span><span class="op">)</span></code></pre></div>
 <p><em>NB</em> : À ce stade, il est normal que votre fichier “corrections” ne contienne pas la variable <strong>geom</strong>. Celle-ci sera créée à partir des colonnes <strong>lat</strong> &amp; <strong>lon</strong> au cours de <strong>l’étape 7.7</strong>.</p>
 <ul>
 <li>
 <strong>7.4.1</strong> Étape facultative, elle permet de changer des noms de colonnes si ils ne sont pas écrits de la même façon que Coléo. Comme dans l’exemple ci-haut, la colonne name du fichier de corrections est écrite X.U.FEFF.name, ce qui n’est pas adéquat.</li>
 </ul>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">corrections</span><span class="op">)</span> <span class="co"># Visualisation des noms de toutes les colonnes présentes dans votre jeu de données</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">corrections</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"name"</span> <span class="co"># Sélection du premier nom ([1]) et modification de celui-ci (&lt;- "name")</span></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">corrections</span><span class="op">)</span> <span class="co"># Visualisation des noms de toutes les colonnes présentes dans votre jeu de données</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">corrections</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"name"</span> <span class="co"># Sélection du premier nom ([1]) et modification de celui-ci (&lt;- "name")</span></code></pre></div>
 <ul>
 <li>
 <strong>7.5</strong> Cette étape permet de visualiser quelles entrées de la base de données se retrouvent déjà dans Coléo en fonction du code du site (<strong>site_code</strong>). Elle permet donc d’éviter les répétitions d’entrées.</li>
 </ul>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">semi_join</a></span><span class="op">(</span><span class="va">corrections</span>, <span class="va">all_things</span>, by <span class="op">=</span> <span class="st">"site_code"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">semi_join</a></span><span class="op">(</span><span class="va">corrections</span>, <span class="va">all_things</span>, by <span class="op">=</span> <span class="st">"site_code"</span><span class="op">)</span></code></pre></div>
 <ul>
 <li>
 <strong>7.6</strong> En lien avec l’étape précédente, celle-ci permet de sélectionner toutes les entrées qui ne se trouvent pas dans Coléo en fonction du nom latin afin d’éviter les répétitions.</li>
 </ul>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="va">correctionsuniques</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">anti_join</a></span><span class="op">(</span><span class="va">corrections</span>, <span class="va">all_things</span>, by <span class="op">=</span> <span class="st">"site_code"</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">correctionsuniques</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html">anti_join</a></span><span class="op">(</span><span class="va">corrections</span>, <span class="va">all_things</span>, by <span class="op">=</span> <span class="st">"site_code"</span><span class="op">)</span></code></pre></div>
 <ul>
 <li>
 <strong>7.7</strong> Cette étape permet de créer la colonne <strong>geom</strong>
@@ -254,11 +255,11 @@
 <li>
 <strong>7.7.1</strong> Conversion du dataframe en liste</li>
 </ul>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="va">correctionsuniques_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">correctionsuniques</span>,<span class="fl">1</span>,<span class="va">as.list</span><span class="op">)</span> <span class="co"># Création de la liste</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">correctionsuniques_ls</span><span class="op">)</span> <span class="co"># Vérification de la structure de l'objet</span></pre></div>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="co"># Creer geom points</span>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">correctionsuniques_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">correctionsuniques</span>,<span class="fl">1</span>,<span class="va">as.list</span><span class="op">)</span> <span class="co"># Création de la liste</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">correctionsuniques_ls</span><span class="op">)</span> <span class="co"># Vérification de la structure de l'objet</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Creer geom points</span>
 <span class="va">geom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">correctionsuniques</span>,<span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span>
   <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
     <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu">geojsonio</span><span class="fu">::</span><span class="fu">geojson_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span>,<span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">features</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span>
@@ -277,16 +278,16 @@
 <span class="op">}</span>
 
 
-<span class="va">correctionsuniques_ls</span></pre></div>
+<span class="va">correctionsuniques_ls</span></code></pre></div>
 <ul>
 <li>
 <strong>7.8</strong> Cette étape est seulement nécessaire si la base de données comprend des colonnes qui ne sont pas dans Coléo</li>
 </ul>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="va">correctionscol</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">correctionsuniques_ls</span>, <span class="va">cell_id</span>, <span class="va">off_station_code_id</span>, <span class="va">site_code</span>, <span class="va">type</span>, <span class="va">opened_at</span>, <span class="va">geom</span>, <span class="va">notes</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">correctionscol</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">correctionsuniques_ls</span>, <span class="va">cell_id</span>, <span class="va">off_station_code_id</span>, <span class="va">site_code</span>, <span class="va">type</span>, <span class="va">opened_at</span>, <span class="va">geom</span>, <span class="va">notes</span><span class="op">)</span></code></pre></div>
 <p><strong>Cette dernière étape injecte les données de la base de données dans Coléo</strong></p>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="fu">rcoleo</span><span class="fu">:::</span><span class="fu"><a href="../reference/post_sites.html">post_sites</a></span><span class="op">(</span><span class="va">correctionstoupload</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">rcoleo</span><span class="fu">:::</span><span class="fu"><a href="../reference/post_sites.html">post_sites</a></span><span class="op">(</span><span class="va">correctionstoupload</span><span class="op">)</span></code></pre></div>
 <p>Bravo ! Vous venez d’injecter vos nouveaux sites dans la base de données Coléo.</p>
 </div>
   </div>
