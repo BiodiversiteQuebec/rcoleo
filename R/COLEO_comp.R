@@ -18,14 +18,20 @@
 
 #' }
 #' @export
-COLEO_comp <- function(x, y){
-  if(all(x %in% y) == TRUE){
+COLEO_comp <- function (x, y)
+{
+  if (all(x %in% y) == TRUE) {
     print("Vous pouvez passer à l'étape suivante.")
-  }else{
-    for(i in 1:length(x)){
-      if(x[i] %in% y == FALSE){
-        print(paste0("Coléo ne contient pas d'informations pour la donnée suivante:", x[i]))
+  }
+  else {
+    list_info <- NULL
+    for (i in 1:length(x)) {
+      if (x[i] %in% y == FALSE) {
+        print(paste0("Coléo ne contient pas d'informations pour la donnée suivante:",
+                     x[i]))
+        list_info <- c(list_info, x[i])
       }
     }
+    return(list_info)
   }
 }
