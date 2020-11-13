@@ -53,7 +53,7 @@
 
 
 <meta property="og:title" content="Publication d'un landmark dans l'API de coléo — post_landmarks" />
-<meta property="og:description" content="Cette fonction applique la méthode POST sur le point d'entrées sites de l'API de Coleo" />
+<meta property="og:description" content="Cette fonction applique la méthode POST sur le point d'entrées landmarks de l'API de Coleo" />
 <meta property="og:image" content="/logo.svg" />
 
 
@@ -164,10 +164,10 @@
     </div>
 
     <div class="ref-description">
-    <p>Cette fonction applique la méthode POST sur le point d'entrées <code>sites</code> de l'API de Coleo</p>
+    <p>Cette fonction applique la méthode POST sur le point d'entrées <code>landmarks</code> de l'API de Coleo</p>
     </div>
 
-    <pre class="usage"><span class='fu'>post_landmarks</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>...</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>post_landmarks</span><span class='op'>(</span><span class='va'>data</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -175,10 +175,6 @@
     <tr>
       <th>data</th>
       <td><p>une liste ou chacun des niveaux corresponds aux données attribuées au ednpoint.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>httr options; arguments de la fonction <code><a href='https://httr.r-lib.org/reference/POST.html'>httr::POST()</a></code></p></td>
     </tr>
     </table>
 
