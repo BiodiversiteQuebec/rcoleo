@@ -105,7 +105,7 @@ species <- do.call("rbind", species[[1]]$body)
 rcoleo::COLEO_comp(unique(camp_zoopl$no_de_reference_de_la_cellule) %in% unique(cells$cell_code))
 ```
 
-La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire d'importer ces cellules avant de continuer l'insertions des nouvelles campagnes *zooplancton*. Pour ce faire, vous pouvez suivre les étapes détaillées dans la vignette [*Injection des cellules*](file:///C:/Users/HP_9470m/Desktop/PostDoc_COLEO/GitHub/rcoleo/docs/articles/injection-cellules.html).
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire d'importer ces cellules avant de continuer l'insertions des nouvelles campagnes *zooplancton*. Pour ce faire, vous pouvez suivre les étapes détaillées dans la vignette [*Injection des cellules*](injection-cellules.html).
 
 #### 7.3.2. Pour les sites
 
@@ -114,7 +114,7 @@ La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans
 rcoleo::COLEO_comp(unique(camp_zoopl$no_de_reference_du_site) %in% unique(sites$site_code))
 ```
 
-La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains sites n'existent pas dans Coléo, il sera nécessaire d'importer ces sites avant de continuer l'insertions des nouvelles campagnes *zooplancton*. Pour ce faire, vous pouvez suivre les étapes détaillées dans la vignette [*Injection des sites*](file:///C:/Users/HP_9470m/Desktop/PostDoc_COLEO/GitHub/rcoleo/docs/articles/injection-sites.html).
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains sites n'existent pas dans Coléo, il sera nécessaire d'importer ces sites avant de continuer l'insertions des nouvelles campagnes *zooplancton*. Pour ce faire, vous pouvez suivre les étapes détaillées dans la vignette [*Injection des sites*](injection-sites.html).
 
 #### 7.3.3. Pour les noms d'espèces
 
@@ -123,7 +123,7 @@ La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans
 rcoleo::COLEO_comp(unique(camp_zoopl$nom_scientifique) %in% unique(species$name))
 ```
 
-La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains noms d'espèces n'existent pas dans Coléo, il sera nécessaire d'importer ces noms avant de continuer l'insertions des nouvelles campagnes *zooplancton*. Pour ce faire, vous pouvez suivre les étapes détaillées dans la vignette [*Injection des noms d'espèce*](file:///C:/Users/HP_9470m/Desktop/PostDoc_COLEO/GitHub/rcoleo/docs/articles/injection-taxa.html).
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains noms d'espèces n'existent pas dans Coléo, il sera nécessaire d'importer ces noms avant de continuer l'insertions des nouvelles campagnes *zooplancton*. Pour ce faire, vous pouvez suivre les étapes détaillées dans la vignette [*Injection des noms d'espèce*](injection-taxa.html).
 
 #### 7.3.4. Pour les attributs
 
