@@ -11,6 +11,6 @@ knit("vignettes/injection-cellules.Rmd.orig", "vignettes/injection-cellules.Rmd"
 knit("vignettes/injection-sites.Rmd.orig", "vignettes/injection-sites.Rmd")
 
 # Injections CAMPAGNES
-knit("vignettes/tutoriel-injections.Rmd.orig", "vignettes/tutoriel-injections.Rmd`")
+knit("vignettes/tutoriel-injections.Rmd.orig", "vignettes/tutoriel-injections.Rmd")
 knit("vignettes/CAMPAGNE_zooplancton_injection.Rmd.orig", "vignettes/CAMPAGNE_zooplancton_injection.Rmd")
 
