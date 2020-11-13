@@ -74,34 +74,10 @@ library(dplyr)
 
 ```r
 taxa_list <- get_species()
-```
 
-```
-## Error in get_gen(endpoint, ...): Aucune autorisation détectée! Assurez-vous d'avoir enregistré votre jeton d'accès dans un fichier appelé `.httr-oauth`
-```
-
-```r
-taxa_list <- get_species()
-```
-
-```
-## Error in get_gen(endpoint, ...): Aucune autorisation détectée! Assurez-vous d'avoir enregistré votre jeton d'accès dans un fichier appelé `.httr-oauth`
-```
-
-```r
 str(taxa_list, max.level = 3)
-```
 
-```
-## Error in str(taxa_list, max.level = 3): object 'taxa_list' not found
-```
-
-```r
 all_things <- dplyr::bind_rows(taxa_list[[1]]$body)
-```
-
-```
-## Error in list2(...): object 'taxa_list' not found
 ```
 * **7.3** Cette étape permet d'intégrer les données de la base de données des organismes vivants à ajouter à Coléo
 

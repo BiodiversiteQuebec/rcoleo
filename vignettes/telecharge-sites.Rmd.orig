@@ -24,8 +24,7 @@ dim(all_taxa_df)
 
 ```{r}
 library(rcoleo)
-library(purrr)
-library(tidyverse)
+suppressPackageStartupMessages(library(tidyverse))
 
 all_sites <- get_sites()
 

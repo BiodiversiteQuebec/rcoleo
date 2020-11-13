@@ -11,9 +11,13 @@ library(rcoleo)
 library(purrr)
 
 all_taxa <- get_species()
-#> Error in get_gen(endpoint, ...): Aucune autorisation détectée! Assurez-vous d'avoir enregistré votre jeton d'accès dans un fichier appelé `.httr-oauth`
+#> Data retrieval 5.56% Data retrieval 11.1% Data retrieval 16.7% Data retrieval 22.2% Data retrieval 27.8% Data retrieval
+#> 33.3% Data retrieval 38.9% Data retrieval 44.4% Data retrieval 50% Data retrieval 55.6% Data retrieval 61.1% Data
+#> retrieval 66.7% Data retrieval 72.2% Data retrieval 77.8% Data retrieval 83.3% Data retrieval 88.9% Data retrieval
+#> 94.4% Data retrieval 100%
 all_taxa_df <- map_df(all_taxa[[1]], 1)
-#> Error in map(.x, .f, ...): object 'all_taxa' not found
+#> Error: All columns in a tibble must be vectors.
+#> x Column `response` is a `response` object.
 knitr::kable(head(all_taxa_df))
 #> Error in head(all_taxa_df): object 'all_taxa_df' not found
 
@@ -25,21 +29,23 @@ dim(all_taxa_df)
 
 ```r
 library(rcoleo)
-library(purrr)
-library(tidyverse)
+suppressPackageStartupMessages(library(tidyverse))
 
 all_sites <- get_sites()
-#> Error in get_gen(endpoint, ...): Aucune autorisation détectée! Assurez-vous d'avoir enregistré votre jeton d'accès dans un fichier appelé `.httr-oauth`
+#> Data retrieval 100%
 
 # on extract le body
 donnees <- all_sites[[1]][[1]]$body
-#> Error in eval(expr, envir, enclos): object 'all_sites' not found
 
 
 pap <-  select(donnees, cell.name, milieu=type, campaigns) %>%
   unnest(campaigns) %>%
   filter(type == "papilionidés")
-#> Error in select(donnees, cell.name, milieu = type, campaigns): object 'donnees' not found
+#> Warning: `select_()` is deprecated as of dplyr 0.7.0.
+#> Please use `select()` instead.
+#> This warning is displayed once every 8 hours.
+#> Call `lifecycle::last_warnings()` to see where this warning was generated.
+#> Error in UseMethod("select_"): no applicable method for 'select_' applied to an object of class "NULL"
 
 knitr::kable(head(pap))
 #> Error in head(pap): object 'pap' not found
@@ -52,19 +58,29 @@ knitr::kable(head(pap))
 
 
 all_site_pap <- get_obs(site_id = "", type = "papilionidés")
-#> Warning in rep(yes, length.out = len): 'x' is NULL so the
-#> result will be NULL
-#> Error in ans[ypos] <- rep(yes, length.out = len)[ypos]: replacement has length zero
+#> Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100%
+#> Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100%
+#> Data retrieval 100% Data retrieval 100% Data retrieval 100%
 
 all.equal(one_site_pap[[1]][[1]]$body, all_site_pap[[1]][[1]]$body)
 #> Error in all.equal(one_site_pap[[1]][[1]]$body, all_site_pap[[1]][[1]]$body): object 'one_site_pap' not found
 
 
 pap_df <- all_site_pap %>% map_df(~ .x[[1]][["body"]])
-#> Error in eval(lhs, parent, parent): object 'all_site_pap' not found
 
 knitr::kable(pap_df)
-#> Error in knitr::kable(pap_df): object 'pap_df' not found
+#> Warning in kable_pipe(x = structure(character(0), .Dim = c(0L, 0L), .Dimnames = list(: The table should have a header
+#> (column names)
+```
+
+
+
+||
+||
+||
+||
+
+```r
 
 ## write.csv(pap_df)
 ```

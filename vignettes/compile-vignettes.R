@@ -3,14 +3,17 @@
 library(knitr)
 
 # Téléchargement
-knit("vignettes/telecharge-sites.Rmd.orig", "vignettes/telecharge-sites.Rmd")
+knit("vignettes/telecharge-sites.Rmd.orig", "vignettes/telecharge-sites.Rmd") # needs httr-oauth
+
 
 # Injections TABLES
-knit("vignettes/injection-taxa.Rmd.orig", "vignettes/injection-taxa.Rmd")
-knit("vignettes/injection-cellules.Rmd.orig", "vignettes/injection-cellules.Rmd")
-knit("vignettes/injection-sites.Rmd.orig", "vignettes/injection-sites.Rmd")
+knit("vignettes/injection-taxa.Rmd.orig", "vignettes/injection-taxa.Rmd") # needs httr-oauth
+
 
 # Injections CAMPAGNES
-knit("vignettes/tutoriel-injections.Rmd.orig", "vignettes/tutoriel-injections.Rmd")
+
 knit("vignettes/CAMPAGNE_zooplancton_injection.Rmd.orig", "vignettes/CAMPAGNE_zooplancton_injection.Rmd")
 
+# keeping Tutorial-injections.Rmd.orig as .orig, not because it needs
+# authorization or something similare, but because I'm not sure if we are
+# including it right now
