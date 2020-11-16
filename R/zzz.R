@@ -15,6 +15,7 @@ endpoints <- function(){
     observations = "/observations",
     taxa = "/taxa",
     landmarks = "/landmarks",
+    environments = "/environments",
     attributes = "/attributes",
     traps = "/traps",
     samples = "/samples",

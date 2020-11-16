@@ -27,6 +27,7 @@ Afin d'injecter des nouvelles campagnes *zooplancton* dans la base de données C
 * **Taxonomiste**
 
 Note : ne pas laisser de case vide, inscrire NA lorsque nécessaire
+Note bis : Il est essentiel que ce tableau ne contiennent QUE des nouvelles campagnes ! Sous peine de voir échoué le code qui suit.
 
 ```{r, child="etape2_to_6.Rmd"}
 ```

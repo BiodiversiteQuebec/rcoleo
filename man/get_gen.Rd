@@ -38,7 +38,7 @@ Les points d'accès de l'API sont énuméré dans l'environment de coléo, voir 
 \examples{
 \dontrun{
 resp <- get_gen("/cells")
-length(resp) # Nombre de pages retourné par l'appel sur le point d'accès de l'API.
+length(resp) # Nombre de pages retournÃ© par l'appel sur le point d'accÃ¨s de l'API.
 str(resp[[1]])
 class(resp[[1]])
 }

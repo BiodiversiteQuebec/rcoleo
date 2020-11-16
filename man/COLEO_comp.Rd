@@ -14,13 +14,13 @@ Compare deux vecteurs et donne des détails si ils ne sont pas égaux
 }
 \examples{
 \dontrun{
-# Vecteurs égaux
+# Vecteurs Ã©gaux
 i <- 1:5
 j <- 1:10
 
 COLEO_comp(i, j)
 
-# Vecteurs inégaux
+# Vecteurs inÃ©gaux
 i <- 1:13
 j <- 1:10
 
