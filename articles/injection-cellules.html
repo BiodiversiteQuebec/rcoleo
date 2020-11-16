@@ -184,39 +184,59 @@
 <li>
 <strong>5.2</strong> L’étape suivante permet de créer un vecteur avec le code des cellules à ajouter à Coléo</li>
 </ul>
+<p>Vous avez deux possibilités pour compléter cette étape:</p>
+<ul>
+<li>Entrer manuellement le code des cellules dans un objet R.</li>
+</ul>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cell_code</span> <span class="op">&lt;-</span> <span class="st">"124_93"</span> <span class="co"># Code correspondant à la nouvelle cellule à injecter</span></code></pre></div>
+<code class="sourceCode R"><span class="va">cell_code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"124_93"</span>, <span class="st">"73_137"</span><span class="op">)</span> <span class="co"># Codes des nouvelles cellules à insérer</span></code></pre></div>
+<ul>
+<li>Utiliser l’objet créer lors de l’utilisation de la fonction <code><a href="../reference/COLEO_comp.html">COLEO_comp()</a></code> si vous êtes dans le cadre d’une insertion de nouvelles campagnes.</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">cell_code</span> <span class="op">&lt;-</span> <span class="va">cell_manquante</span> <span class="co"># Codes des nouvelles cellules à insérer</span></code></pre></div>
 <ul>
 <li>
 <strong>5.3</strong> Cette étape permet d’enregistrer un objet dans R avec les informations de toutes les cellules existantes</li>
 </ul>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">shp_cells</span> <span class="op">&lt;-</span> <span class="fu">rgdal</span><span class="fu">::</span><span class="fu">readOGR</span><span class="op">(</span>dsn<span class="op">=</span><span class="st">"./shp"</span>,layer<span class="op">=</span><span class="st">"Cellule_terrain_2016-2020"</span><span class="op">)</span> <span class="co"># Ici le fichier shapefile est placé dans un dossier shp et on appelle tous les fichiers nommés "Cellule_terrain_2016_2020"</span></code></pre></div>
 <ul>
 <li>
-<strong>5.4</strong> Cette étape permet d’extraire les informations nécessaires à l’insertion de la nouvelle cellule dans Coléo</li>
-</ul>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">shp</span> <span class="op">&lt;-</span> <span class="va">shp_cells</span><span class="op">[</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">IJ</span> <span class="op">==</span> <span class="va">cell_code</span> ,<span class="op">]</span></code></pre></div>
-<ul>
-<li>
-<strong>5.5</strong> Ici, nous sélectionnons les variables indispensables et les formattons sous forme de liste</li>
+<strong>5.4</strong> Cette étape permet d’extraire les informations nécessaires concernant les nouvelles cellules et de formater ces informations de sorte à pouvoir les insérer dans Coléo.</li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cells_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">cells_ls</span><span class="op">$</span><span class="va">cell_code</span> <span class="op">&lt;-</span> <span class="va">cell_code</span> <span class="co"># le code de la cellule</span>
-<span class="va">cells_ls</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="va">shp_cells</span><span class="op">[</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">IJ</span> <span class="op">==</span> <span class="va">cell_code</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">Nom</span><span class="op">)</span>,<span class="op">]</span><span class="op">@</span><span class="va">data</span><span class="op">$</span><span class="va">Nom</span> <span class="co"># le nom de la cellule</span>
+<code class="sourceCode R"><span class="va">shp_cells_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Création d'une liste vide pour l'objet final</span>
 
-<span class="co"># Création de l'objet spatial pour les coordonnées de la cellule</span>
-<span class="va">shp_sp</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">shp</span>, <span class="st">"SpatialPolygons"</span><span class="op">)</span>
-<span class="va">cells_ls</span><span class="op">$</span><span class="va">geom</span> <span class="op">&lt;-</span> <span class="fu">geojsonio</span><span class="fu">::</span><span class="fu">geojson_list</span><span class="op">(</span><span class="va">shp</span><span class="op">)</span><span class="op">$</span><span class="va">features</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geometry</span> <span class="co"># Caractéristiques de l'objet spatial</span>
-<span class="va">cells_ls</span><span class="op">$</span><span class="va">geom</span><span class="op">$</span><span class="va">crs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"name"</span>,properties<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"EPSG:4326"</span><span class="op">)</span><span class="op">)</span> <span class="co"># Ajout des informations concernant le crs (Coordinate Reference System)</span>
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">cell_code</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
 
-
-<span class="co"># Envoyer la nouvelle cellule vers COLEO</span>
-<span class="co">#resp_cells &lt;- post_cells(cells_ls) # Ne fonctionne pas</span>
-<span class="co">#resp_cells &lt;- rcoleo::post_gen("/cells", cells_ls) # FONCTIONNE </span></code></pre></div>
-<p>Bravo ! Vous venez d’injecter votre nouvelle cellule dans la base de données Coléo.</p>
+  <span class="va">shp</span> <span class="op">&lt;-</span> <span class="va">shp_cells</span><span class="op">[</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">IJ</span> <span class="op">==</span> <span class="va">cell_code</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> ,<span class="op">]</span> <span class="co"># Obtention des information pour un cellule</span>
+  
+  <span class="co"># Création d'une liste avec les informations nécessaires pour chaque cellule</span>
+  <span class="va">cells_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="va">cells_ls</span><span class="op">$</span><span class="va">cell_code</span> <span class="op">&lt;-</span> <span class="va">cell_code</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="co"># Code de la cellule</span>
+  <span class="va">cells_ls</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">shp_cells</span><span class="op">[</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">IJ</span> <span class="op">==</span> <span class="va">cell_code</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">Nom</span><span class="op">)</span>,<span class="op">]</span><span class="op">@</span><span class="va">data</span><span class="op">$</span><span class="va">Nom</span><span class="op">)</span> <span class="co"># Nom de la cellule</span>
+  
+  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="va">cells_ls</span><span class="op">$</span><span class="va">name</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+    <span class="va">cells_ls</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
+  <span class="op">}</span> <span class="co"># Information absente si pas de no mpour la cellule</span>
+  
+  <span class="co"># Création de l'objet spatial pour les coordonnées de la cellule</span>
+  
+  <span class="va">shp_sp</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">shp</span>, <span class="st">"SpatialPolygons"</span><span class="op">)</span>
+  <span class="va">cells_ls</span><span class="op">$</span><span class="va">geom</span> <span class="op">&lt;-</span> <span class="fu">geojsonio</span><span class="fu">::</span><span class="fu">geojson_list</span><span class="op">(</span><span class="va">shp</span><span class="op">)</span><span class="op">$</span><span class="va">features</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geometry</span> <span class="co"># Caractéristiques de l'objet spatial</span>
+  <span class="va">cells_ls</span><span class="op">$</span><span class="va">geom</span><span class="op">$</span><span class="va">crs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"name"</span>,properties<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"EPSG:4326"</span><span class="op">)</span><span class="op">)</span> <span class="co"># Information sur le systême de coordonnées de référence (CRS)</span>
+  
+  <span class="va">shp_cells_list</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">cells_ls</span> <span class="co"># Alimentation de l'objet final avec un niveau pour chaque cellule</span>
+<span class="op">}</span></code></pre></div>
+<ul>
+<li>
+<strong>5.5</strong> Nous pouvons maintenant insérer les nouvelles cellules dans la base de données Coléo.</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Envoyer la nouvelle cellule vers COLEO</span>
+<span class="co">#resp_cells &lt;- post_cells(cells_ls)</span></code></pre></div>
+<p>Bravo ! Vous venez d’injecter vos nouvelles cellules dans la base de données Coléo.</p>
 </div>
   </div>
 
