@@ -21,7 +21,8 @@ endpoints <- function(){
     samples = "/samples",
     lures = "/lures",
     devices = "/devices",
-    obs_species = "/obs_species"
+    obs_species = "/obs_species",
+    efforts = "/efforts"
   )
 }
 
