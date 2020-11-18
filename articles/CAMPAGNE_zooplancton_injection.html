@@ -83,9 +83,6 @@
     <li>
       <a href="../articles/CAMPAGNE_zooplancton_injection.html">Injection des campagnes ZOOPLANCTON</a>
     </li>
-    <li>
-      <a href="../articles/CAMPAGNE_odonate_injection.html">Injection des campagnes ODONATE</a>
-    </li>
   </ul>
 </li>
       </ul>
@@ -190,7 +187,8 @@
 <p>Pour installer le package <code>rcoleo</code>, il faut utiliser le package <code>devtools</code>, il faut donc l’appeller avec <code><a href="https://rdrr.io/r/base/library.html">library()</a></code></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">devtools</span><span class="op">)</span>
-<span class="fu">install_github</span><span class="op">(</span><span class="st">"TheoreticalEcosystemEcology/rcoleo"</span><span class="op">)</span> <span class="co"># installation du package rcoleo à partir de github</span></code></pre></div>
+<span class="co"># installation du package rcoleo à partir de github</span>
+<span class="fu">install_github</span><span class="op">(</span><span class="st">"TheoreticalEcosystemEcology/rcoleo"</span><span class="op">)</span> </code></pre></div>
 </div>
 <div id="mettre-en-cache-son-jeton-daccès" class="section level2">
 <h2 class="hasAnchor">
@@ -295,7 +293,12 @@
 <h4 class="hasAnchor">
 <a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts-on-matche-les-noms-de-variables-avec-celles-de-col%C3%A9o-" class="anchor"></a>8.1.1. On commence par séléctionner les champs d’interêts &amp; on matche les noms de variables avec celles de Coléo.</h4>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">inj_camp_zoop</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">camp_zoopl</span>, site_code<span class="op">=</span><span class="va">no_de_reference_du_site</span>, opened_at<span class="op">=</span><span class="va">date_debut</span>, closed_at<span class="op">=</span><span class="va">date_fin</span>, <span class="va">technicien_1</span>, <span class="va">technicien_2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">inj_camp_zoop</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">camp_zoopl</span>, 
+                               site_code <span class="op">=</span> <span class="va">no_de_reference_du_site</span>, 
+                               opened_at <span class="op">=</span> <span class="va">date_debut</span>, 
+                               closed_at <span class="op">=</span> <span class="va">date_fin</span>, 
+                               <span class="va">technicien_1</span>, 
+                               <span class="va">technicien_2</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-garde-une-ligne-unique-par-nouvelle-campagne-" class="section level4">
 <h4 class="hasAnchor">

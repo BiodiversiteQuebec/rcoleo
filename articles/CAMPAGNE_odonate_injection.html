@@ -83,9 +83,6 @@
     <li>
       <a href="../articles/CAMPAGNE_zooplancton_injection.html">Injection des campagnes ZOOPLANCTON</a>
     </li>
-    <li>
-      <a href="../articles/CAMPAGNE_odonate_injection.html">Injection des campagnes ODONATE</a>
-    </li>
   </ul>
 </li>
       </ul>
@@ -127,7 +124,9 @@
 
     
     
-<p>## 1. Créer une base de données excel</p>
+<div id="créer-une-base-de-données-excel" class="section level2">
+<h2 class="hasAnchor">
+<a href="#cr%C3%A9er-une-base-de-donn%C3%A9es-excel" class="anchor"></a>1. Créer une base de données excel</h2>
 <p>Afin d’injecter des nouvelles campagnes <em>papillon</em> dans la base de données Coléo, vous devez regrouper les informations suivantes dans un fichier excel :</p>
 <ul>
 <li><strong>nom_cellule</strong></li>
@@ -162,7 +161,13 @@
 <em>media</em> : ?</li>
 <li><em>note</em></li>
 </ul>
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class="blue">
 <p>Note : ne pas laisser de case vide, inscrire NA lorsque nécessaire</p>
+</div>
+</div>
 <div id="corriger-la-base-de-données" class="section level2">
 <h2 class="hasAnchor">
 <a href="#corriger-la-base-de-donn%C3%A9es" class="anchor"></a>2. Corriger la base de données</h2>
@@ -193,7 +198,8 @@
 <p>Pour installer le package <code>rcoleo</code>, il faut utiliser le package <code>devtools</code>, il faut donc l’appeller avec <code><a href="https://rdrr.io/r/base/library.html">library()</a></code></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">devtools</span><span class="op">)</span>
-<span class="fu">install_github</span><span class="op">(</span><span class="st">"TheoreticalEcosystemEcology/rcoleo"</span><span class="op">)</span> <span class="co"># installation du package rcoleo à partir de github</span></code></pre></div>
+<span class="co"># installation du package rcoleo à partir de github</span>
+<span class="fu">install_github</span><span class="op">(</span><span class="st">"TheoreticalEcosystemEcology/rcoleo"</span><span class="op">)</span> </code></pre></div>
 </div>
 <div id="mettre-en-cache-son-jeton-daccès" class="section level2">
 <h2 class="hasAnchor">
