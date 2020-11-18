@@ -5,7 +5,7 @@
 #' @inheritParams post_cells
 #' @export
 
-post_obs_species <- function (data)
+post_obs_species <- function(data)
 {
   responses <- list()
   status_code <- NULL

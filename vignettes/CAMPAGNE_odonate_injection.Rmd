@@ -2,10 +2,10 @@
 title: "Tutoriel pour injection des campagnes odonate"
 author: "Claire-Cécile Juhasz"
 date: "12 novembre 2020"
-output: html_document
+output: 
+  html_document
 ---
-
-  ## 1. Créer une base de données excel
+## 1. Créer une base de données excel
 
   Afin d'injecter des nouvelles campagnes *papillon* dans la base de données Coléo, vous devez regrouper les informations suivantes dans un fichier excel :
 
@@ -31,7 +31,17 @@ output: html_document
 * *media* : ?
 * *note*
 
+
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "blue">
+
 Note : ne pas laisser de case vide, inscrire NA lorsque nécessaire
+
+</div>
+
 
 ```{r, child="etape2_to_6.Rmd"}
 ```
@@ -72,4 +82,8 @@ Pour une injection complète d'une campagne, il est nécessaire de passer par l'
 
 ### 8.1. Injections des informations sur les nouvelles campagnes
 Les champs qui peuvent être remplis dans la table **campagnes** ("/campaigns") de Coléo sont les suivants (les champs en gras sont obligatoires) :
+
+```{r, eval=FALSE, include=FALSE}
+
+```
 

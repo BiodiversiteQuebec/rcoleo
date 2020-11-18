@@ -35,9 +35,6 @@ library(rcoleo)
 library(dplyr)
 ```
 
-```
-## Warning: package 'dplyr' was built under R version 4.0.2
-```
 * **7.2** L'étape suivante permet d'extraire la liste des sites déjà existant dans Coléo
 
 ```r
