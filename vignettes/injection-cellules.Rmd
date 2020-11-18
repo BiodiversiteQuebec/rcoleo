@@ -24,7 +24,7 @@ Les projets permettent de travailler dans un répertoire de travail. Le fichiers
 Dans RStudio,
 
 
-```r
+```{r}
 install.packages("devtools")
 install.packages("dplyr")
 install.packages("rgdal")
@@ -33,15 +33,16 @@ install.packages("sp")
 pour installer le package rcoleo, il faut utiliser le packages devtools, il faut donc l'appeller avec library()
 
 
-```r
+```{r}
 library(devtools)
-install_github("RéseauBiodiversiteQuebec/rcoleo") #installe le package rcoleo à partir de github
+# Installation du package rcoleo à partir de github
+install_github("RéseauBiodiversiteQuebec/rcoleo") 
 ```
 ## 4. Mettre en cache son jeton d'accès
 Ce jeton permet d'apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l'utilisateur dans le menu à gauche.
 
-```r
-saveRDS("votrejeton",".httr-oauth")
+```{r}
+saveRDS("votrejeton", ".httr-oauth")
 ```
 Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d'injection. Le jeton est confidentiel.
 
@@ -49,7 +50,7 @@ Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton d
 
 * **5.1** Cette étape appelle les packages installés afin qu'ils puissent être utilisés
 
-```r
+```{r}
 library(rcoleo)
 library(dplyr)
 ```
@@ -63,55 +64,59 @@ Vous avez deux possibilités pour compléter cette étape:
 
 * Entrer manuellement le code des cellules dans un objet R.
 
-```r
-cell_code <- c("124_93", "73_137") # Codes des nouvelles cellules à insérer
+```{r}
+# Codes des nouvelles cellules à insérer
+cell_code <- c("124_93", "73_137")
 ```
 
 * Utiliser l'objet créer lors de l'utilisation de la fonction `COLEO_comp()` si vous êtes dans le cadre d'une insertion de nouvelles campagnes.
 
-```r
+```{r}
 cell_code <- cell_manquante # Codes des nouvelles cellules à insérer
 ```
 
 * **5.3** Cette étape permet d'enregistrer un objet dans R avec les informations de toutes les cellules existantes
 
-```r
-shp_cells <- rgdal::readOGR(dsn="./shp",layer="Cellule_terrain_2016-2020") # Ici le fichier shapefile est placé dans un dossier shp et on appelle tous les fichiers nommés "Cellule_terrain_2016_2020"
+```{r}
+shp_cells <- rgdal::readOGR(dsn="./shp",
+                            layer="Cellule_terrain_2016-2020") # Ici le fichier shapefile est placé dans un dossier shp et on appelle tous les fichiers nommés "Cellule_terrain_2016_2020"
 ```
 
 * **5.4** Cette étape permet d'extraire les informations nécessaires concernant les nouvelles cellules et de formater ces informations de sorte à pouvoir les insérer dans Coléo. 
 
-```r
-shp_cells_list <- list() # Création d'une liste vide pour l'objet final
+```{r}
+# Création d'une liste vide pour l'objet final
+shp_cells_list <- list()
 
 for (i in 1:length(cell_code)){
-
-  shp <- shp_cells[shp_cells$IJ == cell_code[i] ,] # Obtention des information pour un cellule
   
-  # Création d'une liste avec les informations nécessaires pour chaque cellule
+# Obtention des information pour un cellule
+  shp <- shp_cells[shp_cells$IJ == cell_code[i] ,] 
+  
+# Création d'une liste avec les informations nécessaires pour chaque cellule
   cells_ls <- list()
   cells_ls$cell_code <- cell_code[i] # Code de la cellule
   cells_ls$name <- unique(shp_cells[shp_cells$IJ == cell_code[i] & !is.na(shp_cells$Nom),]@data$Nom) # Nom de la cellule
   
   if(identical(cells_ls$name, character(0))){
     cells_ls$name <- NULL
-  } # Information absente si pas de no mpour la cellule
+  } # Information absente si pas de nom pour la cellule
   
-  # Création de l'objet spatial pour les coordonnées de la cellule
-  
+# Création de l'objet spatial pour les coordonnées de la cellule
   shp_sp <- as(shp, "SpatialPolygons")
   cells_ls$geom <- geojsonio::geojson_list(shp)$features[[1]]$geometry # Caractéristiques de l'objet spatial
   cells_ls$geom$crs <- list(type="name",properties=list(name="EPSG:4326")) # Information sur le systême de coordonnées de référence (CRS)
-  
-  shp_cells_list[[i]] <- cells_ls # Alimentation de l'objet final avec un niveau pour chaque cellule
+
+# Alimentation de l'objet final avec un niveau pour chaque cellule
+  shp_cells_list[[i]] <- cells_ls 
 }
 ```
 
 * **5.5** Nous pouvons maintenant insérer les nouvelles cellules dans la base de données Coléo.
 
-```r
-# Envoyer la nouvelle cellule vers COLEO
-#resp_cells <- post_cells(cells_ls)
+```{r}
+# Envoyer la nouvelle cellule vers Coléo
+resp_cells <- post_cells(shp_cells_list)
 ```
 
 Bravo ! Vous venez d'injecter vos nouvelles cellules dans la base de données Coléo.
