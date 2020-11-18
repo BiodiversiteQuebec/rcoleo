@@ -77,7 +77,12 @@ Les champs qui peuvent être remplis dans la table **campagnes** ("/campaigns") 
 #### 8.1.1. On commence par séléctionner les champs d'interêts & on matche les noms de variables avec celles de Coléo.
 
 ```r
-inj_camp_zoop <- dplyr::select(camp_zoopl, site_code=no_de_reference_du_site, opened_at=date_debut, closed_at=date_fin, technicien_1, technicien_2)
+inj_camp_zoop <- dplyr::select(camp_zoopl, 
+                               site_code = no_de_reference_du_site, 
+                               opened_at = date_debut, 
+                               closed_at = date_fin, 
+                               technicien_1, 
+                               technicien_2)
 ```
 #### 8.1.2. On garde une ligne unique par nouvelle campagne.
 

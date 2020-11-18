@@ -31,7 +31,8 @@ Pour installer le package `rcoleo`, il faut utiliser le package `devtools`, il f
 
 ```r
 library(devtools)
-install_github("TheoreticalEcosystemEcology/rcoleo") # installation du package rcoleo à partir de github
+# installation du package rcoleo à partir de github
+install_github("TheoreticalEcosystemEcology/rcoleo") 
 ```
 
 ## 6. Mettre en cache son jeton d'accès
