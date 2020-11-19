@@ -5,14 +5,198 @@ date: "19 novembre 2020"
 output: 
   html_document
 ---
+
 <style>
 div.red { background-color:#ff0000; border-radius: 5px; padding: 20px;}
 </style>
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
+
 <div class = "red">
 
 Vignette en cours de développement
 
 </div>
+
+## 1. Créer une base de données excel
+
+Afin d'injecter des nouvelles campagnes *papillon* dans la base de données Coléo, vous devez regrouper les informations suivantes dans un fichier excel :
+
+* *nom_cellule*
+* **cell_code**: code numérique unique pour chaque cellule
+* **site_code**: code alpha-numérique unique du site
+* **type_milieu**: 'lac', 'rivière', 'forestier', 'marais', 'marais côtier', 'toundrique', 'tourbière'
+* **latitude**: latitude du site d'échantillonnage
+* **longitude**: longitude du site d'échantillonnage
+* **date_debut**: date du début de la campagne
+* **date_fin**: date de la fin de la campagne
+* **technicien_1**
+* **technicien_2**
+* **heure_debut**
+* **heure_fin**
+* **temperature**
+* **ciel**
+* **vent**
+* **nom_commun**
+* **nom_scientifique**: nom latin des espèces observées
+* **abondance**
+* *note*
+<div class = "blue">
+**Note** : ne pas laisser de case vide, inscrire *NA* lorsque nécessaire
+</div>
+<div class = "blue">
+**Note bis** : Il est essentiel que ce tableau ne contiennent QUE des nouvelles campagnes ! Sous peine de voir échoué le code qui suit.
+</div>
+
+
+```{r, child="etape2_to_6.Rmd"}
+```
+
+
+
+
+
+
+#### Chargement des packages #### - Redondance ici avec le point 5
+library(dplyr)
+library(plyr)
+library(rcoleo)
+library(stringr)
+
+#### Importation des données Coléo ####
+# Les cellules
+cells <- rcoleo::get_cells()
+cells <- do.call("rbind.fill", cells[[1]]$body)
+
+# Les sites
+sites <- rcoleo::get_sites()
+sites <- do.call("rbind.fill", sites[[1]]$body)
+
+# Les campagnes 
+camps <- rcoleo::get_campaigns()
+camps <- do.call("rbind.fill", camps[[1]]$body)
+#camps <- dplyr::left_join(camps, sites[,c("id", "site_code")], by = c("site_id" = "id"))
+
+# Les noms d'espèces de référence
+species <- rcoleo::get_species()
+species <- do.call("rbind.fill", species[[1]]$body)
+
+# Les attributs
+attrs <- rcoleo::get_gen("/attributes")
+attrs <- do.call("rbind.fill", attrs$body)
+
+# Les environnements
+envs <- rcoleo::get_gen("/environment")
+envs <- do.call("rbind.fill", envs$body)
+
+#### Vérification des variables aux entrées limitées ####
+# vent
+y <- sort(unique(pap$vent))
+x <- sort(unique(envs$wind))
+
+y %in% x
+
+# ciel
+y <- sort(unique(pap$ciel))
+x <- sort(unique(envs$sky))
+
+y %in% x
+
+# type (hab_type)
+names(pap)[names(pap) == "type"] <- "hab_type"
+
+y <- sort(unique(pap$hab_type)); y
+x <- sort(unique(sites$type)); x
+
+y %in% x
+
+pap$hab_type <- str_replace_all(pap$hab_type, "Marais", "marais")
+pap$hab_type[which(pap$hab_type == "tourbiere" | pap$hab_type == "Tourbiere" | pap$hab_type == "tourbiere ")] <- "tourbière"
+
+#### Préparation des données à injecter ####
+# Type de campagnes *** ATTENTION _ ENTRÉES LIMITÉES PAR COLEO ***
+pap$type <- "papilionidés"
+
+#### Extra nettoyage ####
+pap <- pap[!is.na(pap$date_debut),]
+pap <- pap[!(is.na(pap$nom_commun) & is.na(pap$nom_scientifique)),]
+
+#### Vérification campagnes déjà insérées dans Coléo ####
+# Préparation
+test_pap <- paste(pap$site_code, pap$date_debut, pap$type)
+test_coleo <- paste(camps$site.site_code, camps$opened_at, camps$type)
+
+# Test
+test <- test_pap %in% test_coleo
+
+# Ajout dataframe
+pap$statut_coleo <- test
+
+# On garde uniquement les nouvelles campagnes
+pap <- pap[pap$statut_coleo == FALSE,]
+
+#### Vérification cellules déjà insérées dans Coléo ####
+cell_manquante <- rcoleo::COLEO_comp(unique(pap$cell_code), cells$cell_code)
+cell_manquante
+# -------------------- #
+# insertion bébé vignette insertion cellule CACHÉE 
+# -------------------- #
+# ==> injections des cellules "94_192"  "86_180"  "146_134"
+
+#### Vérification sites déjà insérés dans Coléo ####
+site_manquant <- rcoleo::COLEO_comp(unique(pap$site_code), sites$site_code)
+site_mnquant
+# -------------------- #
+# insertion bébé vignette insertion site CACHÉE
+# -------------------- #
+# ==> injections des sites "94_192_H01"  "86_180_H01"  "149_142_H02" en récupérant l'objet 
+
+#### Vérification noms d'espéces de référence déjà insérés dans Coléo ####
+
+test2 <- pap$nom_scientifique %in% species$name
+all(test2)
+# Si la valeur est TRUE, passer à l'étape suivante. Si la valeur est FALSE, référez vous à la vignette `injection des noms d'espèce`
+
+# -------------------- #
+# insertion bébé vignette insertion nom d'espèces CACHÉE
+# -------------------- #
+
+# Préparation du dataframe
+pap$stat_sp <- test2
+pap_sp_inj <- pap[pap$stat_sp == FALSE,] # Uniquement les lignes avec `stat_sp` == F
+pap_sp_inj <- select(pap_sp_inj,
+                     name = nom_scientifique,
+                     vernacular_fr = nom_commun) # colonne nécessaire
+
+
+pap_sp_inj <- pap_sp_inj[!duplicated(pap_sp_inj),] # retrait des duplicats
+
+# Formattage
+pap_sp_inj_ls <- purrr::transpose(pap_sp_inj)
+
+# Injection
+
+inj <- rcoleo::post_species(pap_sp_inj_ls)
+
+# ***ATTENTION*** Réfléchir au fait que toutes les informations pour les espèces ne sont pas renseignées avec cette méthode 
+# ------ FIN DE BB VIGNETTE ------ #
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script>
@@ -26,7 +210,7 @@ function myFunction() {
 }
 </script>
  
-<button onclick="myFunction()">Vignette injection cellules</button>
+<button onclick="myFunction()">Vignette injection sites</button>
  
 <div id="myDIV">
 
