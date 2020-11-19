@@ -1,7 +1,7 @@
 ---
-title: "Injection de nouvelles cellules dans Coléo"
-author: "Claire"
-date: "10 novembre 2020"
+# title: "Injection de nouvelles cellules dans Coléo"
+# author: "Claire"
+# date: "10 novembre 2020"
 output: html_document
 ---
 
@@ -24,7 +24,7 @@ Les projets permettent de travailler dans un répertoire de travail. Le fichiers
 Dans RStudio,
 
 
-```{r}
+```r
 install.packages("devtools")
 install.packages("dplyr")
 install.packages("rgdal")
@@ -33,7 +33,7 @@ install.packages("sp")
 pour installer le package rcoleo, il faut utiliser le packages devtools, il faut donc l'appeller avec library()
 
 
-```{r}
+```r
 library(devtools)
 # Installation du package rcoleo à partir de github
 install_github("RéseauBiodiversiteQuebec/rcoleo") 
@@ -41,7 +41,7 @@ install_github("RéseauBiodiversiteQuebec/rcoleo")
 ## 4. Mettre en cache son jeton d'accès
 Ce jeton permet d'apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l'utilisateur dans le menu à gauche.
 
-```{r}
+```r
 saveRDS("votrejeton", ".httr-oauth")
 ```
 Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d'injection. Le jeton est confidentiel.
@@ -50,7 +50,7 @@ Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton d
 
 * **5.1** Cette étape appelle les packages installés afin qu'ils puissent être utilisés
 
-```{r}
+```r
 library(rcoleo)
 library(dplyr)
 ```
@@ -64,27 +64,27 @@ Vous avez deux possibilités pour compléter cette étape:
 
 * Entrer manuellement le code des cellules dans un objet R.
 
-```{r}
+```r
 # Codes des nouvelles cellules à insérer
 cell_code <- c("124_93", "73_137")
 ```
 
 * Utiliser l'objet créer lors de l'utilisation de la fonction `COLEO_comp()` si vous êtes dans le cadre d'une insertion de nouvelles campagnes.
 
-```{r}
+```r
 cell_code <- cell_manquante # Codes des nouvelles cellules à insérer
 ```
 
 * **5.3** Cette étape permet d'enregistrer un objet dans R avec les informations de toutes les cellules existantes
 
-```{r}
+```r
 shp_cells <- rgdal::readOGR(dsn="./shp",
                             layer="Cellule_terrain_2016-2020") # Ici le fichier shapefile est placé dans un dossier shp et on appelle tous les fichiers nommés "Cellule_terrain_2016_2020"
 ```
 
 * **5.4** Cette étape permet d'extraire les informations nécessaires concernant les nouvelles cellules et de formater ces informations de sorte à pouvoir les insérer dans Coléo. 
 
-```{r}
+```r
 # Création d'une liste vide pour l'objet final
 shp_cells_list <- list()
 
@@ -114,7 +114,7 @@ for (i in 1:length(cell_code)){
 
 * **5.5** Nous pouvons maintenant insérer les nouvelles cellules dans la base de données Coléo.
 
-```{r}
+```r
 # Envoyer la nouvelle cellule vers Coléo
 resp_cells <- post_cells(shp_cells_list)
 ```
