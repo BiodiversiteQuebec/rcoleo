@@ -95,9 +95,7 @@ geom <- apply(correctionsuniques,1, function(x){
   } else {
     return(NA)
   }})
-
 crs_ls <- list(type="name",properties=list(name="EPSG:4326"))
-
 # Fusionner les deux listes (geomations + sites)
 for(i in 1:length(correctionsuniques_ls)){
   correctionsuniques_ls[[i]]$geom <- geom[i][[1]]
@@ -105,8 +103,6 @@ for(i in 1:length(correctionsuniques_ls)){
     correctionsuniques_ls[[i]]$geom$crs <- list(type="name",properties=list(name="EPSG:4326"))
   }
 }
-
-
 correctionsuniques_ls
 ```
 
