@@ -267,9 +267,7 @@
   <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
     <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>
   <span class="op">}</span><span class="op">}</span><span class="op">)</span>
-
 <span class="va">crs_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"name"</span>,properties<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"EPSG:4326"</span><span class="op">)</span><span class="op">)</span>
-
 <span class="co"># Fusionner les deux listes (geomations + sites)</span>
 <span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">correctionsuniques_ls</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
   <span class="va">correctionsuniques_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span> <span class="op">&lt;-</span> <span class="va">geom</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
@@ -277,8 +275,6 @@
     <span class="va">correctionsuniques_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span><span class="op">$</span><span class="va">crs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"name"</span>,properties<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"EPSG:4326"</span><span class="op">)</span><span class="op">)</span>
   <span class="op">}</span>
 <span class="op">}</span>
-
-
 <span class="va">correctionsuniques_ls</span></code></pre></div>
 <ul>
 <li>

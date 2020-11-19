@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Injection de nouvelles cellules dans Coléo • rcoleo</title>
+<title> • rcoleo</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Injection de nouvelles cellules dans Coléo">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="">
 <meta property="og:description" content="rcoleo">
 <meta property="og:image" content="/logo.svg">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -112,10 +112,8 @@
       </header><script src="injection-cellules_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Injection de nouvelles cellules dans Coléo</h1>
-                        <h4 class="author">Claire</h4>
+      <h1 data-toc-skip></h1>
             
-            <h4 class="date">10 novembre 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/vignettes/injection-cellules.Rmd"><code>vignettes/injection-cellules.Rmd</code></a></small>
       <div class="hidden name"><code>injection-cellules.Rmd</code></div>
@@ -159,14 +157,15 @@
 <p>pour installer le package rcoleo, il faut utiliser le packages devtools, il faut donc l’appeller avec library()</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">devtools</span><span class="op">)</span>
-<span class="fu">install_github</span><span class="op">(</span><span class="st">"RéseauBiodiversiteQuebec/rcoleo"</span><span class="op">)</span> <span class="co">#installe le package rcoleo à partir de github</span></code></pre></div>
+<span class="co"># Installation du package rcoleo à partir de github</span>
+<span class="fu">install_github</span><span class="op">(</span><span class="st">"RéseauBiodiversiteQuebec/rcoleo"</span><span class="op">)</span> </code></pre></div>
 </div>
 <div id="mettre-en-cache-son-jeton-daccès" class="section level2">
 <h2 class="hasAnchor">
 <a href="#mettre-en-cache-son-jeton-dacc%C3%A8s" class="anchor"></a>4. Mettre en cache son jeton d’accès</h2>
 <p>Ce jeton permet d’apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l’utilisateur dans le menu à gauche.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="st">"votrejeton"</span>,<span class="st">".httr-oauth"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="st">"votrejeton"</span>, <span class="st">".httr-oauth"</span><span class="op">)</span></code></pre></div>
 <p>Cette étape n’est faite qu’une fois et permet l’enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d’injection. Le jeton est confidentiel.</p>
 </div>
 <div id="injection-des-cellules-dans-coléo" class="section level2">
@@ -189,7 +188,8 @@
 <li>Entrer manuellement le code des cellules dans un objet R.</li>
 </ul>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">cell_code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"124_93"</span>, <span class="st">"73_137"</span><span class="op">)</span> <span class="co"># Codes des nouvelles cellules à insérer</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># Codes des nouvelles cellules à insérer</span>
+<span class="va">cell_code</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"124_93"</span>, <span class="st">"73_137"</span><span class="op">)</span></code></pre></div>
 <ul>
 <li>Utiliser l’objet créer lors de l’utilisation de la fonction <code><a href="../reference/COLEO_comp.html">COLEO_comp()</a></code> si vous êtes dans le cadre d’une insertion de nouvelles campagnes.</li>
 </ul>
@@ -200,42 +200,45 @@
 <strong>5.3</strong> Cette étape permet d’enregistrer un objet dans R avec les informations de toutes les cellules existantes</li>
 </ul>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">shp_cells</span> <span class="op">&lt;-</span> <span class="fu">rgdal</span><span class="fu">::</span><span class="fu">readOGR</span><span class="op">(</span>dsn<span class="op">=</span><span class="st">"./shp"</span>,layer<span class="op">=</span><span class="st">"Cellule_terrain_2016-2020"</span><span class="op">)</span> <span class="co"># Ici le fichier shapefile est placé dans un dossier shp et on appelle tous les fichiers nommés "Cellule_terrain_2016_2020"</span></code></pre></div>
+<code class="sourceCode R"><span class="va">shp_cells</span> <span class="op">&lt;-</span> <span class="fu">rgdal</span><span class="fu">::</span><span class="fu">readOGR</span><span class="op">(</span>dsn<span class="op">=</span><span class="st">"./shp"</span>,
+                            layer<span class="op">=</span><span class="st">"Cellule_terrain_2016-2020"</span><span class="op">)</span> <span class="co"># Ici le fichier shapefile est placé dans un dossier shp et on appelle tous les fichiers nommés "Cellule_terrain_2016_2020"</span></code></pre></div>
 <ul>
 <li>
 <strong>5.4</strong> Cette étape permet d’extraire les informations nécessaires concernant les nouvelles cellules et de formater ces informations de sorte à pouvoir les insérer dans Coléo.</li>
 </ul>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">shp_cells_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Création d'une liste vide pour l'objet final</span>
+<code class="sourceCode R"><span class="co"># Création d'une liste vide pour l'objet final</span>
+<span class="va">shp_cells_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">cell_code</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
-
-  <span class="va">shp</span> <span class="op">&lt;-</span> <span class="va">shp_cells</span><span class="op">[</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">IJ</span> <span class="op">==</span> <span class="va">cell_code</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> ,<span class="op">]</span> <span class="co"># Obtention des information pour un cellule</span>
   
-  <span class="co"># Création d'une liste avec les informations nécessaires pour chaque cellule</span>
+<span class="co"># Obtention des information pour un cellule</span>
+  <span class="va">shp</span> <span class="op">&lt;-</span> <span class="va">shp_cells</span><span class="op">[</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">IJ</span> <span class="op">==</span> <span class="va">cell_code</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> ,<span class="op">]</span> 
+  
+<span class="co"># Création d'une liste avec les informations nécessaires pour chaque cellule</span>
   <span class="va">cells_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
   <span class="va">cells_ls</span><span class="op">$</span><span class="va">cell_code</span> <span class="op">&lt;-</span> <span class="va">cell_code</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="co"># Code de la cellule</span>
   <span class="va">cells_ls</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">shp_cells</span><span class="op">[</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">IJ</span> <span class="op">==</span> <span class="va">cell_code</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">Nom</span><span class="op">)</span>,<span class="op">]</span><span class="op">@</span><span class="va">data</span><span class="op">$</span><span class="va">Nom</span><span class="op">)</span> <span class="co"># Nom de la cellule</span>
   
   <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="va">cells_ls</span><span class="op">$</span><span class="va">name</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
     <span class="va">cells_ls</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
-  <span class="op">}</span> <span class="co"># Information absente si pas de no mpour la cellule</span>
+  <span class="op">}</span> <span class="co"># Information absente si pas de nom pour la cellule</span>
   
-  <span class="co"># Création de l'objet spatial pour les coordonnées de la cellule</span>
-  
+<span class="co"># Création de l'objet spatial pour les coordonnées de la cellule</span>
   <span class="va">shp_sp</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">shp</span>, <span class="st">"SpatialPolygons"</span><span class="op">)</span>
   <span class="va">cells_ls</span><span class="op">$</span><span class="va">geom</span> <span class="op">&lt;-</span> <span class="fu">geojsonio</span><span class="fu">::</span><span class="fu">geojson_list</span><span class="op">(</span><span class="va">shp</span><span class="op">)</span><span class="op">$</span><span class="va">features</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geometry</span> <span class="co"># Caractéristiques de l'objet spatial</span>
   <span class="va">cells_ls</span><span class="op">$</span><span class="va">geom</span><span class="op">$</span><span class="va">crs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"name"</span>,properties<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"EPSG:4326"</span><span class="op">)</span><span class="op">)</span> <span class="co"># Information sur le systême de coordonnées de référence (CRS)</span>
-  
-  <span class="va">shp_cells_list</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">cells_ls</span> <span class="co"># Alimentation de l'objet final avec un niveau pour chaque cellule</span>
+
+<span class="co"># Alimentation de l'objet final avec un niveau pour chaque cellule</span>
+  <span class="va">shp_cells_list</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">cells_ls</span> 
 <span class="op">}</span></code></pre></div>
 <ul>
 <li>
 <strong>5.5</strong> Nous pouvons maintenant insérer les nouvelles cellules dans la base de données Coléo.</li>
 </ul>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Envoyer la nouvelle cellule vers COLEO</span>
-<span class="co">#resp_cells &lt;- post_cells(cells_ls)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># Envoyer la nouvelle cellule vers Coléo</span>
+<span class="va">resp_cells</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/post_cells.html">post_cells</a></span><span class="op">(</span><span class="va">shp_cells_list</span><span class="op">)</span></code></pre></div>
 <p>Bravo ! Vous venez d’injecter vos nouvelles cellules dans la base de données Coléo.</p>
 </div>
   </div>
