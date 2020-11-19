@@ -1,0 +1,40 @@
+---
+title: "Tutoriel pour injection des campagnes papillon"
+author: "Claire-Cécile Juhasz"
+date: "19 novembre 2020"
+output: 
+  html_document
+---
+<style>
+div.red { background-color:#ff0000; border-radius: 5px; padding: 20px;}
+</style>
+<div class = "red">
+
+Vignette en cours de développement
+
+</div>
+
+
+<script>
+function myFunction() {
+    var x = document.getElementById("myDIV");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+}
+</script>
+ 
+<button onclick="myFunction()">Vignette injection cellules</button>
+ 
+<div id="myDIV">
+
+```{r, child="BB_Vignette_injection-sites.Rmd"}
+```
+ 
+</div>
+
+<script>
+document.getElementById("myDIV").style.display ="none"
+</script>
