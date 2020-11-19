@@ -127,9 +127,245 @@
 <style>
 div.red { background-color:#ff0000; border-radius: 5px; padding: 20px;}
 </style>
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
+</style>
 <div class="red">
 <p>Vignette en cours de développement</p>
 </div>
+<div id="créer-une-base-de-données-excel" class="section level2">
+<h2 class="hasAnchor">
+<a href="#cr%C3%A9er-une-base-de-donn%C3%A9es-excel" class="anchor"></a>1. Créer une base de données excel</h2>
+<p>Afin d’injecter des nouvelles campagnes <em>papillon</em> dans la base de données Coléo, vous devez regrouper les informations suivantes dans un fichier excel :</p>
+<ul>
+<li><em>nom_cellule</em></li>
+<li>
+<strong>cell_code</strong>: code numérique unique pour chaque cellule</li>
+<li>
+<strong>site_code</strong>: code alpha-numérique unique du site</li>
+<li>
+<strong>type_milieu</strong>: ‘lac’, ‘rivière’, ‘forestier’, ‘marais’, ‘marais côtier’, ‘toundrique’, ‘tourbière’</li>
+<li>
+<strong>latitude</strong>: latitude du site d’échantillonnage</li>
+<li>
+<strong>longitude</strong>: longitude du site d’échantillonnage</li>
+<li>
+<strong>date_debut</strong>: date du début de la campagne</li>
+<li>
+<strong>date_fin</strong>: date de la fin de la campagne</li>
+<li><strong>technicien_1</strong></li>
+<li><strong>technicien_2</strong></li>
+<li><strong>heure_debut</strong></li>
+<li><strong>heure_fin</strong></li>
+<li><strong>temperature</strong></li>
+<li><strong>ciel</strong></li>
+<li><strong>vent</strong></li>
+<li><strong>nom_commun</strong></li>
+<li>
+<strong>nom_scientifique</strong>: nom latin des espèces observées</li>
+<li><strong>abondance</strong></li>
+<li>
+<em>note</em>
+<div class="blue">
+<p><strong>Note</strong> : ne pas laisser de case vide, inscrire <em>NA</em> lorsque nécessaire</p>
+</div>
+<div class="blue">
+<p><strong>Note bis</strong> : Il est essentiel que ce tableau ne contiennent QUE des nouvelles campagnes ! Sous peine de voir échoué le code qui suit.</p>
+</div>
+</li>
+</ul>
+</div>
+<div id="corriger-la-base-de-données" class="section level2">
+<h2 class="hasAnchor">
+<a href="#corriger-la-base-de-donn%C3%A9es" class="anchor"></a>2. Corriger la base de données</h2>
+<p>Il est très important de s’assurer que la base de données excel soit sans erreur <strong>avant</strong> de l’injecter dans Coléo. Coléo n’a pas de système de correction et va prendre toutes les entrées, même si elles contiennent des erreurs.</p>
+</div>
+<div id="créer-un-projet-r" class="section level2">
+<h2 class="hasAnchor">
+<a href="#cr%C3%A9er-un-projet-r" class="anchor"></a>3. Créer un projet R</h2>
+<p>Dans RStudio,</p>
+<ul>
+<li>Aller dans <code>File</code> &gt; <code>New Project</code> &gt; <code>New Directory</code> &gt; <code>New Project</code>
+</li>
+<li>Choisir un nom de projet et un lieu dans les fichiers pour le projet</li>
+</ul>
+<p>Les projets permettent de travailler dans un répertoire de travail (<em>working directory</em>). La base de données doit donc être sauvegardée dans le même dossier que le projet afin de faire parti du répertoire de travail.</p>
+</div>
+<div id="sauvegarder-la-base-de-données-en-format--csv-dans-le-même-dossier-que-le-projet-r" class="section level2">
+<h2 class="hasAnchor">
+<a href="#sauvegarder-la-base-de-donn%C3%A9es-en-format--csv-dans-le-m%C3%AAme-dossier-que-le-projet-r" class="anchor"></a>4. Sauvegarder la base de données en format .csv dans le même dossier que le projet R</h2>
+</div>
+<div id="installer-les-packages-nécessaires" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installer-les-packages-n%C3%A9cessaires" class="anchor"></a>5. Installer les packages nécessaires</h2>
+<p>Dans RStudio,</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span><span class="op">)</span></code></pre></div>
+<p>Pour installer le package <code>rcoleo</code>, il faut utiliser le package <code>devtools</code>, il faut donc l’appeller avec <code><a href="https://rdrr.io/r/base/library.html">library()</a></code></p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">devtools</span><span class="op">)</span>
+<span class="co"># installation du package rcoleo à partir de github</span>
+<span class="fu">install_github</span><span class="op">(</span><span class="st">"TheoreticalEcosystemEcology/rcoleo"</span><span class="op">)</span> </code></pre></div>
+</div>
+<div id="mettre-en-cache-son-jeton-daccès" class="section level2">
+<h2 class="hasAnchor">
+<a href="#mettre-en-cache-son-jeton-dacc%C3%A8s" class="anchor"></a>6. Mettre en cache son jeton d’accès</h2>
+<p>Ce jeton permet d’apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l’utilisateur dans le menu à gauche.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="st">"votrejeton"</span>,<span class="st">".httr-oauth"</span><span class="op">)</span></code></pre></div>
+<p>Cette étape n’est faite qu’une fois et permet l’enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d’injection. Le jeton est confidentiel.</p>
+<div id="chargement-des-packages---redondance-ici-avec-le-point-5" class="section level4">
+<h4 class="hasAnchor">
+<a href="#chargement-des-packages---redondance-ici-avec-le-point-5" class="anchor"></a>Chargement des packages #### - Redondance ici avec le point 5</h4>
+<p>library(dplyr) library(plyr) library(rcoleo) library(stringr)</p>
+</div>
+<div id="importation-des-données-coléo" class="section level4">
+<h4 class="hasAnchor">
+<a href="#importation-des-donn%C3%A9es-col%C3%A9o" class="anchor"></a>Importation des données Coléo</h4>
+</div>
+</div>
+<div id="les-cellules" class="section level1">
+<h1 class="hasAnchor">
+<a href="#les-cellules" class="anchor"></a>Les cellules</h1>
+<p>cells &lt;- rcoleo::get_cells() cells &lt;- do.call(“rbind.fill”, cells[[1]]$body)</p>
+</div>
+<div id="les-sites" class="section level1">
+<h1 class="hasAnchor">
+<a href="#les-sites" class="anchor"></a>Les sites</h1>
+<p>sites &lt;- rcoleo::get_sites() sites &lt;- do.call(“rbind.fill”, sites[[1]]$body)</p>
+</div>
+<div id="les-campagnes" class="section level1">
+<h1 class="hasAnchor">
+<a href="#les-campagnes" class="anchor"></a>Les campagnes</h1>
+<p>camps &lt;- rcoleo::get_campaigns() camps &lt;- do.call(“rbind.fill”, camps[[1]]$body) #camps &lt;- dplyr::left_join(camps, sites[,c(“id”, “site_code”)], by = c(“site_id” = “id”))</p>
+</div>
+<div id="les-noms-despèces-de-référence" class="section level1">
+<h1 class="hasAnchor">
+<a href="#les-noms-desp%C3%A8ces-de-r%C3%A9f%C3%A9rence" class="anchor"></a>Les noms d’espèces de référence</h1>
+<p>species &lt;- rcoleo::get_species() species &lt;- do.call(“rbind.fill”, species[[1]]$body)</p>
+</div>
+<div id="les-attributs" class="section level1">
+<h1 class="hasAnchor">
+<a href="#les-attributs" class="anchor"></a>Les attributs</h1>
+<p>attrs &lt;- rcoleo::get_gen(“/attributes”) attrs &lt;- do.call(“rbind.fill”, attrs$body)</p>
+</div>
+<div id="les-environnements" class="section level1">
+<h1 class="hasAnchor">
+<a href="#les-environnements" class="anchor"></a>Les environnements</h1>
+<p>envs &lt;- rcoleo::get_gen(“/environment”) envs &lt;- do.call(“rbind.fill”, envs$body)</p>
+<div id="vérification-des-variables-aux-entrées-limitées" class="section level4">
+<h4 class="hasAnchor">
+<a href="#v%C3%A9rification-des-variables-aux-entr%C3%A9es-limit%C3%A9es" class="anchor"></a>Vérification des variables aux entrées limitées</h4>
+</div>
+</div>
+<div id="vent" class="section level1">
+<h1 class="hasAnchor">
+<a href="#vent" class="anchor"></a>vent</h1>
+<p>y &lt;- sort(unique(pap<span class="math inline">\(vent)) x &lt;- sort(unique(envs\)</span>wind))</p>
+<p>y %in% x</p>
+</div>
+<div id="ciel" class="section level1">
+<h1 class="hasAnchor">
+<a href="#ciel" class="anchor"></a>ciel</h1>
+<p>y &lt;- sort(unique(pap<span class="math inline">\(ciel)) x &lt;- sort(unique(envs\)</span>sky))</p>
+<p>y %in% x</p>
+</div>
+<div id="type-hab_type" class="section level1">
+<h1 class="hasAnchor">
+<a href="#type-hab_type" class="anchor"></a>type (hab_type)</h1>
+<p>names(pap)[names(pap) == “type”] &lt;- “hab_type”</p>
+<p>y &lt;- sort(unique(pap<span class="math inline">\(hab_type)); y x &lt;- sort(unique(sites\)</span>type)); x</p>
+<p>y %in% x</p>
+<p>pap<span class="math inline">\(hab_type &lt;- str_replace_all(pap\)</span>hab_type, “Marais”, “marais”) pap<span class="math inline">\(hab_type[which(pap\)</span>hab_type == “tourbiere” | pap<span class="math inline">\(hab_type == "Tourbiere" | pap\)</span>hab_type == “tourbiere”)] &lt;- “tourbière”</p>
+<div id="préparation-des-données-à-injecter" class="section level4">
+<h4 class="hasAnchor">
+<a href="#pr%C3%A9paration-des-donn%C3%A9es-%C3%A0-injecter" class="anchor"></a>Préparation des données à injecter</h4>
+</div>
+</div>
+<div id="type-de-campagnes-attention-_-entrées-limitées-par-coleo-paptype---papilionidés" class="section level1">
+<h1 class="hasAnchor">
+<a href="#type-de-campagnes-attention-_-entr%C3%A9es-limit%C3%A9es-par-coleo-paptype---papilionid%C3%A9s" class="anchor"></a>Type de campagnes *** ATTENTION _ ENTRÉES LIMITÉES PAR COLEO *** pap$type &lt;- “papilionidés”</h1>
+<div id="extra-nettoyage" class="section level4">
+<h4 class="hasAnchor">
+<a href="#extra-nettoyage" class="anchor"></a>Extra nettoyage</h4>
+<p>pap &lt;- pap[!is.na(pap$date_debut),] pap &lt;- pap[!(is.na(pap<span class="math inline">\(nom_commun) &amp; is.na(pap\)</span>nom_scientifique)),]</p>
+</div>
+<div id="vérification-campagnes-déjà-insérées-dans-coléo" class="section level4">
+<h4 class="hasAnchor">
+<a href="#v%C3%A9rification-campagnes-d%C3%A9j%C3%A0-ins%C3%A9r%C3%A9es-dans-col%C3%A9o" class="anchor"></a>Vérification campagnes déjà insérées dans Coléo</h4>
+</div>
+</div>
+<div id="préparation" class="section level1">
+<h1 class="hasAnchor">
+<a href="#pr%C3%A9paration" class="anchor"></a>Préparation</h1>
+<p>test_pap &lt;- paste(pap<span class="math inline">\(site_code, pap\)</span>date_debut, pap<span class="math inline">\(type) test_coleo &lt;- paste(camps\)</span>site.site_code, camps<span class="math inline">\(opened_at, camps\)</span>type)</p>
+</div>
+<div id="test" class="section level1">
+<h1 class="hasAnchor">
+<a href="#test" class="anchor"></a>Test</h1>
+<p>test &lt;- test_pap %in% test_coleo</p>
+</div>
+<div id="ajout-dataframe" class="section level1">
+<h1 class="hasAnchor">
+<a href="#ajout-dataframe" class="anchor"></a>Ajout dataframe</h1>
+<p>pap$statut_coleo &lt;- test</p>
+</div>
+<div id="on-garde-uniquement-les-nouvelles-campagnes" class="section level1">
+<h1 class="hasAnchor">
+<a href="#on-garde-uniquement-les-nouvelles-campagnes" class="anchor"></a>On garde uniquement les nouvelles campagnes</h1>
+<p>pap &lt;- pap[pap$statut_coleo == FALSE,]</p>
+<div id="vérification-cellules-déjà-insérées-dans-coléo" class="section level4">
+<h4 class="hasAnchor">
+<a href="#v%C3%A9rification-cellules-d%C3%A9j%C3%A0-ins%C3%A9r%C3%A9es-dans-col%C3%A9o" class="anchor"></a>Vérification cellules déjà insérées dans Coléo</h4>
+<p>cell_manquante &lt;- rcoleo::COLEO_comp(unique(pap<span class="math inline">\(cell_code), cells\)</span>cell_code) cell_manquante # ——————– # # insertion bébé vignette insertion cellule CACHÉE # ——————– # # ==&gt; injections des cellules “94_192” “86_180” “146_134”</p>
+</div>
+<div id="vérification-sites-déjà-insérés-dans-coléo" class="section level4">
+<h4 class="hasAnchor">
+<a href="#v%C3%A9rification-sites-d%C3%A9j%C3%A0-ins%C3%A9r%C3%A9s-dans-col%C3%A9o" class="anchor"></a>Vérification sites déjà insérés dans Coléo</h4>
+<p>site_manquant &lt;- rcoleo::COLEO_comp(unique(pap<span class="math inline">\(site_code), sites\)</span>site_code) site_mnquant # ——————– # # insertion bébé vignette insertion site CACHÉE # ——————– # # ==&gt; injections des sites “94_192_H01” “86_180_H01” “149_142_H02” en récupérant l’objet</p>
+</div>
+<div id="vérification-noms-despéces-de-référence-déjà-insérés-dans-coléo" class="section level4">
+<h4 class="hasAnchor">
+<a href="#v%C3%A9rification-noms-desp%C3%A9ces-de-r%C3%A9f%C3%A9rence-d%C3%A9j%C3%A0-ins%C3%A9r%C3%A9s-dans-col%C3%A9o" class="anchor"></a>Vérification noms d’espéces de référence déjà insérés dans Coléo</h4>
+<p>test2 &lt;- pap<span class="math inline">\(nom_scientifique %in% species\)</span>name all(test2) # Si la valeur est TRUE, passer à l’étape suivante. Si la valeur est FALSE, référez vous à la vignette <code>injection des noms d'espèce</code></p>
+</div>
+</div>
+<div id="section" class="section level1">
+<h1 class="hasAnchor">
+<a href="#section" class="anchor"></a>——————–</h1>
+</div>
+<div id="insertion-bébé-vignette-insertion-nom-despèces-cachée" class="section level1">
+<h1 class="hasAnchor">
+<a href="#insertion-b%C3%A9b%C3%A9-vignette-insertion-nom-desp%C3%A8ces-cach%C3%A9e" class="anchor"></a>insertion bébé vignette insertion nom d’espèces CACHÉE</h1>
+</div>
+<div id="section-1" class="section level1">
+<h1 class="hasAnchor">
+<a href="#section-1" class="anchor"></a>——————–</h1>
+</div>
+<div id="préparation-du-dataframe" class="section level1">
+<h1 class="hasAnchor">
+<a href="#pr%C3%A9paration-du-dataframe" class="anchor"></a>Préparation du dataframe</h1>
+<p>pap<span class="math inline">\(stat_sp &lt;- test2 pap_sp_inj &lt;- pap[pap\)</span>stat_sp == FALSE,] # Uniquement les lignes avec <code>stat_sp</code> == F pap_sp_inj &lt;- select(pap_sp_inj, name = nom_scientifique, vernacular_fr = nom_commun) # colonne nécessaire</p>
+<p>pap_sp_inj &lt;- pap_sp_inj[!duplicated(pap_sp_inj),] # retrait des duplicats</p>
+</div>
+<div id="formattage" class="section level1">
+<h1 class="hasAnchor">
+<a href="#formattage" class="anchor"></a>Formattage</h1>
+<p>pap_sp_inj_ls &lt;- purrr::transpose(pap_sp_inj)</p>
+</div>
+<div id="injection" class="section level1">
+<h1 class="hasAnchor">
+<a href="#injection" class="anchor"></a>Injection</h1>
+<p>inj &lt;- rcoleo::post_species(pap_sp_inj_ls)</p>
+</div>
+<div id="attention-réfléchir-au-fait-que-toutes-les-informations-pour-les-espèces-ne-sont-pas-renseignées-avec-cette-méthode" class="section level1">
+<h1 class="hasAnchor">
+<a href="#attention-r%C3%A9fl%C3%A9chir-au-fait-que-toutes-les-informations-pour-les-esp%C3%A8ces-ne-sont-pas-renseign%C3%A9es-avec-cette-m%C3%A9thode" class="anchor"></a><strong><em>ATTENTION</em></strong> Réfléchir au fait que toutes les informations pour les espèces ne sont pas renseignées avec cette méthode</h1>
+</div>
+<div id="fin-de-bb-vignette" class="section level1">
+<h1 class="hasAnchor">
+<a href="#fin-de-bb-vignette" class="anchor"></a>—— FIN DE BB VIGNETTE ——</h1>
 <script>
 function myFunction() {
     var x = document.getElementById("myDIV");
@@ -140,10 +376,10 @@ function myFunction() {
     }
 }
 </script><button onclick="myFunction()">
-Vignette injection cellules
+Vignette injection sites
 </button>
 <div id="myDIV">
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R">
 
 <span class="co">#### On garde une ligne par site</span>
@@ -185,10 +421,13 @@ Vignette injection cellules
 document.getElementById("myDIV").style.display ="none"
 </script>
 </div>
+  </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
