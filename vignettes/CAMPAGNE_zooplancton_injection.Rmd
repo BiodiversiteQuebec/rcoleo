@@ -190,13 +190,14 @@ for(i in 1:length(land_ls)){
  }
 }
 ```
-La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).
+
 
 #### 8.2.7. Il est maintenant possible de procéder à l'injection.
 
 ```r
 COLEO_land_inj <- post_landmarks(land_ls)
 ```
+La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).
 
 ### 8.3. Injections des observations associées aux nouvelles campagnes
 
