@@ -105,7 +105,7 @@ cell_abs
 La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire d'importer ces cellules avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `cell_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées dans la vignette [*Injection des cellules*](https://reseaubiodiversitequebec.github.io/rcoleo/articles/injection-cellules.html).
 
 <script>
-function myFunction() {
+function myFunction1() {
     var x = document.getElementById("myDIV_cells");
     if (x.style.display === "none") {
         x.style.display = "block";
@@ -115,12 +115,10 @@ function myFunction() {
 }
 </script>
  
-<button onclick="myFunction()">Vignette injection cellules</button>
+<button onclick="myFunction1()">Vignette injection cellules</button>
  
 <div id="myDIV_cells">
-
-```{r, child="BB_Vignette_injection-cells.Rmd"}
-```
+Ici, BB vignette injection de cellules
  
 </div>
 
@@ -139,7 +137,7 @@ site_abs
 La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains sites n'existent pas dans Coléo, il sera nécessaire d'importer ces sites avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `site_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre  les étapes détaillées dans la vignette [*Injection des sites*](injection-sites.html).
 
 <script>
-function myFunction() {
+function myFunction2() {
     var x = document.getElementById("myDIV_sites");
     if (x.style.display === "none") {
         x.style.display = "block";
@@ -149,13 +147,10 @@ function myFunction() {
 }
 </script>
  
-<button onclick="myFunction()">Vignette injection sites</button>
+<button onclick="myFunction2()">Vignette injection sites</button>
  
 <div id="myDIV_sites">
-
-```{r, child="BB_Vignette_injection-sites.Rmd"}
-```
- 
+Ici, BB vignette injection de sites
 </div>
 
 <script>
@@ -173,7 +168,7 @@ sp_abs
 La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains noms d'espèces n'existent pas dans Coléo, il sera nécessaire d'importer ces noms avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `sp_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre  les étapes détaillées dans la vignette [*Injection des noms d'espèce*](injection-taxa.html).
 
 <script>
-function myFunction() {
+function myFunction3() {
     var x = document.getElementById("myDIV_taxa");
     if (x.style.display === "none") {
         x.style.display = "block";
@@ -183,12 +178,10 @@ function myFunction() {
 }
 </script>
  
-<button onclick="myFunction()">Vignette injection noms d'espèce</button>
+<button onclick="myFunction3()">Vignette injection noms d'espèce</button>
  
 <div id="myDIV_taxa">
-
-```{r, child="BB_Vignette_injection-taxa.Rmd"}
-```
+Ici, BB vignette injection de noms d'espèces
  
 </div>
 

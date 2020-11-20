@@ -52,7 +52,7 @@ Note : ne pas laisser de case vide, inscrire NA lorsque nécessaire
 </div>
 
 
-```{r, child="etape2_to_6.Rmd"}
+```{r, child="etape2_to_7.Rmd"}
 ```
 
 ## 7. Vérification pré-injection
@@ -64,10 +64,6 @@ La succession d'étape qui suivent permettent de vérifier si les cellules, les 
 ```r
 camp_zoopl <- read.csv("./lenomdevotrebasededonnées.csv", header = TRUE, sep = ',', stringsAsFactors = FALSE, encoding = "UTF-8") # l'encoding UTF-8 permet de garder les accents
 ```
-
-```{r, child="etape7_partielle.Rmd"}
-```
-
 
 
 #### 7.3.4. Pour les attributs
@@ -94,7 +90,4 @@ Pour une injection complète d'une campagne, il est nécessaire de passer par l'
 ### 8.1. Injections des informations sur les nouvelles campagnes
 Les champs qui peuvent être remplis dans la table **campagnes** ("/campaigns") de Coléo sont les suivants (les champs en gras sont obligatoires) :
 
-```{r, eval=FALSE, include=FALSE}
-
-```
 

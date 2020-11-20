@@ -29,7 +29,7 @@ Afin d'injecter des nouvelles campagnes *zooplancton* dans la base de données C
 Note : ne pas laisser de case vide, inscrire NA lorsque nécessaire
 Note bis : Il est essentiel que ce tableau ne contiennent QUE des nouvelles campagnes ! Sous peine de voir échoué le code qui suit.
 
-```{r, child="etape2_to_6.Rmd"}
+```{r, child="etape2_to_7.Rmd"}
 ```
 
 
@@ -41,9 +41,6 @@ La succession d'étape qui suivent permettent de vérifier si les cellules, les 
 
 ```r
 camp_zoopl <- read.csv("./lenomdevotrebasededonnées.csv", header = TRUE, sep = ',', stringsAsFactors = FALSE, encoding = "UTF-8") # l'encoding UTF-8 permet de garder les accents
-```
-
-```{r, child="etape7_partielle.Rmd"}
 ```
 
 #### 7.3.4. Pour les attributs
