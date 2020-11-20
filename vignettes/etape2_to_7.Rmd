@@ -1,0 +1,118 @@
+---
+output: html_document
+---
+
+## 2. Corriger la base de données
+
+Il est très important de s'assurer que la base de données excel soit sans erreur **avant** de l'injecter dans Coléo. Coléo n'a pas de système de correction et va prendre toutes les entrées, même si elles contiennent des erreurs.
+
+
+## 3. Créer un projet R
+
+Dans RStudio,
+
+* Aller dans `File` > `New Project` > `New Directory` > `New Project`
+* Choisir un nom de projet et un lieu dans les fichiers pour le projet
+
+Les projets permettent de travailler dans un répertoire de travail (*working directory*). La base de données doit donc être sauvegardée dans le même dossier que le projet afin de faire parti du répertoire de travail.
+
+## 4. Sauvegarder la base de données en format .csv dans le même dossier que le projet R
+
+<div class = "blue">
+
+**Rappel** - L'encodage du fichier .csv doit être en "UTF-8"
+
+</div>
+
+## 5. Installer et charger les packages nécessaires
+
+S'il ne s'agit pas de vos premières injections dans Coléo avec R, vous pouvez directement passer à l'**étape 5.2**. Sinon vous devez installer les packages nécessaires. 
+
+### 5.1. Installation des packages
+
+Dans RStudio :
+
+```r
+install.packages("devtools")
+install.packages("dplyr")
+```
+
+Pour installer le package `rcoleo`, il faut utiliser le package `devtools`, il faut donc l'appeller avec `library()`
+
+```r
+library(devtools)
+# installation du package rcoleo à partir de github
+install_github("TheoreticalEcosystemEcology/rcoleo") 
+```
+
+### 5.2. Chargement des packages
+
+```r
+install.packages("rcoleo")
+install.packages("dplyr")
+```
+
+## 6. Mettre en cache son jeton d'accès
+
+Ce jeton permet d'apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l'utilisateur dans le menu à gauche.
+
+```r
+saveRDS("votrejeton",".httr-oauth")
+```
+
+Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d'injection. Le jeton est confidentiel.
+
+
+## 7. Vérification pré-injection
+
+La succession d'étape qui suivent permettent de vérifier si les cellules, les sites, les noms d'espèces et les attributs associés aux campagnes à injecter existent déjà dans Coléo.
+
+### 7.1. Création d'un objet R avec les nouvelles campagnes à insérer dans Coléo
+
+```r
+pap <- read.csv("./lenomdevotrebasededonnées.csv", header = TRUE, sep = ',', stringsAsFactors = FALSE, encoding = "UTF-8") # l'encoding UTF-8 permet de garder les accents
+```
+### 7.2. Acquisition de la liste des cellules, des sites, des noms d'espèce de référence et des attributs déjà présentes dans Coléo et création d'un objet R pour chacune
+
+```r
+# Acquisition cellules COLEO
+cells <- rcoleo::get_cells()
+cells <- do.call("rbind", cells[[1]]$body)
+
+# Acquisition sites COLEO
+sites <- rcoleo::get_sites()
+sites <- do.call("rbind", sites[[1]]$body)
+
+# Acquisition nom espèces COLEO
+species <- rcoleo::get_species()
+species <- do.call("rbind", species[[1]]$body)
+```
+
+### 7.3. Vérification de l'existence des cellules, sites, noms d'espèces et des attributs associés aux nouvelles campagnes dans Coléo
+
+#### 7.3.1. Pour les cellules
+
+```r
+#### Test pour vérifier l'existence des cellules dans Coléo ####
+cell_abs <- rcoleo::COLEO_comp(unique(camp_zoopl$no_de_reference_de_la_cellule) %in% unique(cells$cell_code))
+```
+
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire d'importer ces cellules avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `cell_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées dans la vignette [*Injection des cellules*](https://reseaubiodiversitequebec.github.io/rcoleo/articles/injection-cellules.html).
+
+#### 7.3.2. Pour les sites
+
+```r
+#### Test pour vérifier l'existence des sites dans Coléo ####
+site_abs <- rcoleo::COLEO_comp(unique(camp_zoopl$no_de_reference_du_site) %in% unique(sites$site_code))
+```
+
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains sites n'existent pas dans Coléo, il sera nécessaire d'importer ces sites avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `site_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre  les étapes détaillées dans la vignette [*Injection des sites*](injection-sites.html).
+
+#### 7.3.3. Pour les noms d'espèces
+
+```r
+#### Test pour vérifier l'existence des noms des espèces dans Coléo ####
+sp_abs <- rcoleo::COLEO_comp(unique(camp_zoopl$nom_scientifique) %in% unique(species$name))
+```
+
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains noms d'espèces n'existent pas dans Coléo, il sera nécessaire d'importer ces noms avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `sp_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre  les étapes détaillées dans la vignette [*Injection des noms d'espèce*](injection-taxa.html).
