@@ -1,0 +1,30 @@
+---
+output: html
+---
+
+sp_abs
+
+# -------------------- #
+# insertion bébé vignette insertion nom d'espèces CACHÉE
+# -------------------- #
+
+# Préparation du dataframe
+# camp_sp_inj <- pap[pap$taxa_name %in% sp_abs,]
+# camp_sp_inj <- select(camp_sp_inj,
+#                      name = taxa_name,
+#                      vernacular_fr) # colonne nécessaire
+# 
+# 
+# camp_sp_inj <- camp_sp_inj[!duplicated(camp_sp_inj),] # retrait des duplicats
+# 
+# # Formattage
+# camp_sp_inj_ls <- apply(camp_sp_inj, 1, as.list)
+# 
+# # Injection
+# 
+# COLEO_sp_inj <- rcoleo::post_species(camp_sp_inj_ls)
+
+# ***ATTENTION*** Réfléchir au fait que toutes les informations pour les espèces ne sont pas renseignées avec cette méthode 
+# ------ FIN DE BB VIGNETTE ------ #
+
+

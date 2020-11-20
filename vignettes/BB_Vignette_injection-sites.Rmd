@@ -41,3 +41,9 @@ site_df_ls
 inj_sites <- rcoleo::post_sites(site_df_ls)
 
 ```
+ATTENTION _ Finir par la mise à jour de l'object sites
+
+```r
+# Mise à jour de la liste des cellules provenant de Coléo
+sites <- rcoleo::get_sites()
+sites <- do.call("rbind", sites[[1]]$body)
