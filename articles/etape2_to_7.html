@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tutoriel pour injection des campagnes odonate • rcoleo</title>
+<title> • rcoleo</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Tutoriel pour injection des campagnes odonate">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="">
 <meta property="og:description" content="rcoleo">
 <meta property="og:image" content="/logo.svg">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -112,71 +112,19 @@
 
       
 
-      </header><script src="CAMPAGNE_odonate_injection_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="etape2_to_7_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Tutoriel pour injection des campagnes odonate</h1>
-                        <h4 class="author">Claire-Cécile Juhasz</h4>
+      <h1 data-toc-skip></h1>
             
-            <h4 class="date">12 novembre 2020</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/vignettes/CAMPAGNE_odonate_injection.Rmd"><code>vignettes/CAMPAGNE_odonate_injection.Rmd</code></a></small>
-      <div class="hidden name"><code>CAMPAGNE_odonate_injection.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/vignettes/etape2_to_7.Rmd"><code>vignettes/etape2_to_7.Rmd</code></a></small>
+      <div class="hidden name"><code>etape2_to_7.Rmd</code></div>
 
     </div>
 
     
     
-<style>
-div.red { background-color:#ff0000; border-radius: 5px; padding: 20px;}
-</style>
-<div class="red">
-<p>Vignette en cours de développement</p>
-</div>
-<div id="créer-une-base-de-données-excel" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cr%C3%A9er-une-base-de-donn%C3%A9es-excel" class="anchor"></a>1. Créer une base de données excel</h2>
-<p>Afin d’injecter des nouvelles campagnes <em>papillon</em> dans la base de données Coléo, vous devez regrouper les informations suivantes dans un fichier excel :</p>
-<ul>
-<li><strong>nom_cellule</strong></li>
-<li>
-<strong>no_de_reference_de_la_cellule</strong>: code numérique unique pour chaque cellule</li>
-<li>
-<strong>no_de_reference_du_site</strong>: code alpha-numérique unique du site</li>
-<li>
-<strong>type_milieu</strong>: ‘lac’, ‘rivière’, ‘forestier’, ‘marais’, ‘marais côtier’, ‘toundrique’, ‘tourbière’</li>
-<li><strong>nom_lac</strong></li>
-<li>
-<strong>latitude</strong>: latitude du site d’échantillonnage</li>
-<li>
-<strong>longitude</strong>: longitude du site d’échantillonnage</li>
-<li>
-<strong>date_debut</strong>: date du début du prélèvement</li>
-<li>
-<strong>date_fin</strong>: date de la fin du prélèvement</li>
-<li><strong>technicien_1</strong></li>
-<li><strong>technicien_2</strong></li>
-<li>
-<em>heure_debut</em> : ?</li>
-<li>
-<em>heure_fin</em> : ?</li>
-<li><strong>temperature</strong></li>
-<li><strong>ciel</strong></li>
-<li><strong>vent</strong></li>
-<li><strong>nom_commun</strong></li>
-<li><strong>nom_scientifique</strong></li>
-<li><strong>abondance</strong></li>
-<li>
-<em>media</em> : ?</li>
-<li><em>note</em></li>
-</ul>
-<style>
-div.blue { background-color:#e6f0ff; border-radius: 5px; padding: 20px;}
-</style>
-<div class="blue">
-<p>Note : ne pas laisser de case vide, inscrire NA lorsque nécessaire</p>
-</div>
-</div>
 <div id="corriger-la-base-de-données" class="section level2">
 <h2 class="hasAnchor">
 <a href="#corriger-la-base-de-donn%C3%A9es" class="anchor"></a>2. Corriger la base de données</h2>
@@ -363,45 +311,6 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <code class="sourceCode R"><span class="co"># Ajout du site_id</span>
 <span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>, <span class="va">sites</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_code"</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="st">"site_code"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"site_id"</span></code></pre></div>
-</div>
-</div>
-<div id="vérification-pré-injection-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#v%C3%A9rification-pr%C3%A9-injection-1" class="anchor"></a>7. Vérification pré-injection</h2>
-<p>La succession d’étape qui suivent permettent de vérifier si les cellules, les sites et les noms d’espèces associés aux campagnes à injecter existent déjà dans Coléo.</p>
-<div id="création-dun-objet-r-avec-les-nouvelles-campagnes-à-insérer-dans-coléo-1" class="section level3">
-<h3 class="hasAnchor">
-<a href="#cr%C3%A9ation-dun-objet-r-avec-les-nouvelles-campagnes-%C3%A0-ins%C3%A9rer-dans-col%C3%A9o-1" class="anchor"></a>7.1. Création d’un objet R avec les nouvelles campagnes à insérer dans Coléo</h3>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">camp_zoopl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"./lenomdevotrebasededonnées.csv"</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">','</span>, stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span>, encoding <span class="op">=</span> <span class="st">"UTF-8"</span><span class="op">)</span> <span class="co"># l'encoding UTF-8 permet de garder les accents</span></code></pre></div>
-<div id="pour-les-attributs-1" class="section level4">
-<h4 class="hasAnchor">
-<a href="#pour-les-attributs-1" class="anchor"></a>7.3.4. Pour les attributs</h4>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#### Variables tables "attributes" ####</span>
-<span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_gen.html">get_gen</a></span><span class="op">(</span><span class="st">"/attributes"</span><span class="op">)</span></code></pre></div>
-<p>Vous pouvez vérifier ici si la variable <code>abondance</code> est présente dans ce tableau.</p>
-</div>
-</div>
-</div>
-<div id="injections-des-nouvelles-campagnes-odonate" class="section level2">
-<h2 class="hasAnchor">
-<a href="#injections-des-nouvelles-campagnes-odonate" class="anchor"></a>8. Injections des nouvelles campagnes <em>odonate</em>
-</h2>
-<p>Pour une injection complète d’une campagne, il est nécessaire de passer par l’importation d’informations successives dans différentes tables de Coléo. La hiérarchie des tables à renseigner est cruciale, sans quoi l’injection de la campagne est vouée à l’échec. Les prochaines étapes détaillent l’ajout d’information dans les tables:</p>
-<ol style="list-style-type: decimal">
-<li>Campagnes (“<em>/campaigns</em>”)</li>
-<li>Environnements (“<em>/environments</em>”)</li>
-<li>Repères (“<em>/landmarks</em>”)</li>
-<li>Médias (“<em>/media</em>”) ?</li>
-<li>Observations médias (“/obs_media”) ?</li>
-<li>Observations (“<em>/observations</em>”)</li>
-<li>Observations des espèces (“<em>/obs_species</em>”)</li>
-</ol>
-<div id="injections-des-informations-sur-les-nouvelles-campagnes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#injections-des-informations-sur-les-nouvelles-campagnes" class="anchor"></a>8.1. Injections des informations sur les nouvelles campagnes</h3>
-<p>Les champs qui peuvent être remplis dans la table <strong>campagnes</strong> (“/campaigns”) de Coléo sont les suivants (les champs en gras sont obligatoires) :</p>
 </div>
 </div>
   </div>
