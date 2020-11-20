@@ -22,7 +22,7 @@ Note:
 * ne pas laisser de case vide, inscrire NA lorsque nécessaire
 * si vous avez des colonnes supplémentaires dans votre base de données, voir l'étape 7.8 pour qu'elles ne soient pas prises en compte lors de l'injection
 
-```{r, child="etape2_to_6.Rmd"}
+```{r, child="etape2_to_7.Rmd"}
 ```
 
 
