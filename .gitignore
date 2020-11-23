@@ -13,9 +13,6 @@
 # RStudio files
 .Rproj.user/
 # produced vignettes
-vignettes/BB_Vignette_injection-cells.Rmd
-vignettes/BB_Vignette_injection-sites.Rmd
-vignettes/BB_Vignette_injection-taxa.Rmd
 vignettes/*.html
 vignettes/*.pdf
 # OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3

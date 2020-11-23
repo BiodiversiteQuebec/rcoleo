@@ -1,0 +1,54 @@
+---
+output: html_document
+---
+
+##### **7.3.2.1.** Cette étape permet de sélectionner les informations nécessaires pour les sites absents de Coléo.
+
+```r
+# On ne garde que les lignes du tableau concernant les sites manquants
+site_df <- camp[camp$site_code %in% site_abs, c("site_code", "type_hab", "opened_at", "lat", "lon")]
+
+# On garde une ligne par site
+site_df <- site_df[!duplicated(site_df),]
+
+# On change le nom de la variable "type_hab" pour correspondre à celle de Coléo ("type")
+names(site_df)[names(site_df) == "type_hab"] <- "type"
+
+# On récupère les `cell_id` qui correspond aux sites
+site_df <- dplyr::left_join(site_df, cells[, c("id", "cell_code")], by = "cell_code")
+names(site_df)[names(site_df) == "id"] <- "cell_id"
+
+# On créé la variable geom à partir des variables "lat" & "lon"
+site_df_ls <- apply(site_df, 1, as.list) # Création de la liste
+str(site_df_ls) # Vérification de la structure de l'objet
+
+geom <- apply(site_df,1, function(x){
+  if(!any(is.na(x["lat"]), is.na(x["lon"]))){
+    return(geojsonio::geojson_list(as.numeric(c(x["lon"], x["lat"])))$features[[1]]$geometry)
+  } else {
+    return(NA)
+  }})
+
+for(i in 1:length(site_df_ls)){ # Fusionner les deux listes (geomations + sites)
+  site_df_ls[[i]]$geom <- geom[i][[1]]
+  if(is.list(site_df_ls[[i]]$geom)){
+    site_df_ls[[i]]$geom$crs <- list(type = "name",
+                                     properties = list(name="EPSG:4326"))
+  }
+}
+```
+##### **7.3.2.2.** Nous pouvons maintenant insérer les nouveaux sites dans la base de données Coléo.
+```r
+# On envoie la liste des nouveaux sites vers Coléo
+COLEO_sites <- rcoleo::post_sites(site_df_ls)
+```
+
+La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).
+
+##### **7.3.2.3.** ATTENTION, finissez en faisant la mise à jour de la liste des sites présents dans Coléo.
+
+```r
+# Mise à jour de la liste des sites provenant de Coléo
+sites <- rcoleo::get_sites()
+sites <- do.call("rbind", sites[[1]]$body)
+```
