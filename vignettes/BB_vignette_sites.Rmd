@@ -6,17 +6,13 @@ output: html_document
 
 ```r
 # On ne garde que les lignes du tableau concernant les sites manquants
-site_df <- camp[camp$site_code %in% site_abs, c("site_code", "type_hab", "opened_at", "lat", "lon")]
+site_df <- camp[camp$site_code %in% site_abs, c("cell_id", "site_code", "type_hab", "opened_at", "lat", "lon")]
 
 # On garde une ligne par site
 site_df <- site_df[!duplicated(site_df),]
 
 # On change le nom de la variable "type_hab" pour correspondre à celle de Coléo ("type")
 names(site_df)[names(site_df) == "type_hab"] <- "type"
-
-# On récupère les `cell_id` qui correspond aux sites
-site_df <- dplyr::left_join(site_df, cells[, c("id", "cell_code")], by = "cell_code")
-names(site_df)[names(site_df) == "id"] <- "cell_id"
 
 # On créé la variable geom à partir des variables "lat" & "lon"
 site_df_ls <- apply(site_df, 1, as.list) # Création de la liste

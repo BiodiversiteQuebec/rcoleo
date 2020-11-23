@@ -127,6 +127,13 @@ document.getElementById("myDIV_cells").style.display ="none"
 
 <button onclick="myFunction1()">Vignette Injection des cellules</button>
 
+Vous pouvez maintenant récupérer l'ID unique des cellules.
+
+```r
+camp <- dplyr::left_join(camp, cells[, c("id", "cell_code")], by = "cell_code")
+names(camp)[names(camp) == "id"] <- "cell_id"
+```
+
 #### 7.3.2. Pour les sites
 
 ```r
@@ -158,6 +165,14 @@ document.getElementById("myDIV_sites").style.display ="none"
 </script> 
 
 <button onclick="myFunction2()">Vignette Injection des sites</button>
+
+Vous pouvez maintenant récupérer l'ID unique des sites.
+
+```r
+camp <- dplyr::left_join(camp, sites[, c("id", "site_code")], by = "site_code")
+names(camp)[names(camp) == "id"] <- "site_id"
+```
+
 
 #### 7.3.3. Pour les noms d'espèces
 
