@@ -59,12 +59,12 @@ La succession d'étape qui suivent permettent de vérifier si les cellules, les 
 ### 7.1. Création d'un objet R avec les nouvelles campagnes à insérer dans Coléo
 
 
-```{r excel_sheet, eval=FALSE, include=FALSE}
+```{r excel_sheet, eval=TRUE, include=FALSE}
 sheet_address <- "https://docs.google.com/spreadsheets/d/1_69xaKrqXlw8HfqhxcpMG1zHbfbptyTSFJCBJ8hhv58/edit#gid=1392890872"
 ```
 
 
-```{r load_data, eval=FALSE, message=FALSE, warning=FALSE}
+```{r load_data, eval=TRUE, message=FALSE, warning=FALSE}
 library(googlesheets4)
 library(tidyverse)
 
