@@ -336,7 +336,7 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <code class="sourceCode R"><span class="co">#### Test pour vérifier l'existence des cellules dans Coléo ####</span>
 <span class="va">cell_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">cell_code</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">cells</span><span class="op">$</span><span class="va">cell_code</span><span class="op">)</span><span class="op">)</span>
 <span class="va">cell_abs</span></code></pre></div>
-<p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certaines cellules n’existent pas dans Coléo, il sera nécessaire d’importer ces cellules avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous utilisez l’objet <code>cell_abs</code> que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées dans la vignette <a href="https://reseaubiodiversitequebec.github.io/rcoleo/articles/injection-cellules.html"><em>Injection des cellules</em></a>.</p>
+<p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certaines cellules n’existent pas dans Coléo, il sera nécessaire d’importer ces cellules avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous utilisez l’objet <code>cell_abs</code> que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées en déroulant la vignette <strong>Injection des cellules</strong> ci-dessous.</p>
 <script>
 function myFunction1() {
     var x = document.getElementById("myDIV_cells");
@@ -346,24 +346,71 @@ function myFunction1() {
         x.style.display = "none";
     }
 }
-</script><button onclick="myFunction1()">
-Vignette injection cellules
-</button>
-<div id="myDIV_cells">
-<p>Ici, BB vignette injection de cellules</p>
+</script><div id="myDIV_cells">
+<h5 id="cette-étape-permet-denregistrer-un-objet-dans-r-avec-les-informations-de-toutes-les-cellules-existantes." class="hasAnchor">
+<a href="#myDIV_cells" class="anchor"></a><strong>7.3.1.1.</strong> Cette étape permet d’enregistrer un objet dans R avec les informations de toutes les cellules existantes.</h5>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">shp_cells</span> <span class="op">&lt;-</span> <span class="fu">rgdal</span><span class="fu">::</span><span class="fu">readOGR</span><span class="op">(</span>dsn<span class="op">=</span><span class="st">"./shp"</span>,
+                            layer<span class="op">=</span><span class="st">"Cellule_terrain_2016-2020"</span><span class="op">)</span> <span class="co"># Ici le fichier shapefile est placé dans un dossier shp et on appelle tous les fichiers nommés "Cellule_terrain_2016_2020"</span></code></pre></div>
+<h5 id="cette-étape-permet-dextraire-les-informations-nécessaires-concernant-les-nouvelles-cellules-et-de-formater-ces-informations-de-sorte-à-pouvoir-les-insérer-dans-coléo.">
+<strong>7.3.1.2.</strong> Cette étape permet d’extraire les informations nécessaires concernant les nouvelles cellules et de formater ces informations de sorte à pouvoir les insérer dans Coléo.</h5>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Création d'une liste vide pour l'objet final</span>
+<span class="va">shp_cells_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
+
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">cell_abs</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+
+<span class="co"># Obtention des information pour un cellule</span>
+  <span class="va">shp</span> <span class="op">&lt;-</span> <span class="va">shp_cells</span><span class="op">[</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">IJ</span> <span class="op">==</span> <span class="va">cell_abs</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> ,<span class="op">]</span>
+
+<span class="co"># Création d'une liste avec les informations nécessaires pour chaque cellule</span>
+  <span class="va">cells_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="va">cells_ls</span><span class="op">$</span><span class="va">cell_code</span> <span class="op">&lt;-</span> <span class="va">cell_abs</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="co"># Code de la cellule</span>
+  <span class="va">cells_ls</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">shp_cells</span><span class="op">[</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">IJ</span> <span class="op">==</span> <span class="va">cell_abs</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">Nom</span><span class="op">)</span>,<span class="op">]</span><span class="op">@</span><span class="va">data</span><span class="op">$</span><span class="va">Nom</span><span class="op">)</span> <span class="co"># Nom de la cellule</span>
+
+  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="va">cells_ls</span><span class="op">$</span><span class="va">name</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+    <span class="va">cells_ls</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
+  <span class="op">}</span> <span class="co"># Information absente si pas de nom pour la cellule</span>
+
+<span class="co"># Création de l'objet spatial pour les coordonnées de la cellule</span>
+  <span class="va">shp_sp</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">shp</span>, <span class="st">"SpatialPolygons"</span><span class="op">)</span>
+  <span class="va">cells_ls</span><span class="op">$</span><span class="va">geom</span> <span class="op">&lt;-</span> <span class="fu">geojsonio</span><span class="fu">::</span><span class="fu">geojson_list</span><span class="op">(</span><span class="va">shp</span><span class="op">)</span><span class="op">$</span><span class="va">features</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geometry</span> <span class="co"># Caractéristiques de l'objet spatial</span>
+  <span class="va">cells_ls</span><span class="op">$</span><span class="va">geom</span><span class="op">$</span><span class="va">crs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"name"</span>,properties<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"EPSG:4326"</span><span class="op">)</span><span class="op">)</span> <span class="co"># Information sur le systême de coordonnées de référence (CRS)</span>
+
+<span class="co"># Alimentation de l'objet final avec un niveau pour chaque cellule</span>
+  <span class="va">shp_cells_list</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">cells_ls</span>
+<span class="op">}</span></code></pre></div>
+<h5 id="nous-pouvons-maintenant-insérer-les-nouvelles-cellules-dans-la-base-de-données-coléo.">
+<strong>7.3.1.3.</strong> Nous pouvons maintenant insérer les nouvelles cellules dans la base de données Coléo.</h5>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Envoyer la liste de nouvelles cellules vers Coléo</span>
+<span class="va">COLEO_cells</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/post_cells.html">post_cells</a></span><span class="op">(</span><span class="va">shp_cells_list</span><span class="op">)</span></code></pre></div>
+<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
+<h5 id="attention-finissez-en-faisant-la-mise-à-jour-de-la-liste-des-cellules-présentes-dans-coléo.">
+<strong>7.3.1.4.</strong> ATTENTION, finissez en faisant la mise à jour de la liste des cellules présentes dans Coléo.</h5>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Mise à jour de la liste des cellules provenant de Coléo</span>
+<span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_cells.html">get_cells</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="st">"rbind"</span>, <span class="va">cells</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 </div>
 <script>
 document.getElementById("myDIV_cells").style.display ="none"
-</script>
+</script><button onclick="myFunction1()">
+Vignette Injection des cellules
+</button>
+<p>Vous pouvez maintenant récupérer l’ID unique des cellules.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>, <span class="va">cells</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"cell_code"</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="st">"cell_code"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"cell_id"</span></code></pre></div>
 </div>
 <div id="pour-les-sites" class="section level4">
 <h4 class="hasAnchor">
 <a href="#pour-les-sites" class="anchor"></a>7.3.2. Pour les sites</h4>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#### Test pour vérifier l'existence des sites dans Coléo ####</span>
 <span class="va">site_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">site_code</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">sites</span><span class="op">$</span><span class="va">site_code</span><span class="op">)</span><span class="op">)</span>
 <span class="va">site_abs</span></code></pre></div>
-<p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certains sites n’existent pas dans Coléo, il sera nécessaire d’importer ces sites avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous utilisez l’objet <code>site_abs</code> que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées dans la vignette <a href="injection-sites.html"><em>Injection des sites</em></a>.</p>
+<p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certains sites n’existent pas dans Coléo, il sera nécessaire d’importer ces sites avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous utilisez l’objet <code>site_abs</code> que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées en déroulant la vignette <strong>Injection des sites</strong> ci-dessous.</p>
 <script>
 function myFunction2() {
     var x = document.getElementById("myDIV_sites");
@@ -373,24 +420,68 @@ function myFunction2() {
         x.style.display = "none";
     }
 }
-</script><button onclick="myFunction2()">
-Vignette injection sites
-</button>
-<div id="myDIV_sites">
-<p>Ici, BB vignette injection de sites</p>
+</script><div id="myDIV_sites">
+<h5 id="cette-étape-permet-de-sélectionner-les-informations-nécessaires-pour-les-sites-absents-de-coléo." class="hasAnchor">
+<a href="#myDIV_sites" class="anchor"></a><strong>7.3.2.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les sites absents de Coléo.</h5>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># On ne garde que les lignes du tableau concernant les sites manquants</span>
+<span class="va">site_df</span> <span class="op">&lt;-</span> <span class="va">camp</span><span class="op">[</span><span class="va">camp</span><span class="op">$</span><span class="va">site_code</span> <span class="op">%in%</span> <span class="va">site_abs</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cell_id"</span>, <span class="st">"site_code"</span>, <span class="st">"type_hab"</span>, <span class="st">"opened_at"</span>, <span class="st">"lat"</span>, <span class="st">"lon"</span><span class="op">)</span><span class="op">]</span>
+
+<span class="co"># On garde une ligne par site</span>
+<span class="va">site_df</span> <span class="op">&lt;-</span> <span class="va">site_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">site_df</span><span class="op">)</span>,<span class="op">]</span>
+
+<span class="co"># On change le nom de la variable "type_hab" pour correspondre à celle de Coléo ("type")</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">site_df</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">site_df</span><span class="op">)</span> <span class="op">==</span> <span class="st">"type_hab"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"type"</span>
+
+<span class="co"># On créé la variable geom à partir des variables "lat" &amp; "lon"</span>
+<span class="va">site_df_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">site_df</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span> <span class="co"># Création de la liste</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">)</span> <span class="co"># Vérification de la structure de l'objet</span>
+
+<span class="va">geom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">site_df</span>,<span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span>
+  <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu">geojsonio</span><span class="fu">::</span><span class="fu">geojson_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span>, <span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">features</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span>
+  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">}</span><span class="op">)</span>
+
+<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">)</span><span class="op">)</span><span class="op">{</span> <span class="co"># Fusionner les deux listes (geomations + sites)</span>
+  <span class="va">site_df_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span> <span class="op">&lt;-</span> <span class="va">geom</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
+  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">is.list</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+    <span class="va">site_df_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span><span class="op">$</span><span class="va">crs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"name"</span>,
+                                     properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"EPSG:4326"</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span>
+<span class="op">}</span></code></pre></div>
+<h5 id="nous-pouvons-maintenant-insérer-les-nouveaux-sites-dans-la-base-de-données-coléo.">
+<strong>7.3.2.2.</strong> Nous pouvons maintenant insérer les nouveaux sites dans la base de données Coléo.</h5>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># On envoie la liste des nouveaux sites vers Coléo</span>
+<span class="va">COLEO_sites</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_sites.html">post_sites</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">)</span></code></pre></div>
+<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
+<h5 id="attention-finissez-en-faisant-la-mise-à-jour-de-la-liste-des-sites-présents-dans-coléo.">
+<strong>7.3.2.3.</strong> ATTENTION, finissez en faisant la mise à jour de la liste des sites présents dans Coléo.</h5>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Mise à jour de la liste des sites provenant de Coléo</span>
+<span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_sites.html">get_sites</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="st">"rbind"</span>, <span class="va">sites</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 </div>
 <script>
 document.getElementById("myDIV_sites").style.display ="none"
-</script>
+</script><button onclick="myFunction2()">
+Vignette Injection des sites
+</button>
+<p>Vous pouvez maintenant récupérer l’ID unique des sites.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>, <span class="va">sites</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_code"</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="st">"site_code"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"site_id"</span></code></pre></div>
 </div>
 <div id="pour-les-noms-despèces" class="section level4">
 <h4 class="hasAnchor">
 <a href="#pour-les-noms-desp%C3%A8ces" class="anchor"></a>7.3.3. Pour les noms d’espèces</h4>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#### Test pour vérifier l'existence des noms des espèces dans Coléo ####</span>
 <span class="va">sp_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">taxa_name</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">species</span><span class="op">$</span><span class="va">name</span><span class="op">)</span><span class="op">)</span>
 <span class="va">sp_abs</span></code></pre></div>
-<p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certains noms d’espèces n’existent pas dans Coléo, il sera nécessaire d’importer ces noms avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous utilisez l’objet <code>sp_abs</code> que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées dans la vignette <a href="injection-taxa.html"><em>Injection des noms d’espèce</em></a>.</p>
+<p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certains noms d’espèces n’existent pas dans Coléo, il sera nécessaire d’importer ces noms avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous utilisez l’objet <code>sp_abs</code> que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées dans la vignette <strong>Injection des noms d’espèce</strong>.</p>
 <script>
 function myFunction3() {
     var x = document.getElementById("myDIV_taxa");
@@ -400,20 +491,40 @@ function myFunction3() {
         x.style.display = "none";
     }
 }
-</script><button onclick="myFunction3()">
-Vignette injection noms d’espèce
-</button>
-<div id="myDIV_taxa">
-<p>Ici, BB vignette injection de noms d’espèces</p>
+</script><div id="myDIV_taxa">
+<h5 id="cette-étape-permet-de-sélectionner-les-informations-nécessaires-pour-les-noms-despèce-absents-de-coléo." class="hasAnchor">
+<a href="#myDIV_taxa" class="anchor"></a><strong>7.3.3.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les noms d’espèce absents de Coléo.</h5>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># On prépare le tableau à insérer</span>
+<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">camp</span><span class="op">[</span><span class="va">camp</span><span class="op">$</span><span class="va">taxa_name</span> <span class="op">%in%</span> <span class="va">sp_abs</span>,<span class="op">]</span>
+<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="fu">select</span><span class="op">(</span><span class="va">taxa_df</span>,
+                    name <span class="op">=</span> <span class="va">taxa_name</span>,
+                    <span class="va">vernacular_fr</span><span class="op">)</span> <span class="co"># colonne nécessaire</span></code></pre></div>
+<h5 id="cette-étape-permet-de-formatter-les-données-afin-de-pouvoir-les-injecter-dans-la-base-de-données-coléo.">
+<strong>7.3.3.2.</strong> Cette étape permet de formatter les données afin de pouvoir les injecter dans la base de données Coléo.</h5>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># On retire les lignes dupliquées</span>
+<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">taxa_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">taxa_df</span><span class="op">)</span>,<span class="op">]</span> 
+
+<span class="co"># On formatte les données sous forme de</span>
+<span class="va">taxa_df_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">taxa_df</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
+<h5 id="on-injecte-dans-la-base-de-données-coléo.">
+<strong>7.3.3.3.</strong> On injecte dans la base de données Coléo.</h5>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Injection</span>
+<span class="va">COLEO_taxa</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_species.html">post_species</a></span><span class="op">(</span><span class="va">taxa_df_ls</span><span class="op">)</span></code></pre></div>
+<p><strong><em>ATTENTION</em></strong> Réfléchir au fait que toutes les informations pour les espèces ne sont pas renseignées avec cette méthode</p>
 </div>
 <script>
 document.getElementById("myDIV_taxa").style.display ="none"
-</script>
+</script><button onclick="myFunction3()">
+Vignette injection noms d’espèce
+</button>
 </div>
 <div id="pour-les-attributs" class="section level4">
 <h4 class="hasAnchor">
 <a href="#pour-les-attributs" class="anchor"></a>7.3.3. Pour les attributs</h4>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Contenu de la table des attributs dans Coléo</span>
 <span class="va">attrs</span></code></pre></div>
 <p>Vérifier si les attributs nécessaires à vos campagnes sont bien présents dans cette table.</p>
@@ -422,64 +533,41 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <div id="optimisation-du-tableau-à-injecter-initial" class="section level3">
 <h3 class="hasAnchor">
 <a href="#optimisation-du-tableau-%C3%A0-injecter-initial" class="anchor"></a>7.4 Optimisation du tableau à injecter initial</h3>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Ajout du site_id</span>
 <span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>, <span class="va">sites</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_code"</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="st">"site_code"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"site_id"</span></code></pre></div>
 </div>
 </div>
-<div id="insertion-des-campagnes-de-papillons" class="section level2">
+<div id="injection-des-campagnes-de-papillons" class="section level2">
 <h2 class="hasAnchor">
-<a href="#insertion-des-campagnes-de-papillons" class="anchor"></a>8. Insertion des campagnes de papillons</h2>
+<a href="#injection-des-campagnes-de-papillons" class="anchor"></a>8. Injection des campagnes de papillons</h2>
 <p>Pour une injection complète d’une campagne, il est nécessaire de passer par l’importation d’informations successives dans différentes tables de Coléo. La hiérarchie des tables à renseigner est cruciale, sans quoi l’injection de la campagne est vouée à l’échec. Les prochaines étapes détaillent l’ajout d’information dans les tables:</p>
 <ol style="list-style-type: decimal">
 <li>Campagnes (“<em>/campaigns</em>”)</li>
 <li>Repères (“<em>/landmarks</em>”)</li>
-<li>Repères (“<em>/efforts</em>”)</li>
-<li>Repères (“<em>/environment</em>”)</li>
+<li>Efforts (“<em>/efforts</em>”)</li>
+<li>Environnements (“<em>/environment</em>”)</li>
 <li>Observations (“<em>/observations</em>”)</li>
 <li>Observations des espèces (“<em>/obs_species</em>”)</li>
 </ol>
 <div id="injections-des-informations-sur-les-nouvelles-campagnes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#injections-des-informations-sur-les-nouvelles-campagnes" class="anchor"></a>8.1. Injections des informations sur les nouvelles campagnes</h3>
-<p>Les champs qui peuvent être remplis dans la table <strong>campagnes</strong> (“/campaigns”) de Coléo sont les suivants (les champs en gras sont obligatoires) :</p>
-<table class="table">
-<thead><tr class="header">
-<th>Variable</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td><strong>site_id</strong></td>
-<td></td>
-</tr>
-<tr class="even">
-<td><strong>type</strong></td>
-<td>type de la campagne</td>
-</tr>
-<tr class="odd">
-<td><em>technicians</em></td>
-<td>liste composée de “technician_1” et “technician_2”</td>
-</tr>
-<tr class="even">
-<td><em>opened_at</em></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td><em>closed_at</em></td>
-<td></td>
-</tr>
-<tr class="even">
-<td><em>notes</em></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<div id="on-commence-par-séléctionner-les-champs-dinterêts" class="section level4">
+<p>Les champs de la table <strong>campagnes</strong> (“/campaigns”) de Coléo qui seront remplis sont les suivants :</p>
+<ul>
+<li><em>site_id</em></li>
+<li>
+<em>type</em>: type de la campagne</li>
+<li>
+<em>technicians</em>: liste composée de “technician_1” et “technician_2”</li>
+<li><em>opened_at</em></li>
+<li><em>closed_at</em></li>
+</ul>
+<div id="on-commence-par-séléctionner-les-champs-dinterêts-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts" class="anchor"></a>8.1.1. On commence par séléctionner les champs d’interêts</h4>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts-" class="anchor"></a>8.1.1. On commence par séléctionner les champs d’interêts.</h4>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">camp_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">camp</span>,
                           <span class="va">site_id</span>,
                           <span class="va">type</span>,
@@ -490,14 +578,14 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </div>
 <div id="on-garde-une-ligne-unique-par-nouvelle-campagne-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-garde-une-ligne-unique-par-nouvelle-campagne-" class="anchor"></a>8.1.2 On garde une ligne unique par nouvelle campagne.</h4>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<a href="#on-garde-une-ligne-unique-par-nouvelle-campagne-" class="anchor"></a>8.1.2. On garde une ligne unique par nouvelle campagne.</h4>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">camp_camp</span> <span class="op">&lt;-</span> <span class="va">camp_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">camp_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
 </div>
-<div id="on-créé-la-liste-pour-le-nom-des-techniciens" class="section level4">
+<div id="on-créé-la-liste-pour-le-nom-des-techniciens-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-cr%C3%A9%C3%A9-la-liste-pour-le-nom-des-techniciens" class="anchor"></a>8.1.3 On créé la liste pour le nom des techniciens</h4>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<a href="#on-cr%C3%A9%C3%A9-la-liste-pour-le-nom-des-techniciens-" class="anchor"></a>8.1.3. On créé la liste pour le nom des techniciens.</h4>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">tech</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Création d'un objet `list` vide</span>
 
 <span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">camp_camp</span><span class="op">$</span><span class="va">site_id</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
@@ -508,61 +596,40 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </div>
 <div id="on-transforme-le-tableau-en-liste-pour-pouvoir-injecter-les-données-dans-coléo-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-transforme-le-tableau-en-liste-pour-pouvoir-injecter-les-donn%C3%A9es-dans-col%C3%A9o-" class="anchor"></a>8.1.4 On transforme le tableau en liste pour pouvoir injecter les données dans Coléo.</h4>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">camp_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">camp_ls</span><span class="op">)</span></code></pre></div>
+<a href="#on-transforme-le-tableau-en-liste-pour-pouvoir-injecter-les-donn%C3%A9es-dans-col%C3%A9o-" class="anchor"></a>8.1.4. On transforme le tableau en liste pour pouvoir injecter les données dans Coléo.</h4>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">camp_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-injecte-" class="anchor"></a>8.1.5. On injecte.</h4>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">COLEO_camp_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_campaigns.html">post_campaigns</a></span><span class="op">(</span><span class="va">camp_ls</span><span class="op">)</span> </code></pre></div>
 <p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
 </div>
 <div id="on-récupère-la-liste-de-campagnes-provenant-de-coléo-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-r%C3%A9cup%C3%A8re-la-liste-de-campagnes-provenant-de-col%C3%A9o-" class="anchor"></a>8.1.6 On récupère la liste de campagnes provenant de Coléo.</h4>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">campagnes</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_campaigns.html">get_campaigns</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">campagnes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind.fill</span>, <span class="va">campagnes</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
+<a href="#on-r%C3%A9cup%C3%A8re-la-liste-de-campagnes-provenant-de-col%C3%A9o-" class="anchor"></a>8.1.6. On récupère la liste de campagnes provenant de Coléo.</h4>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">campaigns</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_campaigns.html">get_campaigns</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">campaigns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind.fill</span>, <span class="va">campaigns</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-récupère-le-id-unique-pour-chaque-campagne-nouvellement-insérées-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-r%C3%A9cup%C3%A8re-le-id-unique-pour-chaque-campagne-nouvellement-ins%C3%A9r%C3%A9es-" class="anchor"></a>8.1.7. On récupère le id unique pour chaque campagne nouvellement insérées.</h4>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>, <span class="va">campagnes</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_id"</span>, <span class="st">"opened_at"</span>, <span class="st">"type"</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"site_id"</span>, <span class="st">"opened_at"</span>, <span class="st">"type"</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>, <span class="va">campaigns</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_id"</span>, <span class="st">"opened_at"</span>, <span class="st">"type"</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"site_id"</span>, <span class="st">"opened_at"</span>, <span class="st">"type"</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"campaign_id"</span></code></pre></div>
 </div>
 </div>
 <div id="injections-des-repères-associés-aux-nouvelles-campagnes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#injections-des-rep%C3%A8res-associ%C3%A9s-aux-nouvelles-campagnes" class="anchor"></a>8.2. Injections des repères associés aux nouvelles campagnes</h3>
-<p>Les champs qui peuvent être remplis dans Coléo sont les suivants (les champs en gras sont obligatoires) :</p>
-<table class="table">
-<thead><tr class="header">
-<th>Variable</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td><strong>campaign_id</strong></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>geom</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<div id="on-commence-par-séléctionner-les-champs-dinterêts-" class="section level4">
+<p>Les champs de la table <strong>repères</strong> (“/landmarks”) de Coléo qui peuvent être remplis sont les suivants : * <em>campaign_id</em> * <em>geom</em></p>
+<div id="on-commence-par-séléctionner-les-champs-dinterêts--1" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts-" class="anchor"></a>8.2.1. On commence par séléctionner les champs d’interêts.</h4>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts--1" class="anchor"></a>8.2.1. On commence par séléctionner les champs d’interêts.</h4>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">land_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">camp</span>,
                            <span class="va">campaign_id</span>,
                            <span class="va">lat</span>,
@@ -571,20 +638,20 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <div id="on-garde-une-ligne-par-repère-cest-à-dire-par-campagne-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-garde-une-ligne-par-rep%C3%A8re-cest-%C3%A0-dire-par-campagne-" class="anchor"></a>8.2.2. On garde une ligne par repère (c’est-à-dire par campagne).</h4>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">land_camp</span> <span class="op">&lt;-</span> <span class="va">land_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">land_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
 </div>
 <div id="on-transforme-le-tableau-en-liste-pour-pouvoir-linjecter-dans-coléo-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-transforme-le-tableau-en-liste-pour-pouvoir-linjecter-dans-col%C3%A9o-" class="anchor"></a>8.2.3. On transforme le tableau en liste pour pouvoir l’injecter dans Coléo.</h4>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">land_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">land_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">land_ls</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-créé-le-champs-geom-de-coléo-sous-forme-de-liste-en-utilisant-les-variables-lat-lon-du-tableau-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-cr%C3%A9%C3%A9-le-champs-geom-de-col%C3%A9o-sous-forme-de-liste-en-utilisant-les-variables-lat-lon-du-tableau-" class="anchor"></a>8.2.4. On créé le champs <code>geom</code> de Coléo, sous forme de liste, en utilisant les variables <em>lat</em> &amp; <em>lon</em> du tableau.</h4>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">geom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">land_camp</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span>
 <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
   <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu">geojsonio</span><span class="fu">::</span><span class="fu">geojson_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span>,<span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">features</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span>
@@ -595,7 +662,7 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <div id="on-fusionne-les-deux-listes-en-prévision-de-linjection-dans-coléo-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-fusionne-les-deux-listes-en-pr%C3%A9vision-de-linjection-dans-col%C3%A9o-" class="anchor"></a>8.2.5. On fusionne les deux listes en prévision de l’injection dans Coléo.</h4>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">land_ls</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
  <span class="va">land_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span> <span class="op">&lt;-</span> <span class="va">geom</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">is.list</a></span><span class="op">(</span><span class="va">land_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
@@ -606,7 +673,7 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <div id="il-est-maintenant-possible-de-procéder-à-linjection-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#il-est-maintenant-possible-de-proc%C3%A9der-%C3%A0-linjection-" class="anchor"></a>8.2.6. Il est maintenant possible de procéder à l’injection.</h4>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">COLEO_land_inj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/post_landmarks.html">post_landmarks</a></span><span class="op">(</span><span class="va">land_ls</span><span class="op">)</span></code></pre></div>
 <p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
 </div>
@@ -614,43 +681,17 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <div id="injections-des-caractéristiques-environnementales" class="section level3">
 <h3 class="hasAnchor">
 <a href="#injections-des-caract%C3%A9ristiques-environnementales" class="anchor"></a>8.3. Injections des caractéristiques environnementales</h3>
-<p>Les champs qui peuvent être remplis dans Coléo sont les suivants (les champs en gras sont obligatoires) :</p>
-<table class="table">
-<thead><tr class="header">
-<th>Variable</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>campaign_id</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>wind</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>sky</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>temp_c</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>notes</td>
-<td></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<div id="on-commence-par-séléctionner-les-champs-dinterêts--1" class="section level4">
+<p>Les champs de la table <strong>environnement</strong> (“/environment”) de Coléo qui peuvent être remplis sont les suivants :</p>
+<ul>
+<li><em>campaign_id</em></li>
+<li><em>wind</em></li>
+<li><em>sky</em></li>
+<li><em>temp_c</em></li>
+</ul>
+<div id="on-commence-par-séléctionner-les-champs-dinterêts--2" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts--1" class="anchor"></a>8.3.1. On commence par séléctionner les champs d’interêts.</h4>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts--2" class="anchor"></a>8.3.1. On commence par séléctionner les champs d’interêts.</h4>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">env_camp</span> <span class="op">&lt;-</span> <span class="fu">select</span><span class="op">(</span><span class="va">camp</span>,
                   <span class="va">campaign_id</span>,
                   <span class="va">wind</span>,
@@ -660,20 +701,20 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <div id="on-garde-une-ligne-par-campagne-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-garde-une-ligne-par-campagne-" class="anchor"></a>8.3.2. On garde une ligne par campagne.</h4>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">env_camp</span> <span class="op">&lt;-</span> <span class="va">env_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">env_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
 </div>
 <div id="on-transforme-en-liste-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-transforme-en-liste-" class="anchor"></a>8.3.3. On transforme en liste.</h4>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">env_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">env_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">env_camp_ls</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte--1" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-injecte--1" class="anchor"></a>8.3.4. On injecte.</h4>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">COLEO_env_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_environments.html">post_environments</a></span><span class="op">(</span><span class="va">env_camp_ls</span><span class="op">)</span></code></pre></div>
 <p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
 </div>
@@ -681,35 +722,16 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <div id="injections-des-efforts" class="section level3">
 <h3 class="hasAnchor">
 <a href="#injections-des-efforts" class="anchor"></a>8.4. Injections des efforts</h3>
-<p>Les champs qui peuvent être remplis dans Coléo sont les suivants (les champs en gras sont obligatoires) :</p>
-<table class="table">
-<thead><tr class="header">
-<th>Variable</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>campaign_id</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>time_start</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>time_finish</td>
-<td></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
+<p>Les champs de la table <strong>efforts</strong> (“/efforts”) de Coléo qui peuvent être remplis sont les suivants :</p>
+<ul>
+<li><em>campaign_id</em></li>
+<li><em>time_start</em></li>
+<li><em>time_finish</em></li>
+</ul>
 <div id="on-sélectionne-les-champs-dintérêts-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-s%C3%A9lectionne-les-champs-dint%C3%A9r%C3%AAts-" class="anchor"></a>8.4.1. On sélectionne les champs d’intérêts.</h4>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">eff_camp</span> <span class="op">&lt;-</span> <span class="fu">select</span><span class="op">(</span><span class="va">camp</span>,
                    <span class="va">campaign_id</span>,
                    <span class="va">time_start</span>,
@@ -718,20 +740,20 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <div id="on-garde-une-ligne-par-campagne--1" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-garde-une-ligne-par-campagne--1" class="anchor"></a>8.4.2. On garde une ligne par campagne.</h4>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">eff_camp</span> <span class="op">&lt;-</span> <span class="va">eff_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">eff_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
 </div>
 <div id="on-transforme-en-liste--1" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-transforme-en-liste--1" class="anchor"></a>8.4.3. On transforme en liste.</h4>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">eff_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">eff_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">eff_camp_ls</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte--2" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-injecte--2" class="anchor"></a>8.4.4. On injecte.</h4>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">COLEO_eff_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_efforts.html">post_efforts</a></span><span class="op">(</span><span class="va">eff_camp_ls</span><span class="op">)</span> </code></pre></div>
 <p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
 </div>
@@ -739,35 +761,17 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <div id="insertion-des-observations" class="section level3">
 <h3 class="hasAnchor">
 <a href="#insertion-des-observations" class="anchor"></a>8.5. Insertion des observations</h3>
-<p>Les champs qui peuvent être remplis dans Coléo sont les suivants (les champs en gras sont obligatoires) :</p>
-<table class="table">
-<thead><tr class="header">
-<th>Variable</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>campaign_id</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>is_valid</td>
-<td>1 par défaut</td>
-</tr>
-<tr class="odd">
-<td>date_obs</td>
-<td></td>
-</tr>
-<tr class="even">
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
+<p>Les champs de la table <strong>observations</strong> (“/observations”) de Coléo qui peuvent être remplis sont les suivants :</p>
+<ul>
+<li><em>campaign_id</em></li>
+<li>
+<em>is_valid</em> : 1 par défaut</li>
+<li><em>date_obs</em></li>
+</ul>
 <div id="on-sélectionne-les-champs-dintérêts--1" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-s%C3%A9lectionne-les-champs-dint%C3%A9r%C3%AAts--1" class="anchor"></a>8.5.1. On sélectionne les champs d’intérêts.</h4>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Création de 2 variables nécessaires</span>
 <span class="va">camp</span><span class="op">$</span><span class="va">date_obs</span> <span class="op">&lt;-</span> <span class="va">camp</span><span class="op">$</span><span class="va">opened_at</span>
 <span class="va">camp</span><span class="op">$</span><span class="va">is_valid</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># valeur de 1 par défaut</span>
@@ -782,28 +786,29 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <div id="on-garde-une-ligne-par-campagne--2" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-garde-une-ligne-par-campagne--2" class="anchor"></a>8.5.2. On garde une ligne par campagne.</h4>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">obs_camp</span> <span class="op">&lt;-</span> <span class="va">obs_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">obs_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
 </div>
 <div id="on-formatte-les-données-à-insérer-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-formatte-les-donn%C3%A9es-%C3%A0-ins%C3%A9rer-" class="anchor"></a>8.5.3. On formatte les données à insérer.</h4>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">obs_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">obs_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">obs_camp_ls</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte--3" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-injecte--3" class="anchor"></a>8.5.5. On injecte.</h4>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<a href="#on-injecte--3" class="anchor"></a>8.5.4. On injecte.</h4>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">COLEO_obs_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_obs.html">post_obs</a></span><span class="op">(</span><span class="va">obs_camp_ls</span><span class="op">)</span></code></pre></div>
 <p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
 </div>
-<div id="acquisition-de-la-liste-des-observations-de-coléo-et-mise-à-jour-du-tableau-de-données-à-injecter-" class="section level4">
+<div id="on-récupère-la-liste-des-observations-de-coléo-et-on-met-à-jour-le-tableau-de-campagnes-à-injecter-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#acquisition-de-la-liste-des-observations-de-col%C3%A9o-et-mise-%C3%A0-jour-du-tableau-de-donn%C3%A9es-%C3%A0-injecter-" class="anchor"></a>8.5.6. Acquisition de la liste des observations de Coléo et mise à jour du tableau de données à injecter.</h4>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">obs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_gen.html">get_gen</a></span><span class="op">(</span><span class="st">"/observations"</span><span class="op">)</span>
+<a href="#on-r%C3%A9cup%C3%A8re-la-liste-des-observations-de-col%C3%A9o-et-on-met-%C3%A0-jour-le-tableau-de-campagnes-%C3%A0-injecter-" class="anchor"></a>8.5.5. On récupère la liste des observations de Coléo et on met à jour le tableau de campagnes à injecter.</h4>
+<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Acquisition de la liste d'observations de Coléo</span>
+<span class="va">obs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_gen.html">get_gen</a></span><span class="op">(</span><span class="st">"/observations"</span><span class="op">)</span>
 <span class="va">obs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="va">rbind.fill</span>, <span class="va">obs</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
 
 <span class="co"># Mise à jour des données à injecter avec l'observation_id</span>
@@ -814,39 +819,18 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <div id="injections-des-observations-despèce" class="section level3">
 <h3 class="hasAnchor">
 <a href="#injections-des-observations-desp%C3%A8ce" class="anchor"></a>8.6. Injections des observations d’espèce</h3>
-<p>Les champs qui peuvent être remplis dans Coléo sont les suivants (les champs en gras sont obligatoires) :</p>
-<table class="table">
-<thead><tr class="header">
-<th>Variable</th>
-<th>Description</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>observation_id</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>taxa_name</td>
-<td>nom latin de l’espèce</td>
-</tr>
-<tr class="odd">
-<td>variable</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>value</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
+<p>Les champs de la table <strong>observations des espèces</strong> (“/obs_species”) de Coléo qui peuvent être remplis sont les suivants :</p>
+<ul>
+<li><em>observation_id</em></li>
+<li>
+<em>taxa_name</em> : nom latin de l’espèce</li>
+<li><em>variable</em></li>
+<li><em>value</em></li>
+</ul>
 <div id="on-sélectionne-les-champs-dintérêts--2" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-s%C3%A9lectionne-les-champs-dint%C3%A9r%C3%AAts--2" class="anchor"></a>8.6.1. On sélectionne les champs d’intérêts.</h4>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">obs_spe_camp</span> <span class="op">&lt;-</span> <span class="fu">select</span><span class="op">(</span><span class="va">camp</span>,
                       <span class="va">observation_id</span>,
                       value <span class="op">=</span> <span class="va">abondance</span>,
@@ -858,16 +842,16 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <div id="on-formatte-les-données-à-injecter-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-formatte-les-donn%C3%A9es-%C3%A0-injecter-" class="anchor"></a>8.6.2. On formatte les données à injecter.</h4>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">obs_spe_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">obs_spe_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">obs_spe_pap_ls</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte--4" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-injecte--4" class="anchor"></a>8.6.3. On injecte.</h4>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">COLEO_obsref_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_obs_species.html">post_obs_species</a></span><span class="op">(</span><span class="va">obs_spe_camp_ls</span><span class="op">)</span></code></pre></div>
-<p>Bravo ! Vous êtes arrivés au bout de vos injections de nouvelles campagnes ! :sparkles:</p>
+<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Bravo ! Vous venez de terminer les étapes d’injections des campagnes <strong>papilonidés</strong> ! Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
 </div>
 </div>
 </div>

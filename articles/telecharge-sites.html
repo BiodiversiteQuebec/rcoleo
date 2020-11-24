@@ -128,65 +128,233 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo">rcoleo</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://purrr.tidyverse.org">purrr</a></span><span class="op">)</span>
-
-<span class="va">all_taxa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_species.html">get_species</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; Data retrieval 5.56% Data retrieval 11.1% Data retrieval 16.7% Data retrieval 22.2% Data retrieval 27.8% Data retrieval</span>
-<span class="co">#&gt; 33.3% Data retrieval 38.9% Data retrieval 44.4% Data retrieval 50% Data retrieval 55.6% Data retrieval 61.1% Data</span>
-<span class="co">#&gt; retrieval 66.7% Data retrieval 72.2% Data retrieval 77.8% Data retrieval 83.3% Data retrieval 88.9% Data retrieval</span>
-<span class="co">#&gt; 94.4% Data retrieval 100%</span>
-<span class="va">all_taxa_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_df</a></span><span class="op">(</span><span class="va">all_taxa</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="fl">1</span><span class="op">)</span>
-<span class="co">#&gt; Error: All columns in a tibble must be vectors.</span>
-<span class="co">#&gt; x Column `response` is a `response` object.</span>
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">all_taxa_df</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error in head(all_taxa_df): object 'all_taxa_df' not found</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">all_taxa_df</span><span class="op">)</span>
-<span class="co">#&gt; Error in eval(expr, envir, enclos): object 'all_taxa_df' not found</span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo">rcoleo</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span><span class="op">)</span>
 
-<span class="va">all_sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_sites.html">get_sites</a></span><span class="op">(</span><span class="op">)</span>
-<span class="co">#&gt; Data retrieval 100%</span>
+<span class="va">all_taxa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_species.html">get_species</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">all_taxa_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span><span class="op">(</span><span class="va">all_taxa</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">all_taxa_df</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="16%">
+<col width="13%">
+<col width="8%">
+<col width="8%">
+<col width="4%">
+<col width="6%">
+<col width="8%">
+<col width="17%">
+<col width="17%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">name</th>
+<th align="left">vernacular_fr</th>
+<th align="left">rank</th>
+<th align="left">category</th>
+<th align="right">tsn</th>
+<th align="right">vascan_id</th>
+<th align="left">bryoquel_id</th>
+<th align="left">created_at</th>
+<th align="left">updated_at</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Lethe eurydice eurydice</td>
+<td align="left">satyre ocellé</td>
+<td align="left">sous-espèce</td>
+<td align="left">arthropodes</td>
+<td align="right">779471</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">2020-06-03T00:00:00.000Z</td>
+<td align="left">2020-06-03T19:58:22.036Z</td>
+</tr>
+<tr class="even">
+<td align="left">Molothrus ater</td>
+<td align="left">vacher à tête brune</td>
+<td align="left">espèce</td>
+<td align="left">oiseaux</td>
+<td align="right">179112</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">2020-06-03T00:00:00.000Z</td>
+<td align="left">2020-06-04T12:46:07.480Z</td>
+</tr>
+<tr class="odd">
+<td align="left">Lycaena phlaeas</td>
+<td align="left">cuivré d’amérique</td>
+<td align="left">espèce</td>
+<td align="left">arthropodes</td>
+<td align="right">777788</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">2018-11-07T18:44:51.984Z</td>
+<td align="left">2018-11-07T18:44:51.984Z</td>
+</tr>
+<tr class="even">
+<td align="left">Lycaena cuprea</td>
+<td align="left">NA</td>
+<td align="left">espèce</td>
+<td align="left">arthropodes</td>
+<td align="right">777789</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">2018-11-07T18:44:51.984Z</td>
+<td align="left">2018-11-07T18:44:51.984Z</td>
+</tr>
+<tr class="odd">
+<td align="left">Lycaena dione</td>
+<td align="left">NA</td>
+<td align="left">espèce</td>
+<td align="left">arthropodes</td>
+<td align="right">777792</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">2018-11-07T18:44:51.984Z</td>
+<td align="left">2018-11-07T18:44:51.984Z</td>
+</tr>
+<tr class="even">
+<td align="left">Lycaena rubida</td>
+<td align="left">NA</td>
+<td align="left">espèce</td>
+<td align="left">arthropodes</td>
+<td align="right">777796</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="left">2018-11-07T18:44:51.984Z</td>
+<td align="left">2018-11-07T18:44:51.984Z</td>
+</tr>
+</tbody>
+</table>
+<p>à present dans la base de donnees coleo il y a 1728 taxons de reference.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">all_sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_sites.html">get_sites</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># on extract le body</span>
-<span class="va">donnees</span> <span class="op">&lt;-</span> <span class="va">all_sites</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span>
+<span class="va">donnees</span> <span class="op">&lt;-</span> <span class="va">all_sites</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
 
 
 <span class="va">pap</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">donnees</span>, <span class="va">cell.name</span>, milieu<span class="op">=</span><span class="va">type</span>, <span class="va">campaigns</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">unnest</span><span class="op">(</span><span class="va">campaigns</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">type</span> <span class="op">==</span> <span class="st">"papilionidés"</span><span class="op">)</span>
-<span class="co">#&gt; Warning: `select_()` is deprecated as of dplyr 0.7.0.</span>
-<span class="co">#&gt; Please use `select()` instead.</span>
-<span class="co">#&gt; This warning is displayed once every 8 hours.</span>
-<span class="co">#&gt; Call `lifecycle::last_warnings()` to see where this warning was generated.</span>
-<span class="co">#&gt; Error in UseMethod("select_"): no applicable method for 'select_' applied to an object of class "NULL"</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">pap</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt; Error in head(pap): object 'pap' not found</span></code></pre></div>
-<p><strong>Is this supposed to work??!</strong></p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-
-<span class="va">all_site_pap</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_obs.html">get_obs</a></span><span class="op">(</span>site_id <span class="op">=</span> <span class="st">""</span>, type <span class="op">=</span> <span class="st">"papilionidés"</span><span class="op">)</span>
-<span class="co">#&gt; Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100%</span>
-<span class="co">#&gt; Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100%</span>
-<span class="co">#&gt; Data retrieval 100% Data retrieval 100% Data retrieval 100%</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/all.equal.html">all.equal</a></span><span class="op">(</span><span class="va">one_site_pap</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span>, <span class="va">all_site_pap</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
-<span class="co">#&gt; Error in all.equal(one_site_pap[[1]][[1]]$body, all_site_pap[[1]][[1]]$body): object 'one_site_pap' not found</span>
-
-
-<span class="va">pap_df</span> <span class="op">&lt;-</span> <span class="va">all_site_pap</span> <span class="op">%&gt;%</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_df</a></span><span class="op">(</span><span class="op">~</span> <span class="va">.x</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">[[</span><span class="st">"body"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
-
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">pap_df</span><span class="op">)</span>
-<span class="co">#&gt; Warning in kable_pipe(x = structure(character(0), .Dim = c(0L, 0L), .Dimnames = list(: The table should have a header</span>
-<span class="co">#&gt; (column names)</span></code></pre></div>
-<p>|| || || ||</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co">## write.csv(pap_df)</span></code></pre></div>
-  </div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">pap</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<table class="table">
+<colgroup>
+<col width="10%">
+<col width="5%">
+<col width="1%">
+<col width="4%">
+<col width="7%">
+<col width="23%">
+<col width="6%">
+<col width="6%">
+<col width="3%">
+<col width="13%">
+<col width="13%">
+<col width="3%">
+</colgroup>
+<thead><tr class="header">
+<th align="left">cell.name</th>
+<th align="left">milieu</th>
+<th align="right">id</th>
+<th align="right">site_id</th>
+<th align="left">type</th>
+<th align="left">technicians</th>
+<th align="left">opened_at</th>
+<th align="left">closed_at</th>
+<th align="left">notes</th>
+<th align="left">created_at</th>
+<th align="left">updated_at</th>
+<th align="right">siteId</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="left">Mékinac (B)</td>
+<td align="left">marais</td>
+<td align="right">27</td>
+<td align="right">1</td>
+<td align="left">papilionidés</td>
+<td align="left">Caroline Dubé , Pierre-Alexis Drolet</td>
+<td align="left">2016-06-23</td>
+<td align="left">2016-06-23</td>
+<td align="left">NA</td>
+<td align="left">2018-11-07T18:53:22.103Z</td>
+<td align="left">2018-11-07T18:53:22.103Z</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">Forêt Montmorency</td>
+<td align="left">tourbière</td>
+<td align="right">30</td>
+<td align="right">4</td>
+<td align="left">papilionidés</td>
+<td align="left">Caroline Dubé , Pierre-Alexis Drolet</td>
+<td align="left">2016-07-11</td>
+<td align="left">2016-07-11</td>
+<td align="left">NA</td>
+<td align="left">2018-11-07T18:53:22.817Z</td>
+<td align="left">2020-01-23T19:34:07.751Z</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Le Granit (A)</td>
+<td align="left">tourbière</td>
+<td align="right">31</td>
+<td align="right">5</td>
+<td align="left">papilionidés</td>
+<td align="left">Caroline Dubé , Pierre-Alexis Drolet</td>
+<td align="left">2016-06-30</td>
+<td align="left">2016-06-30</td>
+<td align="left">NA</td>
+<td align="left">2018-11-07T18:53:23.091Z</td>
+<td align="left">2018-11-07T18:53:23.091Z</td>
+<td align="right">5</td>
+</tr>
+<tr class="even">
+<td align="left">Bellechasse (A)</td>
+<td align="left">tourbière</td>
+<td align="right">29</td>
+<td align="right">8</td>
+<td align="left">papilionidés</td>
+<td align="left">Pierre-Alexis Drolet</td>
+<td align="left">2016-07-05</td>
+<td align="left">2016-07-05</td>
+<td align="left">NA</td>
+<td align="left">2018-11-07T18:53:22.562Z</td>
+<td align="left">2018-11-07T18:53:22.562Z</td>
+<td align="right">8</td>
+</tr>
+<tr class="odd">
+<td align="left">La Jacques-Cartier</td>
+<td align="left">tourbière</td>
+<td align="right">39</td>
+<td align="right">11</td>
+<td align="left">papilionidés</td>
+<td align="left">Caroline Dubé, Anouk Simard</td>
+<td align="left">2017-06-26</td>
+<td align="left">2017-06-26</td>
+<td align="left">NA</td>
+<td align="left">2018-11-07T18:53:25.260Z</td>
+<td align="left">2018-11-07T18:53:25.260Z</td>
+<td align="right">11</td>
+</tr>
+<tr class="even">
+<td align="left">La Jacques-Cartier</td>
+<td align="left">marais</td>
+<td align="right">40</td>
+<td align="right">12</td>
+<td align="left">papilionidés</td>
+<td align="left">Caroline Dubé , Guillaume Tremblay</td>
+<td align="left">2017-06-22</td>
+<td align="left">2017-06-22</td>
+<td align="left">NA</td>
+<td align="left">2018-11-07T18:53:25.473Z</td>
+<td align="left">2018-11-07T18:53:25.473Z</td>
+<td align="right">12</td>
+</tr>
+</tbody>
+</table>
+</div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
