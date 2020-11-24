@@ -28,7 +28,7 @@ Afin d'injecter des nouvelles campagnes faisant l'inventaire des papillons, il v
 |--------|--------------------------------------------------------------------------|
 |*cell_code*|code numérique unique pour chaque cellule|
 |*site_code*|code alpha-numérique unique du site|
-|**type_hab**|type d'habitat dans lequel la campagne a été effectuée - 'lac', 'rivière', 'forestier', 'marais', 'marais côtier', 'toundrique', 'tourbière'|
+|**type_hab**|type d'habitat dans lequel la campagne a été effectuée - `lac`, `rivière`, `forestier`, `marais`, `marais côtier`, `toundrique`, `tourbière`|
 |*lat*|latitude du site d'échantillonnage|
 |*lon*|longitude du site d'échantillonnage|
 |*opened_at*|date du début de la campagne|
@@ -37,10 +37,10 @@ Afin d'injecter des nouvelles campagnes faisant l'inventaire des papillons, il v
 |*technician_2*||
 |*time_start*|heure du début de la campagne|
 |*time_finish*|heure de la fin de la campagne|
-|*temp_c*|température en degrés celsius|
-|**type**|type de campagne - 'papilionidés'|
-|**sky**|'dégagé (0 à 10 %)', 'nuageux (50 à 90 %)', 'orageux', 'partiellement nuageux (10 à 50 %)', 'pluvieux'|
-|**wind**|'calme (moins de 1 km/h)', 'très légère brise (1 à 5 km/h)', 'légère brise (6 à 11 km/h)', 'petite brise (12 à 19 km/h)', 'jolie brise (20 à 28 km/h)'|
+|*temp_c*|température en degré celsius|
+|**type**|type de campagne - `papilionidés`|
+|**sky**|`dégagé (0 à 10 %)`, `nuageux (50 à 90 %)`, `orageux`, `partiellement nuageux (10 à 50 %)`, `pluvieux`|
+|**wind**|`calme (moins de 1 km/h)`, `très légère brise (1 à 5 km/h)`, `légère brise (6 à 11 km/h)`, `petite brise (12 à 19 km/h)`, `jolie brise (20 à 28 km/h)`|
 |*vernacular_fr*|nom commun français des espèces observées|
 |*taxa_name*|nom latin des espèces observées|
 |*abondance*|valeur d'abondance de l'espèce observée|

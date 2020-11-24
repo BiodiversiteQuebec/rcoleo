@@ -13,12 +13,12 @@ Afin d'injecter des nouvelles campagnes *zooplancton* dans la base de données C
 |--------|--------------------------------------------------------------------------|
 |*cell_code*|code numérique unique pour chaque cellule|
 |*site_code*|code alpha-numérique unique du site|
-|**type_hab**|'lac', 'rivière', 'forestier', 'marais', 'marais côtier', 'toundrique', 'tourbière'|
+|**type_hab**|type d'habitat dans lequel la campagne a été effectuée - `lac`, `rivière`, `forestier`, `marais`, `marais côtier`, `toundrique`, `tourbière`|
 |*lat*|latitude du site d'échantillonnage|
-|*long*|longitude du site d'échantillonnage|
+|*lon*|longitude du site d'échantillonnage|
 |*opened_at*|date du début du prélèvement|
 |*closed_at*|date de la fin du prélèvement|
-|**type**|type de la campagne, ici 'zooplancton'|
+|**type**|type de la campagne, ici `zooplancton`|
 |*technician_1*||
 |*technician_2*||
 |*depth*|profondeur du prélèvement en mètre|

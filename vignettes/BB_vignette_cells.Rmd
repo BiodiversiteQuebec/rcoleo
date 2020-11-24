@@ -26,13 +26,16 @@ for (i in 1:length(cell_abs)){
   cells_ls$name <- unique(shp_cells[shp_cells$IJ == cell_abs[i] & !is.na(shp_cells$Nom),]@data$Nom) # Nom de la cellule
 
   if(identical(cells_ls$name, character(0))){
+  
     cells_ls$name <- NULL
+    
   } # Information absente si pas de nom pour la cellule
 
 # Création de l'objet spatial pour les coordonnées de la cellule
   shp_sp <- as(shp, "SpatialPolygons")
   cells_ls$geom <- geojsonio::geojson_list(shp)$features[[1]]$geometry # Caractéristiques de l'objet spatial
-  cells_ls$geom$crs <- list(type="name",properties=list(name="EPSG:4326")) # Information sur le systême de coordonnées de référence (CRS)
+  cells_ls$geom$crs <- list(type = "name",
+                            properties = list(name = "EPSG:4326")) # Information sur le systême de coordonnées de référence (CRS)
 
 # Alimentation de l'objet final avec un niveau pour chaque cellule
   shp_cells_list[[i]] <- cells_ls
@@ -42,7 +45,7 @@ for (i in 1:length(cell_abs)){
 ##### **7.3.1.3.** Nous pouvons maintenant insérer les nouvelles cellules dans la base de données Coléo.
 
 ```r
-# Envoyer la liste de nouvelles cellules vers Coléo
+# Envoi de la liste de nouvelles cellules vers Coléo
 COLEO_cells <- post_cells(shp_cells_list)
 ```
 
