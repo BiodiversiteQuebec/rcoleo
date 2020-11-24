@@ -1,6 +1,6 @@
 ---
 title: "Telecharger les sites"
-output: rmarkdown::html_vignette
+output: html_document
 ---
 
 

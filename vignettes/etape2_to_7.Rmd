@@ -102,7 +102,7 @@ cell_abs <- rcoleo::COLEO_comp(unique(camp$cell_code), unique(cells$cell_code))
 cell_abs
 ```
 
-La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire d'importer ces cellules avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `cell_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées dans la vignette [*Injection des cellules*](https://reseaubiodiversitequebec.github.io/rcoleo/articles/injection-cellules.html).
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire d'importer ces cellules avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `cell_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées en déroulant la vignette **Injection des cellules** ci-dessous.
 
 <script>
 function myFunction1() {
@@ -115,16 +115,24 @@ function myFunction1() {
 }
 </script>
  
-<button onclick="myFunction1()">Vignette injection cellules</button>
- 
 <div id="myDIV_cells">
-Ici, BB vignette injection de cellules
+```{r, child="C:/Users/HP_9470m/Desktop/PostDoc_COLEO/GitHub/rcoleo/vignettes/BB_vignette_cells.Rmd"}
+```
  
 </div>
 
 <script>
 document.getElementById("myDIV_cells").style.display ="none"
 </script>
+
+<button onclick="myFunction1()">Vignette Injection des cellules</button>
+
+Vous pouvez maintenant récupérer l'ID unique des cellules.
+
+```r
+camp <- dplyr::left_join(camp, cells[, c("id", "cell_code")], by = "cell_code")
+names(camp)[names(camp) == "id"] <- "cell_id"
+```
 
 #### 7.3.2. Pour les sites
 
@@ -134,7 +142,7 @@ site_abs <- rcoleo::COLEO_comp(unique(camp$site_code), unique(sites$site_code))
 site_abs
 ```
 
-La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains sites n'existent pas dans Coléo, il sera nécessaire d'importer ces sites avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `site_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre  les étapes détaillées dans la vignette [*Injection des sites*](injection-sites.html).
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains sites n'existent pas dans Coléo, il sera nécessaire d'importer ces sites avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `site_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées en déroulant la vignette **Injection des sites** ci-dessous.
 
 <script>
 function myFunction2() {
@@ -146,16 +154,25 @@ function myFunction2() {
     }
 }
 </script>
- 
-<button onclick="myFunction2()">Vignette injection sites</button>
- 
+
 <div id="myDIV_sites">
-Ici, BB vignette injection de sites
+```{r, child="C:/Users/HP_9470m/Desktop/PostDoc_COLEO/GitHub/rcoleo/vignettes/BB_vignette_sites.Rmd"}
+```
 </div>
 
 <script>
 document.getElementById("myDIV_sites").style.display ="none"
-</script>
+</script> 
+
+<button onclick="myFunction2()">Vignette Injection des sites</button>
+
+Vous pouvez maintenant récupérer l'ID unique des sites.
+
+```r
+camp <- dplyr::left_join(camp, sites[, c("id", "site_code")], by = "site_code")
+names(camp)[names(camp) == "id"] <- "site_id"
+```
+
 
 #### 7.3.3. Pour les noms d'espèces
 
@@ -165,7 +182,7 @@ sp_abs <- rcoleo::COLEO_comp(unique(camp$taxa_name), unique(species$name))
 sp_abs
 ```
 
-La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains noms d'espèces n'existent pas dans Coléo, il sera nécessaire d'importer ces noms avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `sp_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre  les étapes détaillées dans la vignette [*Injection des noms d'espèce*](injection-taxa.html).
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains noms d'espèces n'existent pas dans Coléo, il sera nécessaire d'importer ces noms avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `sp_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre  les étapes détaillées dans la vignette **Injection des noms d'espèce**.
 
 <script>
 function myFunction3() {
@@ -177,17 +194,17 @@ function myFunction3() {
     }
 }
 </script>
- 
-<button onclick="myFunction3()">Vignette injection noms d'espèce</button>
- 
+
 <div id="myDIV_taxa">
-Ici, BB vignette injection de noms d'espèces
- 
+```{r, child="C:/Users/HP_9470m/Desktop/PostDoc_COLEO/GitHub/rcoleo/vignettes/BB_vignette_taxa_names.Rmd"}
+```
 </div>
 
 <script>
 document.getElementById("myDIV_taxa").style.display ="none"
-</script>
+</script> 
+
+<button onclick="myFunction3()">Vignette injection noms d'espèce</button>
 
 #### 7.3.3. Pour les attributs
 
