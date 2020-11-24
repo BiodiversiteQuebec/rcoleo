@@ -328,7 +328,7 @@
 <span class="va">cell_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">cell_code</span><span class="op">)</span>,
                                <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">cells</span><span class="op">$</span><span class="va">cell_code</span><span class="op">)</span><span class="op">)</span>
 <span class="va">cell_abs</span></code></pre></div>
-<p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certaines cellules n’existent pas dans Coléo, il sera nécessaire d’importer ces cellules avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous utilisez l’objet <code>cell_abs</code> que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées en déroulant la vignette <strong>Injection des cellules</strong> ci-dessous.</p>
+<p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certaines cellules n’existent pas dans Coléo, il sera nécessaire de les importer avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous pouvez utiliser l’objet <code>cell_abs</code> que vous venez de créer et qui contient la liste des cellules à injecter dans Coléo. Suivez les étapes détaillées en déroulant la vignette <strong>Injection des cellules</strong> ci-dessous.</p>
 <script>
 function myFunction1() {
     var x = document.getElementById("myDIV_cells");
@@ -408,7 +408,7 @@ Vignette Injection des cellules
 <span class="va">site_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">site_code</span><span class="op">)</span>,
                                <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">sites</span><span class="op">$</span><span class="va">site_code</span><span class="op">)</span><span class="op">)</span>
 <span class="va">site_abs</span></code></pre></div>
-<p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certains sites n’existent pas dans Coléo, il sera nécessaire d’importer ces sites avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous utilisez l’objet <code>site_abs</code> que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées en déroulant la vignette <strong>Injection des sites</strong> ci-dessous.</p>
+<p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certaines cellules n’existent pas dans Coléo, il sera nécessaire de les importer avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous pouvez utiliser l’objet <code>site_abs</code> que vous venez de créer et qui contient la liste des sites à injecter dans Coléo. Suivez les étapes détaillées en déroulant la vignette <strong>Injection des sites</strong> ci-dessous.</p>
 <script>
 function myFunction2() {
     var x = document.getElementById("myDIV_sites");
@@ -489,7 +489,7 @@ Vignette Injection des sites
 <span class="va">sp_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">taxa_name</span><span class="op">)</span>,
                              <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">species</span><span class="op">$</span><span class="va">name</span><span class="op">)</span><span class="op">)</span>
 <span class="va">sp_abs</span></code></pre></div>
-<p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certains noms d’espèces n’existent pas dans Coléo, il sera nécessaire d’importer ces noms avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous utilisez l’objet <code>sp_abs</code> que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées dans la vignette <strong>Injection des noms d’espèce</strong>.</p>
+<p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certaines cellules n’existent pas dans Coléo, il sera nécessaire de les importer avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous pouvez utiliser l’objet <code>sp_abs</code> que vous venez de créer et qui contient la liste des noms d’espèces à injecter dans Coléo. Suivez les étapes détaillées en déroulant la vignette <strong>Injection des noms d’espèces</strong> ci-dessous.</p>
 <script>
 function myFunction3() {
     var x = document.getElementById("myDIV_taxa");
@@ -535,7 +535,7 @@ Vignette injection noms d’espèce
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Contenu de la table des attributs dans Coléo</span>
 <span class="va">attrs</span></code></pre></div>
-<p>Vérifier si les attributs nécessaires à vos campagnes sont bien présents dans cette table.</p>
+<p>Vous pouvez vérifier si les attributs nécessaires à vos campagnes sont bien présents dans cette table.</p>
 </div>
 </div>
 <div id="optimisation-du-tableau-à-injecter-initial" class="section level3">
@@ -543,7 +543,9 @@ Vignette injection noms d’espèce
 <a href="#optimisation-du-tableau-%C3%A0-injecter-initial" class="anchor"></a>7.4 Optimisation du tableau à injecter initial</h3>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Ajout du site_id</span>
-<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>, <span class="va">sites</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_code"</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="st">"site_code"</span><span class="op">)</span>
+<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
+                         <span class="va">sites</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_code"</span><span class="op">)</span><span class="op">]</span>,
+                         by <span class="op">=</span> <span class="st">"site_code"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"site_id"</span></code></pre></div>
 </div>
 </div>
