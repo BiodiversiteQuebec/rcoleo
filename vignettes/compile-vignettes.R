@@ -12,7 +12,7 @@ knit("vignettes/injection-taxa.Rmd.orig", "vignettes/injection-taxa.Rmd") # need
 
 # Injections CAMPAGNES
 
-knit("vignettes/CAMPAGNE_zooplancton_injection.Rmd.orig", "vignettes/CAMPAGNE_zooplancton_injection.Rmd")
+knit("vignettes/CAMPAGNE_insects_sol_injection.Rmd.orig", "vignettes/CAMPAGNE_insects_sol_injection.Rmd")
 
 # keeping Tutorial-injections.Rmd.orig as .orig, not because it needs
 # authorization or something similare, but because I'm not sure if we are

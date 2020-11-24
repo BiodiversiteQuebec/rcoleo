@@ -76,3 +76,5 @@ navbar:
         href: articles/CAMPAGNE_papillon_injection.html
       - text: Injection des campagnes ODONATE
         href: articles/CAMPAGNE_odonate_injection.html
+      - text: Injection des campagnes INSECTES SOL
+        href: articles/CAMPAGNE_insects_sol_injection.html
