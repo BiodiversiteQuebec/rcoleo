@@ -10,13 +10,14 @@ License: MIT
 Encoding: UTF-8
 LazyData: true
 Imports:
-  httr,
-  jsonlite,
-  stringr,
-  dplyr,
-  plyr,
-  tibble,
-  purrr
+    httr,
+    jsonlite,
+    stringr,
+    dplyr,
+    plyr,
+    tibble,
+    purrr,
+    here
 Suggests: knitr,
     rmarkdown,
     RPostgreSQL,
