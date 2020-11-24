@@ -86,6 +86,9 @@
     <li>
       <a href="../articles/CAMPAGNE_papillon_injection.html">Injection des campagnes PAPILONIDÉS</a>
     </li>
+    <li>
+      <a href="../articles/CAMPAGNE_odonate_injection.html">Injection des campagnes ODONATE</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -129,20 +132,20 @@
 <h5 class="hasAnchor">
 <a href="#cette-%C3%A9tape-permet-de-s%C3%A9lectionner-les-informations-n%C3%A9cessaires-pour-les-noms-desp%C3%A8ce-absents-de-col%C3%A9o-" class="anchor"></a><strong>7.3.3.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les noms d’espèce absents de Coléo.</h5>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># On prépare le tableau à insérer</span>
+<code class="sourceCode R"><span class="co"># Formatage du tableau à insérer</span>
 <span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">camp</span><span class="op">[</span><span class="va">camp</span><span class="op">$</span><span class="va">taxa_name</span> <span class="op">%in%</span> <span class="va">sp_abs</span>,<span class="op">]</span>
 <span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="fu">select</span><span class="op">(</span><span class="va">taxa_df</span>,
                     name <span class="op">=</span> <span class="va">taxa_name</span>,
-                    <span class="va">vernacular_fr</span><span class="op">)</span> <span class="co"># colonne nécessaire</span></code></pre></div>
+                    <span class="va">vernacular_fr</span><span class="op">)</span> <span class="co"># colonnes nécessaires</span></code></pre></div>
 </div>
 <div id="cette-étape-permet-de-formatter-les-données-afin-de-pouvoir-les-injecter-dans-la-base-de-données-coléo-" class="section level5">
 <h5 class="hasAnchor">
 <a href="#cette-%C3%A9tape-permet-de-formatter-les-donn%C3%A9es-afin-de-pouvoir-les-injecter-dans-la-base-de-donn%C3%A9es-col%C3%A9o-" class="anchor"></a><strong>7.3.3.2.</strong> Cette étape permet de formatter les données afin de pouvoir les injecter dans la base de données Coléo.</h5>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># On retire les lignes dupliquées</span>
+<code class="sourceCode R"><span class="co"># Retrait des lignes dupliquées</span>
 <span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">taxa_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">taxa_df</span><span class="op">)</span>,<span class="op">]</span> 
 
-<span class="co"># On formatte les données sous forme de</span>
+<span class="co"># Formatage des données sous forme de liste</span>
 <span class="va">taxa_df_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">taxa_df</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte-dans-la-base-de-données-coléo-" class="section level5">

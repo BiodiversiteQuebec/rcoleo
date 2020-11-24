@@ -86,6 +86,9 @@
     <li>
       <a href="../articles/CAMPAGNE_papillon_injection.html">Injection des campagnes PAPILONIDÉS</a>
     </li>
+    <li>
+      <a href="../articles/CAMPAGNE_odonate_injection.html">Injection des campagnes ODONATE</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -129,29 +132,36 @@
 <h5 class="hasAnchor">
 <a href="#cette-%C3%A9tape-permet-de-s%C3%A9lectionner-les-informations-n%C3%A9cessaires-pour-les-sites-absents-de-col%C3%A9o-" class="anchor"></a><strong>7.3.2.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les sites absents de Coléo.</h5>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># On ne garde que les lignes du tableau concernant les sites manquants</span>
+<code class="sourceCode R"><span class="co"># Sélection des lignes du tableau concernant les sites manquants</span>
 <span class="va">site_df</span> <span class="op">&lt;-</span> <span class="va">camp</span><span class="op">[</span><span class="va">camp</span><span class="op">$</span><span class="va">site_code</span> <span class="op">%in%</span> <span class="va">site_abs</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cell_id"</span>, <span class="st">"site_code"</span>, <span class="st">"type_hab"</span>, <span class="st">"opened_at"</span>, <span class="st">"lat"</span>, <span class="st">"lon"</span><span class="op">)</span><span class="op">]</span>
 
-<span class="co"># On garde une ligne par site</span>
+<span class="co"># Retrait des lignes dupliquées</span>
 <span class="va">site_df</span> <span class="op">&lt;-</span> <span class="va">site_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">site_df</span><span class="op">)</span>,<span class="op">]</span>
 
-<span class="co"># On change le nom de la variable "type_hab" pour correspondre à celle de Coléo ("type")</span>
+<span class="co"># Changement du nom de la variable "type_hab" pour correspondre à celle de Coléo ("type")</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">site_df</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">site_df</span><span class="op">)</span> <span class="op">==</span> <span class="st">"type_hab"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"type"</span>
 
-<span class="co"># On créé la variable geom à partir des variables "lat" &amp; "lon"</span>
+<span class="co"># Création de la variable geom à partir des variables "lat" &amp; "lon"</span>
 <span class="va">site_df_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">site_df</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span> <span class="co"># Création de la liste</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">)</span> <span class="co"># Vérification de la structure de l'objet</span>
 
 <span class="va">geom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">site_df</span>,<span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span>
+
   <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+  
     <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu">geojsonio</span><span class="fu">::</span><span class="fu">geojson_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span>, <span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">features</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span>
+    
   <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+  
     <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>
+    
   <span class="op">}</span><span class="op">}</span><span class="op">)</span>
 
 <span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">)</span><span class="op">)</span><span class="op">{</span> <span class="co"># Fusionner les deux listes (geomations + sites)</span>
+
   <span class="va">site_df_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span> <span class="op">&lt;-</span> <span class="va">geom</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
   <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">is.list</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+  
     <span class="va">site_df_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span><span class="op">$</span><span class="va">crs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"name"</span>,
                                      properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"EPSG:4326"</span><span class="op">)</span><span class="op">)</span>
   <span class="op">}</span>
@@ -161,7 +171,7 @@
 <h5 class="hasAnchor">
 <a href="#nous-pouvons-maintenant-ins%C3%A9rer-les-nouveaux-sites-dans-la-base-de-donn%C3%A9es-col%C3%A9o-" class="anchor"></a><strong>7.3.2.2.</strong> Nous pouvons maintenant insérer les nouveaux sites dans la base de données Coléo.</h5>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># On envoie la liste des nouveaux sites vers Coléo</span>
+<code class="sourceCode R"><span class="co"># Envoi de la liste des nouveaux sites vers Coléo</span>
 <span class="va">COLEO_sites</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_sites.html">post_sites</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">)</span></code></pre></div>
 <p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
 </div>
