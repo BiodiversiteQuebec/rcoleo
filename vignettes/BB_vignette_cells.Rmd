@@ -2,7 +2,7 @@
 output: html_document
 ---
 
-##### **7.3.1.1.** Cette étape permet d'enregistrer un objet dans R avec les informations de toutes les cellules existantes
+##### **7.3.1.1.** Cette étape permet d'enregistrer un objet dans R avec les informations de toutes les cellules existantes.
 
 ```r
 shp_cells <- rgdal::readOGR(dsn="./shp",

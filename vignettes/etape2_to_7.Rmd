@@ -116,7 +116,7 @@ function myFunction1() {
 </script>
  
 <div id="myDIV_cells">
-```{r, child="BB_vignette_cells.Rmd"}
+```{r, child="C:/Users/HP_9470m/Desktop/PostDoc_COLEO/GitHub/rcoleo/vignettes/BB_vignette_cells.Rmd"}
 ```
  
 </div>
@@ -156,7 +156,7 @@ function myFunction2() {
 </script>
 
 <div id="myDIV_sites">
-```{r, child="BB_vignette_sites.Rmd"}
+```{r, child="C:/Users/HP_9470m/Desktop/PostDoc_COLEO/GitHub/rcoleo/vignettes/BB_vignette_sites.Rmd"}
 ```
 </div>
 
@@ -196,7 +196,7 @@ function myFunction3() {
 </script>
 
 <div id="myDIV_taxa">
-```{r, child="BB_vignette_taxa_names.Rmd"}
+```{r, child="C:/Users/HP_9470m/Desktop/PostDoc_COLEO/GitHub/rcoleo/vignettes/BB_vignette_taxa_names.Rmd"}
 ```
 </div>
 
