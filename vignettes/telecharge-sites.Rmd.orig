@@ -6,30 +6,30 @@ output: rmarkdown::html_vignette
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  message=FALSE,
+  warning=FALSE
 )
 ```
 
 ```{r setup}
 library(rcoleo)
 library(purrr)
+suppressPackageStartupMessages(library(tidyverse))
 
 all_taxa <- get_species()
-all_taxa_df <- map_df(all_taxa[[1]], 1)
+all_taxa_df <- bind_rows(all_taxa[[1]]$body)
 knitr::kable(head(all_taxa_df))
-
-dim(all_taxa_df)
 ```
+
+à present dans la base de donnees coleo il y a `r nrow(all_taxa_df)` taxons de reference.
 
 
 ```{r}
-library(rcoleo)
-suppressPackageStartupMessages(library(tidyverse))
-
 all_sites <- get_sites()
 
 # on extract le body
-donnees <- all_sites[[1]][[1]]$body
+donnees <- all_sites[[1]]$body[[1]]
 
 
 pap <-  select(donnees, cell.name, milieu=type, campaigns) %>%
@@ -37,21 +37,4 @@ pap <-  select(donnees, cell.name, milieu=type, campaigns) %>%
   filter(type == "papilionidés")
 
 knitr::kable(head(pap))
-```
-
-**Is this supposed to work??!**
-
-```{r}
-
-
-all_site_pap <- get_obs(site_id = "", type = "papilionidés")
-
-all.equal(one_site_pap[[1]][[1]]$body, all_site_pap[[1]][[1]]$body)
-
-
-pap_df <- all_site_pap %>% map_df(~ .x[[1]][["body"]])
-
-knitr::kable(pap_df)
-
-## write.csv(pap_df)
 ```

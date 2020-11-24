@@ -9,78 +9,49 @@ output: rmarkdown::html_vignette
 ```r
 library(rcoleo)
 library(purrr)
+suppressPackageStartupMessages(library(tidyverse))
 
 all_taxa <- get_species()
-#> Data retrieval 5.56% Data retrieval 11.1% Data retrieval 16.7% Data retrieval 22.2% Data retrieval 27.8% Data retrieval
-#> 33.3% Data retrieval 38.9% Data retrieval 44.4% Data retrieval 50% Data retrieval 55.6% Data retrieval 61.1% Data
-#> retrieval 66.7% Data retrieval 72.2% Data retrieval 77.8% Data retrieval 83.3% Data retrieval 88.9% Data retrieval
-#> 94.4% Data retrieval 100%
-all_taxa_df <- map_df(all_taxa[[1]], 1)
-#> Error: All columns in a tibble must be vectors.
-#> x Column `response` is a `response` object.
+all_taxa_df <- bind_rows(all_taxa[[1]]$body)
 knitr::kable(head(all_taxa_df))
-#> Error in head(all_taxa_df): object 'all_taxa_df' not found
-
-dim(all_taxa_df)
-#> Error in eval(expr, envir, enclos): object 'all_taxa_df' not found
 ```
 
 
 
-```r
-library(rcoleo)
-suppressPackageStartupMessages(library(tidyverse))
+|name                    |vernacular_fr       |rank        |category    |    tsn| vascan_id|bryoquel_id |created_at               |updated_at               |
+|:-----------------------|:-------------------|:-----------|:-----------|------:|---------:|:-----------|:------------------------|:------------------------|
+|Lethe eurydice eurydice |satyre ocellé       |sous-espèce |arthropodes | 779471|        NA|NA          |2020-06-03T00:00:00.000Z |2020-06-03T19:58:22.036Z |
+|Molothrus ater          |vacher à tête brune |espèce      |oiseaux     | 179112|        NA|NA          |2020-06-03T00:00:00.000Z |2020-06-04T12:46:07.480Z |
+|Lycaena phlaeas         |cuivré d'amérique   |espèce      |arthropodes | 777788|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
+|Lycaena cuprea          |NA                  |espèce      |arthropodes | 777789|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
+|Lycaena dione           |NA                  |espèce      |arthropodes | 777792|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
+|Lycaena rubida          |NA                  |espèce      |arthropodes | 777796|        NA|NA          |2018-11-07T18:44:51.984Z |2018-11-07T18:44:51.984Z |
 
+à present dans la base de donnees coleo il y a 1728 taxons de reference.
+
+
+
+```r
 all_sites <- get_sites()
-#> Data retrieval 100%
 
 # on extract le body
-donnees <- all_sites[[1]][[1]]$body
+donnees <- all_sites[[1]]$body[[1]]
 
 
 pap <-  select(donnees, cell.name, milieu=type, campaigns) %>%
   unnest(campaigns) %>%
   filter(type == "papilionidés")
-#> Warning: `select_()` is deprecated as of dplyr 0.7.0.
-#> Please use `select()` instead.
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_warnings()` to see where this warning was generated.
-#> Error in UseMethod("select_"): no applicable method for 'select_' applied to an object of class "NULL"
 
 knitr::kable(head(pap))
-#> Error in head(pap): object 'pap' not found
-```
-
-**Is this supposed to work??!**
-
-
-```r
-
-
-all_site_pap <- get_obs(site_id = "", type = "papilionidés")
-#> Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100%
-#> Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100% Data retrieval 100%
-#> Data retrieval 100% Data retrieval 100% Data retrieval 100%
-
-all.equal(one_site_pap[[1]][[1]]$body, all_site_pap[[1]][[1]]$body)
-#> Error in all.equal(one_site_pap[[1]][[1]]$body, all_site_pap[[1]][[1]]$body): object 'one_site_pap' not found
-
-
-pap_df <- all_site_pap %>% map_df(~ .x[[1]][["body"]])
-
-knitr::kable(pap_df)
-#> Warning in kable_pipe(x = structure(character(0), .Dim = c(0L, 0L), .Dimnames = list(: The table should have a header
-#> (column names)
 ```
 
 
 
-||
-||
-||
-||
-
-```r
-
-## write.csv(pap_df)
-```
+|cell.name          |milieu    | id| site_id|type         |technicians                                |opened_at  |closed_at  |notes |created_at               |updated_at               | siteId|
+|:------------------|:---------|--:|-------:|:------------|:------------------------------------------|:----------|:----------|:-----|:------------------------|:------------------------|------:|
+|Mékinac (B)        |marais    | 27|       1|papilionidés |Caroline Dubé       , Pierre-Alexis Drolet |2016-06-23 |2016-06-23 |NA    |2018-11-07T18:53:22.103Z |2018-11-07T18:53:22.103Z |      1|
+|Forêt Montmorency  |tourbière | 30|       4|papilionidés |Caroline Dubé       , Pierre-Alexis Drolet |2016-07-11 |2016-07-11 |NA    |2018-11-07T18:53:22.817Z |2020-01-23T19:34:07.751Z |      4|
+|Le Granit (A)      |tourbière | 31|       5|papilionidés |Caroline Dubé       , Pierre-Alexis Drolet |2016-06-30 |2016-06-30 |NA    |2018-11-07T18:53:23.091Z |2018-11-07T18:53:23.091Z |      5|
+|Bellechasse (A)    |tourbière | 29|       8|papilionidés |Pierre-Alexis Drolet                       |2016-07-05 |2016-07-05 |NA    |2018-11-07T18:53:22.562Z |2018-11-07T18:53:22.562Z |      8|
+|La Jacques-Cartier |tourbière | 39|      11|papilionidés |Caroline Dubé, Anouk Simard                |2017-06-26 |2017-06-26 |NA    |2018-11-07T18:53:25.260Z |2018-11-07T18:53:25.260Z |     11|
+|La Jacques-Cartier |marais    | 40|      12|papilionidés |Caroline Dubé     , Guillaume Tremblay     |2017-06-22 |2017-06-22 |NA    |2018-11-07T18:53:25.473Z |2018-11-07T18:53:25.473Z |     12|
