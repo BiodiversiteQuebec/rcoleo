@@ -107,7 +107,7 @@ cell_abs <- rcoleo::COLEO_comp(unique(camp$cell_code),
 cell_abs
 ```
 
-La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire d'importer ces cellules avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `cell_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées en déroulant la vignette **Injection des cellules** ci-dessous.
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire de les importer avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous pouvez utiliser l'objet `cell_abs` que vous venez de créer et qui contient la liste des cellules à injecter dans Coléo. Suivez les étapes détaillées en déroulant la vignette **Injection des cellules** ci-dessous.
 
 <script>
 function myFunction1() {
@@ -150,7 +150,7 @@ site_abs <- rcoleo::COLEO_comp(unique(camp$site_code),
 site_abs
 ```
 
-La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains sites n'existent pas dans Coléo, il sera nécessaire d'importer ces sites avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `site_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées en déroulant la vignette **Injection des sites** ci-dessous.
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire de les importer avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous pouvez utiliser l'objet `site_abs` que vous venez de créer et qui contient la liste des sites à injecter dans Coléo. Suivez les étapes détaillées en déroulant la vignette **Injection des sites** ci-dessous.
 
 <script>
 function myFunction2() {
@@ -193,7 +193,7 @@ sp_abs <- rcoleo::COLEO_comp(unique(camp$taxa_name),
 sp_abs
 ```
 
-La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains noms d'espèces n'existent pas dans Coléo, il sera nécessaire d'importer ces noms avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `sp_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre  les étapes détaillées dans la vignette **Injection des noms d'espèce**.
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire de les importer avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous pouvez utiliser l'objet `sp_abs` que vous venez de créer et qui contient la liste des noms d'espèces à injecter dans Coléo. Suivez les étapes détaillées en déroulant la vignette **Injection des noms d'espèces** ci-dessous.
 
 <script>
 function myFunction3() {
@@ -223,14 +223,16 @@ document.getElementById("myDIV_taxa").style.display ="none"
 # Contenu de la table des attributs dans Coléo
 attrs
 ```
-Vérifier si les attributs nécessaires à vos campagnes sont bien présents dans cette table.
+Vous pouvez vérifier si les attributs nécessaires à vos campagnes sont bien présents dans cette table.
 
 
 ### 7.4 Optimisation du tableau à injecter initial
 
 ```r
 # Ajout du site_id
-camp <- dplyr::left_join(camp, sites[, c("id", "site_code")], by = "site_code")
+camp <- dplyr::left_join(camp,
+                         sites[, c("id", "site_code")],
+                         by = "site_code")
 names(camp)[names(camp) == "id"] <- "site_id"
 ```
 
