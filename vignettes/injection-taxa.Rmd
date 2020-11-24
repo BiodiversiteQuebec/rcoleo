@@ -3,7 +3,7 @@ title: "Injection des espèces de référence dans Coléo"
 author:
   - "Joelle Spooner"
   - "Andrew MacDonald"
-output: rmarkdown::html_vignette
+output: html_document
 ---
 
 
