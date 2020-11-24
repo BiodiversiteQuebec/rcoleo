@@ -1,0 +1,336 @@
+---
+title: "Tutoriel pour injection des campagnes Insecgs Sol"
+author: "Andrew MacDonald"
+date: "novembre 2020"
+output: html_document
+---
+
+## 1. Créer une base de données excel
+
+Afin d'injecter des nouvelles campagnes *insects sol* dans la base de données Coléo, vous devez regrouper les informations suivantes dans un fichier excel :
+
+
+
+```{r excel_sheet, eval=FALSE, include=FALSE}
+sheet_address <- "https://docs.google.com/spreadsheets/d/1_69xaKrqXlw8HfqhxcpMG1zHbfbptyTSFJCBJ8hhv58/edit#gid=1392890872"
+```
+
+
+```{r load_data, eval=FALSE, message=FALSE, warning=FALSE}
+library(googlesheets4)
+library(tidyverse)
+
+options(gargle_oauth_email = TRUE)
+gs4_auth()
+insecte_sol_obs <- range_read(sheet_address,
+                              sheet = "insecte_sol_observation", encoding = "UTF-8")
+
+glimpse(insecte_sol_obs)
+
+```
+
+
+|nom de variable |meaning |
+|:-----------|:-------|
+|nom_cellule                   |  Name of the cell      |
+|no_de_reference_de_la_cellule |  code numérique unique pour chaque cellule      |
+|no_de_reference_du_site       |  code alpha-numérique unique du site      |
+|type_milieu                   |  'lac', 'rivière', 'forestier', 'marais', 'marais côtier', 'toundrique', 'tourbière'      |
+|type_identification           |  `TRI` ou `ID`      |
+|no_echantillon                |  Sample number (MFFP syntax)      |
+|date_debut                    |  date du début du prélèvement      |
+|date_fin                      |   date de la fin du prélèvement      |
+|nom_scientifique              |  nom latin des espèces observées      |
+|abondance                     |  Count of observation.      |
+
+Note that soil insects are peculiar, in that unlike other datasets in coleo they produce two kinds of data. First, soil insects which are sorted to species -- and second, soil insects which are not identified to species. 
+
+
+Note : ne pas laisser de case vide, inscrire NA lorsque nécessaire
+Note bis : Il est essentiel que ce tableau ne contiennent QUE des nouvelles campagnes ! Sous peine de voir échoué le code qui suit.
+
+```{r, child="etape2_to_7.Rmd"}
+```
+
+
+## 7. Vérification pré-injection
+
+La succession d'étape qui suivent permettent de vérifier si les cellules, les sites et les noms d'espèces associés aux campagnes à injecter existent déjà dans Coléo.
+
+### 7.1. Création d'un objet R avec les nouvelles campagnes à insérer dans Coléo
+
+```r
+camp_zoopl <- read.csv("./lenomdevotrebasededonnées.csv", header = TRUE, sep = ',', stringsAsFactors = FALSE, encoding = "UTF-8") # l'encoding UTF-8 permet de garder les accents
+```
+
+#### 7.3.4. Pour les attributs
+
+```r
+#### Variables tables "attributes" ####
+rcoleo::get_gen("/attributes")
+```
+
+Vous pouvez vérifier ici si la variable `abondance` est présente dans ce tableau.
+
+## 8. Injections des nouvelles campagnes *zooplancton*
+
+Pour une injection complète d'une campagne, il est nécessaire de passer par l'importation d'informations successives dans différentes tables de Coléo. La hiérarchie des tables à renseigner est cruciale, sans quoi l'injection de la campagne est vouée à l'échec. Les prochaines étapes détaillent l'ajout d'information dans les tables:
+
+1. Campagnes ("*/campaigns*")
+2. Repères ("*/landmarks*")
+3. Observations ("*/observations*")
+4. Observations des espèces ("*/obs_species*")
+
+### 8.1. Injections des informations sur les nouvelles campagnes
+Les champs qui peuvent être remplis dans la table **campagnes** ("/campaigns") de Coléo sont les suivants (les champs en gras sont obligatoires) :
+
+* **site_id** : à récupérer dans Coléo
+* **type** : nom de la campagne, ici "zooplanctons"
+* **technicians** : liste composée de "technicien_1" et "technicien_2"
+* **opened_at** : corresppond à "date_debut"
+* **closed_at** : correspond à "date_fin"
+* *notes*
+
+#### 8.1.1. On commence par séléctionner les champs d'interêts & on matche les noms de variables avec celles de Coléo.
+
+```r
+inj_camp_zoop <- dplyr::select(camp_zoopl, 
+                               site_code = no_de_reference_du_site, 
+                               opened_at = date_debut, 
+                               closed_at = date_fin, 
+                               technicien_1, 
+                               technicien_2)
+```
+#### 8.1.2. On garde une ligne unique par nouvelle campagne.
+
+```r
+inj_camp_zoop <- inj_camp_zoop[!duplicated(inj_camp_zoop),]
+```
+
+#### 8.1.3. On récupère le `site_id`, nécessaire à l'injection.
+
+```r
+inj_camp_zoop <- dplyr::left_join(inj_camp_zoop, sites[, c(1,4)], by = "site_code")
+names(inj_camp_zoop)[6] <- "site_id"
+```
+
+#### 8.1.4. On créé une liste pour le nom des technicien/ne/s.
+
+```r
+tech <- list() # Création d'un objet `list` vide
+
+for(i in 1:length(inj_camp_zoop$site_code)){
+  tech[[i]] <- list(inj_camp_zoop$technicien_1[[i]], inj_camp_zoop$technicien_2[[i]])
+} # Chaque niveau de la liste correspond à une association des deux noms des technicien/ne/s pour chaque ligne du tableau
+
+inj_camp_zoop$technicians <- tech # Ajout de la liste au tableau à injecter dans Coléo
+```
+
+#### 8.1.5. On renseigne le type de campagnes, ici **zooplancton**. Prenez garde à bien conserver la même orthographe.
+
+```r
+inj_camp_zoop$type <- "zooplancton"
+```
+
+#### 8.1.6. On tansforme le tableau en liste afin de pouvoir l'injecter dans Coléo.
+
+```r
+camp_ls <- apply(inj_camp_zoop,1,as.list)
+str(camp_ls)
+```
+#### 8.1.7. Il est maintenant possible de procéder à l'injection.
+
+```r
+COLEO_camp_inj <- post_campaigns(camp_ls)
+```
+La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).
+
+### 8.2. Injections des repères associés aux nouvelles campagnes
+
+Les champs qui peuvent être remplis dans Coléo sont les suivants (les champs en gras sont obligatoires) :
+
+* **campaign_id** : doit matcher avec site_code/site_id & opened_at
+* **geom**
+
+#### 8.2.1. On commence par séléctionner les champs d'interêts & on matche les noms de variables avec celles de Coléo.
+
+```r
+inj_land_zoop <- dplyr::select(camp_zoopl, site_code=no_de_reference_du_site, opened_at=date_debut, lat=latitude, lon = longitude)
+```
+
+#### 8.2.2. On récupère le `site_id`, nécessaire à l'injection.
+
+```r
+inj_land_zoop <- dplyr::left_join(inj_land_zoop, sites[, c(1, 4)], by = "site_code")
+names(inj_land_zoop)[5] <- "site_id"
+```
+
+#### 8.2.3. On récupère le `campaign_id`, nécessaire à l'injection.
+
+```r
+inj_land_zoop$opened_at <- as.character(inj_land_zoop$opened_at)
+inj_land_zoop <- dplyr::left_join(inj_land_zoop, camp[, c(1, 2, 5)], by = c("site_id", "opened_at"))
+names(inj_land_zoop)[6] <- "campaign_id"
+```
+
+#### 8.2.4. On garde une ligne par repère (c'est-à-dire par campagne).
+
+```r
+inj_land_zoop <- inj_land_zoop[!duplicated(inj_land_zoop),]
+```
+
+#### 8.2.5. On transforme le tableau en liste pour pouvoir l'injecter dans Coléo.
+
+```r
+land_ls <- apply(inj_land_zoop,1,as.list)
+str(land_ls)
+```
+
+#### 8.2.6. On créé le champs `geom` de COLEO, sous forme de liste, en utilisant les variables *lat* & *lon* du tableau.
+
+```r
+geom <- apply(inj_land_zoop,1, function(x){
+if(!any(is.na(x["lat"]),is.na(x["lon"]))){
+  return(geojsonio::geojson_list(as.numeric(c(x["lon"],x["lat"])))$features[[1]]$geometry)
+} else {
+  return(NA)
+}})
+```
+
+#### 8.2.7. On fusionne les deux listes en prévision de l'injection dans Coléo.
+
+```r
+for(i in 1:length(land_ls)){
+ land_ls[[i]]$geom <- geom[i][[1]]
+ if(is.list(land_ls[[i]]$geom)){
+   land_ls[[i]]$geom$crs <- list(type="name",properties=list(name="EPSG:4326"))
+ }
+}
+```
+La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).
+
+#### 8.2.7. Il est maintenant possible de procéder à l'injection.
+
+```r
+COLEO_land_inj <- post_landmarks(land_ls)
+```
+
+### 8.3. Injections des observations associées aux nouvelles campagnes
+
+Les champs qui peuvent être remplis dans Coléo sont les suivants (les champs en gras sont obligatoires) :
+
+* **date_obs** : date_debut
+* **is_valid** : par défaut = 1
+* **campaign_id** : récupération avec site_id et opened_at(=date_obs)
+* *campaign_info*
+* *time_obs*
+* *stratum*
+* *axis*
+* *distance*
+* *distance_unit*
+* *depth* : Profondeur_m
+* *sample_id*
+* *thermograph_id*
+* *notes* : Date_denombrement + Taxonomiste
+
+
+#### 8.3.1. On séléctionne les champs d'interêts & on matche les noms de variables avec celles de Coléo.
+
+```r
+inj_obs_zoop <- dplyr::select(camp_zoopl, site_code=no_de_reference_du_site, opened_at=date_debut, depth = Profondeur_m)
+inj_obs_zoop$is_valid <- 1
+inj_obs_zoop$notes <- paste0(camp_zoopl$Taxonomiste, "Date_denombrement", camp_zoopl$Date_denombrement, sep = "-")
+```
+
+#### 8.3.2. On récupère le `site_id`, néceesaire à l'injection.
+
+```r
+inj_obs_zoop <- dplyr::left_join(inj_obs_zoop, sites[, c(1, 4)], by = "site_code")
+names(inj_obs_zoop)[6] <- "site_id"
+```
+
+#### 8.3.3. On récupère le `campaign_id`, nécessaire à l'injection.
+
+```r
+inj_obs_zoop$opened_at <- as.character(inj_obs_zoop$opened_at)
+inj_obs_zoop <- dplyr::left_join(inj_obs_zoop, camp[, c(1, 2, 5)], by = c("site_id", "opened_at"))
+names(inj_obs_zoop)[7] <- "campaign_id"
+```
+
+#### 8.3.4. On modifie le nom pour la date d'observation.
+
+```r
+names(inj_obs_zoop)[2] <- "date_obs"
+```
+
+#### 8.3.5. On conserve les lignes uniques du jeu de données.
+
+```r
+inj_obs_zoop <- inj_obs_zoop[!duplicated(inj_obs_zoop),]
+```
+
+#### 8.3.6. On transforme le tableau en liste pour l'injection dans Coléo.
+
+```r
+obs_ls <- apply(inj_obs_zoop,1,as.list)
+```
+
+#### 8.3.7. Il est maintenant possible de procéder à l'injection.
+
+```r
+COLEO_obs_inj <- post_observations(obs_ls)
+```
+La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).
+
+### 8.4. Injections de l'abondance des espèces associées aux nouvelles campagnes
+
+Les champs qui peuvent être remplis dans Coléo sont les suivants (les champs en gras sont obligatoires) :
+
+* **taxa_name** : nom_scientifique
+* **variable** : "abondance"
+* **observation_id** : à récupérer avec site_id --> site_code --> campaign_id + opened_at
+* *value* : abondance
+
+#### 8.4.1. On séléctionne les champs d'interêts & on matche les noms de variables avec celles de Coléo.
+
+```r
+inj_data_zoop <- dplyr::select(camp_zoopl, site_code=no_de_reference_du_site, opened_at=date_debut, taxa_name = nom_scientifique, value = abondance)
+inj_data_zoop$variable <- "abondance"
+```
+
+#### 8.4.2. On récupère le `site_id`, nécessaire à l'injection.
+
+```r
+inj_data_zoop <- dplyr::left_join(inj_data_zoop, sites[, c(1, 4)], by = "site_code")
+names(inj_data_zoop)[6] <- "site_id"
+```
+
+#### 8.4.3. On récupère le `campaign_id`, nécessaire à l'injection.
+
+```r
+inj_data_zoop$opened_at <- as.character(inj_data_zoop$opened_at)
+inj_data_zoop <- dplyr::left_join(inj_data_zoop, camp[, c(1, 2, 5)], by = c("site_id", "opened_at"))
+names(inj_data_zoop)[7] <- "campaign_id"
+```
+
+#### 8.4.4. On récupère le `observation_id`, nécessaire à l'injection.
+
+```r
+names(inj_data_zoop)[2] <- "date_obs"
+inj_data_zoop <- dplyr::left_join(inj_data_zoop, obs[, c(1, 2, 12)], by = c("campaign_id", "date_obs"))
+names(inj_data_zoop)[8] <- "observation_id"
+```
+
+#### 8.4.5. On transforme le jeu de données en liste pour l'injection dans Coléo.
+
+```r
+data_ls <- apply(inj_data_zoop,1,as.list)
+```
+
+#### 8.4.6. Il est maintenant possible de procéder à l'injection.
+
+```r
+COLEO_data_inj <- postpost_obs_species(data_ls) # Fonctionnel
+
+```
+La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Bravo ! Vous venez de terminer les étapes d'injections des campagnes **zooplancton** ! Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).
