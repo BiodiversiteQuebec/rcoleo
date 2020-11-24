@@ -41,7 +41,7 @@ Pour installer le package `rcoleo`, il faut utiliser le package `devtools`, il f
 
 ```r
 library(devtools)
-# installation du package rcoleo à partir de github
+# Installation du package rcoleo à partir de github
 install_github("TheoreticalEcosystemEcology/rcoleo") 
 ```
 
@@ -70,7 +70,11 @@ La succession d'étape qui suivent permettent de vérifier si les cellules, les 
 ### 7.1. Création d'un objet R avec les nouvelles campagnes à insérer dans Coléo
 
 ```r
-camp <- read.csv("./lenomdevotrebasededonnées.csv", header = TRUE, sep = ',', stringsAsFactors = FALSE, encoding = "UTF-8") # l'encoding UTF-8 permet de garder les accents
+camp <- read.csv("./lenomdevotrebasededonnées.csv",
+                 header = TRUE,
+                 sep = ',',
+                 stringsAsFactors = FALSE,
+                 encoding = "UTF-8") # l'encoding UTF-8 permet de garder les accents
 ```
 ### 7.2. Acquisition de la liste des cellules, des sites, des noms d'espèce de référence et des attributs déjà présentes dans Coléo et création d'un objet R pour chacune
 
@@ -97,8 +101,9 @@ attrs <- do.call("rbind.fill", attrs$body)
 #### 7.3.1. Pour les cellules
 
 ```r
-#### Test pour vérifier l'existence des cellules dans Coléo ####
-cell_abs <- rcoleo::COLEO_comp(unique(camp$cell_code), unique(cells$cell_code))
+# Test pour vérifier l'existence des cellules dans Coléo
+cell_abs <- rcoleo::COLEO_comp(unique(camp$cell_code),
+                               unique(cells$cell_code))
 cell_abs
 ```
 
@@ -130,15 +135,18 @@ document.getElementById("myDIV_cells").style.display ="none"
 Vous pouvez maintenant récupérer l'ID unique des cellules.
 
 ```r
-camp <- dplyr::left_join(camp, cells[, c("id", "cell_code")], by = "cell_code")
+camp <- dplyr::left_join(camp,
+                         cells[, c("id", "cell_code")],
+                         by = "cell_code")
 names(camp)[names(camp) == "id"] <- "cell_id"
 ```
 
 #### 7.3.2. Pour les sites
 
 ```r
-#### Test pour vérifier l'existence des sites dans Coléo ####
-site_abs <- rcoleo::COLEO_comp(unique(camp$site_code), unique(sites$site_code))
+# Test pour vérifier l'existence des sites dans Coléo
+site_abs <- rcoleo::COLEO_comp(unique(camp$site_code),
+                               unique(sites$site_code))
 site_abs
 ```
 
@@ -169,7 +177,9 @@ document.getElementById("myDIV_sites").style.display ="none"
 Vous pouvez maintenant récupérer l'ID unique des sites.
 
 ```r
-camp <- dplyr::left_join(camp, sites[, c("id", "site_code")], by = "site_code")
+camp <- dplyr::left_join(camp,
+                         sites[, c("id", "site_code")],
+                         by = "site_code")
 names(camp)[names(camp) == "id"] <- "site_id"
 ```
 
@@ -177,8 +187,9 @@ names(camp)[names(camp) == "id"] <- "site_id"
 #### 7.3.3. Pour les noms d'espèces
 
 ```r
-#### Test pour vérifier l'existence des noms des espèces dans Coléo ####
-sp_abs <- rcoleo::COLEO_comp(unique(camp$taxa_name), unique(species$name))
+# Test pour vérifier l'existence des noms des espèces dans Coléo
+sp_abs <- rcoleo::COLEO_comp(unique(camp$taxa_name),
+                             unique(species$name))
 sp_abs
 ```
 
