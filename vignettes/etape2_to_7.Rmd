@@ -42,14 +42,14 @@ Pour installer le package `rcoleo`, il faut utiliser le package `devtools`, il f
 ```r
 library(devtools)
 # Installation du package rcoleo à partir de github
-install_github("TheoreticalEcosystemEcology/rcoleo") 
+install_github("ReseauBiodiversiteQuebec/rcoleo") 
 ```
 
 ### 5.2. Chargement des packages
 
 ```r
-install.packages("rcoleo")
-install.packages("dplyr")
+library(rcoleo)
+library(dplyr)
 ```
 
 ## 6. Mettre en cache son jeton d'accès

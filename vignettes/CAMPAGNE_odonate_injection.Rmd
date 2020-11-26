@@ -213,7 +213,7 @@ Les champs de la table **environnement** ("/environment") de Coléo qui peuvent 
 * *sky*
 * *temp_c*
 
-<div class = "red">
+<div class = "blue">
 
 **Rappel** - Les entrées pour les variables `wind` et `sky` doivent parfaitement correspondre à ce qui est attendu par la base de données Coléo.
 
