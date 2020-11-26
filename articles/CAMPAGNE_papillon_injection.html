@@ -290,14 +290,14 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">devtools</span><span class="op">)</span>
 <span class="co"># Installation du package rcoleo à partir de github</span>
-<span class="fu">install_github</span><span class="op">(</span><span class="st">"TheoreticalEcosystemEcology/rcoleo"</span><span class="op">)</span> </code></pre></div>
+<span class="fu">install_github</span><span class="op">(</span><span class="st">"ReseauBiodiversiteQuebec/rcoleo"</span><span class="op">)</span> </code></pre></div>
 </div>
 <div id="chargement-des-packages" class="section level3">
 <h3 class="hasAnchor">
 <a href="#chargement-des-packages" class="anchor"></a>5.2. Chargement des packages</h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"rcoleo"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo">rcoleo</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="mettre-en-cache-son-jeton-daccès" class="section level2">
@@ -530,7 +530,7 @@ function myFunction3() {
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Formatage du tableau à insérer</span>
 <span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">camp</span><span class="op">[</span><span class="va">camp</span><span class="op">$</span><span class="va">taxa_name</span> <span class="op">%in%</span> <span class="va">sp_abs</span>,<span class="op">]</span>
-<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="fu">select</span><span class="op">(</span><span class="va">taxa_df</span>,
+<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">taxa_df</span>,
                     name <span class="op">=</span> <span class="va">taxa_name</span>,
                     <span class="va">vernacular_fr</span><span class="op">)</span> <span class="co"># colonnes nécessaires</span></code></pre></div>
 <h5 id="cette-étape-permet-de-formatter-les-données-afin-de-pouvoir-les-injecter-dans-la-base-de-données-coléo.">
@@ -727,7 +727,7 @@ Vignette injection noms d’espèce
 <h4 class="hasAnchor">
 <a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts--2" class="anchor"></a>8.3.1. On commence par séléctionner les champs d’interêts.</h4>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">env_camp</span> <span class="op">&lt;-</span> <span class="fu">select</span><span class="op">(</span><span class="va">camp</span>,
+<code class="sourceCode R"><span class="va">env_camp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">camp</span>,
                   <span class="va">campaign_id</span>,
                   <span class="va">wind</span>,
                   <span class="va">sky</span>,
@@ -767,7 +767,7 @@ Vignette injection noms d’espèce
 <h4 class="hasAnchor">
 <a href="#on-s%C3%A9lectionne-les-champs-dint%C3%A9r%C3%AAts-" class="anchor"></a>8.4.1. On sélectionne les champs d’intérêts.</h4>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">eff_camp</span> <span class="op">&lt;-</span> <span class="fu">select</span><span class="op">(</span><span class="va">camp</span>,
+<code class="sourceCode R"><span class="va">eff_camp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">camp</span>,
                    <span class="va">campaign_id</span>,
                    <span class="va">time_start</span>,
                    <span class="va">time_finish</span><span class="op">)</span></code></pre></div>
@@ -812,7 +812,7 @@ Vignette injection noms d’espèce
 <span class="va">camp</span><span class="op">$</span><span class="va">is_valid</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># valeur de 1 par défaut</span>
 
 <span class="co"># On sélectionne les champs d'intérêts.</span>
-<span class="va">obs_camp</span> <span class="op">&lt;-</span> <span class="fu">select</span><span class="op">(</span><span class="va">camp</span>,
+<span class="va">obs_camp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">camp</span>,
                    <span class="va">date_obs</span>,
                    <span class="va">is_valid</span>,
                    notes <span class="op">=</span> <span class="va">note</span>,
@@ -866,7 +866,7 @@ Vignette injection noms d’espèce
 <h4 class="hasAnchor">
 <a href="#on-s%C3%A9lectionne-les-champs-dint%C3%A9r%C3%AAts--2" class="anchor"></a>8.6.1. On sélectionne les champs d’intérêts.</h4>
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">obs_spe_camp</span> <span class="op">&lt;-</span> <span class="fu">select</span><span class="op">(</span><span class="va">camp</span>,
+<code class="sourceCode R"><span class="va">obs_spe_camp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">camp</span>,
                       <span class="va">observation_id</span>,
                       value <span class="op">=</span> <span class="va">abondance</span>,
                       <span class="va">taxa_name</span><span class="op">)</span>
