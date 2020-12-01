@@ -39,8 +39,8 @@ Afin d'injecter des nouvelles campagnes faisant l'inventaire des papillons, il v
 |*time_finish*|heure de la fin de la campagne|
 |*temp_c*|température en degré celsius|
 |**type**|type de campagne - `papilionidés`|
-|**sky**|`dégagé (0 à 10 %)`, `nuageux (50 à 90 %)`, `orageux`, `partiellement nuageux (10 à 50 %)`, `pluvieux`|
-|**wind**|`calme (moins de 1 km/h)`, `très légère brise (1 à 5 km/h)`, `légère brise (6 à 11 km/h)`, `petite brise (12 à 19 km/h)`, `jolie brise (20 à 28 km/h)`|
+|**sky**| variable numérique symbolisant l'état du ciel, 1 = `dégagé (0 à 10 %)`, 2 = `partiellement nuageux (10 à 50 %)`, 3 = `nuageux (50 à 90 %)`, 4 = `pluvieux`, 5 = `orageux`|
+|**wind**| variable numérique symbolisant le niveau d'intensité du vent, 1 = `calme (moins de 1 km/h)`, 2 = `très légère brise (1 à 5 km/h)`, 3 = `légère brise (6 à 11 km/h)`, 4 = `petite brise (12 à 19 km/h)`, 5 = `jolie brise (20 à 28 km/h)`|
 |*vernacular_fr*|nom commun français des espèces observées|
 |*taxa_name*|nom latin des espèces observées|
 |*abondance*|valeur d'abondance de l'espèce observée|
