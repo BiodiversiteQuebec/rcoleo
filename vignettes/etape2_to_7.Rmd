@@ -97,7 +97,7 @@ species <- do.call("rbind", species[[1]]$body)
 
 # Acquisition des attributs dans Coléo
 attrs <- rcoleo::get_gen("/attributes")
-attrs <- do.call("rbind.fill", attrs$body)
+attrs <- do.call(plyr::rbind.fill, attrs$body)
 ```
 
 ### 7.3. Vérification de l'existence des cellules, sites, noms d'espèces et des attributs associés aux nouvelles campagnes dans Coléo
@@ -228,16 +228,3 @@ document.getElementById("myDIV_taxa").style.display ="none"
 attrs
 ```
 Vous pouvez vérifier si les attributs nécessaires à vos campagnes sont bien présents dans cette table.
-
-
-### 7.4 Optimisation du tableau à injecter initial
-
-```r
-# Ajout du site_id
-camp <- dplyr::left_join(camp,
-                         sites[, c("id", "site_code")],
-                         by = "site_code")
-names(camp)[names(camp) == "id"] <- "site_id"
-```
-
-
