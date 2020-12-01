@@ -592,7 +592,9 @@ Vignette injection noms d’espèce
 <h4 class="hasAnchor">
 <a href="#on-garde-une-ligne-unique-par-nouvelle-campagne-" class="anchor"></a>8.1.2. On garde une ligne unique par nouvelle campagne.</h4>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">camp_camp</span> <span class="op">&lt;-</span> <span class="va">camp_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">camp_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
+<code class="sourceCode R"><span class="va">camp_camp</span> <span class="op">&lt;-</span> <span class="va">camp_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">camp_camp</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"site_code"</span>,
+                                               <span class="st">"type"</span>,
+                                               <span class="st">"opened_at"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
 </div>
 <div id="on-créé-une-liste-pour-le-nom-des-techniciennes-" class="section level4">
 <h4 class="hasAnchor">
