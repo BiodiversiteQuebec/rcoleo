@@ -35,6 +35,7 @@ Dans RStudio :
 ```r
 install.packages("devtools")
 install.packages("dplyr")
+install.packages("geojsonio")
 ```
 
 Pour installer le package `rcoleo`, il faut utiliser le package `devtools`, il faut donc l'appeller avec `library()`
@@ -50,6 +51,7 @@ install_github("ReseauBiodiversiteQuebec/rcoleo")
 ```r
 library(rcoleo)
 library(dplyr)
+library(geojsonio)
 ```
 
 ## 6. Mettre en cache son jeton d'accès
