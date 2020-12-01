@@ -223,7 +223,7 @@
 
 <span class="co"># Acquisition des attributs dans Coléo</span>
 <span class="va">attrs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_gen.html">get_gen</a></span><span class="op">(</span><span class="st">"/attributes"</span><span class="op">)</span>
-<span class="va">attrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="st">"rbind.fill"</span>, <span class="va">attrs</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
+<span class="va">attrs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html">rbind.fill</a></span>, <span class="va">attrs</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="vérification-de-lexistence-des-cellules-sites-noms-despèces-et-des-attributs-associés-aux-nouvelles-campagnes-dans-coléo" class="section level3">
 <h3 class="hasAnchor">
@@ -445,16 +445,6 @@ Vignette injection noms d’espèce
 <span class="va">attrs</span></code></pre></div>
 <p>Vous pouvez vérifier si les attributs nécessaires à vos campagnes sont bien présents dans cette table.</p>
 </div>
-</div>
-<div id="optimisation-du-tableau-à-injecter-initial" class="section level3">
-<h3 class="hasAnchor">
-<a href="#optimisation-du-tableau-%C3%A0-injecter-initial" class="anchor"></a>7.4 Optimisation du tableau à injecter initial</h3>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Ajout du site_id</span>
-<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
-                         <span class="va">sites</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_code"</span><span class="op">)</span><span class="op">]</span>,
-                         by <span class="op">=</span> <span class="st">"site_code"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"site_id"</span></code></pre></div>
 </div>
 </div>
   </div>
