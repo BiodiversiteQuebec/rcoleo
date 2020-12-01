@@ -163,13 +163,15 @@
 <a href="#installation-des-packages" class="anchor"></a>5.1. Installation des packages</h3>
 <p>Dans RStudio :</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="co"># 5.1. Installation des packages</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"plyr"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"geojsonio"</span><span class="op">)</span></code></pre></div>
 <p>Pour installer le package <code>rcoleo</code>, il faut utiliser le package <code>devtools</code>, il faut donc l’appeller avec <code><a href="https://rdrr.io/r/base/library.html">library()</a></code></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">devtools</span><span class="op">)</span>
+<code class="sourceCode R"><span class="co"># Chargement de devtools</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">devtools</span><span class="op">)</span>
 <span class="co"># Installation du package rcoleo à partir de github</span>
 <span class="fu">install_github</span><span class="op">(</span><span class="st">"ReseauBiodiversiteQuebec/rcoleo"</span><span class="op">)</span> </code></pre></div>
 </div>
@@ -177,18 +179,20 @@
 <h3 class="hasAnchor">
 <a href="#chargement-des-packages" class="anchor"></a>5.2. Chargement des packages</h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo">rcoleo</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="co"># 5.2. Chargement des packages</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo">rcoleo</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://had.co.nz/plyr">plyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">geojsonio</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
-<div id="mettre-en-cache-son-jeton-daccès" class="section level2">
+<div id="mise-en-cache-son-jeton-daccès" class="section level2">
 <h2 class="hasAnchor">
-<a href="#mettre-en-cache-son-jeton-dacc%C3%A8s" class="anchor"></a>6. Mettre en cache son jeton d’accès</h2>
+<a href="#mise-en-cache-son-jeton-dacc%C3%A8s" class="anchor"></a>6. Mise en cache son jeton d’accès</h2>
 <p>Ce jeton permet d’apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l’utilisateur dans le menu à gauche.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="st">"votrejeton"</span>,<span class="st">".httr-oauth"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># 6. Mise en cache son jeton d'accès</span>
+<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="st">"votrejeton"</span>,<span class="st">".httr-oauth"</span><span class="op">)</span></code></pre></div>
 <p>Cette étape n’est faite qu’une fois et permet l’enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d’injection. Le jeton est confidentiel.</p>
 </div>
 <div id="vérification-pré-injection" class="section level2">
@@ -199,7 +203,8 @@
 <h3 class="hasAnchor">
 <a href="#cr%C3%A9ation-dun-objet-r-avec-les-nouvelles-campagnes-%C3%A0-ins%C3%A9rer-dans-col%C3%A9o" class="anchor"></a>7.1. Création d’un objet R avec les nouvelles campagnes à insérer dans Coléo</h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"./lenomdevotrebasededonnées.csv"</span>,
+<code class="sourceCode R"><span class="co"># 7.1. Création d'un objet contenant les nouvelles campagnes</span>
+<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"./lenomdevotrebasededonnées.csv"</span>,
                  header <span class="op">=</span> <span class="cn">TRUE</span>,
                  sep <span class="op">=</span> <span class="st">','</span>,
                  stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span>,
@@ -209,7 +214,8 @@
 <h3 class="hasAnchor">
 <a href="#acquisition-de-la-liste-des-cellules-des-sites-des-noms-desp%C3%A8ce-de-r%C3%A9f%C3%A9rence-et-des-attributs-d%C3%A9j%C3%A0-pr%C3%A9sentes-dans-col%C3%A9o-et-cr%C3%A9ation-dun-objet-r-pour-chacune" class="anchor"></a>7.2. Acquisition de la liste des cellules, des sites, des noms d’espèce de référence et des attributs déjà présentes dans Coléo et création d’un objet R pour chacune</h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Acquisition cellules Coléo</span>
+<code class="sourceCode R"><span class="co"># 7.2. Acquisition des informations dans Coléo</span>
+<span class="co"># Acquisition cellules Coléo</span>
 <span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_cells.html">get_cells</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="st">"rbind"</span>, <span class="va">cells</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
 
@@ -232,7 +238,8 @@
 <h4 class="hasAnchor">
 <a href="#pour-les-cellules" class="anchor"></a>7.3.1. Pour les cellules</h4>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Test pour vérifier l'existence des cellules dans Coléo</span>
+<code class="sourceCode R"><span class="co"># 7.3.1. Vérification</span>
+<span class="co"># Test pour vérifier l'existence des cellules dans Coléo</span>
 <span class="va">cell_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">cell_code</span><span class="op">)</span>,
                                <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">cells</span><span class="op">$</span><span class="va">cell_code</span><span class="op">)</span><span class="op">)</span>
 <span class="va">cell_abs</span></code></pre></div>
@@ -312,7 +319,8 @@ Vignette Injection des cellules
 <h4 class="hasAnchor">
 <a href="#pour-les-sites" class="anchor"></a>7.3.2. Pour les sites</h4>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Test pour vérifier l'existence des sites dans Coléo</span>
+<code class="sourceCode R"><span class="co"># 7.3.2. Vérification</span>
+<span class="co"># Test pour vérifier l'existence des sites dans Coléo</span>
 <span class="va">site_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">site_code</span><span class="op">)</span>,
                                <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">sites</span><span class="op">$</span><span class="va">site_code</span><span class="op">)</span><span class="op">)</span>
 <span class="va">site_abs</span></code></pre></div>
@@ -384,7 +392,8 @@ Vignette Injection des sites
 </button>
 <p>Vous pouvez maintenant récupérer l’ID unique des sites.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
+<code class="sourceCode R"><span class="co"># Récupération des sites id</span>
+<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
                          <span class="va">sites</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_code"</span><span class="op">)</span><span class="op">]</span>,
                          by <span class="op">=</span> <span class="st">"site_code"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"site_id"</span></code></pre></div>
@@ -393,7 +402,8 @@ Vignette Injection des sites
 <h4 class="hasAnchor">
 <a href="#pour-les-noms-desp%C3%A8ces" class="anchor"></a>7.3.3. Pour les noms d’espèces</h4>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Test pour vérifier l'existence des noms des espèces dans Coléo</span>
+<code class="sourceCode R"><span class="co"># 7.3.3. Vérification</span>
+<span class="co"># Test pour vérifier l'existence des noms des espèces dans Coléo</span>
 <span class="va">sp_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">taxa_name</span><span class="op">)</span>,
                              <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">species</span><span class="op">$</span><span class="va">name</span><span class="op">)</span><span class="op">)</span>
 <span class="va">sp_abs</span></code></pre></div>
@@ -439,9 +449,10 @@ Vignette injection noms d’espèce
 </div>
 <div id="pour-les-attributs" class="section level4">
 <h4 class="hasAnchor">
-<a href="#pour-les-attributs" class="anchor"></a>7.3.3. Pour les attributs</h4>
+<a href="#pour-les-attributs" class="anchor"></a>7.3.4. Pour les attributs</h4>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Contenu de la table des attributs dans Coléo</span>
+<code class="sourceCode R"><span class="co"># 7.3.4. Vérification</span>
+<span class="co"># Contenu de la table des attributs dans Coléo</span>
 <span class="va">attrs</span></code></pre></div>
 <p>Vous pouvez vérifier si les attributs nécessaires à vos campagnes sont bien présents dans cette table.</p>
 </div>
