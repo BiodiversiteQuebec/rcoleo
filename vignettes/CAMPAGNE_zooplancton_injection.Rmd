@@ -74,9 +74,7 @@ camp_camp <- dplyr::select(camp,
 #### 8.1.2. On garde une ligne unique par nouvelle campagne.
 
 ```r
-camp_camp <- camp_camp[!duplicated(camp_camp[c("site_code",
-                                               "type",
-                                               "opened_at")]),]
+camp_camp <- camp_camp[!duplicated(camp_camp),]
 ```
 
 #### 8.1.3. On créé une liste pour le nom des technicien/ne/s.
