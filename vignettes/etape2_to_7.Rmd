@@ -34,6 +34,7 @@ Dans RStudio :
 
 ```r
 install.packages("devtools")
+install.packages("plyr")
 install.packages("dplyr")
 install.packages("geojsonio")
 ```
@@ -50,6 +51,7 @@ install_github("ReseauBiodiversiteQuebec/rcoleo")
 
 ```r
 library(rcoleo)
+library(plyr)
 library(dplyr)
 library(geojsonio)
 ```
