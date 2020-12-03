@@ -31,8 +31,8 @@ Vignette en cours de développement
 |*nom_lac*||
 |*lat*|latitude du site d'échantillonnage|
 |*lon*|longitude du site d'échantillonnage|
-|*opened_at*|date du début du prélèvement|
-|*closed_at*|date de la fin du prélèvement|
+|*opened_at*|date du début du prélèvement au format `YYYY-MM-DD`|
+|*closed_at*|date de la fin du prélèvement au format `YYYY-MM-DD`|
 |*technician_1*||
 |*technician_2*||
 |*time_start*|heure du début de la campagne|

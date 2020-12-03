@@ -16,8 +16,8 @@ Afin d'injecter des nouvelles campagnes *zooplancton* dans la base de données C
 |**type_hab**|type d'habitat dans lequel la campagne a été effectuée - `lac`, `rivière`, `forestier`, `marais`, `marais côtier`, `toundrique`, `tourbière`|
 |*lat*|latitude du site d'échantillonnage|
 |*lon*|longitude du site d'échantillonnage|
-|*opened_at*|date du début du prélèvement|
-|*closed_at*|date de la fin du prélèvement|
+|*opened_at*|date du début du prélèvement au format `YYYY-MM-DD`|
+|*closed_at*|date de la fin du prélèvement au format `YYYY-MM-DD`|
 |**type**|type de la campagne, ici `zooplancton`|
 |*technician_1*||
 |*technician_2*||
