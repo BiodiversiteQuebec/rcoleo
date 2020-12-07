@@ -4,6 +4,9 @@ author: "Claire-Cécile Juhasz"
 date: "10 novembre 2020"
 output: html_document
 ---
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
+</style>
 
 ## 1. Créer une base de données excel
 
@@ -31,7 +34,7 @@ Afin d'injecter des nouvelles campagnes *zooplancton* dans la base de données C
 
 Prenez soin de :
 
-* vérifier **variables en gras** car elles possèdent des valeurs prédéfinies dans Coléo. Toutes les valeurs dans votre fichier doivent correspondre à une des valeurs possibles (vérifiez les majuscule, les accents ou d'éventuelles espaces inutiles).
+* vérifier les **variables en gras** car elles possèdent des valeurs prédéfinies dans Coléo. Toutes les valeurs dans votre fichier doivent correspondre à une des valeurs possibles (vérifiez les majuscule, les accents ou d'éventuelles espaces inutiles).
 * ne pas laisser de case vide. Inscrivez *NA* lorsque nécessaire.
 * vérifier que votre fichier ne contienne que des nouvelles campagnes.
 * vérifier l'encodage de votre fichier qui doit correspondre à "UTF-8".

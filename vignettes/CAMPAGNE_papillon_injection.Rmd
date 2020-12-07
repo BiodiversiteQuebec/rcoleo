@@ -49,7 +49,7 @@ Afin d'injecter des nouvelles campagnes faisant l'inventaire des papillons, il v
 
 Prenez soin de :
 
-* vérifier **variables en gras** car elles possèdent des valeurs prédéfinies dans Coléo. Toutes les valeurs dans votre fichier doivent correspondre à une des valeurs possibles (vérifiez les majuscule, les accents ou d'éventuelles espaces inutiles).
+* vérifier les **variables en gras** car elles possèdent des valeurs prédéfinies dans Coléo. Toutes les valeurs dans votre fichier doivent correspondre à une des valeurs possibles (vérifiez les majuscule, les accents ou d'éventuelles espaces inutiles).
 * ne pas laisser de case vide. Inscrivez *NA* lorsque nécessaire.
 * vérifier que votre fichier ne contienne que des nouvelles campagnes.
 * vérifier l'encodage de votre fichier qui doit correspondre à "UTF-8".
@@ -152,7 +152,7 @@ names(camp)[names(camp) == "id"] <- "campaign_id"
 
 ### 8.2. Injections des repères associés aux nouvelles campagnes
 
-Les champs de la table **repères** ("/landmarks") de Coléo  qui peuvent être remplis sont les suivants :
+Les champs de la table **repères** ("/landmarks") de Coléo qui peuvent être remplis sont les suivants :
 * *campaign_id*
 * *geom*
 
