@@ -291,7 +291,6 @@ eff_camp <- eff_camp[!duplicated(eff_camp),]
 ```r
 # 8.4.3. Conversion de l'objet pour l'injection
 eff_camp_ls <- apply(eff_camp, 1, as.list)
-str(eff_camp_ls)
 ```
 #### 8.4.4. On injecte.
 
