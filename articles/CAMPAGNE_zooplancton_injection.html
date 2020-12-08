@@ -134,8 +134,14 @@
     
     
 <style>
+div.red { background-color:#ff0000; border-radius: 8px; padding: 5px;}
+</style>
+<style>
 div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 </style>
+<div class="red">
+<p>Vignette en cours de développement</p>
+</div>
 <div id="créer-une-base-de-données-excel" class="section level2">
 <h2 class="hasAnchor">
 <a href="#cr%C3%A9er-une-base-de-donn%C3%A9es-excel" class="anchor"></a>1. Créer une base de données excel</h2>
@@ -591,7 +597,7 @@ Vignette injection noms d’espèce
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.1. Sélection</span>
 <span class="va">camp_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">camp</span>,
-                           <span class="va">site_code</span>,
+                           <span class="va">site_id</span>,
                            <span class="va">type</span>,
                            <span class="va">opened_at</span>,
                            <span class="va">closed_at</span>,
@@ -613,7 +619,7 @@ Vignette injection noms d’espèce
 <code class="sourceCode R"><span class="co"># 8.1.3. Création liste de technicien.ne.s</span>
 <span class="va">tech</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Création d'un objet `list` vide</span>
 
-<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">camp_camp</span><span class="op">$</span><span class="va">site_code</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">camp_camp</span><span class="op">$</span><span class="va">site_id</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
 
   <span class="va">tech</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">camp_camp</span><span class="op">$</span><span class="va">technician_1</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>,
                     <span class="va">camp_camp</span><span class="op">$</span><span class="va">technician_2</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
@@ -756,16 +762,15 @@ Vignette injection noms d’espèce
 <span class="co"># Création de 2 variables nécessaires</span>
 <span class="va">camp</span><span class="op">$</span><span class="va">date_obs</span> <span class="op">&lt;-</span> <span class="va">camp</span><span class="op">$</span><span class="va">opened_at</span>
 <span class="va">camp</span><span class="op">$</span><span class="va">is_valid</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># valeur de 1 par défaut</span>
+<span class="va">camp</span><span class="op">$</span><span class="va">notes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">Taxonomiste</span>, <span class="st">"Date_denombrement"</span>, <span class="va">camp</span><span class="op">$</span><span class="va">Date_denombrement</span>, sep <span class="op">=</span> <span class="st">"-"</span><span class="op">)</span>
 
 <span class="co"># Sélection des champs d'intérêts</span>
 <span class="va">obs_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">camp</span>,
                           <span class="va">depth</span>,
                           <span class="va">campaign_id</span>,
                           <span class="va">date_obs</span>,
-                          <span class="va">is_valid</span><span class="op">)</span>
-
-<span class="co"># Création d'une dernière variable                          </span>
-<span class="va">obs_camp</span><span class="op">$</span><span class="va">notes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="va">camp_</span><span class="op">$</span><span class="va">Taxonomiste</span>, <span class="st">"Date_denombrement"</span>, <span class="va">camp</span><span class="op">$</span><span class="va">Date_denombrement</span>, sep <span class="op">=</span> <span class="st">"-"</span><span class="op">)</span></code></pre></div>
+                          <span class="va">is_valid</span>,
+                          <span class="va">notes</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-garde-une-ligne-par-campagne-" class="section level4">
 <h4 class="hasAnchor">
@@ -785,8 +790,8 @@ Vignette injection noms d’espèce
 <h4 class="hasAnchor">
 <a href="#il-est-maintenant-possible-de-proc%C3%A9der-%C3%A0-linjection--2" class="anchor"></a>8.3.4. Il est maintenant possible de procéder à l’injection.</h4>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># 8.5.4. Injection</span>
-<span class="va">COLEO_obs_inj</span> <span class="op">&lt;-</span> <span class="fu">post_observations</span><span class="op">(</span><span class="va">obs_ls</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># 8.3.4. Injection</span>
+<span class="va">COLEO_obs_inj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/post_obs.html">post_obs</a></span><span class="op">(</span><span class="va">obs_ls</span><span class="op">)</span></code></pre></div>
 <p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
 </div>
 <div id="on-récupère-la-liste-des-observations-de-coléo-et-on-met-à-jour-le-tableau-de-campagnes-à-injecter-" class="section level4">
@@ -840,7 +845,7 @@ Vignette injection noms d’espèce
 <a href="#il-est-maintenant-possible-de-proc%C3%A9der-%C3%A0-linjection--3" class="anchor"></a>8.4.3. Il est maintenant possible de procéder à l’injection.</h4>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.4.3. Injection</span>
-<span class="va">COLEO_obsref_inj</span> <span class="op">&lt;-</span> <span class="fu">postpost_obs_species</span><span class="op">(</span><span class="va">obs_spe_camp_ls</span><span class="op">)</span></code></pre></div>
+<span class="va">COLEO_obsref_inj</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/post_obs_species.html">post_obs_species</a></span><span class="op">(</span><span class="va">obs_spe_camp_ls</span><span class="op">)</span></code></pre></div>
 <p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Bravo ! Vous venez de terminer les étapes d’injections des campagnes <strong>zooplancton</strong> ! Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
 </div>
 </div>
