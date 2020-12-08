@@ -146,6 +146,7 @@ document.getElementById("myDIV_cells").style.display ="none"
 Vous pouvez maintenant récupérer l'ID unique des cellules.
 
 ```r
+# Récupération des cell_id
 camp <- dplyr::left_join(camp,
                          cells[, c("id", "cell_code")],
                          by = "cell_code")
@@ -189,7 +190,7 @@ document.getElementById("myDIV_sites").style.display ="none"
 Vous pouvez maintenant récupérer l'ID unique des sites.
 
 ```r
-# Récupération des sites id
+# Récupération des site_id
 camp <- dplyr::left_join(camp,
                          sites[, c("id", "site_code")],
                          by = "site_code")

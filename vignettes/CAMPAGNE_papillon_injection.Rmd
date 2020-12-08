@@ -250,7 +250,6 @@ env_camp <- env_camp[!duplicated(env_camp),]
 ```r
 # 8.3.3. Conversion de l'objet pour l'injection
 env_camp_ls <- apply(env_camp, 1, as.list)
-str(env_camp_ls)
 ```
 
 #### 8.3.4. On injecte.
