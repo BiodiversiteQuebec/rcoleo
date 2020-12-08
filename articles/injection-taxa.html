@@ -342,7 +342,8 @@ Vignette Injection des cellules
 </button>
 <p>Vous pouvez maintenant récupérer l’ID unique des cellules.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
+<code class="sourceCode R"><span class="co"># Récupération des cell_id</span>
+<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
                          <span class="va">cells</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"cell_code"</span><span class="op">)</span><span class="op">]</span>,
                          by <span class="op">=</span> <span class="st">"cell_code"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"cell_id"</span></code></pre></div>
@@ -424,7 +425,7 @@ Vignette Injection des sites
 </button>
 <p>Vous pouvez maintenant récupérer l’ID unique des sites.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Récupération des sites id</span>
+<code class="sourceCode R"><span class="co"># Récupération des site_id</span>
 <span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
                          <span class="va">sites</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_code"</span><span class="op">)</span><span class="op">]</span>,
                          by <span class="op">=</span> <span class="st">"site_code"</span><span class="op">)</span>
