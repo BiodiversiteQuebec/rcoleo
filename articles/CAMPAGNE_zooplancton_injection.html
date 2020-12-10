@@ -274,7 +274,8 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"plyr"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"geojsonio"</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"geojsonio"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"readr"</span><span class="op">)</span></code></pre></div>
 <p>Pour installer le package <code>rcoleo</code>, il faut utiliser le package <code>devtools</code>, il faut donc l’appeller avec <code><a href="https://rdrr.io/r/base/library.html">library()</a></code></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Chargement de devtools</span>
@@ -290,7 +291,8 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo">rcoleo</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://had.co.nz/plyr">plyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">geojsonio</span><span class="op">)</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">geojsonio</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">readr</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="mise-en-cache-son-jeton-daccès" class="section level2">
@@ -311,11 +313,11 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <a href="#cr%C3%A9ation-dun-objet-r-avec-les-nouvelles-campagnes-%C3%A0-ins%C3%A9rer-dans-col%C3%A9o" class="anchor"></a>7.1. Création d’un objet R avec les nouvelles campagnes à insérer dans Coléo</h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.1. Création d'un objet contenant les nouvelles campagnes</span>
-<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"./lenomdevotrebasededonnées.csv"</span>,
-                 header <span class="op">=</span> <span class="cn">TRUE</span>,
-                 sep <span class="op">=</span> <span class="st">','</span>,
-                 stringsAsFactors <span class="op">=</span> <span class="cn">FALSE</span>,
-                 encoding <span class="op">=</span> <span class="st">"UTF-8"</span><span class="op">)</span> <span class="co"># l'encoding UTF-8 permet de garder les accents</span></code></pre></div>
+<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">read_delim</span><span class="op">(</span><span class="st">"./lenomdevotrebasededonnées.csv"</span>,
+                   sep <span class="op">=</span> <span class="st">';'</span><span class="op">)</span></code></pre></div>
+<div class="blue">
+<p><strong>Vérification</strong> - Il est important de vérifier dans votre console si le tableau <code>camp</code> que vous venez de créer dans R possède bien le nombre de lignes et de colonnes attendu.</p>
+</div>
 </div>
 <div id="acquisition-de-la-liste-des-cellules-des-sites-des-noms-despèce-de-référence-et-des-attributs-déjà-présentes-dans-coléo-et-création-dun-objet-r-pour-chacune" class="section level3">
 <h3 class="hasAnchor">
