@@ -31,7 +31,7 @@ Afin d'injecter des nouvelles campagnes faisant l'inventaire des papillons, il v
 |**type_hab**|type d'habitat dans lequel la campagne a été effectuée - `lac`, `rivière`, `forestier`, `marais`, `marais côtier`, `toundrique`, `tourbière`|
 |*lat*|latitude du site d'échantillonnage|
 |*lon*|longitude du site d'échantillonnage|
-|*opened_at*|date du début de la campagne au format `YYYY-MM-DD`|
+|**opened_at**|date du début de la campagne au format `YYYY-MM-DD`|
 |*closed_at*|date de la fin de la campagne au format `YYYY-MM-DD`|
 |*technician_1*||
 |*technician_2*||

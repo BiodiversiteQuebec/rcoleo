@@ -38,6 +38,7 @@ install.packages("devtools")
 install.packages("plyr")
 install.packages("dplyr")
 install.packages("geojsonio")
+install.packages("readr")
 ```
 
 Pour installer le package `rcoleo`, il faut utiliser le package `devtools`, il faut donc l'appeller avec `library()`
@@ -57,6 +58,7 @@ library(rcoleo)
 library(plyr)
 library(dplyr)
 library(geojsonio)
+library(readr)
 ```
 
 ## 6. Mise en cache son jeton d'accès
@@ -79,12 +81,16 @@ La succession d'étape qui suivent permettent de vérifier si les cellules, les 
 
 ```r
 # 7.1. Création d'un objet contenant les nouvelles campagnes
-camp <- read.csv("./lenomdevotrebasededonnées.csv",
-                 header = TRUE,
-                 sep = ',',
-                 stringsAsFactors = FALSE,
-                 encoding = "UTF-8") # l'encoding UTF-8 permet de garder les accents
+camp <- read_delim("./lenomdevotrebasededonnées.csv",
+                   sep = ';')
 ```
+
+<div class = "blue">
+
+**Vérification** - Il est important de vérifier dans votre console si le tableau `camp` que vous venez de créer dans R possède bien le nombre de lignes et de colonnes attendu.
+
+</div>
+
 ### 7.2. Acquisition de la liste des cellules, des sites, des noms d'espèce de référence et des attributs déjà présentes dans Coléo et création d'un objet R pour chacune
 
 ```r
