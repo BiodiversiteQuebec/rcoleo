@@ -4,6 +4,20 @@ author: "Claire-Cécile Juhasz"
 date: "10 novembre 2020"
 output: html_document
 ---
+<style>
+div.red { background-color:#ff0000; border-radius: 8px; padding: 5px;}
+</style>
+
+
+<style>
+div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
+</style>
+
+<div class = "red">
+
+Vignette en cours de développement
+
+</div>
 
 ## 1. Créer une base de données excel
 
@@ -31,7 +45,7 @@ Afin d'injecter des nouvelles campagnes *zooplancton* dans la base de données C
 
 Prenez soin de :
 
-* vérifier **variables en gras** car elles possèdent des valeurs prédéfinies dans Coléo. Toutes les valeurs dans votre fichier doivent correspondre à une des valeurs possibles (vérifiez les majuscule, les accents ou d'éventuelles espaces inutiles).
+* vérifier les **variables en gras** car elles possèdent des valeurs prédéfinies dans Coléo. Toutes les valeurs dans votre fichier doivent correspondre à une des valeurs possibles (vérifiez les majuscule, les accents ou d'éventuelles espaces inutiles).
 * ne pas laisser de case vide. Inscrivez *NA* lorsque nécessaire.
 * vérifier que votre fichier ne contienne que des nouvelles campagnes.
 * vérifier l'encodage de votre fichier qui doit correspondre à "UTF-8".
@@ -64,7 +78,7 @@ Les champs de la table **campagnes** ("/campaigns") de Coléo qui peuvent être 
 ```r
 # 8.1.1. Sélection
 camp_camp <- dplyr::select(camp,
-                           site_code,
+                           site_id,
                            type,
                            opened_at,
                            closed_at,
@@ -85,7 +99,7 @@ camp_camp <- camp_camp[!duplicated(camp_camp),]
 # 8.1.3. Création liste de technicien.ne.s
 tech <- list() # Création d'un objet `list` vide
 
-for(i in 1:length(camp_camp$site_code)){
+for(i in 1:length(camp_camp$site_id)){
 
   tech[[i]] <- list(camp_camp$technician_1[[i]],
                     camp_camp$technician_2[[i]])
@@ -219,17 +233,15 @@ Les champs de la table **observations** ("/observations") de Coléo qui seront r
 # Création de 2 variables nécessaires
 camp$date_obs <- camp$opened_at
 camp$is_valid <- 1 # valeur de 1 par défaut
+camp$notes <- paste0(camp$Taxonomiste, "Date_denombrement", camp$Date_denombrement, sep = "-")
 
 # Sélection des champs d'intérêts
 obs_camp <- dplyr::select(camp,
                           depth,
                           campaign_id,
                           date_obs,
-                          is_valid)
-
-# Création d'une dernière variable                          
-obs_camp$notes <- paste0(camp_$Taxonomiste, "Date_denombrement", camp$Date_denombrement, sep = "-")
-
+                          is_valid,
+                          notes)
 ```
 
 #### 8.3.2. On garde une ligne par campagne.
@@ -249,8 +261,8 @@ obs_ls <- apply(obs_camp, 1, as.list)
 #### 8.3.4. Il est maintenant possible de procéder à l'injection.
 
 ```r
-# 8.5.4. Injection
-COLEO_obs_inj <- post_observations(obs_ls)
+# 8.3.4. Injection
+COLEO_obs_inj <- post_obs(obs_ls)
 ```
 La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).
 
@@ -298,7 +310,7 @@ obs_spe_camp_ls <- apply(obs_spe_camp, 1, as.list)
 
 ```r
 # 8.4.3. Injection
-COLEO_obsref_inj <- postpost_obs_species(obs_spe_camp_ls)
+COLEO_obsref_inj <- post_obs_species(obs_spe_camp_ls)
 
 ```
 La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Bravo ! Vous venez de terminer les étapes d'injections des campagnes **zooplancton** ! Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).
