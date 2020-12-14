@@ -48,13 +48,13 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
   <a href="https://coleo.biodiversite-quebec.ca/docs/">
-    <span class="fa fa-book fa-lg"></span>
+    <span class="fas fa-book fa-lg"></span>
      
   </a>
 </li>
@@ -98,7 +98,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -772,19 +772,22 @@ Vignette injection noms d’espèce
                   <span class="va">sky</span>,
                   <span class="va">temp_c</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="on-garde-une-ligne-par-campagne-" class="section level4">
+<div id="on-garde-une-ligne-par-campagne-et-on-convertit-les-variables-wind-sky-en-caractère-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-garde-une-ligne-par-campagne-" class="anchor"></a>8.3.2. On garde une ligne par campagne.</h4>
+<a href="#on-garde-une-ligne-par-campagne-et-on-convertit-les-variables-wind-sky-en-caract%C3%A8re-" class="anchor"></a>8.3.2. On garde une ligne par campagne et on convertit les variables <code>wind</code> &amp; <code>sky</code> en caractère.</h4>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.3.2. Retrait des duplicats</span>
-<span class="va">env_camp</span> <span class="op">&lt;-</span> <span class="va">env_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">env_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
-</div>
-<div id="on-transforme-en-liste-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-transforme-en-liste-" class="anchor"></a>8.3.3. On transforme en liste.</h4>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># 8.3.3. Conversion de l'objet pour l'injection</span>
-<span class="va">env_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">env_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
+<span class="va">env_camp</span> <span class="op">&lt;-</span> <span class="va">env_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">env_camp</span><span class="op">)</span>,<span class="op">]</span>
+
+<span class="co"># Conversion des variables</span>
+<span class="va">env_camp</span><span class="op">$</span><span class="va">wind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">env_camp</span><span class="op">$</span><span class="va">wind</span><span class="op">)</span>
+<span class="va">env_camp</span><span class="op">$</span><span class="va">sky</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">env_camp</span><span class="op">$</span><span class="va">sky</span><span class="op">)</span></code></pre></div>
+<pre><code>
+#### 8.3.3. On transforme en liste.
+
+```r
+# 8.3.3. Conversion de l'objet pour l'injection
+env_camp_ls &lt;- apply(env_camp, 1, as.list)</code></pre>
 </div>
 <div id="on-injecte--1" class="section level4">
 <h4 class="hasAnchor">
@@ -814,16 +817,16 @@ Vignette injection noms d’espèce
                    <span class="va">time_start</span>,
                    <span class="va">time_finish</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="on-garde-une-ligne-par-campagne--1" class="section level4">
+<div id="on-garde-une-ligne-par-campagne-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-garde-une-ligne-par-campagne--1" class="anchor"></a>8.4.2. On garde une ligne par campagne.</h4>
+<a href="#on-garde-une-ligne-par-campagne-" class="anchor"></a>8.4.2. On garde une ligne par campagne.</h4>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.4.2. Retrait des duplicats</span>
 <span class="va">eff_camp</span> <span class="op">&lt;-</span> <span class="va">eff_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">eff_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
 </div>
-<div id="on-transforme-en-liste--1" class="section level4">
+<div id="on-transforme-en-liste-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-transforme-en-liste--1" class="anchor"></a>8.4.3. On transforme en liste.</h4>
+<a href="#on-transforme-en-liste-" class="anchor"></a>8.4.3. On transforme en liste.</h4>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.4.3. Conversion de l'objet pour l'injection</span>
 <span class="va">eff_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">eff_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
@@ -863,9 +866,9 @@ Vignette injection noms d’espèce
                    notes <span class="op">=</span> <span class="va">note</span>,
                    <span class="va">campaign_id</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="on-garde-une-ligne-par-campagne--2" class="section level4">
+<div id="on-garde-une-ligne-par-campagne--1" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-garde-une-ligne-par-campagne--2" class="anchor"></a>8.5.2. On garde une ligne par campagne.</h4>
+<a href="#on-garde-une-ligne-par-campagne--1" class="anchor"></a>8.5.2. On garde une ligne par campagne.</h4>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.5.2. Retrait des duplicats</span>
 <span class="va">obs_camp</span> <span class="op">&lt;-</span> <span class="va">obs_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">obs_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
