@@ -238,8 +238,8 @@
 <a href="#cr%C3%A9ation-dun-objet-r-avec-les-nouvelles-campagnes-%C3%A0-ins%C3%A9rer-dans-col%C3%A9o" class="anchor"></a>7.1. Création d’un objet R avec les nouvelles campagnes à insérer dans Coléo</h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.1. Création d'un objet contenant les nouvelles campagnes</span>
-<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">read_delim</span><span class="op">(</span><span class="st">"./lenomdevotrebasededonnées.csv"</span>,
-                   sep <span class="op">=</span> <span class="st">';'</span><span class="op">)</span></code></pre></div>
+<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu">read_delim</span><span class="op">(</span><span class="st">"./lenomdevotrebasededonnées.csv"</span>,
+                   delim <span class="op">=</span> <span class="st">';'</span><span class="op">)</span></code></pre></div>
 <div class="blue">
 <p><strong>Vérification</strong> - Il est important de vérifier dans votre console si le tableau <code>camp</code> que vous venez de créer dans R possède bien le nombre de lignes et de colonnes attendu.</p>
 </div>
