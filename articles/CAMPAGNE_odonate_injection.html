@@ -782,12 +782,13 @@ Vignette injection noms d’espèce
 <span class="co"># Conversion des variables</span>
 <span class="va">env_camp</span><span class="op">$</span><span class="va">wind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">env_camp</span><span class="op">$</span><span class="va">wind</span><span class="op">)</span>
 <span class="va">env_camp</span><span class="op">$</span><span class="va">sky</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">env_camp</span><span class="op">$</span><span class="va">sky</span><span class="op">)</span></code></pre></div>
-<pre><code>
-#### 8.3.3. On transforme en liste.
-
-```r
-# 8.3.3. Conversion de l'objet pour l'injection
-env_camp_ls &lt;- apply(env_camp, 1, as.list)</code></pre>
+</div>
+<div id="on-transforme-en-liste-" class="section level4">
+<h4 class="hasAnchor">
+<a href="#on-transforme-en-liste-" class="anchor"></a>8.3.3. On transforme en liste.</h4>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># 8.3.3. Conversion de l'objet pour l'injection</span>
+<span class="va">env_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">env_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte--1" class="section level4">
 <h4 class="hasAnchor">
@@ -824,9 +825,9 @@ env_camp_ls &lt;- apply(env_camp, 1, as.list)</code></pre>
 <code class="sourceCode R"><span class="co"># 8.4.2. Retrait des duplicats</span>
 <span class="va">eff_camp</span> <span class="op">&lt;-</span> <span class="va">eff_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">eff_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
 </div>
-<div id="on-transforme-en-liste-" class="section level4">
+<div id="on-transforme-en-liste--1" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-transforme-en-liste-" class="anchor"></a>8.4.3. On transforme en liste.</h4>
+<a href="#on-transforme-en-liste--1" class="anchor"></a>8.4.3. On transforme en liste.</h4>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.4.3. Conversion de l'objet pour l'injection</span>
 <span class="va">eff_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">eff_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
