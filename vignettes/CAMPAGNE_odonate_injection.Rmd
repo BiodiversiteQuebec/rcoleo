@@ -229,11 +229,16 @@ env_camp <- select(camp,
                   temp_c)
 ```
 
-#### 8.3.2. On garde une ligne par campagne.
+#### 8.3.2. On garde une ligne par campagne et on convertit les variables `wind` & `sky` en caractère.
 
 ```r
 # 8.3.2. Retrait des duplicats
 env_camp <- env_camp[!duplicated(env_camp),]
+
+# Conversion des variables
+env_camp$wind <- as.character(env_camp$wind)
+env_camp$sky <- as.character(env_camp$sky)
+```
 ```
 
 #### 8.3.3. On transforme en liste.
