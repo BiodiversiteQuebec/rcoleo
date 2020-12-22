@@ -119,7 +119,7 @@ camp_ls <- apply(camp_camp, 1, as.list)
 
 ```r
 # 8.1.5. Injection
-COLEO_camp_inj <- post_campaigns(camp_ls)
+COLEO_camp_inj <- rcoleo::post_campaigns(camp_ls)
 ```
 La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).
 
@@ -128,7 +128,7 @@ La sortie R vous informe sur le déroulement de l'insertion. Le message `Good jo
 ```r
 # 8.1.6. Liste des campagnes
 campaigns <- rcoleo::get_campaigns()
-campaigns <- do.call(rbind.fill, campaigns[[1]]$body)
+campaigns <- do.call(plyr::rbind.fill, campaigns[[1]]$body)
 ```
 #### 8.1.7. On récupère le id unique pour chaque campagne nouvellement insérées.
 
@@ -210,7 +210,7 @@ for(i in 1:length(land_ls)){
 
 ```r
 # 8.2.6. Injection
-COLEO_land_inj <- post_landmarks(land_ls)
+COLEO_land_inj <- rcoleo::post_landmarks(land_ls)
 ```
 
 La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).
@@ -262,7 +262,7 @@ obs_ls <- apply(obs_camp, 1, as.list)
 
 ```r
 # 8.3.4. Injection
-COLEO_obs_inj <- post_obs(obs_ls)
+COLEO_obs_inj <- rcoleo::post_obs(obs_ls)
 ```
 La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).
 
@@ -271,7 +271,7 @@ La sortie R vous informe sur le déroulement de l'insertion. Le message `Good jo
 ```r
 # 8.3.5. Acquisition de la liste des observations de Coléo
 obs <- rcoleo::get_gen("/observations")
-obs <- do.call(rbind.fill, obs$body)
+obs <- do.call(plyr::rbind.fill, obs$body)
 
 # Mise à jour des données à injecter avec l'observation_id
 camp <- dplyr::left_join(camp, obs[, c("id", "campaign_id", "date_obs")], by = c("campaign_id", "date_obs"))
@@ -310,7 +310,7 @@ obs_spe_camp_ls <- apply(obs_spe_camp, 1, as.list)
 
 ```r
 # 8.4.3. Injection
-COLEO_obsref_inj <- post_obs_species(obs_spe_camp_ls)
+COLEO_obsref_inj <- rcoleo::post_obs_species(obs_spe_camp_ls)
 
 ```
 La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Bravo ! Vous venez de terminer les étapes d'injections des campagnes **zooplancton** ! Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).

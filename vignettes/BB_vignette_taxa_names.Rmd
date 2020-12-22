@@ -6,7 +6,7 @@ output: html_document
 ```r
 # Formatage du tableau à insérer
 taxa_df <- camp[camp$taxa_name %in% sp_abs,]
-taxa_df <- select(taxa_df,
+taxa_df <- dplyr::select(taxa_df,
                     name = taxa_name,
                     vernacular_fr) # colonnes nécessaires
 ```

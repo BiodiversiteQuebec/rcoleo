@@ -97,15 +97,15 @@ camp <- readr::read_delim("./lenomdevotrebasededonnées.csv",
 # 7.2. Acquisition des informations dans Coléo
 # Acquisition cellules Coléo
 cells <- rcoleo::get_cells()
-cells <- do.call("rbind", cells[[1]]$body)
+cells <- do.call(plyr::rbind.fill, cells[[1]]$body)
 
 # Acquisition sites Coléo
 sites <- rcoleo::get_sites()
-sites <- do.call("rbind", sites[[1]]$body)
+sites <- do.call(plyr::rbind.fill, sites[[1]]$body)
 
 # Acquisition nom espèces Coléo
 species <- rcoleo::get_species()
-species <- do.call("rbind", species[[1]]$body)
+species <- do.call(plyr::rbind.fill, species[[1]]$body)
 
 # Acquisition des attributs dans Coléo
 attrs <- rcoleo::get_gen("/attributes")
@@ -138,7 +138,7 @@ function myFunction1() {
 </script>
  
 <div id="myDIV_cells">
-```{r, child=here::here("vignettes", "BB_vignette_cells.Rmd")}
+```{r, child = here::here("vignettes", "BB_vignette_cells.Rmd")}
 ```
  
 </div>
@@ -183,7 +183,7 @@ function myFunction2() {
 </script>
 
 <div id="myDIV_sites">
-```{r, child=here::here("vignettes", "BB_vignette_sites.Rmd")}
+```{r, child = here::here("vignettes", "BB_vignette_sites.Rmd")}
 ```
 </div>
 
@@ -228,7 +228,7 @@ function myFunction3() {
 </script>
 
 <div id="myDIV_taxa">
-```{r, child=here::here("vignettes", "BB_vignette_taxa_names.Rmd")}
+```{r, child = here::here("vignettes", "BB_vignette_taxa_names.Rmd")}
 ```
 </div>
 

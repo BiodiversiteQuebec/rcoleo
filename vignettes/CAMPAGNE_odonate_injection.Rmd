@@ -127,7 +127,7 @@ La sortie R vous informe sur le déroulement de l'insertion. Le message `Good jo
 ```r
 # 8.1.6. Liste des campagnes
 campaigns <- rcoleo::get_campaigns()
-campaigns <- do.call(rbind.fill, campaigns[[1]]$body)
+campaigns <- do.call(plyr::rbind.fill, campaigns[[1]]$body)
 ```
 #### 8.1.7. On récupère le id unique pour chaque campagne nouvellement insérées.
 
@@ -205,7 +205,7 @@ for(i in 1:length(land_ls)){
 
 ```r
 # 8.2.6. Injection
-COLEO_land_inj <- post_landmarks(land_ls)
+COLEO_land_inj <- rcoleo::post_landmarks(land_ls)
 ```
 La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).
 
@@ -222,11 +222,11 @@ Les champs de la table **environnement** ("/environment") de Coléo qui peuvent 
 
 ```r
 # 8.3.1. Sélection
-env_camp <- select(camp,
-                  campaign_id,
-                  wind,
-                  sky,
-                  temp_c)
+env_camp <- dplyr::select(camp,
+                          campaign_id,
+                          wind,
+                          sky,
+                          temp_c)
 ```
 
 #### 8.3.2. On garde une ligne par campagne et on convertit les variables `wind` & `sky` en caractère.
@@ -268,10 +268,10 @@ Les champs de la table **efforts** ("/efforts") de Coléo qui peuvent être remp
 
 ```r
 # 8.4.1. Sélection
-eff_camp <- select(camp,
-                   campaign_id,
-                   time_start,
-                   time_finish)
+eff_camp <- dplyr::select(camp,
+                          campaign_id,
+                          time_start,
+                          time_finish)
 ```
 
 #### 8.4.2. On garde une ligne par campagne.
@@ -313,11 +313,11 @@ camp$date_obs <- camp$opened_at
 camp$is_valid <- 1 # valeur de 1 par défaut
 
 # Sélection des champs d'intérêts
-obs_camp <- select(camp,
-                   date_obs,
-                   is_valid,
-                   notes = note,
-                   campaign_id)
+obs_camp <- dplyr::select(camp,
+                          date_obs,
+                          is_valid,
+                          notes = note,
+                          campaign_id)
 ```
 
 #### 8.5.2. On garde une ligne par campagne.
@@ -348,7 +348,7 @@ La sortie R vous informe sur le déroulement de l'insertion. Le message `Good jo
 ```r
 # 8.5.5. Acquisition de la liste d'observations de Coléo
 obs <- rcoleo::get_gen("/observations")
-obs <- do.call(rbind.fill, obs$body)
+obs <- do.call(plyr::rbind.fill, obs$body)
 
 # Mise à jour des données à injecter avec l'observation_id
 camp <- dplyr::left_join(camp,
@@ -370,10 +370,10 @@ Les champs de la table **observations des espèces** ("/obs_species") de Coléo 
 
 ```r
 # 8.6.1. Sélection
-obs_spe_camp <- select(camp,
-                      observation_id,
-                      value = abondance,
-                      taxa_name)
+obs_spe_camp <- dplyr::select(camp,
+                              observation_id,
+                              value = abondance,
+                              taxa_name)
 
 # Ajout d'une variable
 obs_spe_camp$variable <- "abondance"

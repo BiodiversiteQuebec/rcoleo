@@ -53,5 +53,5 @@ La sortie R vous informe sur le déroulement de l'insertion. Le message `Good jo
 ```r
 # Mise à jour de la liste des sites provenant de Coléo
 sites <- rcoleo::get_sites()
-sites <- do.call("rbind", sites[[1]]$body)
+sites <- do.call(plyr::rbind.fill, sites[[1]]$body)
 ```
