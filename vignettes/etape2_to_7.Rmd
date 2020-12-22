@@ -106,10 +106,6 @@ sites <- do.call(plyr::rbind.fill, sites[[1]]$body)
 # Acquisition nom espèces Coléo
 species <- rcoleo::get_species()
 species <- do.call(plyr::rbind.fill, species[[1]]$body)
-
-# Acquisition des attributs dans Coléo
-attrs <- rcoleo::get_gen("/attributes")
-attrs <- do.call(plyr::rbind.fill, attrs$body)
 ```
 
 ### 7.3. Vérification de l'existence des cellules, sites, noms d'espèces et des attributs associés aux nouvelles campagnes dans Coléo
@@ -237,12 +233,3 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </script> 
 
 <button onclick="myFunction3()">Vignette injection noms d'espèce</button>
-
-#### 7.3.4. Pour les attributs
-
-```r
-# 7.3.4. Vérification
-# Contenu de la table des attributs dans Coléo
-attrs
-```
-Vous pouvez vérifier si les attributs nécessaires à vos campagnes sont bien présents dans cette table.
