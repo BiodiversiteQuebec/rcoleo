@@ -229,14 +229,28 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <td>nom latin des espèces observées</td>
 </tr>
 <tr class="odd">
+<td><strong>rank</strong></td>
+<td>rang taxonomique - <code>sous-embranchement</code>, <code>embranchement</code>, <code>sous-classe</code>, <code>classe</code>, <code>sous-ordre</code>, <code>ordre</code>, <code>super-famille</code>, <code>famille</code>, <code>genre</code>, <code>espèce</code>, <code>sous-espèce</code>, <code>variété</code>, <code>complexe</code>
+</td>
+</tr>
+<tr class="even">
+<td><strong>category</strong></td>
+<td>categorie d’organisme vivant - <code>poissons</code>, <code>plantes</code>, <code>oiseaux</code>, <code>amphibiens</code>, <code>arthropodes</code>, <code>mammifères</code>, <code>reptiles</code>, <code>autres</code>, <code>mollusques</code>
+</td>
+</tr>
+<tr class="odd">
+<td><em>tsn</em></td>
+<td>identifiant ITS (TSN)</td>
+</tr>
+<tr class="even">
 <td><em>abondance</em></td>
 <td>valeur d’abondance de l’espèce observée</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><em>note</em></td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td></td>
 <td></td>
 </tr>
@@ -547,7 +561,10 @@ function myFunction3() {
 <span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">camp</span><span class="op">[</span><span class="va">camp</span><span class="op">$</span><span class="va">taxa_name</span> <span class="op">%in%</span> <span class="va">sp_abs</span>,<span class="op">]</span>
 <span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">taxa_df</span>,
                     name <span class="op">=</span> <span class="va">taxa_name</span>,
-                    <span class="va">vernacular_fr</span><span class="op">)</span> <span class="co"># colonnes nécessaires</span></code></pre></div>
+                    <span class="va">vernacular_fr</span>,
+                    <span class="va">rank</span>,
+                    <span class="va">category</span>,
+                    <span class="va">tsn</span><span class="op">)</span> <span class="co"># colonnes nécessaires</span></code></pre></div>
 <h5 id="cette-étape-permet-de-formatter-les-données-afin-de-pouvoir-les-injecter-dans-la-base-de-données-coléo.">
 <strong>7.3.3.2.</strong> Cette étape permet de formatter les données afin de pouvoir les injecter dans la base de données Coléo.</h5>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">

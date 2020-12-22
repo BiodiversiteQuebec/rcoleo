@@ -460,7 +460,10 @@ function myFunction3() {
 <span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">camp</span><span class="op">[</span><span class="va">camp</span><span class="op">$</span><span class="va">taxa_name</span> <span class="op">%in%</span> <span class="va">sp_abs</span>,<span class="op">]</span>
 <span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">taxa_df</span>,
                     name <span class="op">=</span> <span class="va">taxa_name</span>,
-                    <span class="va">vernacular_fr</span><span class="op">)</span> <span class="co"># colonnes nécessaires</span></code></pre></div>
+                    <span class="va">vernacular_fr</span>,
+                    <span class="va">rank</span>,
+                    <span class="va">category</span>,
+                    <span class="va">tsn</span><span class="op">)</span> <span class="co"># colonnes nécessaires</span></code></pre></div>
 <h5 id="cette-étape-permet-de-formatter-les-données-afin-de-pouvoir-les-injecter-dans-la-base-de-données-coléo.">
 <strong>7.3.3.2.</strong> Cette étape permet de formatter les données afin de pouvoir les injecter dans la base de données Coléo.</h5>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
