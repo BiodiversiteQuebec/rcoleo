@@ -81,8 +81,8 @@ La succession d'étape qui suivent permettent de vérifier si les cellules, les 
 
 ```r
 # 7.1. Création d'un objet contenant les nouvelles campagnes
-camp <- read_delim("./lenomdevotrebasededonnées.csv",
-                   sep = ';')
+camp <- readr::read_delim("./lenomdevotrebasededonnées.csv",
+                   delim = ';')
 ```
 
 <div class = "blue">
