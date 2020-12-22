@@ -8,7 +8,10 @@ output: html_document
 taxa_df <- camp[camp$taxa_name %in% sp_abs,]
 taxa_df <- dplyr::select(taxa_df,
                     name = taxa_name,
-                    vernacular_fr) # colonnes nécessaires
+                    vernacular_fr,
+                    rank,
+                    category,
+                    tsn) # colonnes nécessaires
 ```
 ##### **7.3.3.2.** Cette étape permet de formatter les données afin de pouvoir les injecter dans la base de données Coléo.
 

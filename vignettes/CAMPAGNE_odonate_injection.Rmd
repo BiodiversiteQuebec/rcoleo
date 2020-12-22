@@ -35,6 +35,9 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 |**wind**| variable numérique symbolisant le niveau d'intensité du vent, 1 = `calme (moins de 1 km/h)`, 2 = `très légère brise (1 à 5 km/h)`, 3 = `légère brise (6 à 11 km/h)`, 4 = `petite brise (12 à 19 km/h)`, 5 = `jolie brise (20 à 28 km/h)`|
 |*vernacular_fr*|nom commun français des espèces observées|
 |*taxa_name*|nom latin des espèces observées|
+|**rank**|rang taxonomique - `sous-embranchement`, `embranchement`, `sous-classe`, `classe`, `sous-ordre`, `ordre`, `super-famille`, `famille`, `genre`, `espèce`, `sous-espèce`, `variété`, `complexe`|
+|**category**|categorie d'organisme vivant - `poissons`, `plantes`, `oiseaux`, `amphibiens`, `arthropodes`, `mammifères`, `reptiles`, `autres`, `mollusques`|
+|*tsn*|identifiant ITS (TSN)|
 |*abondance*|valeur d'abondance de l'espèce observée|
 |*note*||
 |||

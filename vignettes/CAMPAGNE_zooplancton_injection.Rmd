@@ -37,6 +37,9 @@ Afin d'injecter des nouvelles campagnes *zooplancton* dans la base de données C
 |*technician_2*||
 |*depth*|profondeur du prélèvement en mètre|
 |*taxa_name*|nom latin des espèces observées|
+|**rank**|rang taxonomique - `sous-embranchement`, `embranchement`, `sous-classe`, `classe`, `sous-ordre`, `ordre`, `super-famille`, `famille`, `genre`, `espèce`, `sous-espèce`, `variété`, `complexe`|
+|**category**|categorie d'organisme vivant - `poissons`, `plantes`, `oiseaux`, `amphibiens`, `arthropodes`, `mammifères`, `reptiles`, `autres`, `mollusques`|
+|*tsn*|identifiant ITS (TSN)|
 |*Date_denombrement*||
 |*abondance*||
 |*nom_lac*||
