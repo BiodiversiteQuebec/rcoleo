@@ -149,8 +149,6 @@ Vous pouvez maintenant récupérer l'ID unique des cellules.
 
 ```r
 # Récupération des cell_id
-rcoleo:::clear_cache_rcoleo() # Vider le cache de rcoleo associé aux requetes GET
-
 camp <- dplyr::left_join(camp,
                          cells[, c("id", "cell_code")],
                          by = "cell_code")
@@ -195,8 +193,6 @@ Vous pouvez maintenant récupérer l'ID unique des sites.
 
 ```r
 # Récupération des site_id
-rcoleo:::clear_cache_rcoleo() # Vider le cache de rcoleo associé aux requetes GET
-
 camp <- dplyr::left_join(camp,
                          sites[, c("id", "site_code")],
                          by = "site_code")

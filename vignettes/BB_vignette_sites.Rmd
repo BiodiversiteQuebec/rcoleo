@@ -52,6 +52,7 @@ La sortie R vous informe sur le déroulement de l'insertion. Le message `Good jo
 
 ```r
 # Mise à jour de la liste des sites provenant de Coléo
+rcoleo:::clear_cache_rcoleo() # Vider le cache de rcoleo associé aux requetes GET
 sites <- rcoleo::get_sites()
 sites <- do.call(plyr::rbind.fill, sites[[1]]$body)
 ```
