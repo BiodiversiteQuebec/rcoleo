@@ -28,8 +28,6 @@ Vignette en cours de développement
 # identification_2.csv pour l'identification post terrain, enlabo
 # photo_s_3.csv pour les medias
 
-setwd("C:/Users/HP_9470m/Desktop/PostDoc_COLEO/GitHub/rcoleo_Extras/AGOLtoCOLEO")
-
 # Chargement & nettoyage du fichier sur les campagnes utiles
 camp_0 <- readr::read_delim("./AGOL_data_2/Odonate_X_Papillon_0.csv", delim = ";")
 camp_0 <- dplyr::select(camp_0,
@@ -324,42 +322,42 @@ camp <- camp[!is.na(camp$taxa_name),]
 ```
 
 ```r
-# 8.1.1. Sélection
+# 7.1.1. Sélection
 camp_camp <- dplyr::select(camp,
                            site_id,
                            type,
                            technicians,
                            opened_at,
                            closed_at)
-# 8.1.2. Retrait des duplicat
+# 7.1.2. Retrait des duplicat
 camp_camp <- camp_camp[!duplicated(camp_camp),]
-# 8.1.4. Conversion de l'objet pour l'injection
+# 7.1.4. Conversion de l'objet pour l'injection
 camp_ls <- apply(camp_camp, 1, as.list)
-# 8.1.5. Injection
+# 7.1.5. Injection
 COLEO_camp_inj <- rcoleo::post_campaigns(camp_ls) 
 
-# 8.1.6. Liste des campagnes
+# 7.1.6. Liste des campagnes
 campaigns <- rcoleo::get_campaigns()
 campaigns <- do.call(plyr::rbind.fill, campaigns[[1]]$body)
 
-# 8.1.7. Récupération des IDs des campagnes
+# 7.1.7. Récupération des IDs des campagnes
 camp <- dplyr::left_join(camp,
                          campaigns[, c("id", "site_id", "opened_at", "type")],
                          by = c("site_id", "opened_at", "type"))
 
 names(camp)[names(camp) == "id"] <- "campaign_id"
 
-# 8.2.1. Sélection
+# 7.2.1. Sélection
 land_camp <- dplyr::select(camp,
                            campaign_id,
                            lat,
                            lon)
 
-# 8.2.2. Retrait des duplicats
+# 7.2.2. Retrait des duplicats
 land_camp <- land_camp[!duplicated(land_camp),]
-# 8.2.3. Conversion de l'objet pour l'injection
+# 7.2.3. Conversion de l'objet pour l'injection
 land_ls <- apply(land_camp, 1, as.list)
-# 8.2.4. Création de la variable `geom`
+# 7.2.4. Création de la variable `geom`
 geom <- apply(land_camp, 1, function(x){
   
   if(!any(is.na(x["lat"]),is.na(x["lon"]))){
@@ -371,7 +369,7 @@ geom <- apply(land_camp, 1, function(x){
     return(NA)
     
   }})
-# 8.2.5. Fusion des listes
+# 7.2.5. Fusion des listes
 for(i in 1:length(land_ls)){
   
   land_ls[[i]]$geom <- geom[i][[1]]
@@ -381,36 +379,36 @@ for(i in 1:length(land_ls)){
     land_ls[[i]]$geom$crs <- list(type = "name", properties = list(name = "EPSG:4326"))
   }
 }
-# 8.2.6. Injection
+# 7.2.6. Injection
 COLEO_land_inj <- rcoleo::post_landmarks(land_ls)
-# 8.3.1. Sélection
+# 7.3.1. Sélection
 env_camp <- dplyr::select(camp,
                    campaign_id,
                    wind,
                    sky,
                    temp_c)
-# 8.3.2. Retrait des duplicats
+# 7.3.2. Retrait des duplicats
 env_camp <- env_camp[!duplicated(env_camp),]
 
 # Conversion des variables
 env_camp$wind <- as.character(env_camp$wind)
 env_camp$sky <- as.character(env_camp$sky)
-# 8.3.3. Conversion de l'objet pour l'injection
+# 7.3.3. Conversion de l'objet pour l'injection
 env_camp_ls <- apply(env_camp, 1, as.list)
-# 8.3.4. Injection
+# 7.3.4. Injection
 COLEO_env_inj <- rcoleo::post_environments(env_camp_ls)
-# 8.4.1. Sélection
+# 7.4.1. Sélection
 eff_camp <- dplyr::select(camp,
                    campaign_id,
                    time_start,
                    time_finish)
-# 8.4.2. Retrait des duplicats
+# 7.4.2. Retrait des duplicats
 eff_camp <- eff_camp[!duplicated(eff_camp),]
-# 8.4.3. Conversion de l'objet pour l'injection
+# 7.4.3. Conversion de l'objet pour l'injection
 eff_camp_ls <- apply(eff_camp, 1, as.list)
-# 8.4.4. Injection
+# 7.4.4. Injection
 COLEO_eff_inj <- rcoleo::post_efforts(eff_camp_ls) 
-# 8.5.1. Création & sélection
+# 7.5.1. Création & sélection
 # Création de 2 variables nécessaires
 camp$date_obs <- camp$opened_at
 camp$is_valid <- 1 # valeur de 1 par défaut
@@ -421,14 +419,14 @@ obs_camp <- dplyr::select(camp,
                    is_valid,
                    notes = note,
                    campaign_id)
-# 8.5.2. Retrait des duplicats
+# 7.5.2. Retrait des duplicats
 obs_camp <- obs_camp[!duplicated(obs_camp),]
-# 8.5.3. Conversion de l'objet pour l'insertion
+# 7.5.3. Conversion de l'objet pour l'insertion
 obs_camp_ls <- apply(obs_camp, 1, as.list)
-# 8.5.4. Injection
+# 7.5.4. Injection
 COLEO_obs_inj <- rcoleo::post_obs(obs_camp_ls)
 
-# 8.5.5. Acquisition de la liste d'observations de Coléo
+# 7.5.5. Acquisition de la liste d'observations de Coléo
 obs <- rcoleo::get_gen("/observations")
 obs <- do.call(plyr::rbind.fill, obs$body)
 
@@ -437,7 +435,7 @@ camp <- dplyr::left_join(camp,
                          obs[, c("id", "campaign_id", "date_obs")],
                          by = c("campaign_id", "date_obs"))
 names(camp)[names(camp) == "id"] <- "observation_id"
-# 8.6.1. Sélection
+# 7.6.1. Sélection
 obs_spe_camp <- dplyr::select(camp,
                        observation_id,
                        value = abondance,
@@ -446,10 +444,10 @@ obs_spe_camp <- dplyr::select(camp,
 # Ajout d'une variable
 obs_spe_camp$variable <- "abondance"
 
-# 8.6.2. Conversion de l'objet pour l'injection
+# 7.6.2. Conversion de l'objet pour l'injection
 obs_spe_camp_ls <- apply(obs_spe_camp, 1, as.list)
 
-# 8.6.3. Injection
+# 7.6.3. Injection
 COLEO_obsref_inj <- rcoleo::post_obs_species(obs_spe_camp_ls)
 
 ```
