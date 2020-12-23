@@ -2,9 +2,13 @@ pandoc: 2.7.3
 pkgdown: 1.6.1.9000
 pkgdown_sha: 6094ac3dd80a1f3f1d4e2f47d0ed4716d51362b0
 articles:
+  AGOL-COLEO_odonate_papillon_injection: AGOL-COLEO_odonate_papillon_injection.html
   BB_vignette_cells: BB_vignette_cells.html
+  BB_vignette_cells_simplifiee: BB_vignette_cells_simplifiee.html
   BB_vignette_sites: BB_vignette_sites.html
+  BB_vignette_sites_simplifiee: BB_vignette_sites_simplifiee.html
   BB_vignette_taxa_names: BB_vignette_taxa_names.html
+  BB_vignette_taxa_names_simplifiee: BB_vignette_taxa_names_simplifiee.html
   CAMPAGNE_insects_sol_injection: CAMPAGNE_insects_sol_injection.html
   CAMPAGNE_odonate_injection: CAMPAGNE_odonate_injection.html
   CAMPAGNE_papillon_injection: CAMPAGNE_papillon_injection.html
@@ -14,5 +18,5 @@ articles:
   injection-sites: injection-sites.html
   injection-taxa: injection-taxa.html
   telecharge-sites: telecharge-sites.html
-last_built: 2020-12-23T19:20Z
+last_built: 2020-12-23T19:59Z
 

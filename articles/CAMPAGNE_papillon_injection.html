@@ -92,6 +92,9 @@
     <li>
       <a href="../articles/CAMPAGNE_insects_sol_injection.html">Injection des campagnes INSECTES SOL</a>
     </li>
+    <li>
+      <a href="../articles/AGOL-COLEO_odonate_papillon_injection.html">Injection ODONATES et PAPILIONIDÉS AGOL-COLEO</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -433,6 +436,7 @@ function myFunction1() {
 <strong>7.3.1.4.</strong> ATTENTION, finissez en faisant la mise à jour de la liste des cellules présentes dans Coléo.</h5>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Mise à jour de la liste des cellules provenant de Coléo</span>
+<span class="fu">rcoleo</span><span class="fu">:::</span><span class="fu">clear_cache_rcoleo</span><span class="op">(</span><span class="op">)</span> <span class="co"># Vider le cache de rcoleo associé aux requetes GET</span>
 <span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_cells.html">get_cells</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html">rbind.fill</a></span>, <span class="va">cells</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 </div>
@@ -444,8 +448,6 @@ Vignette Injection des cellules
 <p>Vous pouvez maintenant récupérer l’ID unique des cellules.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Récupération des cell_id</span>
-<span class="fu">rcoleo</span><span class="fu">:::</span><span class="fu">clear_cache_rcoleo</span><span class="op">(</span><span class="op">)</span> <span class="co"># Vider le cache de rcoleo associé aux requetes GET</span>
-
 <span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
                          <span class="va">cells</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"cell_code"</span><span class="op">)</span><span class="op">]</span>,
                          by <span class="op">=</span> <span class="st">"cell_code"</span><span class="op">)</span>
@@ -518,6 +520,7 @@ function myFunction2() {
 <strong>7.3.2.3.</strong> ATTENTION, finissez en faisant la mise à jour de la liste des sites présents dans Coléo.</h5>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Mise à jour de la liste des sites provenant de Coléo</span>
+<span class="fu">rcoleo</span><span class="fu">:::</span><span class="fu">clear_cache_rcoleo</span><span class="op">(</span><span class="op">)</span> <span class="co"># Vider le cache de rcoleo associé aux requetes GET</span>
 <span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_sites.html">get_sites</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html">rbind.fill</a></span>, <span class="va">sites</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 </div>
@@ -529,8 +532,6 @@ Vignette Injection des sites
 <p>Vous pouvez maintenant récupérer l’ID unique des sites.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Récupération des site_id</span>
-<span class="fu">rcoleo</span><span class="fu">:::</span><span class="fu">clear_cache_rcoleo</span><span class="op">(</span><span class="op">)</span> <span class="co"># Vider le cache de rcoleo associé aux requetes GET</span>
-
 <span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
                          <span class="va">sites</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_code"</span><span class="op">)</span><span class="op">]</span>,
                          by <span class="op">=</span> <span class="st">"site_code"</span><span class="op">)</span>
