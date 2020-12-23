@@ -1,0 +1,49 @@
+---
+output: html_document
+---
+
+```r
+# Sélection des lignes du tableau concernant les sites manquants
+site_df <- camp[camp$site_code %in% site_abs, c("cell_id", "site_code", "type_hab", "opened_at", "lat", "lon")]
+
+# Retrait des lignes dupliquées
+site_df <- site_df[!duplicated(site_df),]
+
+# Changement du nom de la variable "type_hab" pour correspondre à celle de Coléo ("type")
+names(site_df)[names(site_df) == "type_hab"] <- "type"
+
+# Création de la variable geom à partir des variables "lat" & "lon"
+site_df_ls <- apply(site_df, 1, as.list) # Création de la liste
+str(site_df_ls) # Vérification de la structure de l'objet
+
+geom <- apply(site_df,1, function(x){
+
+  if(!any(is.na(x["lat"]), is.na(x["lon"]))){
+  
+    return(geojsonio::geojson_list(as.numeric(c(x["lon"], x["lat"])))$features[[1]]$geometry)
+    
+  } else {
+  
+    return(NA)
+    
+  }})
+
+for(i in 1:length(site_df_ls)){ # Fusionner les deux listes (geomations + sites)
+
+  site_df_ls[[i]]$geom <- geom[i][[1]]
+  if(is.list(site_df_ls[[i]]$geom)){
+  
+    site_df_ls[[i]]$geom$crs <- list(type = "name",
+                                     properties = list(name="EPSG:4326"))
+  }
+}
+
+# Envoi de la liste des nouveaux sites vers Coléo
+COLEO_sites <- rcoleo::post_sites(site_df_ls)
+
+# Mise à jour de la liste des sites provenant de Coléo
+rcoleo:::clear_cache_rcoleo()
+
+sites <- rcoleo::get_sites()
+sites <- do.call(plyr::rbind.fill, sites[[1]]$body)
+```
