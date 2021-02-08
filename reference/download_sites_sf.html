@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Retourne les observations présentes dans la base de données — get_all_obs • rcoleo</title>
+<title>Get rcoleo sites as sf dataframe — download_sites_sf • rcoleo</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,8 +52,8 @@
 
 
 
-<meta property="og:title" content="Retourne les observations présentes dans la base de données — get_all_obs" />
-<meta property="og:description" content="Retourne les observations présentes dans la base de données" />
+<meta property="og:title" content="Get rcoleo sites as sf dataframe — download_sites_sf" />
+<meta property="og:description" content="Download the site dataset and its metadata, and make it an sf dataframe." />
 <meta property="og:image" content="/logo.svg" />
 
 
@@ -172,27 +172,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Retourne les observations présentes dans la base de données</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/R/GET_all_obs.R'><code>R/GET_all_obs.R</code></a></small>
-    <div class="hidden name"><code>get_all_obs.Rd</code></div>
+    <h1>Get rcoleo sites as sf dataframe</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/R/download_sites_sf.R'><code>R/download_sites_sf.R</code></a></small>
+    <div class="hidden name"><code>download_sites_sf.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Retourne les observations présentes dans la base de données</p>
+    <p>Download the site dataset and its metadata, and make it an sf dataframe.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_all_obs</span><span class='op'>(</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>download_sites_sf</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>`...`</th>
+      <td><p>Arguments to <code><a href='get_sites.html'>get_sites()</a></code></p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The response from <code><a href='get_sites.html'>get_sites()</a></code> comes back as a list of simple data.frames.
+However, for plotting, it is very convenient to work with <code>sf</code> data.frames.
+This function facilitates the process by doing three things:</p><ul>
+<li><p>download all the sites</p></li>
+<li><p>combine multiple pages in response, if any</p></li>
+<li><p>pass the response through <code>sf::st_point()</code> and <code>sf::st_as_sf()</code> to return a sf data.frame</p></li>
+</ul>
 
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>returns a dataframe with all the observations, and the type of campaign that yielded them</p>
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='fu'>get_all_obs</span><span class='op'>(</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

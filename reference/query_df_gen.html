@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Retourne les observations présentes dans la base de données — get_all_obs • rcoleo</title>
+<title>Generate an API call from a data frame — query_df_gen • rcoleo</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,8 +52,9 @@
 
 
 
-<meta property="og:title" content="Retourne les observations présentes dans la base de données — get_all_obs" />
-<meta property="og:description" content="Retourne les observations présentes dans la base de données" />
+<meta property="og:title" content="Generate an API call from a data frame — query_df_gen" />
+<meta property="og:description" content="Take a data.frame that stores query information and send a GET request with
+that info" />
 <meta property="og:image" content="/logo.svg" />
 
 
@@ -172,27 +173,50 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Retourne les observations présentes dans la base de données</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/R/GET_all_obs.R'><code>R/GET_all_obs.R</code></a></small>
-    <div class="hidden name"><code>get_all_obs.Rd</code></div>
+    <h1>Generate an API call from a data frame</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/R/download_gen.R'><code>R/download_gen.R</code></a></small>
+    <div class="hidden name"><code>query_df_gen.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Retourne les observations présentes dans la base de données</p>
+    <p>Take a data.frame that stores query information and send a GET request with
+that info</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_all_obs</span><span class='op'>(</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>query_df_gen</span><span class='op'>(</span><span class='va'>query_df</span>, <span class='va'>query_info</span>, <span class='va'>endpoint</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>query_df</th>
+      <td><p>the data.frame containing the query information. Usually from
+a call to <code><a href='get_gen.html'>get_gen()</a></code></p></td>
+    </tr>
+    <tr>
+      <th>query_info</th>
+      <td><p>a character vector of column names in <code>query_df</code> which will
+be passed to the API</p></td>
+    </tr>
+    <tr>
+      <th>endpoint</th>
+      <td><p>the API endpoint to send all this to</p></td>
+    </tr>
+    <tr>
+      <th>`...`</th>
+      <td><p>extra arguments to <code><a href='get_gen.html'>get_gen()</a></code></p></td>
+    </tr>
+    </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>returns a dataframe with all the observations, and the type of campaign that yielded them</p>
+    <p>a data.frame containing the body of the responses.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='fu'>get_all_obs</span><span class='op'>(</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
+    <p>The coleo API returns a data.frame for most reponses. This data.frame can in
+turn become the input for another request. This function facilitates that
+process</p>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

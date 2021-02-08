@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Retourne les observations présentes dans la base de données — get_all_obs • rcoleo</title>
+<title>Download all the observations of a specific site — get_all_observations_from_a_site • rcoleo</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -52,8 +52,8 @@
 
 
 
-<meta property="og:title" content="Retourne les observations présentes dans la base de données — get_all_obs" />
-<meta property="og:description" content="Retourne les observations présentes dans la base de données" />
+<meta property="og:title" content="Download all the observations of a specific site — get_all_observations_from_a_site" />
+<meta property="og:description" content="Starting from a site data.frame, request all the observations" />
 <meta property="og:image" content="/logo.svg" />
 
 
@@ -172,27 +172,31 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Retourne les observations présentes dans la base de données</h1>
-    <small class="dont-index">Source: <a href='https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/R/GET_all_obs.R'><code>R/GET_all_obs.R</code></a></small>
-    <div class="hidden name"><code>get_all_obs.Rd</code></div>
+    <h1>Download all the observations of a specific site</h1>
+    <small class="dont-index">Source: <a href='https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/R/download_obs.R'><code>R/download_obs.R</code></a></small>
+    <div class="hidden name"><code>get_all_observations_from_a_site.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Retourne les observations présentes dans la base de données</p>
+    <p>Starting from a site data.frame, request all the observations</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_all_obs</span><span class='op'>(</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>get_all_observations_from_a_site</span><span class='op'>(</span><span class='va'>site_df</span><span class='op'>)</span></pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>site_df</th>
+      <td><p>a dataframe containing site information</p></td>
+    </tr>
+    </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>returns a dataframe with all the observations, and the type of campaign that yielded them</p>
+    <p>this function assumes you have a site dataframe of the kind returned by
+<code><a href='get_sites.html'>get_sites()</a></code> or <code><a href='download_sites_sf.html'>download_sites_sf()</a></code>. It is a simple manual wrapper around one workflow.</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
-<span class='fu'>get_all_obs</span><span class='op'>(</span><span class='op'>)</span>
-<span class='op'>}</span>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
