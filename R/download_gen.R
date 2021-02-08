@@ -126,32 +126,4 @@ fix_id_name <- function(df, replace_id){
   return(df)
 }
 
-#
-# rc <- mapselector::get_rcoleo_sites_sf()
-#
-# test_camp <- download_all_requests(starting_df = rc[8,],
-#                       request_info_col = "campaigns",
-#                       query_info = c("type",
-#                                      "opened_at",
-#                                      "closed_at",
-#                                      "site_id"),
-#                       endpoint = "campaigns",request_col_name = "camp_resp")
-#
-# # rename this column
-# test_camp$camp_resp <- purrr::map(test_camp$camp_resp, fix_id_name, replace_id = "campaign_id")
-#
-# #
-# test_obs <- download_all_requests(starting_df = test_camp,
-#                       request_info_col = "camp_resp",
-#                       query_info = "campaign_id",
-#                       endpoint = "observations",
-#                       request_col_name = "obs_resp")
-#
-# dplyr::glimpse(test_obs)
-# #
-# View(test_obs$obs_resp[[1]])
-#
-#
-# forty_two <- get_gen(endpoint = endpoints()$observations, query = list(campaign_id = 42))
 
-# download_all_campaigns(head(rc))
