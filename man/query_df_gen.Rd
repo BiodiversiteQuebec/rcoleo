@@ -4,7 +4,7 @@
 \alias{query_df_gen}
 \title{Generate an API call from a data frame}
 \usage{
-query_df_gen(query_df, query_info, ...)
+query_df_gen(query_df, query_info, endpoint, ...)
 }
 \arguments{
 \item{query_df}{the data.frame containing the query information. Usually from
@@ -12,6 +12,10 @@ a call to \code{\link[=get_gen]{get_gen()}}}
 
 \item{query_info}{a character vector of column names in \code{query_df} which will
 be passed to the API}
+
+\item{endpoint}{the API endpoint to send all this to}
+
+\item{`...`}{extra arguments to \code{\link[=get_gen]{get_gen()}}}
 }
 \value{
 a data.frame containing the body of the responses.

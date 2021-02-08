@@ -13,25 +13,33 @@
 #'   a call to [get_gen()]
 #' @param query_info a character vector of column names in `query_df` which will
 #'   be passed to the API
+#' @param endpoint the API endpoint to send all this to
+#' @param `...` extra arguments to [get_gen()]
 #'
 #' @return a data.frame containing the body of the responses.
 #'
 #' @export
-query_df_gen <- function(query_df, query_info, ...) {
+query_df_gen <- function(query_df, query_info, endpoint, ...) {
+
+  assertthat::assert_that(
+    endpoint %in% names(endpoints())
+  )
+
   if (!is.data.frame(query_df)) stop("download_one_campaign expects a data frame")
 
   assertthat::assert_that(assertthat::has_name(query_df,
                                                query_info))
 
-  # select the variables required for a request and ask the API
-  queries <- purrr::transpose(query_df[c("type",
-                                                 "opened_at",
-                                                 "closed_at",
-                                                 "site_id")])
+  ## assert that sensible things are being requested
+  if (endpoint == "observations") assertthat::assert_that(query_info == "campaign_id")
 
+  # select the variables required for a request and ask the API
+  queries <- purrr::transpose(query_df[query_info])
+
+  # send a GET request to the specified endpoint.
   responses <- purrr::map(queries,
                           rcoleo::get_gen,
-                          endpoint = rcoleo:::endpoints()$campaigns, ...)
+                          endpoint = endpoints()[[endpoint]], ...)
 
 
 
@@ -47,68 +55,103 @@ query_df_gen <- function(query_df, query_info, ...) {
 }
 
 
-# TODO perhaps generalize this function to take an endpoint and a vector of names
-download_one_campaign_set <- function(campaign_df, ...) {
-  if (!is.data.frame(campaign_df)) stop("download_one_campaign expects a data frame")
-
-  assertthat::assert_that(assertthat::has_name(campaign_df,
-                                          c("type", "opened_at",
-                                            "closed_at", "site_id")))
-
-  # select the variables required for a request and ask the API
-  camp_queries <- purrr::transpose(campaign_df[c("type",
-                                                 "opened_at",
-                                                 "closed_at",
-                                                 "site_id")])
-
-  camp_responses <- purrr::map(camp_queries,
-                               rcoleo::get_gen,
-                               endpoint = rcoleo:::endpoints()$campaigns, ...)
-
-
-
-  if (!is.list(camp_responses)) stop("Response from get_sites is not a list. Did you change the API or rcoleo functions?")
-
-  # extract body and combine pages
-
-  camp_df <- purrr::map_dfr(camp_responses, "body")
-
-  return(camp_df)
-
-}
-
-
-#' Download all the campaigns
+#' Download all queries stored in a list
 #'
-#' Download every campaign described in a data.frame of sites
+#' Download the result of every query described in list-column
 #'
 #' This function is designed to work with the same kind of object returned by
 #' [download_sites_sf()]. However it does not need to be an sf data.frame. Any
-#' data.frame with a column containing campaign information _should_ work.
+#' data.frame with a column containing campaign information _should_ work. Very
+#' often a table like this has a list-column of other, smaller dataframes. These
+#' describe the info you need to send to the API to get a table related to the
+#' first.
 #'
-#' @param campaign_df A data frame containing campaign information
-#' @param camp_col The name of the column holding the campaigns. Defaults to
-#'   "campaigns" which is what the API returns
+#' @param starting_df A data frame containing info about a table in the API. You
+#'   start with this, and you want to add the new information to it
+#' @param request_info_col The name of the column holding the campaigns.
+#'   Defaults to "campaigns" which is what the API returns. It's expected to be
+#'   a list-column of data.frames
+#' @param query_info The names of the columns that hold the query information. passed to [query_df_gen()]
+#' @param endpoint the name of the endpoint to query. passed to [query_df_gen()]
+#' @param request_col_name name of column holding the responses
 #'
-#' @return A data.frame just like the `campaign_df`, but with a list-column
-#'   which contains the response. This column is called `campaign_responses`
+#' @return A data.frame just like the `starting_df`, but with a list-column
+#'   which contains the response.
 #'
 #' @export
-download_all_campaigns <- function(campaign_df, camp_col = "campaigns"){
+download_all_requests <- function(starting_df,
+                                   request_info_col = "campaigns",
+                                   query_info,
+                                   endpoint,
+                                   request_col_name){
   # check that the campaign column is a list
   assertthat::assert_that(
-    assertthat::has_name(campaign_df,camp_col))
+    assertthat::has_name(starting_df, request_info_col))
   assertthat::assert_that(
-    is.list(campaign_df[[camp_col]]))
+    is.list(starting_df[[request_info_col]]))
 
   # Go down the list and request campaigns. Don't do anything if its a 0 row df
 
-  all_campaigns <- purrr::map_if(campaign_df[[camp_col]],
+  all_responses <- purrr::map_if(starting_df[[request_info_col]],
                                  function(d) nrow(d) > 0,
-                                 download_one_campaign_set)
+                                 ~ query_df_gen(query_df = .,
+                                                query_info = query_info,
+                                                endpoint = endpoint))
 
-  campaign_df$campaign_responses <- all_campaigns
+  starting_df[[request_col_name]] <- all_responses
 
-  return(campaign_df)
+  return(starting_df)
 
 }
+
+
+download_one_campaign_set <- function(campaign_df, ...) {
+  resp <- query_df_gen(query_df = campaign_df,
+                       query_info = c("type",
+                                      "opened_at",
+                                      "closed_at",
+                                      "site_id"),
+                       endpoint = "campaigns")
+
+  return(resp)
+
+}
+
+
+
+fix_id_name <- function(df, replace_id){
+  nn <- names(df)
+  is_id <- which(nn == "id")
+  names(df)[is_id] <- replace_id
+  return(df)
+}
+
+#
+# rc <- mapselector::get_rcoleo_sites_sf()
+#
+# test_camp <- download_all_requests(starting_df = rc[8,],
+#                       request_info_col = "campaigns",
+#                       query_info = c("type",
+#                                      "opened_at",
+#                                      "closed_at",
+#                                      "site_id"),
+#                       endpoint = "campaigns",request_col_name = "camp_resp")
+#
+# # rename this column
+# test_camp$camp_resp <- purrr::map(test_camp$camp_resp, fix_id_name, replace_id = "campaign_id")
+#
+# #
+# test_obs <- download_all_requests(starting_df = test_camp,
+#                       request_info_col = "camp_resp",
+#                       query_info = "campaign_id",
+#                       endpoint = "observations",
+#                       request_col_name = "obs_resp")
+#
+# dplyr::glimpse(test_obs)
+# #
+# View(test_obs$obs_resp[[1]])
+#
+#
+# forty_two <- get_gen(endpoint = endpoints()$observations, query = list(campaign_id = 42))
+
+# download_all_campaigns(head(rc))
