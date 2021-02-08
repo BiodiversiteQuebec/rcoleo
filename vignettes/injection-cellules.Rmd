@@ -36,7 +36,7 @@ pour installer le package rcoleo, il faut utiliser le packages devtools, il faut
 ```r
 library(devtools)
 # Installation du package rcoleo à partir de github
-install_github("RéseauBiodiversiteQuebec/rcoleo") 
+install_github("ReseauBiodiversiteQuebec/rcoleo") 
 ```
 ## 4. Mettre en cache son jeton d'accès
 Ce jeton permet d'apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l'utilisateur dans le menu à gauche.

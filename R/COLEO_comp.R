@@ -27,11 +27,13 @@ COLEO_comp <- function (x, y)
     list_info <- NULL
     for (i in 1:length(x)) {
       if (x[i] %in% y == FALSE) {
-        print(paste0("Coléo ne contient pas d'informations pour la donnée suivante:",
-                     x[i]))
         list_info <- c(list_info, x[i])
       }
     }
+    print(paste0("Coléo ne contient pas d'informations pour la donnée suivante:",
+                 paste0(list_info, collapse = ", "),
+                 ". Cliquez sur le bouton de la vignette correspondante dans le tutoriel d'injections de campagnes.",
+                 collapse = ""))
     return(list_info)
   }
 }

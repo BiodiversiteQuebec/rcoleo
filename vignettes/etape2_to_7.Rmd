@@ -33,30 +33,40 @@ S'il ne s'agit pas de vos premières injections dans Coléo avec R, vous pouvez 
 Dans RStudio :
 
 ```r
+# 5.1. Installation des packages
 install.packages("devtools")
+install.packages("plyr")
 install.packages("dplyr")
+install.packages("geojsonio")
+install.packages("readr")
 ```
 
 Pour installer le package `rcoleo`, il faut utiliser le package `devtools`, il faut donc l'appeller avec `library()`
 
 ```r
+# Chargement de devtools
 library(devtools)
 # Installation du package rcoleo à partir de github
-install_github("TheoreticalEcosystemEcology/rcoleo") 
+install_github("ReseauBiodiversiteQuebec/rcoleo") 
 ```
 
 ### 5.2. Chargement des packages
 
 ```r
-install.packages("rcoleo")
-install.packages("dplyr")
+# 5.2. Chargement des packages
+library(rcoleo)
+library(plyr)
+library(dplyr)
+library(geojsonio)
+library(readr)
 ```
 
-## 6. Mettre en cache son jeton d'accès
+## 6. Mise en cache son jeton d'accès
 
 Ce jeton permet d'apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l'utilisateur dans le menu à gauche.
 
 ```r
+# 6. Mise en cache son jeton d'accès
 saveRDS("votrejeton",".httr-oauth")
 ```
 
@@ -70,30 +80,32 @@ La succession d'étape qui suivent permettent de vérifier si les cellules, les 
 ### 7.1. Création d'un objet R avec les nouvelles campagnes à insérer dans Coléo
 
 ```r
-camp <- read.csv("./lenomdevotrebasededonnées.csv",
-                 header = TRUE,
-                 sep = ',',
-                 stringsAsFactors = FALSE,
-                 encoding = "UTF-8") # l'encoding UTF-8 permet de garder les accents
+# 7.1. Création d'un objet contenant les nouvelles campagnes
+camp <- readr::read_delim("./lenomdevotrebasededonnées.csv",
+                   delim = ';')
 ```
+
+<div class = "blue">
+
+**Vérification** - Il est important de vérifier dans votre console si le tableau `camp` que vous venez de créer dans R possède bien le nombre de lignes et de colonnes attendu.
+
+</div>
+
 ### 7.2. Acquisition de la liste des cellules, des sites, des noms d'espèce de référence et des attributs déjà présentes dans Coléo et création d'un objet R pour chacune
 
 ```r
+# 7.2. Acquisition des informations dans Coléo
 # Acquisition cellules Coléo
 cells <- rcoleo::get_cells()
-cells <- do.call("rbind", cells[[1]]$body)
+cells <- do.call(plyr::rbind.fill, cells[[1]]$body)
 
 # Acquisition sites Coléo
 sites <- rcoleo::get_sites()
-sites <- do.call("rbind", sites[[1]]$body)
+sites <- do.call(plyr::rbind.fill, sites[[1]]$body)
 
 # Acquisition nom espèces Coléo
 species <- rcoleo::get_species()
-species <- do.call("rbind", species[[1]]$body)
-
-# Acquisition des attributs dans Coléo
-attrs <- rcoleo::get_gen("/attributes")
-attrs <- do.call("rbind.fill", attrs$body)
+species <- do.call(plyr::rbind.fill, species[[1]]$body)
 ```
 
 ### 7.3. Vérification de l'existence des cellules, sites, noms d'espèces et des attributs associés aux nouvelles campagnes dans Coléo
@@ -101,13 +113,14 @@ attrs <- do.call("rbind.fill", attrs$body)
 #### 7.3.1. Pour les cellules
 
 ```r
+# 7.3.1. Vérification
 # Test pour vérifier l'existence des cellules dans Coléo
 cell_abs <- rcoleo::COLEO_comp(unique(camp$cell_code),
                                unique(cells$cell_code))
 cell_abs
 ```
 
-La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire d'importer ces cellules avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `cell_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées en déroulant la vignette **Injection des cellules** ci-dessous.
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire de les importer avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous pouvez utiliser l'objet `cell_abs` que vous venez de créer et qui contient la liste des cellules à injecter dans Coléo. Suivez les étapes détaillées en déroulant la vignette **Injection des cellules** ci-dessous.
 
 <script>
 function myFunction1() {
@@ -121,7 +134,7 @@ function myFunction1() {
 </script>
  
 <div id="myDIV_cells">
-```{r, child=here::here("vignettes", "BB_vignette_cells.Rmd")}
+```{r, child = here::here("vignettes", "BB_vignette_cells.Rmd")}
 ```
  
 </div>
@@ -135,6 +148,7 @@ document.getElementById("myDIV_cells").style.display ="none"
 Vous pouvez maintenant récupérer l'ID unique des cellules.
 
 ```r
+# Récupération des cell_id
 camp <- dplyr::left_join(camp,
                          cells[, c("id", "cell_code")],
                          by = "cell_code")
@@ -144,13 +158,14 @@ names(camp)[names(camp) == "id"] <- "cell_id"
 #### 7.3.2. Pour les sites
 
 ```r
+# 7.3.2. Vérification
 # Test pour vérifier l'existence des sites dans Coléo
 site_abs <- rcoleo::COLEO_comp(unique(camp$site_code),
                                unique(sites$site_code))
 site_abs
 ```
 
-La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains sites n'existent pas dans Coléo, il sera nécessaire d'importer ces sites avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `site_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre les étapes détaillées en déroulant la vignette **Injection des sites** ci-dessous.
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire de les importer avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous pouvez utiliser l'objet `site_abs` que vous venez de créer et qui contient la liste des sites à injecter dans Coléo. Suivez les étapes détaillées en déroulant la vignette **Injection des sites** ci-dessous.
 
 <script>
 function myFunction2() {
@@ -164,7 +179,7 @@ function myFunction2() {
 </script>
 
 <div id="myDIV_sites">
-```{r, child=here::here("vignettes", "BB_vignette_sites.Rmd")}
+```{r, child = here::here("vignettes", "BB_vignette_sites.Rmd")}
 ```
 </div>
 
@@ -177,6 +192,7 @@ document.getElementById("myDIV_sites").style.display ="none"
 Vous pouvez maintenant récupérer l'ID unique des sites.
 
 ```r
+# Récupération des site_id
 camp <- dplyr::left_join(camp,
                          sites[, c("id", "site_code")],
                          by = "site_code")
@@ -187,13 +203,14 @@ names(camp)[names(camp) == "id"] <- "site_id"
 #### 7.3.3. Pour les noms d'espèces
 
 ```r
+# 7.3.3. Vérification
 # Test pour vérifier l'existence des noms des espèces dans Coléo
 sp_abs <- rcoleo::COLEO_comp(unique(camp$taxa_name),
                              unique(species$name))
 sp_abs
 ```
 
-La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certains noms d'espèces n'existent pas dans Coléo, il sera nécessaire d'importer ces noms avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous utilisez l'objet `sp_abs` que vous venez de créer et qui contient la liste des cellules à créer et suivre  les étapes détaillées dans la vignette **Injection des noms d'espèce**.
+La sortie R vous indique si vous pouvez passer à l'étape suivante ou non. Dans le cas où certaines cellules n'existent pas dans Coléo, il sera nécessaire de les importer avant de continuer l'insertions des nouvelles campagnes. Pour ce faire, vous pouvez utiliser l'objet `sp_abs` que vous venez de créer et qui contient la liste des noms d'espèces à injecter dans Coléo. Suivez les étapes détaillées en déroulant la vignette **Injection des noms d'espèces** ci-dessous.
 
 <script>
 function myFunction3() {
@@ -207,7 +224,7 @@ function myFunction3() {
 </script>
 
 <div id="myDIV_taxa">
-```{r, child=here::here("vignettes", "BB_vignette_taxa_names.Rmd")}
+```{r, child = here::here("vignettes", "BB_vignette_taxa_names.Rmd")}
 ```
 </div>
 
@@ -216,22 +233,3 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </script> 
 
 <button onclick="myFunction3()">Vignette injection noms d'espèce</button>
-
-#### 7.3.3. Pour les attributs
-
-```r
-# Contenu de la table des attributs dans Coléo
-attrs
-```
-Vérifier si les attributs nécessaires à vos campagnes sont bien présents dans cette table.
-
-
-### 7.4 Optimisation du tableau à injecter initial
-
-```r
-# Ajout du site_id
-camp <- dplyr::left_join(camp, sites[, c("id", "site_code")], by = "site_code")
-names(camp)[names(camp) == "id"] <- "site_id"
-```
-
-

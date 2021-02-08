@@ -1,7 +1,6 @@
 ---
 output: html_document
 ---
-##### **7.3.3.1.** Cette étape permet de sélectionner les informations nécessaires pour les noms d'espèce absents de Coléo.
 
 ```r
 # Formatage du tableau à insérer
@@ -12,20 +11,13 @@ taxa_df <- dplyr::select(taxa_df,
                     rank,
                     category,
                     tsn) # colonnes nécessaires
-```
-##### **7.3.3.2.** Cette étape permet de formatter les données afin de pouvoir les injecter dans la base de données Coléo.
 
-```r
 # Retrait des lignes dupliquées
 taxa_df <- taxa_df[!duplicated(taxa_df),] 
 
 # Formatage des données sous forme de liste
 taxa_df_ls <- apply(taxa_df, 1, as.list)
-```
-##### **7.3.3.3.** On injecte dans la base de données Coléo.
-```r
+
 # Injection
 COLEO_taxa <- rcoleo::post_species(taxa_df_ls)
 ```
-
-***ATTENTION*** Réfléchir au fait que toutes les informations pour les espèces ne sont pas renseignées avec cette méthode
