@@ -17,7 +17,8 @@ Imports:
     plyr,
     tibble,
     purrr,
-    here
+    here,
+    assertthat
 Suggests: knitr,
     rmarkdown,
     RPostgreSQL,

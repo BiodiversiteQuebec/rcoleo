@@ -23,7 +23,7 @@ Retourne les entrées d'espèces présentes dans la base de données
 }
 \examples{
 \dontrun{
-get_species(vernacular_fr=c('Ã‰rable'))
+get_species(vernacular_fr=c('Érable'))
 head(get_species())
 } 
 }

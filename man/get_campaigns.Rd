@@ -32,6 +32,6 @@ Obtenir l'ensemble des campagnes attachées à un site
 \examples{
 \dontrun{
 get_campaigns()
-get_campaigns(type="vÃ©gÃ©tation")
+get_campaigns(type="végétation")
 }
 }

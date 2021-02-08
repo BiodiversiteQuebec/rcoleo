@@ -26,6 +26,6 @@ Retourne les observations présentes dans la base de données
 \examples{
 \dontrun{
 get_obs()
-get_obs(type = 'mammifÃ¨res')
+get_obs(type = 'mammifères')
 }
 }

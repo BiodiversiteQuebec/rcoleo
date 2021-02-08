@@ -25,10 +25,14 @@ list(site_code = "135_104_F01", type = "insectes_sol", opened_at = "2016-05-20",
 # geo +
 list(site_code = "135_104_F01", opened_at = "2016-05-20", closed_at = "2016-07-12",
      trap_code = "MP-05", lat_trap = "46.79415", lon_trap = "-72.30296",
-     campaign_id = "41", landmarks = list(
+     campaign_id = "41",
+     landmarks = list(
        list(campaign_id = "41",
-            geom = list(type = "Point", coordinates = c(46.79415,
-                                                        -72.30296)))))
+            geom = list(type = "Point",
+                        coordinates = c(46.79415, -72.30296))
+            )
+       )
+     )
 
 ## samples
 # tele -
