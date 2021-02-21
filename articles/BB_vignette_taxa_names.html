@@ -28,6 +28,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -40,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rcoleo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
       </span>
     </div>
 
@@ -53,7 +55,7 @@
   </a>
 </li>
 <li>
-  <a href="https://coleo.biodiversite-quebec.ca/docs/">
+  <a href="https://coleo.biodiversite-quebec.ca/docs/" class="external-link">
     <span class="fas fa-book fa-lg"></span>
      
   </a>
@@ -100,7 +102,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo">
+  <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -127,7 +129,7 @@
       <h1 data-toc-skip></h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/vignettes/BB_vignette_taxa_names.Rmd"><code>vignettes/BB_vignette_taxa_names.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/vignettes/BB_vignette_taxa_names.Rmd" class="external-link"><code>vignettes/BB_vignette_taxa_names.Rmd</code></a></small>
       <div class="hidden name"><code>BB_vignette_taxa_names.Rmd</code></div>
 
     </div>
@@ -140,7 +142,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Formatage du tableau à insérer</span>
 <span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">camp</span><span class="op">[</span><span class="va">camp</span><span class="op">$</span><span class="va">taxa_name</span> <span class="op">%in%</span> <span class="va">sp_abs</span>,<span class="op">]</span>
-<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">taxa_df</span>,
+<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">taxa_df</span>,
                     name <span class="op">=</span> <span class="va">taxa_name</span>,
                     <span class="va">vernacular_fr</span>,
                     <span class="va">rank</span>,
@@ -152,10 +154,10 @@
 <a href="#cette-%C3%A9tape-permet-de-formatter-les-donn%C3%A9es-afin-de-pouvoir-les-injecter-dans-la-base-de-donn%C3%A9es-col%C3%A9o-" class="anchor"></a><strong>7.3.3.2.</strong> Cette étape permet de formatter les données afin de pouvoir les injecter dans la base de données Coléo.</h5>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Retrait des lignes dupliquées</span>
-<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">taxa_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">taxa_df</span><span class="op">)</span>,<span class="op">]</span> 
+<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">taxa_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">taxa_df</span><span class="op">)</span>,<span class="op">]</span> 
 
 <span class="co"># Formatage des données sous forme de liste</span>
-<span class="va">taxa_df_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">taxa_df</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
+<span class="va">taxa_df_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">taxa_df</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte-dans-la-base-de-données-coléo-" class="section level5">
 <h5 class="hasAnchor">
@@ -176,11 +178,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Steve Vissault.</p>
+  <p></p>
+<p>Developed by Steve Vissault.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>

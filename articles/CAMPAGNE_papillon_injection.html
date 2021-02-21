@@ -28,6 +28,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -40,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rcoleo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
       </span>
     </div>
 
@@ -53,7 +55,7 @@
   </a>
 </li>
 <li>
-  <a href="https://coleo.biodiversite-quebec.ca/docs/">
+  <a href="https://coleo.biodiversite-quebec.ca/docs/" class="external-link">
     <span class="fas fa-book fa-lg"></span>
      
   </a>
@@ -100,7 +102,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo">
+  <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -125,11 +127,11 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Tutoriel pour injection des campagnes papillon</h1>
-                        <h4 class="author">Claire-Cécile Juhasz</h4>
+                        <h4 data-toc-skip class="author">Claire-Cécile Juhasz</h4>
             
-            <h4 class="date">19 novembre 2020</h4>
+            <h4 data-toc-skip class="date">19 novembre 2020</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/vignettes/CAMPAGNE_papillon_injection.Rmd"><code>vignettes/CAMPAGNE_papillon_injection.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/vignettes/CAMPAGNE_papillon_injection.Rmd" class="external-link"><code>vignettes/CAMPAGNE_papillon_injection.Rmd</code></a></small>
       <div class="hidden name"><code>CAMPAGNE_papillon_injection.Rmd</code></div>
 
     </div>
@@ -302,15 +304,15 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <p>Dans RStudio :</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 5.1. Installation des packages</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"plyr"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"geojsonio"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"readr"</span><span class="op">)</span></code></pre></div>
-<p>Pour installer le package <code>rcoleo</code>, il faut utiliser le package <code>devtools</code>, il faut donc l’appeller avec <code><a href="https://rdrr.io/r/base/library.html">library()</a></code></p>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"plyr"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"geojsonio"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"readr"</span><span class="op">)</span></code></pre></div>
+<p>Pour installer le package <code>rcoleo</code>, il faut utiliser le package <code>devtools</code>, il faut donc l’appeller avec <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Chargement de devtools</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">devtools</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">devtools</span><span class="op">)</span>
 <span class="co"># Installation du package rcoleo à partir de github</span>
 <span class="fu">install_github</span><span class="op">(</span><span class="st">"ReseauBiodiversiteQuebec/rcoleo"</span><span class="op">)</span> </code></pre></div>
 </div>
@@ -319,11 +321,11 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <a href="#chargement-des-packages" class="anchor"></a>5.2. Chargement des packages</h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 5.2. Chargement des packages</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo">rcoleo</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://had.co.nz/plyr">plyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">geojsonio</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">readr</span><span class="op">)</span></code></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo" class="external-link">rcoleo</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://had.co.nz/plyr" class="external-link">plyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">geojsonio</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">readr</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="mise-en-cache-son-jeton-daccès" class="section level2">
@@ -332,7 +334,7 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <p>Ce jeton permet d’apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l’utilisateur dans le menu à gauche.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 6. Mise en cache son jeton d'accès</span>
-<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="st">"votrejeton"</span>,<span class="st">".httr-oauth"</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="st">"votrejeton"</span>,<span class="st">".httr-oauth"</span><span class="op">)</span></code></pre></div>
 <p>Cette étape n’est faite qu’une fois et permet l’enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d’injection. Le jeton est confidentiel.</p>
 </div>
 <div id="vérification-pré-injection" class="section level2">
@@ -357,15 +359,15 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <code class="sourceCode R"><span class="co"># 7.2. Acquisition des informations dans Coléo</span>
 <span class="co"># Acquisition cellules Coléo</span>
 <span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_cells.html">get_cells</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html">rbind.fill</a></span>, <span class="va">cells</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
+<span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html" class="external-link">rbind.fill</a></span>, <span class="va">cells</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
 
 <span class="co"># Acquisition sites Coléo</span>
 <span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_sites.html">get_sites</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html">rbind.fill</a></span>, <span class="va">sites</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
+<span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html" class="external-link">rbind.fill</a></span>, <span class="va">sites</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
 
 <span class="co"># Acquisition nom espèces Coléo</span>
 <span class="va">species</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_species.html">get_species</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">species</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html">rbind.fill</a></span>, <span class="va">species</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
+<span class="va">species</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html" class="external-link">rbind.fill</a></span>, <span class="va">species</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="vérification-de-lexistence-des-cellules-sites-noms-despèces-et-des-attributs-associés-aux-nouvelles-campagnes-dans-coléo" class="section level3">
 <h3 class="hasAnchor">
@@ -376,8 +378,8 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.3.1. Vérification</span>
 <span class="co"># Test pour vérifier l'existence des cellules dans Coléo</span>
-<span class="va">cell_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">cell_code</span><span class="op">)</span>,
-                               <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">cells</span><span class="op">$</span><span class="va">cell_code</span><span class="op">)</span><span class="op">)</span>
+<span class="va">cell_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">cell_code</span><span class="op">)</span>,
+                               <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">cells</span><span class="op">$</span><span class="va">cell_code</span><span class="op">)</span><span class="op">)</span>
 <span class="va">cell_abs</span></code></pre></div>
 <p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certaines cellules n’existent pas dans Coléo, il sera nécessaire de les importer avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous pouvez utiliser l’objet <code>cell_abs</code> que vous venez de créer et qui contient la liste des cellules à injecter dans Coléo. Suivez les étapes détaillées en déroulant la vignette <strong>Injection des cellules</strong> ci-dessous.</p>
 <script>
@@ -399,19 +401,19 @@ function myFunction1() {
 <strong>7.3.1.2.</strong> Cette étape permet d’extraire les informations nécessaires concernant les nouvelles cellules et de formater ces informations de sorte à pouvoir les insérer dans Coléo.</h5>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Création d'une liste vide pour l'objet final</span>
-<span class="va">shp_cells_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">shp_cells_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
 
-<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">cell_abs</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+<span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">cell_abs</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
 
 <span class="co"># Obtention des information pour un cellule</span>
   <span class="va">shp</span> <span class="op">&lt;-</span> <span class="va">shp_cells</span><span class="op">[</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">IJ</span> <span class="op">==</span> <span class="va">cell_abs</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> ,<span class="op">]</span>
 
 <span class="co"># Création d'une liste avec les informations nécessaires pour chaque cellule</span>
-  <span class="va">cells_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="va">cells_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
   <span class="va">cells_ls</span><span class="op">$</span><span class="va">cell_code</span> <span class="op">&lt;-</span> <span class="va">cell_abs</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="co"># Code de la cellule</span>
-  <span class="va">cells_ls</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">shp_cells</span><span class="op">[</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">IJ</span> <span class="op">==</span> <span class="va">cell_abs</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">Nom</span><span class="op">)</span>,<span class="op">]</span><span class="op">@</span><span class="va">data</span><span class="op">$</span><span class="va">Nom</span><span class="op">)</span> <span class="co"># Nom de la cellule</span>
+  <span class="va">cells_ls</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">shp_cells</span><span class="op">[</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">IJ</span> <span class="op">==</span> <span class="va">cell_abs</span><span class="op">[</span><span class="va">i</span><span class="op">]</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">shp_cells</span><span class="op">$</span><span class="va">Nom</span><span class="op">)</span>,<span class="op">]</span><span class="op">@</span><span class="va">data</span><span class="op">$</span><span class="va">Nom</span><span class="op">)</span> <span class="co"># Nom de la cellule</span>
 
-  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span><span class="op">(</span><span class="va">cells_ls</span><span class="op">$</span><span class="va">name</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/identical.html" class="external-link">identical</a></span><span class="op">(</span><span class="va">cells_ls</span><span class="op">$</span><span class="va">name</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
   
     <span class="va">cells_ls</span><span class="op">$</span><span class="va">name</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>
     
@@ -420,8 +422,8 @@ function myFunction1() {
 <span class="co"># Création de l'objet spatial pour les coordonnées de la cellule</span>
   <span class="va">shp_sp</span> <span class="op">&lt;-</span> <span class="fu">as</span><span class="op">(</span><span class="va">shp</span>, <span class="st">"SpatialPolygons"</span><span class="op">)</span>
   <span class="va">cells_ls</span><span class="op">$</span><span class="va">geom</span> <span class="op">&lt;-</span> <span class="fu">geojsonio</span><span class="fu">::</span><span class="fu">geojson_list</span><span class="op">(</span><span class="va">shp</span><span class="op">)</span><span class="op">$</span><span class="va">features</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geometry</span> <span class="co"># Caractéristiques de l'objet spatial</span>
-  <span class="va">cells_ls</span><span class="op">$</span><span class="va">geom</span><span class="op">$</span><span class="va">crs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"name"</span>,
-                            properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"EPSG:4326"</span><span class="op">)</span><span class="op">)</span> <span class="co"># Information sur le systême de coordonnées de référence (CRS)</span>
+  <span class="va">cells_ls</span><span class="op">$</span><span class="va">geom</span><span class="op">$</span><span class="va">crs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"name"</span>,
+                            properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"EPSG:4326"</span><span class="op">)</span><span class="op">)</span> <span class="co"># Information sur le systême de coordonnées de référence (CRS)</span>
 
 <span class="co"># Alimentation de l'objet final avec un niveau pour chaque cellule</span>
   <span class="va">shp_cells_list</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">cells_ls</span>
@@ -431,14 +433,14 @@ function myFunction1() {
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Envoi de la liste de nouvelles cellules vers Coléo</span>
 <span class="va">COLEO_cells</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_cells.html">post_cells</a></span><span class="op">(</span><span class="va">shp_cells_list</span><span class="op">)</span></code></pre></div>
-<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
+<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/" class="external-link">codes de statut</a>).</p>
 <h5 id="attention-finissez-en-faisant-la-mise-à-jour-de-la-liste-des-cellules-présentes-dans-coléo.">
 <strong>7.3.1.4.</strong> ATTENTION, finissez en faisant la mise à jour de la liste des cellules présentes dans Coléo.</h5>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Mise à jour de la liste des cellules provenant de Coléo</span>
-<span class="fu">rcoleo</span><span class="fu">:::</span><span class="fu">clear_cache_rcoleo</span><span class="op">(</span><span class="op">)</span> <span class="co"># Vider le cache de rcoleo associé aux requetes GET</span>
+<span class="fu">rcoleo</span><span class="fu">:::</span><span class="fu"><a href="../reference/clear_cache_rcoleo.html">clear_cache_rcoleo</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Vider le cache de rcoleo associé aux requetes GET</span>
 <span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_cells.html">get_cells</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html">rbind.fill</a></span>, <span class="va">cells</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
+<span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html" class="external-link">rbind.fill</a></span>, <span class="va">cells</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 </div>
 <script>
 document.getElementById("myDIV_cells").style.display ="none"
@@ -448,10 +450,10 @@ Vignette Injection des cellules
 <p>Vous pouvez maintenant récupérer l’ID unique des cellules.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Récupération des cell_id</span>
-<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
-                         <span class="va">cells</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"cell_code"</span><span class="op">)</span><span class="op">]</span>,
+<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
+                         <span class="va">cells</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"cell_code"</span><span class="op">)</span><span class="op">]</span>,
                          by <span class="op">=</span> <span class="st">"cell_code"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"cell_id"</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"cell_id"</span></code></pre></div>
 </div>
 <div id="pour-les-sites" class="section level4">
 <h4 class="hasAnchor">
@@ -459,8 +461,8 @@ Vignette Injection des cellules
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.3.2. Vérification</span>
 <span class="co"># Test pour vérifier l'existence des sites dans Coléo</span>
-<span class="va">site_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">site_code</span><span class="op">)</span>,
-                               <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">sites</span><span class="op">$</span><span class="va">site_code</span><span class="op">)</span><span class="op">)</span>
+<span class="va">site_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">site_code</span><span class="op">)</span>,
+                               <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">sites</span><span class="op">$</span><span class="va">site_code</span><span class="op">)</span><span class="op">)</span>
 <span class="va">site_abs</span></code></pre></div>
 <p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certaines cellules n’existent pas dans Coléo, il sera nécessaire de les importer avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous pouvez utiliser l’objet <code>site_abs</code> que vous venez de créer et qui contient la liste des sites à injecter dans Coléo. Suivez les étapes détaillées en déroulant la vignette <strong>Injection des sites</strong> ci-dessous.</p>
 <script>
@@ -477,37 +479,37 @@ function myFunction2() {
 <a href="#myDIV_sites" class="anchor"></a><strong>7.3.2.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les sites absents de Coléo.</h5>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Sélection des lignes du tableau concernant les sites manquants</span>
-<span class="va">site_df</span> <span class="op">&lt;-</span> <span class="va">camp</span><span class="op">[</span><span class="va">camp</span><span class="op">$</span><span class="va">site_code</span> <span class="op">%in%</span> <span class="va">site_abs</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cell_id"</span>, <span class="st">"site_code"</span>, <span class="st">"type_hab"</span>, <span class="st">"opened_at"</span>, <span class="st">"lat"</span>, <span class="st">"lon"</span><span class="op">)</span><span class="op">]</span>
+<span class="va">site_df</span> <span class="op">&lt;-</span> <span class="va">camp</span><span class="op">[</span><span class="va">camp</span><span class="op">$</span><span class="va">site_code</span> <span class="op">%in%</span> <span class="va">site_abs</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cell_id"</span>, <span class="st">"site_code"</span>, <span class="st">"type_hab"</span>, <span class="st">"opened_at"</span>, <span class="st">"lat"</span>, <span class="st">"lon"</span><span class="op">)</span><span class="op">]</span>
 
 <span class="co"># Retrait des lignes dupliquées</span>
-<span class="va">site_df</span> <span class="op">&lt;-</span> <span class="va">site_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">site_df</span><span class="op">)</span>,<span class="op">]</span>
+<span class="va">site_df</span> <span class="op">&lt;-</span> <span class="va">site_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">site_df</span><span class="op">)</span>,<span class="op">]</span>
 
 <span class="co"># Changement du nom de la variable "type_hab" pour correspondre à celle de Coléo ("type")</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">site_df</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">site_df</span><span class="op">)</span> <span class="op">==</span> <span class="st">"type_hab"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"type"</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">site_df</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">site_df</span><span class="op">)</span> <span class="op">==</span> <span class="st">"type_hab"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"type"</span>
 
 <span class="co"># Création de la variable geom à partir des variables "lat" &amp; "lon"</span>
-<span class="va">site_df_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">site_df</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span> <span class="co"># Création de la liste</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">)</span> <span class="co"># Vérification de la structure de l'objet</span>
+<span class="va">site_df_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">site_df</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span> <span class="co"># Création de la liste</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">)</span> <span class="co"># Vérification de la structure de l'objet</span>
 
-<span class="va">geom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">site_df</span>,<span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span>
+<span class="va">geom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">site_df</span>,<span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span>
 
-  <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+  <span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
   
-    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu">geojsonio</span><span class="fu">::</span><span class="fu">geojson_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span>, <span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">features</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu">geojsonio</span><span class="fu">::</span><span class="fu">geojson_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span>, <span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">features</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span>
     
   <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
   
-    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>
     
   <span class="op">}</span><span class="op">}</span><span class="op">)</span>
 
-<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">)</span><span class="op">)</span><span class="op">{</span> <span class="co"># Fusionner les deux listes (geomations + sites)</span>
+<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">)</span><span class="op">)</span><span class="op">{</span> <span class="co"># Fusionner les deux listes (geomations + sites)</span>
 
   <span class="va">site_df_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span> <span class="op">&lt;-</span> <span class="va">geom</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
-  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">is.list</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+  <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">is.list</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
   
-    <span class="va">site_df_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span><span class="op">$</span><span class="va">crs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"name"</span>,
-                                     properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"EPSG:4326"</span><span class="op">)</span><span class="op">)</span>
+    <span class="va">site_df_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span><span class="op">$</span><span class="va">crs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"name"</span>,
+                                     properties <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"EPSG:4326"</span><span class="op">)</span><span class="op">)</span>
   <span class="op">}</span>
 <span class="op">}</span></code></pre></div>
 <h5 id="nous-pouvons-maintenant-insérer-les-nouveaux-sites-dans-la-base-de-données-coléo.">
@@ -515,14 +517,14 @@ function myFunction2() {
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Envoi de la liste des nouveaux sites vers Coléo</span>
 <span class="va">COLEO_sites</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_sites.html">post_sites</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">)</span></code></pre></div>
-<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
+<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/" class="external-link">codes de statut</a>).</p>
 <h5 id="attention-finissez-en-faisant-la-mise-à-jour-de-la-liste-des-sites-présents-dans-coléo.">
 <strong>7.3.2.3.</strong> ATTENTION, finissez en faisant la mise à jour de la liste des sites présents dans Coléo.</h5>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Mise à jour de la liste des sites provenant de Coléo</span>
-<span class="fu">rcoleo</span><span class="fu">:::</span><span class="fu">clear_cache_rcoleo</span><span class="op">(</span><span class="op">)</span> <span class="co"># Vider le cache de rcoleo associé aux requetes GET</span>
+<span class="fu">rcoleo</span><span class="fu">:::</span><span class="fu"><a href="../reference/clear_cache_rcoleo.html">clear_cache_rcoleo</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Vider le cache de rcoleo associé aux requetes GET</span>
 <span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_sites.html">get_sites</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html">rbind.fill</a></span>, <span class="va">sites</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
+<span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html" class="external-link">rbind.fill</a></span>, <span class="va">sites</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 </div>
 <script>
 document.getElementById("myDIV_sites").style.display ="none"
@@ -532,10 +534,10 @@ Vignette Injection des sites
 <p>Vous pouvez maintenant récupérer l’ID unique des sites.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Récupération des site_id</span>
-<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
-                         <span class="va">sites</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_code"</span><span class="op">)</span><span class="op">]</span>,
+<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
+                         <span class="va">sites</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_code"</span><span class="op">)</span><span class="op">]</span>,
                          by <span class="op">=</span> <span class="st">"site_code"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"site_id"</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"site_id"</span></code></pre></div>
 </div>
 <div id="pour-les-noms-despèces" class="section level4">
 <h4 class="hasAnchor">
@@ -543,8 +545,8 @@ Vignette Injection des sites
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.3.3. Vérification</span>
 <span class="co"># Test pour vérifier l'existence des noms des espèces dans Coléo</span>
-<span class="va">sp_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">taxa_name</span><span class="op">)</span>,
-                             <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">species</span><span class="op">$</span><span class="va">name</span><span class="op">)</span><span class="op">)</span>
+<span class="va">sp_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">taxa_name</span><span class="op">)</span>,
+                             <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">species</span><span class="op">$</span><span class="va">name</span><span class="op">)</span><span class="op">)</span>
 <span class="va">sp_abs</span></code></pre></div>
 <p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certaines cellules n’existent pas dans Coléo, il sera nécessaire de les importer avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous pouvez utiliser l’objet <code>sp_abs</code> que vous venez de créer et qui contient la liste des noms d’espèces à injecter dans Coléo. Suivez les étapes détaillées en déroulant la vignette <strong>Injection des noms d’espèces</strong> ci-dessous.</p>
 <script>
@@ -562,7 +564,7 @@ function myFunction3() {
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Formatage du tableau à insérer</span>
 <span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">camp</span><span class="op">[</span><span class="va">camp</span><span class="op">$</span><span class="va">taxa_name</span> <span class="op">%in%</span> <span class="va">sp_abs</span>,<span class="op">]</span>
-<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">taxa_df</span>,
+<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">taxa_df</span>,
                     name <span class="op">=</span> <span class="va">taxa_name</span>,
                     <span class="va">vernacular_fr</span>,
                     <span class="va">rank</span>,
@@ -572,10 +574,10 @@ function myFunction3() {
 <strong>7.3.3.2.</strong> Cette étape permet de formatter les données afin de pouvoir les injecter dans la base de données Coléo.</h5>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Retrait des lignes dupliquées</span>
-<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">taxa_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">taxa_df</span><span class="op">)</span>,<span class="op">]</span> 
+<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">taxa_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">taxa_df</span><span class="op">)</span>,<span class="op">]</span> 
 
 <span class="co"># Formatage des données sous forme de liste</span>
-<span class="va">taxa_df_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">taxa_df</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
+<span class="va">taxa_df_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">taxa_df</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 <h5 id="on-injecte-dans-la-base-de-données-coléo.">
 <strong>7.3.3.3.</strong> On injecte dans la base de données Coléo.</h5>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
@@ -621,7 +623,7 @@ Vignette injection noms d’espèce
 <a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts-" class="anchor"></a>8.1.1. On commence par séléctionner les champs d’interêts.</h4>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.1. Sélection</span>
-<span class="va">camp_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">camp</span>,
+<span class="va">camp_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">camp</span>,
                           <span class="va">site_id</span>,
                           <span class="va">type</span>,
                           <span class="va">technician_1</span>,
@@ -634,18 +636,18 @@ Vignette injection noms d’espèce
 <a href="#on-garde-une-ligne-unique-par-nouvelle-campagne-" class="anchor"></a>8.1.2. On garde une ligne unique par nouvelle campagne.</h4>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.2. Retrait des duplicat</span>
-<span class="va">camp_camp</span> <span class="op">&lt;-</span> <span class="va">camp_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">camp_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
+<span class="va">camp_camp</span> <span class="op">&lt;-</span> <span class="va">camp_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">camp_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
 </div>
 <div id="on-créé-la-liste-pour-le-nom-des-techniciens-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-cr%C3%A9%C3%A9-la-liste-pour-le-nom-des-techniciens-" class="anchor"></a>8.1.3. On créé la liste pour le nom des techniciens.</h4>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.3. Création liste de technicien.ne.s</span>
-<span class="va">tech</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Création d'un objet `list` vide</span>
+<span class="va">tech</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Création d'un objet `list` vide</span>
 
-<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">camp_camp</span><span class="op">$</span><span class="va">site_id</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">camp_camp</span><span class="op">$</span><span class="va">site_id</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
 
-  <span class="va">tech</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">camp_camp</span><span class="op">$</span><span class="va">technician_1</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>,
+  <span class="va">tech</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">camp_camp</span><span class="op">$</span><span class="va">technician_1</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span>,
                     <span class="va">camp_camp</span><span class="op">$</span><span class="va">technician_2</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
                     
 <span class="op">}</span> <span class="co"># Chaque niveau de la liste correspond à une association des deux noms des technicien/ne/s pour chaque ligne du tableau</span>
@@ -657,7 +659,7 @@ Vignette injection noms d’espèce
 <a href="#on-transforme-le-tableau-en-liste-pour-pouvoir-injecter-les-donn%C3%A9es-dans-col%C3%A9o-" class="anchor"></a>8.1.4. On transforme le tableau en liste pour pouvoir injecter les données dans Coléo.</h4>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.4. Conversion de l'objet pour l'injection</span>
-<span class="va">camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">camp_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
+<span class="va">camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">camp_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte-" class="section level4">
 <h4 class="hasAnchor">
@@ -665,7 +667,7 @@ Vignette injection noms d’espèce
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.5. Injection</span>
 <span class="va">COLEO_camp_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_campaigns.html">post_campaigns</a></span><span class="op">(</span><span class="va">camp_ls</span><span class="op">)</span> </code></pre></div>
-<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
+<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/" class="external-link">codes de statut</a>).</p>
 </div>
 <div id="on-récupère-la-liste-de-campagnes-provenant-de-coléo-" class="section level4">
 <h4 class="hasAnchor">
@@ -673,18 +675,18 @@ Vignette injection noms d’espèce
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.6. Liste des campagnes</span>
 <span class="va">campaigns</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_campaigns.html">get_campaigns</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">campaigns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html">rbind.fill</a></span>, <span class="va">campaigns</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
+<span class="va">campaigns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html" class="external-link">rbind.fill</a></span>, <span class="va">campaigns</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-récupère-le-id-unique-pour-chaque-campagne-nouvellement-insérées-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-r%C3%A9cup%C3%A8re-le-id-unique-pour-chaque-campagne-nouvellement-ins%C3%A9r%C3%A9es-" class="anchor"></a>8.1.7. On récupère le id unique pour chaque campagne nouvellement insérées.</h4>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.7. Récupération des IDs des campagnes</span>
-<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
-                         <span class="va">campaigns</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_id"</span>, <span class="st">"opened_at"</span>, <span class="st">"type"</span><span class="op">)</span><span class="op">]</span>,
-                         by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"site_id"</span>, <span class="st">"opened_at"</span>, <span class="st">"type"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
+                         <span class="va">campaigns</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_id"</span>, <span class="st">"opened_at"</span>, <span class="st">"type"</span><span class="op">)</span><span class="op">]</span>,
+                         by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"site_id"</span>, <span class="st">"opened_at"</span>, <span class="st">"type"</span><span class="op">)</span><span class="op">)</span>
                          
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"campaign_id"</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"campaign_id"</span></code></pre></div>
 </div>
 </div>
 <div id="injections-des-repères-associés-aux-nouvelles-campagnes" class="section level3">
@@ -696,7 +698,7 @@ Vignette injection noms d’espèce
 <a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts--1" class="anchor"></a>8.2.1. On commence par séléctionner les champs d’interêts.</h4>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.1. Sélection</span>
-<span class="va">land_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">camp</span>,
+<span class="va">land_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">camp</span>,
                            <span class="va">campaign_id</span>,
                            <span class="va">lat</span>,
                            <span class="va">lon</span><span class="op">)</span></code></pre></div>
@@ -706,29 +708,29 @@ Vignette injection noms d’espèce
 <a href="#on-garde-une-ligne-par-rep%C3%A8re-cest-%C3%A0-dire-par-campagne-" class="anchor"></a>8.2.2. On garde une ligne par repère (c’est-à-dire par campagne).</h4>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.2. Retrait des duplicats</span>
-<span class="va">land_camp</span> <span class="op">&lt;-</span> <span class="va">land_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">land_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
+<span class="va">land_camp</span> <span class="op">&lt;-</span> <span class="va">land_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">land_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
 </div>
 <div id="on-transforme-le-tableau-en-liste-pour-pouvoir-linjecter-dans-coléo-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-transforme-le-tableau-en-liste-pour-pouvoir-linjecter-dans-col%C3%A9o-" class="anchor"></a>8.2.3. On transforme le tableau en liste pour pouvoir l’injecter dans Coléo.</h4>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.3. Conversion de l'objet pour l'injection</span>
-<span class="va">land_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">land_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
+<span class="va">land_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">land_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-créé-le-champs-geom-de-coléo-sous-forme-de-liste-en-utilisant-les-variables-lat-lon-du-tableau-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-cr%C3%A9%C3%A9-le-champs-geom-de-col%C3%A9o-sous-forme-de-liste-en-utilisant-les-variables-lat-lon-du-tableau-" class="anchor"></a>8.2.4. On créé le champs <code>geom</code> de Coléo, sous forme de liste, en utilisant les variables <em>lat</em> &amp; <em>lon</em> du tableau.</h4>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.4. Création de la variable `geom`</span>
-<span class="va">geom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">land_camp</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span>
+<span class="va">geom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">land_camp</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span>
 
-<span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+<span class="kw">if</span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/any.html" class="external-link">any</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span>,<span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
 
-  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu">geojsonio</span><span class="fu">::</span><span class="fu">geojson_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span>,<span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">features</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="fu">geojsonio</span><span class="fu">::</span><span class="fu">geojson_list</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">x</span><span class="op">[</span><span class="st">"lon"</span><span class="op">]</span>,<span class="va">x</span><span class="op">[</span><span class="st">"lat"</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">features</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geometry</span><span class="op">)</span>
   
 <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
 
-  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span>
   
 <span class="op">}</span><span class="op">}</span><span class="op">)</span></code></pre></div>
 </div>
@@ -737,13 +739,13 @@ Vignette injection noms d’espèce
 <a href="#on-fusionne-les-deux-listes-en-pr%C3%A9vision-de-linjection-dans-col%C3%A9o-" class="anchor"></a>8.2.5. On fusionne les deux listes en prévision de l’injection dans Coléo.</h4>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.5. Fusion des listes</span>
-<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">land_ls</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">land_ls</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
 
  <span class="va">land_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span> <span class="op">&lt;-</span> <span class="va">geom</span><span class="op">[</span><span class="va">i</span><span class="op">]</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>
  
- <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">is.list</a></span><span class="op">(</span><span class="va">land_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+ <span class="kw">if</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">is.list</a></span><span class="op">(</span><span class="va">land_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
  
-   <span class="va">land_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span><span class="op">$</span><span class="va">crs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"name"</span>,properties<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"EPSG:4326"</span><span class="op">)</span><span class="op">)</span>
+   <span class="va">land_ls</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">geom</span><span class="op">$</span><span class="va">crs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>type<span class="op">=</span><span class="st">"name"</span>,properties<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>name<span class="op">=</span><span class="st">"EPSG:4326"</span><span class="op">)</span><span class="op">)</span>
    
  <span class="op">}</span>
 <span class="op">}</span></code></pre></div>
@@ -754,7 +756,7 @@ Vignette injection noms d’espèce
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.6. Injection</span>
 <span class="va">COLEO_land_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_landmarks.html">post_landmarks</a></span><span class="op">(</span><span class="va">land_ls</span><span class="op">)</span></code></pre></div>
-<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
+<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/" class="external-link">codes de statut</a>).</p>
 </div>
 </div>
 <div id="injections-des-caractéristiques-environnementales" class="section level3">
@@ -772,7 +774,7 @@ Vignette injection noms d’espèce
 <a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts--2" class="anchor"></a>8.3.1. On commence par séléctionner les champs d’interêts.</h4>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.3.1. Sélection</span>
-<span class="va">env_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">camp</span>,
+<span class="va">env_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">camp</span>,
                           <span class="va">campaign_id</span>,
                           <span class="va">wind</span>,
                           <span class="va">sky</span>,
@@ -783,18 +785,18 @@ Vignette injection noms d’espèce
 <a href="#on-garde-une-ligne-par-campagne-et-on-convertit-les-variables-wind-sky-en-caract%C3%A8re-" class="anchor"></a>8.3.2. On garde une ligne par campagne et on convertit les variables <code>wind</code> &amp; <code>sky</code> en caractère.</h4>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.3.2. Retrait des duplicats</span>
-<span class="va">env_camp</span> <span class="op">&lt;-</span> <span class="va">env_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">env_camp</span><span class="op">)</span>,<span class="op">]</span>
+<span class="va">env_camp</span> <span class="op">&lt;-</span> <span class="va">env_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">env_camp</span><span class="op">)</span>,<span class="op">]</span>
 
 <span class="co"># Conversion des variables</span>
-<span class="va">env_camp</span><span class="op">$</span><span class="va">wind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">env_camp</span><span class="op">$</span><span class="va">wind</span><span class="op">)</span>
-<span class="va">env_camp</span><span class="op">$</span><span class="va">sky</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">env_camp</span><span class="op">$</span><span class="va">sky</span><span class="op">)</span></code></pre></div>
+<span class="va">env_camp</span><span class="op">$</span><span class="va">wind</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">env_camp</span><span class="op">$</span><span class="va">wind</span><span class="op">)</span>
+<span class="va">env_camp</span><span class="op">$</span><span class="va">sky</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">env_camp</span><span class="op">$</span><span class="va">sky</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-transforme-en-liste-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-transforme-en-liste-" class="anchor"></a>8.3.3. On transforme en liste.</h4>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.3.3. Conversion de l'objet pour l'injection</span>
-<span class="va">env_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">env_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
+<span class="va">env_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">env_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte--1" class="section level4">
 <h4 class="hasAnchor">
@@ -802,7 +804,7 @@ Vignette injection noms d’espèce
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.3.4. Injection</span>
 <span class="va">COLEO_env_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_environments.html">post_environments</a></span><span class="op">(</span><span class="va">env_camp_ls</span><span class="op">)</span></code></pre></div>
-<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
+<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/" class="external-link">codes de statut</a>).</p>
 </div>
 </div>
 <div id="injections-des-efforts" class="section level3">
@@ -819,7 +821,7 @@ Vignette injection noms d’espèce
 <a href="#on-s%C3%A9lectionne-les-champs-dint%C3%A9r%C3%AAts-" class="anchor"></a>8.4.1. On sélectionne les champs d’intérêts.</h4>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.4.1. Sélection</span>
-<span class="va">eff_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">camp</span>,
+<span class="va">eff_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">camp</span>,
                           <span class="va">campaign_id</span>,
                           <span class="va">time_start</span>,
                           <span class="va">time_finish</span><span class="op">)</span></code></pre></div>
@@ -829,14 +831,14 @@ Vignette injection noms d’espèce
 <a href="#on-garde-une-ligne-par-campagne-" class="anchor"></a>8.4.2. On garde une ligne par campagne.</h4>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.4.2. Retrait des duplicats</span>
-<span class="va">eff_camp</span> <span class="op">&lt;-</span> <span class="va">eff_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">eff_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
+<span class="va">eff_camp</span> <span class="op">&lt;-</span> <span class="va">eff_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">eff_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
 </div>
 <div id="on-transforme-en-liste--1" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-transforme-en-liste--1" class="anchor"></a>8.4.3. On transforme en liste.</h4>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.4.3. Conversion de l'objet pour l'injection</span>
-<span class="va">eff_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">eff_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
+<span class="va">eff_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">eff_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte--2" class="section level4">
 <h4 class="hasAnchor">
@@ -844,7 +846,7 @@ Vignette injection noms d’espèce
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.4.4. Injection</span>
 <span class="va">COLEO_eff_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_efforts.html">post_efforts</a></span><span class="op">(</span><span class="va">eff_camp_ls</span><span class="op">)</span> </code></pre></div>
-<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
+<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/" class="external-link">codes de statut</a>).</p>
 </div>
 </div>
 <div id="insertion-des-observations" class="section level3">
@@ -867,7 +869,7 @@ Vignette injection noms d’espèce
 <span class="va">camp</span><span class="op">$</span><span class="va">is_valid</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># valeur de 1 par défaut</span>
 
 <span class="co"># On sélectionne les champs d'intérêts.</span>
-<span class="va">obs_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">camp</span>,
+<span class="va">obs_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">camp</span>,
                           <span class="va">date_obs</span>,
                           <span class="va">is_valid</span>,
                           notes <span class="op">=</span> <span class="va">note</span>,
@@ -878,14 +880,14 @@ Vignette injection noms d’espèce
 <a href="#on-garde-une-ligne-par-campagne--1" class="anchor"></a>8.5.2. On garde une ligne par campagne.</h4>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.5.2. Retrait des duplicats</span>
-<span class="va">obs_camp</span> <span class="op">&lt;-</span> <span class="va">obs_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">obs_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
+<span class="va">obs_camp</span> <span class="op">&lt;-</span> <span class="va">obs_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">obs_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
 </div>
 <div id="on-formatte-les-données-à-insérer-" class="section level4">
 <h4 class="hasAnchor">
 <a href="#on-formatte-les-donn%C3%A9es-%C3%A0-ins%C3%A9rer-" class="anchor"></a>8.5.3. On formatte les données à insérer.</h4>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.5.3. Conversion de l'objet pour l'insertion</span>
-<span class="va">obs_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">obs_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
+<span class="va">obs_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">obs_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte--3" class="section level4">
 <h4 class="hasAnchor">
@@ -893,7 +895,7 @@ Vignette injection noms d’espèce
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.5.4. Injection</span>
 <span class="va">COLEO_obs_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_obs.html">post_obs</a></span><span class="op">(</span><span class="va">obs_camp_ls</span><span class="op">)</span></code></pre></div>
-<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
+<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/" class="external-link">codes de statut</a>).</p>
 </div>
 <div id="on-récupère-la-liste-des-observations-de-coléo-et-on-met-à-jour-le-tableau-de-campagnes-à-injecter-" class="section level4">
 <h4 class="hasAnchor">
@@ -901,11 +903,11 @@ Vignette injection noms d’espèce
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.5.5. Acquisition de la liste d'observations de Coléo</span>
 <span class="va">obs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_gen.html">get_gen</a></span><span class="op">(</span><span class="st">"/observations"</span><span class="op">)</span>
-<span class="va">obs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html">rbind.fill</a></span>, <span class="va">obs</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
+<span class="va">obs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html" class="external-link">rbind.fill</a></span>, <span class="va">obs</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
 
 <span class="co"># Mise à jour des données à injecter avec l'observation_id</span>
-<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">left_join</a></span><span class="op">(</span><span class="va">camp</span>, <span class="va">obs</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"campaign_id"</span>, <span class="st">"date_obs"</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"campaign_id"</span>, <span class="st">"date_obs"</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"observation_id"</span></code></pre></div>
+<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">camp</span>, <span class="va">obs</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"campaign_id"</span>, <span class="st">"date_obs"</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"campaign_id"</span>, <span class="st">"date_obs"</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"observation_id"</span></code></pre></div>
 </div>
 </div>
 <div id="injections-des-observations-despèce" class="section level3">
@@ -936,7 +938,7 @@ Vignette injection noms d’espèce
 <a href="#on-formatte-les-donn%C3%A9es-%C3%A0-injecter-" class="anchor"></a>8.6.2. On formatte les données à injecter.</h4>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.6.2. Conversion de l'objet pour l'injection</span>
-<span class="va">obs_spe_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html">apply</a></span><span class="op">(</span><span class="va">obs_spe_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
+<span class="va">obs_spe_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">obs_spe_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte--4" class="section level4">
 <h4 class="hasAnchor">
@@ -944,7 +946,7 @@ Vignette injection noms d’espèce
 <div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.6.3. Injection</span>
 <span class="va">COLEO_obsref_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_obs_species.html">post_obs_species</a></span><span class="op">(</span><span class="va">obs_spe_camp_ls</span><span class="op">)</span></code></pre></div>
-<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Bravo ! Vous venez de terminer les étapes d’injections des campagnes <strong>papilonidés</strong> ! Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/">codes de statut</a>).</p>
+<p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Bravo ! Vous venez de terminer les étapes d’injections des campagnes <strong>papilonidés</strong> ! Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/" class="external-link">codes de statut</a>).</p>
 </div>
 </div>
 </div>
@@ -961,11 +963,13 @@ Vignette injection noms d’espèce
 
 
       <footer><div class="copyright">
-  <p>Developed by Steve Vissault.</p>
+  <p></p>
+<p>Developed by Steve Vissault.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
