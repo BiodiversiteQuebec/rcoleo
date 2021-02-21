@@ -4,7 +4,7 @@
 \alias{get_all_observations_from_a_site}
 \title{Download all the observations of a specific site}
 \usage{
-get_all_observations_from_a_site(site_df)
+get_all_observations_from_a_site(site_df, token = bearer())
 }
 \arguments{
 \item{site_df}{a dataframe containing site information}

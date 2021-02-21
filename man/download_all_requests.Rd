@@ -9,7 +9,8 @@ download_all_requests(
   request_info_col = "campaigns",
   query_info,
   endpoint,
-  request_col_name
+  request_col_name,
+  token = bearer()
 )
 }
 \arguments{

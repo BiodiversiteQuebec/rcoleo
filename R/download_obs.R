@@ -10,9 +10,10 @@
 #' @param site_df a dataframe containing site information
 #'
 #' @export
-get_all_observations_from_a_site <- function(site_df){
+get_all_observations_from_a_site <- function(site_df, token = bearer()){
 
   test_camp <- download_all_requests(starting_df = site_df,
+                                     token = token,
                                      request_info_col = "campaigns",
                                      query_info = c("type",
                                                     "opened_at",
@@ -31,6 +32,7 @@ get_all_observations_from_a_site <- function(site_df){
                                     request_info_col = "camp_resp",
                                     query_info = "campaign_id",
                                     endpoint = "observations",
-                                    request_col_name = "obs_resp")
+                                    request_col_name = "obs_resp",
+                                    token = token)
   return(test_obs)
 }

@@ -80,10 +80,11 @@ query_df_gen <- function(query_df, query_info, endpoint, ...) {
 #'
 #' @export
 download_all_requests <- function(starting_df,
-                                   request_info_col = "campaigns",
-                                   query_info,
-                                   endpoint,
-                                   request_col_name){
+                                  request_info_col = "campaigns",
+                                  query_info,
+                                  endpoint,
+                                  request_col_name,
+                                  token = bearer()){
   # check that the campaign column is a list
   assertthat::assert_that(
     assertthat::has_name(starting_df, request_info_col))
@@ -96,7 +97,8 @@ download_all_requests <- function(starting_df,
                                  function(d) nrow(d) > 0,
                                  ~ query_df_gen(query_df = .,
                                                 query_info = query_info,
-                                                endpoint = endpoint))
+                                                endpoint = endpoint,
+                                                token = token))
 
   starting_df[[request_col_name]] <- all_responses
 
