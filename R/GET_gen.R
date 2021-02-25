@@ -40,6 +40,11 @@ get_gen <- function(endpoint, query = NULL, limit = 100, verbose = TRUE, token =
     stop("Aucune autorisation détectée! Assurez-vous d'avoir enregistré votre jeton d'accès dans un fichier appelé `.httr-oauth`")
   }
 
+
+  ## not everything has pages, ie not every response has a "content-range" element.
+  ## pull this out into anohter function and only use it conditionally, if there is a "content-range" in the header.
+  # if not, can skip to end and return resp_df(resp)
+
   # Prep output object
   responses <- list()
   errors <- NULL
