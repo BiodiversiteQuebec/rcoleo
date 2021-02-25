@@ -1,5 +1,9 @@
 # Documentation du paquet `rcoleo` <img src="man/figures/logo.svg" width="130" height="150" align="right"/>
 
+<!-- badges: start -->
+[![R build status](https://github.com/ReseauBiodiversiteQuebec/rcoleo/workflows/R-CMD-check/badge.svg)](https://github.com/ReseauBiodiversiteQuebec/rcoleo/actions)
+<!-- badges: end -->
+
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/TheoreticalEcosystemEcology/rcoleo?branch=master&svg=true)](https://ci.appveyor.com/project/TheoreticalEcosystemEcology/rcoleo)
 ![Website Build](https://github.com/TheoreticalEcosystemEcology/rcoleo/workflows/pkgdown/badge.svg)
