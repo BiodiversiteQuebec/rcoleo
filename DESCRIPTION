@@ -18,6 +18,7 @@ Imports:
     tibble,
     purrr,
     here,
+    memoise,
     assertthat
 Suggests: 
     knitr,
