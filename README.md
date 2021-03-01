@@ -5,7 +5,6 @@
 <!-- badges: end -->
 
 [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/TheoreticalEcosystemEcology/rcoleo?branch=master&svg=true)](https://ci.appveyor.com/project/TheoreticalEcosystemEcology/rcoleo)
 ![Website Build](https://github.com/TheoreticalEcosystemEcology/rcoleo/workflows/pkgdown/badge.svg)
 
 `rcoleo` un paquet R permettant le retrait et l'analyse des données collectées dans le cadre du programme de suivi de la biodiversité (BdQc).
