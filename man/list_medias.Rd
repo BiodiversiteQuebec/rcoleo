@@ -7,7 +7,7 @@
 list_medias(x, ...)
 }
 \arguments{
-\item{x}{\code{vector} of campaign ids}
+\item{x}{vector of campaign ids}
 
 \item{...}{httr options; arguments de la fonction \code{httr::GET()}}
 }
@@ -16,4 +16,12 @@ Sauvegarde les images/sons attachés aux campagnes à une emplacement défini pa
 }
 \description{
 Téléverse l'ensemble des médias appartenant à une campagnes
+}
+\examples{
+\dontrun{
+list_medias(x = c(101,104))
+#Par exemple, on veut obtenir toutes les photos prises dans le cadre d'une campagne sur
+# le site 141_108_F01 et portant sur les mammifères
+get_medias(list_medias(x = c(101,104)))
+}
 }

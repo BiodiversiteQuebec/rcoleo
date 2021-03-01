@@ -7,6 +7,8 @@
 get_medias(media, output_dir = "./media", verbose = TRUE, ...)
 }
 \arguments{
+\item{media}{object of class \code{listMedia}}
+
 \item{output_dir}{\code{character} contenant le chemin d'accès vers le répetoire d'écriture des médias}
 
 \item{verbose}{\code{logical} mode verbose}
@@ -18,4 +20,11 @@ Sauvegarde les images/sons attachés aux campagnes à une emplacement définit p
 }
 \description{
 Télécharge l'ensemble des médias appartenant à une campagnes
+}
+\examples{
+\dontrun{
+#Par exemple, on veut obtenir toutes les photos prises dans le cadre d'une campagne
+# sur le site 141_108_F01 et portant sur les mammiferes
+get_medias(site_code="141_108_F01", type="mammif\u00e9res")
+}
 }

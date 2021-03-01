@@ -5,24 +5,6 @@
 #' @inheritParams post_cells
 #' @export
 
-post_efforts <- function (data)
-{
-  responses <- list()
-  status_code <- NULL
-  class(responses) <- "coleoPostResp"
-  endpoint <- endpoints()$efforts
-
-  for (i in 1:length(data)) {
-    responses[[i]] <- rcoleo::post_gen(endpoint, data[[i]])
-    status_code <- c(status_code, responses[[i]]$response$status_code)
-  }
-
-  if(all(status_code == 201)){
-    print("Good job ! Toutes les insertions ont été créées dans COLEO")
-  }else{
-    print("Oups... un problème est survenu")
-    print(status_code)
-  }
-  return(responses)
-
+post_efforts <- function(data_list, ...) {
+  post_gen_list(data_list, "efforts", ...)
 }

@@ -9,7 +9,7 @@
 #' * combine multiple pages in response, if any
 #' * pass the response through [sf::st_point()] and [sf::st_as_sf()] to return a sf data.frame
 #'
-#' @param `...` Arguments to [get_sites()]
+#' @param ... Arguments to [get_sites()]
 #'
 #' @export
 download_sites_sf <- function(...) {

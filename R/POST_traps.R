@@ -2,7 +2,9 @@
 #'
 #' Cette fonction applique la méthode POST sur le point d'entrées `traps` de l'API de Coleo
 #'
-#' @inheritParams post_cells
+#' @param data une liste ou chacun des niveaux corresponds aux données attribuées au ednpoint.
+#' @param ... httr options; arguments de la fonction `httr::POST()`
+#'
 #' @export
 
 post_traps <- function(data, ...) {

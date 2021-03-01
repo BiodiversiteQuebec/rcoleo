@@ -6,10 +6,13 @@
 #' @examples
 #' \dontrun{
 #' get_landmarks()
-#' } 
+#' }
 #' @export
 
 get_landmarks <- function(site_code = NULL, opened_at = NULL, closed_at = NULL, type = NULL, ...) {
+
+
+  token <- ifelse(is.na(bearer()), list(...)$token, bearer())
 
   endpoint <- endpoints()$landmarks
 
@@ -49,9 +52,19 @@ get_landmarks <- function(site_code = NULL, opened_at = NULL, closed_at = NULL, 
 
 
           # Campagne info
-          campaign_info <- httr::content(httr::GET(url=paste0(server(),"/api/v1/campaigns/",campaign_id), config = httr::add_headers(`Content-type` = "application/json",Authorization = paste("Bearer", ifelse(is.na(bearer()),token,bearer()))),ua), simplify = TRUE)
+          campaign_info <- httr::content(httr::GET(
+            url = paste0(server(),"/api/v1/campaigns/",campaign_id),
+            config = httr::add_headers(`Content-type` = "application/json",
+                                       Authorization = paste("Bearer", ifelse(is.na(bearer()),
+                                                                              token,bearer()))),
+            ua),
+            simplify = TRUE)
           # Code du site
-          site_code <- httr::content(httr::GET(url=paste0(server(),"/api/v1/sites/",campaign_info$site_id), config = httr::add_headers(`Content-type` = "application/json",Authorization = paste("Bearer", ifelse(is.na(bearer()),token,bearer()))),ua), simplify = TRUE)$site_code
+          site_code <- httr::content(httr::GET(
+            url=paste0(server(),"/api/v1/sites/",campaign_info$site_id),
+            config = httr::add_headers(`Content-type` = "application/json",
+                                       Authorization = paste("Bearer", ifelse(is.na(bearer()),token,bearer()))),ua),
+            simplify = TRUE)$site_code
 
           # On prepare la sortie
           page$body$site_code <- site_code

@@ -4,10 +4,10 @@
 \alias{post_cells}
 \title{Publication d'une cellule sur la base de données de Coléo}
 \usage{
-post_cells(data)
+post_cells(data_list, ...)
 }
 \arguments{
-\item{data}{une liste ou chacun des niveaux corresponds aux données attribuées au ednpoint.}
+\item{data_list}{une liste ou chacun des niveaux corresponds aux données attribuées au ednpoint.}
 
 \item{...}{httr options; arguments de la fonction \code{httr::POST()}}
 }
@@ -19,4 +19,5 @@ Cette fonction applique la méthode POST sur le point d'entrées \code{cells} de
 }
 \seealso{
 \code{\link{post_gen}} pour la structure de sortie de la fonction.
+#' @seealso \code{\link{post_gen_list}} pour la fonction generique.
 }

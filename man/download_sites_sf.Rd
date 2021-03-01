@@ -7,7 +7,7 @@
 download_sites_sf(...)
 }
 \arguments{
-\item{`...`}{Arguments to \code{\link[=get_sites]{get_sites()}}}
+\item{...}{Arguments to \code{\link[=get_sites]{get_sites()}}}
 }
 \description{
 Download the site dataset and its metadata, and make it an sf dataframe.

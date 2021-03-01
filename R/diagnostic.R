@@ -13,7 +13,7 @@ diagnostic <- function(responses=responses){
     }
   } else if(class(responses) == "coleoGetResp"){
     for(r in seq_len(length(responses))){
-      for(q in seq_len(length(resp))){
+      for(q in seq_len(length(responses))){
           status[[length(status)+1]] <- as.data.frame(httr::http_status(responses[[r]][[q]]$response))
       }
     }

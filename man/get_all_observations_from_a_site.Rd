@@ -8,6 +8,8 @@ get_all_observations_from_a_site(site_df, token = bearer())
 }
 \arguments{
 \item{site_df}{a dataframe containing site information}
+
+\item{token}{authentification information}
 }
 \description{
 Starting from a site data.frame, request all the observations

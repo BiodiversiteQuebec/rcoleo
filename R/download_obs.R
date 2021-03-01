@@ -8,6 +8,7 @@
 #' [get_sites()] or [download_sites_sf()]. It is a simple manual wrapper around one workflow.
 #'
 #' @param site_df a dataframe containing site information
+#' @param token authentification information
 #'
 #' @export
 get_all_observations_from_a_site <- function(site_df, token = bearer()){

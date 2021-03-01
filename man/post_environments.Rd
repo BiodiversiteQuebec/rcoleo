@@ -4,10 +4,12 @@
 \alias{post_environments}
 \title{Publication d'un environnement dans l'API de coléo}
 \usage{
-post_environments(data)
+post_environments(data_list, ...)
 }
 \arguments{
-\item{data}{une liste ou chacun des niveaux corresponds aux données attribuées au ednpoint.}
+\item{data_list}{une liste ou chacun des niveaux corresponds aux données attribuées au ednpoint.}
+
+\item{...}{httr options; arguments de la fonction \code{httr::POST()}}
 }
 \description{
 Cette fonction applique la méthode POST sur le point d'entrées \code{environments} de l'API de Coleo

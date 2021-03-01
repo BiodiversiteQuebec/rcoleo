@@ -2,7 +2,9 @@
 #'
 #' Cette fonction applique la méthode POST sur le point d'entrées `samples` de l'API de Coleo
 #'
-#' @inheritParams post_cells
+#' @param data une liste ou chacun des niveaux corresponds aux données attribuées au ednpoint.
+#' @param ... httr options; arguments de la fonction `httr::POST()`
+#'
 #' @export
 
 post_samples <- function(data, ...) {
@@ -17,7 +19,10 @@ post_samples <- function(data, ...) {
 
     # On retourne l'id unique pour la campagne à laquelle est rattaché les trappes
     # Le unlist c'est pour les pages, mais je sais que la réponse contient une seule page (match sur un code)
-    campaign_id <- as.data.frame(get_campaigns(site_code=data[[i]]$site_code,opened_at=data[[i]]$opened_at,closed_at=data[[i]]$closed_at,type="insectes_sol"))$id
+    campaign_id <- as.data.frame(get_campaigns(site_code=data[[i]]$site_code,
+                                               opened_at=data[[i]]$opened_at,
+                                               closed_at=data[[i]]$closed_at,
+                                               type="insectes_sol"))$id
     stopifnot(length(campaign_id) == 1)
     data[[i]]$campaign_id <- as.numeric(campaign_id)
 

@@ -1,16 +1,19 @@
 #' Compare deux vecteurs et donne des détails si ils ne sont pas égaux
 #'
+#' @param x one thing to compare
+#' @param y second thing to compare
+#'
 #' @return
 #' un message
 #' @examples
 #' \dontrun{
-#' # Vecteurs égaux
+#' # Vecteurs egaux
 #' i <- 1:5
 #' j <- 1:10
 #'
 #' COLEO_comp(i, j)
 #'
-#' # Vecteurs inégaux
+#' # Vecteurs inegaux
 #' i <- 1:13
 #' j <- 1:10
 #'
@@ -20,20 +23,24 @@
 #' @export
 COLEO_comp <- function (x, y)
 {
+  assertthat::assert_that(is.vector(x))
+  assertthat::assert_that(is.vector(y))
+
+  list_info <- NULL
+
   if (all(x %in% y) == TRUE) {
-    print("Vous pouvez passer à l'étape suivante.")
+
+    message("Vous pouvez passer a l'etape suivante.")
   }
   else {
-    list_info <- NULL
     for (i in 1:length(x)) {
       if (x[i] %in% y == FALSE) {
         list_info <- c(list_info, x[i])
       }
     }
-    print(paste0("Coléo ne contient pas d'informations pour la donnée suivante:",
-                 paste0(list_info, collapse = ", "),
-                 ". Cliquez sur le bouton de la vignette correspondante dans le tutoriel d'injections de campagnes.",
-                 collapse = ""))
-    return(list_info)
+    message(paste0("Coleo ne contient pas d'informations pour la donnee suivante:\n",
+                 paste0(list_info, collapse = ", "), "\n",
+                 ". Cliquez sur le bouton de la vignette correspondante dans le tutoriel d'injections de campagnes."))
   }
+  return(list_info)
 }

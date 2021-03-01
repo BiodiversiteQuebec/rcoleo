@@ -11,7 +11,7 @@
 post_gen <- function(endpoint, singleton, token = bearer(), ...) {
 
   if (!exists("endpoint")) {
-    stop("Le point d'accès aux données est manquant (ex. /cells)")
+    stop("Le point d'acc\u00e8s aux donn\u00e9es est manquant (ex. /cells)")
   }
 
   url <- httr::modify_url(server(), path = paste0(base(), endpoint))
@@ -39,4 +39,32 @@ post_gen <- function(endpoint, singleton, token = bearer(), ...) {
       class = "postError")
 
   }
+}
+
+#' Fonction générique pour envoyer de l'information vers l'API de Coléo
+#'
+#' @param data_list list contenant des donnees a injecter. voir [post_gen]
+#' @param endpoint Point d'entrée pour le retrait des données.
+#' @param ... httr options; arguments de la fonction `httr::POST()`
+#' @return
+#' Retourne une objet de type `list` contenant les réponses de l'API.
+#' @export
+
+post_gen_list <- function(data_list, endpoint, ...){
+
+  assertthat::assert_that(endpoint %in% names(endpoints()))
+
+  responses <- purrr::list_along(data_list)
+
+  class(responses) <- "coleoPostResp"
+
+  endpoint <- endpoints()[[endpoint]]
+
+  for (i in 1:length(responses)) {
+    responses[[i]] <- post_gen(endpoint, data_list[[i]], ...)
+  }
+
+  check_post_list(responses)
+  return(responses)
+
 }

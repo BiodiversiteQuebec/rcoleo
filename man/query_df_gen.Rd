@@ -15,7 +15,7 @@ be passed to the API}
 
 \item{endpoint}{the API endpoint to send all this to}
 
-\item{`...`}{extra arguments to \code{\link[=get_gen]{get_gen()}}}
+\item{...}{extra arguments to \code{\link[=get_gen]{get_gen()}}}
 }
 \value{
 a data.frame containing the body of the responses.

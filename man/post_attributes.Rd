@@ -4,10 +4,10 @@
 \alias{post_attributes}
 \title{Publication d'attribut(s) dans la base de données de Coléo}
 \usage{
-post_attributes(data, ...)
+post_attributes(data_list, ...)
 }
 \arguments{
-\item{data}{une liste ou chacun des niveaux corresponds aux données attribuées au ednpoint.}
+\item{data_list}{une liste ou chacun des niveaux corresponds aux données attribuées au ednpoint.}
 
 \item{...}{httr options; arguments de la fonction \code{httr::POST()}}
 }

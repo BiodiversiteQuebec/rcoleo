@@ -4,10 +4,10 @@
 \alias{post_lures}
 \title{Publication des leurres utilisés dans le cadre de la campagne dans l'API de coléo}
 \usage{
-post_lures(data, ...)
+post_lures(data_list, ...)
 }
 \arguments{
-\item{data}{une liste ou chacun des niveaux corresponds aux données attribuées au ednpoint.}
+\item{data_list}{une liste ou chacun des niveaux corresponds aux données attribuées au ednpoint.}
 
 \item{...}{httr options; arguments de la fonction \code{httr::POST()}}
 }

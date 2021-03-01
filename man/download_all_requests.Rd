@@ -26,6 +26,8 @@ a list-column of data.frames}
 \item{endpoint}{the name of the endpoint to query. passed to \code{\link[=query_df_gen]{query_df_gen()}}}
 
 \item{request_col_name}{name of column holding the responses}
+
+\item{token}{the authentification token}
 }
 \value{
 A data.frame just like the \code{starting_df}, but with a list-column

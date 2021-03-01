@@ -4,10 +4,12 @@
 \alias{post_landmarks}
 \title{Publication d'un landmark dans l'API de coléo}
 \usage{
-post_landmarks(data)
+post_landmarks(data_list, ...)
 }
 \arguments{
-\item{data}{une liste ou chacun des niveaux corresponds aux données attribuées au ednpoint.}
+\item{data_list}{une liste ou chacun des niveaux corresponds aux données attribuées au ednpoint.}
+
+\item{...}{httr options; arguments de la fonction \code{httr::POST()}}
 }
 \description{
 Cette fonction applique la méthode POST sur le point d'entrées \code{landmarks} de l'API de Coleo

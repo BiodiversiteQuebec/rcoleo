@@ -5,17 +5,6 @@
 #' @inheritParams post_cells
 #' @export
 
-post_attributes <- function(data, ...) {
-
-  # Preparation de l'objet de sortie
-  responses <- list()
-  class(responses) <- "coleoPostResp"
-
-  endpoint <- endpoints()$attributes
-
-  for (i in 1:length(data)) {
-    responses[[i]] <- post_gen(endpoint, data[[i]], ...)
-  }
-
-  return(responses)
+post_attributes <- function(data_list, ...) {
+  post_gen_list(data_list, "attributes", ...)
 }

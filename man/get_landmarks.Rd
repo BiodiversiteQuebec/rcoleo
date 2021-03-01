@@ -32,5 +32,5 @@ Retourne les entrées pour les repères sur le terrain spécifique à une campag
 \examples{
 \dontrun{
 get_landmarks()
-} 
+}
 }

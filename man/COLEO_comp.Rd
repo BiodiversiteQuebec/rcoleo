@@ -6,6 +6,11 @@
 \usage{
 COLEO_comp(x, y)
 }
+\arguments{
+\item{x}{one thing to compare}
+
+\item{y}{second thing to compare}
+}
 \value{
 un message
 }
@@ -14,13 +19,13 @@ Compare deux vecteurs et donne des détails si ils ne sont pas égaux
 }
 \examples{
 \dontrun{
-# Vecteurs égaux
+# Vecteurs egaux
 i <- 1:5
 j <- 1:10
 
 COLEO_comp(i, j)
 
-# Vecteurs inégaux
+# Vecteurs inegaux
 i <- 1:13
 j <- 1:10
 

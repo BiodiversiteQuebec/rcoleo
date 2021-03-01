@@ -2,8 +2,8 @@
 #'
 #' @param endpoint `character` désignant le point d'entrée pour le retrait des données. Un point d'entrée peut être vu comme une table de la base de données.
 #' @param query `list` de paramètres à passer avec l'appel sur le endpoint.
-#' @param flatten `logical` aplatir automatiquement un data.frame imbriqués dans un seul `data.frame` (obsolete si l'objet retourné n'est pas un data.frame)
-#' @param output `character` choix du type d'objet retourné: `data.frame`, `list`, `json`
+#' @param limit count of pages to request
+#' @param verbose print progress? defaults to TRUE
 #' @param token  `character` jeton d'accès pour authentification auprès de l'API
 #' @param ... httr options; arguments de la fonction `httr::GET()`
 #' @return
@@ -19,7 +19,7 @@
 #' }
 #' @export
 
-get_gen <- function(endpoint, query = NULL, limit = 100, verbose = TRUE, token = bearer(),...) {
+get_gen <- function(endpoint, query = NULL, limit = 100, verbose = TRUE, token = bearer(), ...) {
 
   url <- httr::modify_url(server(), path = paste0(base(), endpoint))
   query <- as.list(query)
@@ -37,7 +37,7 @@ get_gen <- function(endpoint, query = NULL, limit = 100, verbose = TRUE, token =
                   query = query, ...)
 
   if (httr::status_code(resp) == 401){
-    stop("Aucune autorisation détectée! Assurez-vous d'avoir enregistré votre jeton d'accès dans un fichier appelé `.httr-oauth`")
+    stop("Aucune autorisation d\u00e9tect\u00e9e!")
   }
 
 
@@ -88,6 +88,7 @@ get_gen <- function(endpoint, query = NULL, limit = 100, verbose = TRUE, token =
 
 
 
+
 ## Set memoise httr::GET
 mem_get <- memoise::memoise(httr::GET)
 
@@ -98,6 +99,7 @@ mem_get <- memoise::memoise(httr::GET)
 #' [httr::GET()] used in `get_gen` in `get_singleton`
 #' @export
 clear_cache_rcoleo <- function() memoise::forget(mem_get)
+
 
 
 resp_raw <- function(x) jsonlite::fromJSON(

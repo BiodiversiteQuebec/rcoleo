@@ -4,10 +4,16 @@
 \alias{as.data.frame.coleoGetResp}
 \title{Transformer la liste de réponses en data.frame}
 \usage{
-\method{as.data.frame}{coleoGetResp}(responses = responses, ...)
+\method{as.data.frame}{coleoGetResp}(x, row.names, optional, ...)
 }
 \arguments{
-\item{responses}{liste de réponse des fonctions de GET/POST}
+\item{x}{liste de réponse des fonctions de GET/POST}
+
+\item{row.names}{inherits from data.frame. unused}
+
+\item{optional}{inherits from data.frame. unused}
+
+\item{...}{arguments to as.data.frame}
 }
 \description{
 Transformer la liste de réponses en data.frame

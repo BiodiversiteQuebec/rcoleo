@@ -18,13 +18,13 @@ get_gen(
 
 \item{query}{\code{list} de paramètres à passer avec l'appel sur le endpoint.}
 
+\item{limit}{count of pages to request}
+
+\item{verbose}{print progress? defaults to TRUE}
+
 \item{token}{\code{character} jeton d'accès pour authentification auprès de l'API}
 
 \item{...}{httr options; arguments de la fonction \code{httr::GET()}}
-
-\item{flatten}{\code{logical} aplatir automatiquement un data.frame imbriqués dans un seul \code{data.frame} (obsolete si l'objet retourné n'est pas un data.frame)}
-
-\item{output}{\code{character} choix du type d'objet retourné: \code{data.frame}, \code{list}, \code{json}}
 }
 \value{
 Retourne un objet de type \code{list} contenant les réponses de l'API. Chaque niveau de la liste correspond à une page. Pour chacun des appels sur l'API (page), la classe retourné est \code{getSuccess} ou \code{getError}. Une réponse de classe \code{getSuccess} est une liste à deux niveaux composé du contenu (\code{body}), et la réponse \link[httr:response]{httr::response}. Une réponse de classe \code{getError} dispose de la même structure mais ne contiendra pas de body, seulement la réponse de l'API.

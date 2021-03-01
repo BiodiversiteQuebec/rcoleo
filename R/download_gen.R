@@ -14,7 +14,7 @@
 #' @param query_info a character vector of column names in `query_df` which will
 #'   be passed to the API
 #' @param endpoint the API endpoint to send all this to
-#' @param `...` extra arguments to [get_gen()]
+#' @param ... extra arguments to [get_gen()]
 #'
 #' @return a data.frame containing the body of the responses.
 #'
@@ -74,6 +74,7 @@ query_df_gen <- function(query_df, query_info, endpoint, ...) {
 #' @param query_info The names of the columns that hold the query information. passed to [query_df_gen()]
 #' @param endpoint the name of the endpoint to query. passed to [query_df_gen()]
 #' @param request_col_name name of column holding the responses
+#' @param token the authentification token
 #'
 #' @return A data.frame just like the `starting_df`, but with a list-column
 #'   which contains the response.
