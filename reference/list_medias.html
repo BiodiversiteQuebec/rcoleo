@@ -194,7 +194,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p><code>vector</code> of campaign ids</p></td>
+      <td><p>vector of campaign ids</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -206,6 +206,14 @@
 
     <p>Sauvegarde les images/sons attachés aux campagnes à une emplacement défini par l'utilisateur</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'>list_medias</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>101</span>,<span class='fl'>104</span><span class='op'>)</span><span class='op'>)</span>
+<span class='co'>#Par exemple, on veut obtenir toutes les photos prises dans le cadre d'une campagne sur</span>
+<span class='co'># le site 141_108_F01 et portant sur les mammifères</span>
+<span class='fu'><a href='get_medias.html'>get_medias</a></span><span class='op'>(</span><span class='fu'>list_medias</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>101</span>,<span class='fl'>104</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='op'>}</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -217,11 +225,11 @@
 
       <footer>
       <div class="copyright">
-  <p>Developed by Steve Vissault.</p>
+  <p><p>Developed by Steve Vissault.</p></p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
 </div>
 
       </footer>

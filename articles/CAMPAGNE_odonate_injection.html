@@ -307,12 +307,12 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"geojsonio"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"readr"</span><span class="op">)</span></code></pre></div>
-<p>Pour installer le package <code>rcoleo</code>, il faut utiliser le package <code>devtools</code>, il faut donc l’appeller avec <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code></p>
+<p>Pour installer le package <code>rcoleo</code>, il faut utiliser le package <code>remotes``, il faut donc l'appeller avec</code>library()`</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Chargement de devtools</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">devtools</span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span>
 <span class="co"># Installation du package rcoleo à partir de github</span>
-<span class="fu">install_github</span><span class="op">(</span><span class="st">"ReseauBiodiversiteQuebec/rcoleo"</span><span class="op">)</span> </code></pre></div>
+<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ReseauBiodiversiteQuebec/rcoleo"</span><span class="op">)</span> </code></pre></div>
 </div>
 <div id="chargement-des-packages" class="section level3">
 <h3 class="hasAnchor">
@@ -357,15 +357,15 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <code class="sourceCode R"><span class="co"># 7.2. Acquisition des informations dans Coléo</span>
 <span class="co"># Acquisition cellules Coléo</span>
 <span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_cells.html">get_cells</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html" class="external-link">rbind.fill</a></span>, <span class="va">cells</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
+<span class="va">cells_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">cells</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
 
 <span class="co"># Acquisition sites Coléo</span>
 <span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_sites.html">get_sites</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html" class="external-link">rbind.fill</a></span>, <span class="va">sites</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
+<span class="va">sites_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">sites</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
 
 <span class="co"># Acquisition nom espèces Coléo</span>
 <span class="va">species</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_species.html">get_species</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">species</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html" class="external-link">rbind.fill</a></span>, <span class="va">species</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
+<span class="va">species_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">species</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="vérification-de-lexistence-des-cellules-sites-noms-despèces-et-des-attributs-associés-aux-nouvelles-campagnes-dans-coléo" class="section level3">
 <h3 class="hasAnchor">
@@ -443,7 +443,7 @@ function myFunction1() {
 <script>
 document.getElementById("myDIV_cells").style.display ="none"
 </script><button onclick="myFunction1()">
-Vignette Injection des cellules
+<p>Vignette Injection des cellules</p>
 </button>
 <p>Vous pouvez maintenant récupérer l’ID unique des cellules.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -527,7 +527,7 @@ function myFunction2() {
 <script>
 document.getElementById("myDIV_sites").style.display ="none"
 </script><button onclick="myFunction2()">
-Vignette Injection des sites
+<p>Vignette Injection des sites</p>
 </button>
 <p>Vous pouvez maintenant récupérer l’ID unique des sites.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
@@ -586,7 +586,7 @@ function myFunction3() {
 <script>
 document.getElementById("myDIV_taxa").style.display ="none"
 </script><button onclick="myFunction3()">
-Vignette injection noms d’espèce
+<p>Vignette injection noms d’espèce</p>
 </button>
 </div>
 </div>
@@ -969,11 +969,13 @@ Vignette injection noms d’espèce
 
 
       <footer><div class="copyright">
-  <p>Developed by Steve Vissault.</p>
+  <p></p>
+<p>Developed by Steve Vissault.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
