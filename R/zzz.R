@@ -2,7 +2,17 @@
 server <- function() ifelse(file.exists(".local-server"), as.character(readRDS(".local-server")), "https://coleo.biodiversite-quebec.ca")
 #server <- function() "http://localhost:8080" # dev purpose
 base <- function() "/api/v1"
-bearer <- function() ifelse(file.exists(".httr-oauth"), as.character(readRDS(".httr-oauth")), NA)
+
+bearer <- function() {
+  # ifelse(file.exists(".httr-oauth"), as.character(readRDS(".httr-oauth")), NA)
+  token <- Sys.getenv("RCOLEO_TOKEN")
+  if (token == "" & !file.exists(".httr-oauth")) stop("Aucune autorisation d\u00e9tect\u00e9e")
+  if (token == "") out <-  as.character(readRDS(".httr-oauth")) else out <- token
+  return(token)
+}
+
+
+
 ua <- httr::user_agent("rcoleo")
 
 # Point d'entrées de l'API
