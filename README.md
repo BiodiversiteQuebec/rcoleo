@@ -27,12 +27,20 @@ devtools::install_github("ReseauBiodiversiteQuebec/rcoleo")
 
 Il est **fortement recommandé** de mettre en cache votre jeton d'accès (jeton d'accès stocké dans un fichier `rds`) afin de s'assurer qu'il ne soit pas visible ou transmis avec votre code à un autre utilisateur. Ce jeton d'accès est unique et révocable. 
 
-Pour cela, il vous suffit simplement d'enregistrer le jeton d'accès directement dans votre répertoire/projet R utilisant la librairie `rcoleo`.
+Pour cela, il vous suffit simplement d'enregistrer le jeton d'accès directement en tant que _Environment variable_
 
 ```r
-getwd()
-saveRDS("7f8df438e1be96a18436e9dab5d97d68ed0e0441d9b68f59e0ce631b2919f3aa",".httr-oauth")
+file.edit("~/.Renviron")
 ```
+
+cette linge va ouvrir un ficher text dans votre Rstudio. Rajoutez dans ce ficher un linge comme la suivante:
+
+
+```r
+RCOLEO_TOKEN=7f8df438e1be96a18436e9dab5d97d68ed0e0441d9b68f59e0ce631b2919f3aa
+```
+
+(utilizez votre propre token ici. )
 
 *Le jeton d'accès est un exemple ici et n'est aucunement valide.*
 
