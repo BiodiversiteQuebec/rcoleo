@@ -149,17 +149,19 @@
 <h3 class="hasAnchor">
 <a href="#strat%C3%A9gie-1-mise-en-cache" class="anchor"></a>Stratégie 1: Mise en cache</h3>
 <p>Il est <strong>fortement recommandé</strong> de mettre en cache votre jeton d’accès (jeton d’accès stocké dans un fichier <code>rds</code>) afin de s’assurer qu’il ne soit pas visible ou transmis avec votre code à un autre utilisateur. Ce jeton d’accès est unique et révocable.</p>
-<p>Pour cela, il vous suffit simplement d’enregistrer le jeton d’accès directement dans votre répertoire/projet R utilisant la librairie <code>rcoleo</code>.</p>
+<p>Pour cela, il vous suffit simplement d’enregistrer le jeton d’accès directement en tant que <em>Environment variable</em></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/getwd.html" class="external-link">getwd</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="st">"7f8df438e1be96a18436e9dab5d97d68ed0e0441d9b68f59e0ce631b2919f3aa"</span>,<span class="st">".httr-oauth"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/file.edit.html" class="external-link">file.edit</a></span><span class="op">(</span><span class="st">"~/.Renviron"</span><span class="op">)</span></code></pre></div>
+<p>cette linge va ouvrir un ficher text dans votre Rstudio. Rajoutez dans ce ficher un linge comme la suivante:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>RCOLEO_TOKEN=7f8df438e1be96a18436e9dab5d97d68ed0e0441d9b68f59e0ce631b2919f3aa</span></code></pre></div>
+<p>(utilizez votre propre token ici. )</p>
 <p><em>Le jeton d’accès est un exemple ici et n’est aucunement valide.</em></p>
 </div>
 <div id="stratégie-2-argument" class="section level3">
 <h3 class="hasAnchor">
 <a href="#strat%C3%A9gie-2-argument" class="anchor"></a>Stratégie 2: Argument</h3>
 <p>Vous pouvez également passer votre jeton d’accès comme un argument pour chacune des fonctions <code>GET</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_sites.html">get_sites</a></span><span class="op">(</span>token<span class="op">=</span><span class="st">"7f8df438e1be96a18436e9dab5d97d68ed0e0441d9b68f59e0ce631b2919f3aa"</span><span class="op">)</span></code></pre></div>
 <p><em>Le jeton d’accès est un exemple ici et n’est aucunement valide.</em></p>
 </div>
