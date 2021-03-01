@@ -37,8 +37,8 @@ Afin d'injecter des nouvelles campagnes faisant l'inventaire des papillons, il v
 |*mic_h_cm_ultra*|Hauteur de l'appareil ultrason utlisé (cm)| 
 |*technician_1*||
 |*technician_2*||
-|*time_start*|heure du début de la campagne|
-|*time_finish*|heure de la fin de la campagne|
+|*date_obs*|DATE OF OBSERVATION `YYYY-MM-DD`|
+|*time_obs*|TIME OF OBSERVATION `HH:MM:SS` HOURS AS 24 H, LEADING ZEROS SO ALWAYS SAME VALUES|
 |*vernacular_fr*|nom commun français des espèces observées|
 |*taxa_name*|nom latin des espèces observées|
 |**rank**|rang taxonomique - `sous-embranchement`, `embranchement`, `sous-classe`, `classe`, `sous-ordre`, `ordre`, `super-famille`, `famille`, `genre`, `espèce`, `sous-espèce`, `variété`, `complexe`|
@@ -46,6 +46,7 @@ Afin d'injecter des nouvelles campagnes faisant l'inventaire des papillons, il v
 |*tsn*|identifiant ITS (TSN)|
 |*note*||
 |||
+|*type*|type de campagne - `acoustique`|
 
 Prenez soin de :
 

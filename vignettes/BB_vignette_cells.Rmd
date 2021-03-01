@@ -4,14 +4,14 @@ output: html_document
 
 ##### **7.3.1.1.** Cette étape permet d'enregistrer un objet dans R avec les informations de toutes les cellules existantes.
 
-```r
+``` {.r}
 shp_cells <- rgdal::readOGR(dsn = "./shp",
                             layer = "Cellule_terrain_2016-2020") # Ici le fichier shapefile est placé dans un dossier shp et on appelle tous les fichiers nommés "Cellule_terrain_2016_2020"
 ```
 
 ##### **7.3.1.2.** Cette étape permet d'extraire les informations nécessaires concernant les nouvelles cellules et de formater ces informations de sorte à pouvoir les insérer dans Coléo.
 
-```r
+``` {.r}
 # Création d'une liste vide pour l'objet final
 shp_cells_list <- list()
 
@@ -44,7 +44,7 @@ for (i in 1:length(cell_abs)){
 
 ##### **7.3.1.3.** Nous pouvons maintenant insérer les nouvelles cellules dans la base de données Coléo.
 
-```r
+``` {.r}
 # Envoi de la liste de nouvelles cellules vers Coléo
 COLEO_cells <- rcoleo::post_cells(shp_cells_list)
 ```
@@ -53,7 +53,7 @@ La sortie R vous informe sur le déroulement de l'insertion. Le message `Good jo
 
 ##### **7.3.1.4.** ATTENTION, finissez en faisant la mise à jour de la liste des cellules présentes dans Coléo.
 
-```r
+``` {.r}
 # Mise à jour de la liste des cellules provenant de Coléo
 rcoleo:::clear_cache_rcoleo() # Vider le cache de rcoleo associé aux requetes GET
 cells <- rcoleo::get_cells()
