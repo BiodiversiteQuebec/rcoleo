@@ -10,3 +10,5 @@ examples/
 ^pkgdown$
 ^\.github$
 vignettes/
+^LICENSE\.md$
+.httr-oauth
