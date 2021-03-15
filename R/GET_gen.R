@@ -41,10 +41,28 @@ get_gen <- function(endpoint, query = NULL, limit = 100, verbose = TRUE, token =
   }
 
 
+  # is there pages?
+
+  header_names <- names(httr::headers(resp))
+
+  if ("content-range" %in% header_names){
+
+    resp_as_df <- download_pages(resp, url, query, request_header, limit, verbose, token, ...)
+
+  } else {
+
+    resp_as_df <- resp_df(resp)
+  }
+
   ## not everything has pages, ie not every response has a "content-range" element.
   ## pull this out into anohter function and only use it conditionally, if there is a "content-range" in the header.
   # if not, can skip to end and return resp_df(resp)
 
+  return(resp_as_df)
+}
+
+
+download_pages <- function(resp, url, query, request_header, limit, verbose, token, ...){
   # Prep output object
   responses <- list()
   errors <- NULL
@@ -85,9 +103,6 @@ get_gen <- function(endpoint, query = NULL, limit = 100, verbose = TRUE, token =
   #class(out) <- "mgGetResponses"
   return(out)
 }
-
-
-
 
 ## Set memoise httr::GET
 mem_get <- memoise::memoise(httr::GET)

@@ -8,7 +8,7 @@ bearer <- function() {
   token <- Sys.getenv("RCOLEO_TOKEN")
   if (token == "" & !file.exists(".httr-oauth")) stop("Aucune autorisation d\u00e9tect\u00e9e")
   if (token == "") out <-  as.character(readRDS(".httr-oauth")) else out <- token
-  return(token)
+  return(out)
 }
 
 
@@ -32,7 +32,8 @@ endpoints <- function(){
     lures = "/lures",
     devices = "/devices",
     obs_species = "/obs_species",
-    efforts = "/efforts"
+    efforts = "/efforts",
+    summary = "/campaigns_summary"
   )
 }
 
