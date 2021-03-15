@@ -32,13 +32,12 @@ Dans RStudio :
 ``` {.r}
 # 5.1. Installation des packages
 install.packages("devtools")
-install.packages("plyr")
 install.packages("dplyr")
 install.packages("geojsonio")
 install.packages("readr")
 ```
 
-Pour installer le package `rcoleo`, il faut utiliser le package ``` remotes``, il faut donc l'appeller avec ```library()\`
+Pour installer le package `rcoleo`, il faut utiliser le package `` remotes, il faut donc l'appeller avec ` ``library()\`
 
 ``` {.r}
 # Chargement de devtools
@@ -52,7 +51,6 @@ install_github("ReseauBiodiversiteQuebec/rcoleo")
 ``` {.r}
 # 5.2. Chargement des packages
 library(rcoleo)
-library(plyr)
 library(dplyr)
 library(geojsonio)
 library(readr)
@@ -77,7 +75,7 @@ La succession d'étape qui suivent permettent de vérifier si les cellules, les 
 
 ``` {.r}
 # 7.1. Création d'un objet contenant les nouvelles campagnes
-camp <- readr::read_delim("./lenomdevotrebasededonnées.csv",
+donnees_inj <- readr::read_delim("./lenomdevotrebasededonnées.csv",
                    delim = ';')
 ```
 
@@ -109,8 +107,8 @@ species_df <- do.call(rbind, species[[1]]$body)
 ``` {.r}
 # 7.3.1. Vérification
 # Test pour vérifier l'existence des cellules dans Coléo
-cell_abs <- rcoleo::COLEO_comp(unique(camp$cell_code),
-                               unique(cells$cell_code))
+cell_abs <- rcoleo::COLEO_comp(unique(donnees_inj$cell_code),
+                               unique(cells_df$cell_code))
 cell_abs
 ```
 
@@ -148,10 +146,12 @@ Vous pouvez maintenant récupérer l'ID unique des cellules.
 
 ``` {.r}
 # Récupération des cell_id
-camp <- dplyr::left_join(camp,
-                         cells[, c("id", "cell_code")],
-                         by = "cell_code")
-names(camp)[names(camp) == "id"] <- "cell_id"
+donnees_inj_cell_id <- left_join(donnees_inj,
+                                     cells_df %>%
+                                       # notez qu'on change le nom de ce column
+                                       # id, pour etre plus specifique :
+                                       # c'est le id des cells
+                                       select(cell_id = id, cell_code))
 ```
 
 #### 7.3.2. Pour les sites
@@ -159,8 +159,8 @@ names(camp)[names(camp) == "id"] <- "cell_id"
 ``` {.r}
 # 7.3.2. Vérification
 # Test pour vérifier l'existence des sites dans Coléo
-site_abs <- rcoleo::COLEO_comp(unique(camp$site_code),
-                               unique(sites$site_code))
+site_abs <- rcoleo::COLEO_comp(unique(donnees_inj_cell_id$site_code),
+                               unique(sites_df$site_code))
 site_abs
 ```
 
@@ -198,10 +198,9 @@ Vous pouvez maintenant récupérer l'ID unique des sites.
 
 ``` {.r}
 # Récupération des site_id
-camp <- dplyr::left_join(camp,
-                         sites[, c("id", "site_code")],
-                         by = "site_code")
-names(camp)[names(camp) == "id"] <- "site_id"
+donnees_inj_cell_site_id <- left_join(donnees_inj_cell_id,
+                                          sites_df %>%
+                                            select(site_id = id, site_code))
 ```
 
 #### 7.3.3. Pour les noms d'espèces
@@ -209,8 +208,8 @@ names(camp)[names(camp) == "id"] <- "site_id"
 ``` {.r}
 # 7.3.3. Vérification
 # Test pour vérifier l'existence des noms des espèces dans Coléo
-sp_abs <- rcoleo::COLEO_comp(unique(camp$taxa_name),
-                             unique(species$name))
+sp_abs <- rcoleo::COLEO_comp(unique(donnees_inj_cell_site_id$taxa_name),
+                             unique(species_df$name))
 sp_abs
 ```
 

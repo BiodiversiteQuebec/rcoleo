@@ -57,5 +57,5 @@ La sortie R vous informe sur le déroulement de l'insertion. Le message `Good jo
 # Mise à jour de la liste des cellules provenant de Coléo
 rcoleo:::clear_cache_rcoleo() # Vider le cache de rcoleo associé aux requetes GET
 cells <- rcoleo::get_cells()
-cells <- do.call(plyr::rbind.fill, cells[[1]]$body)
+cells_df <- do.call(rbind, cells[[1]]$body)
 ```
