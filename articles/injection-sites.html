@@ -202,11 +202,10 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 5.1. Installation des packages</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"plyr"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"dplyr"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"geojsonio"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"readr"</span><span class="op">)</span></code></pre></div>
-<p>Pour installer le package <code>rcoleo</code>, il faut utiliser le package <code>remotes``, il faut donc l'appeller avec</code>library()`</p>
+<p>Pour installer le package <code>rcoleo</code>, il faut utiliser le package <code>remotes, il faut donc l'appeller avec `</code>library()`</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Chargement de devtools</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://remotes.r-lib.org" class="external-link">remotes</a></span><span class="op">)</span>
@@ -219,7 +218,6 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 5.2. Chargement des packages</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo" class="external-link">rcoleo</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://had.co.nz/plyr" class="external-link">plyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">geojsonio</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">readr</span><span class="op">)</span></code></pre></div>
@@ -243,7 +241,7 @@
 <a href="#cr%C3%A9ation-dun-objet-r-avec-les-nouvelles-campagnes-%C3%A0-ins%C3%A9rer-dans-col%C3%A9o" class="anchor"></a>7.1. Création d’un objet R avec les nouvelles campagnes à insérer dans Coléo</h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.1. Création d'un objet contenant les nouvelles campagnes</span>
-<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu">read_delim</span><span class="op">(</span><span class="st">"./lenomdevotrebasededonnées.csv"</span>,
+<span class="va">donnees_inj</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu">read_delim</span><span class="op">(</span><span class="st">"./lenomdevotrebasededonnées.csv"</span>,
                    delim <span class="op">=</span> <span class="st">';'</span><span class="op">)</span></code></pre></div>
 <div class="blue">
 <p><strong>Vérification</strong> - Il est important de vérifier dans votre console si le tableau <code>camp</code> que vous venez de créer dans R possède bien le nombre de lignes et de colonnes attendu.</p>
@@ -275,8 +273,8 @@
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.3.1. Vérification</span>
 <span class="co"># Test pour vérifier l'existence des cellules dans Coléo</span>
-<span class="va">cell_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">cell_code</span><span class="op">)</span>,
-                               <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">cells</span><span class="op">$</span><span class="va">cell_code</span><span class="op">)</span><span class="op">)</span>
+<span class="va">cell_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">donnees_inj</span><span class="op">$</span><span class="va">cell_code</span><span class="op">)</span>,
+                               <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">cells_df</span><span class="op">$</span><span class="va">cell_code</span><span class="op">)</span><span class="op">)</span>
 <span class="va">cell_abs</span></code></pre></div>
 <p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certaines cellules n’existent pas dans Coléo, il sera nécessaire de les importer avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous pouvez utiliser l’objet <code>cell_abs</code> que vous venez de créer et qui contient la liste des cellules à injecter dans Coléo. Suivez les étapes détaillées en déroulant la vignette <strong>Injection des cellules</strong> ci-dessous.</p>
 <script>
@@ -337,7 +335,7 @@ function myFunction1() {
 <code class="sourceCode R"><span class="co"># Mise à jour de la liste des cellules provenant de Coléo</span>
 <span class="fu">rcoleo</span><span class="fu">:::</span><span class="fu"><a href="../reference/clear_cache_rcoleo.html">clear_cache_rcoleo</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Vider le cache de rcoleo associé aux requetes GET</span>
 <span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_cells.html">get_cells</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">cells</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html" class="external-link">rbind.fill</a></span>, <span class="va">cells</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
+<span class="va">cells_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">cells</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 </div>
 <script>
 document.getElementById("myDIV_cells").style.display ="none"
@@ -347,10 +345,12 @@ document.getElementById("myDIV_cells").style.display ="none"
 <p>Vous pouvez maintenant récupérer l’ID unique des cellules.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Récupération des cell_id</span>
-<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
-                         <span class="va">cells</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"cell_code"</span><span class="op">)</span><span class="op">]</span>,
-                         by <span class="op">=</span> <span class="st">"cell_code"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"cell_id"</span></code></pre></div>
+<span class="va">donnees_inj_cell_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">donnees_inj</span>,
+                                     <span class="va">cells_df</span> <span class="op">%&gt;%</span>
+                                       <span class="co"># notez qu'on change le nom de ce column</span>
+                                       <span class="co"># id, pour etre plus specifique :</span>
+                                       <span class="co"># c'est le id des cells</span>
+                                       <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span>cell_id <span class="op">=</span> <span class="va">id</span>, <span class="va">cell_code</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="pour-les-sites" class="section level4">
 <h4 class="hasAnchor">
@@ -358,8 +358,8 @@ document.getElementById("myDIV_cells").style.display ="none"
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.3.2. Vérification</span>
 <span class="co"># Test pour vérifier l'existence des sites dans Coléo</span>
-<span class="va">site_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">site_code</span><span class="op">)</span>,
-                               <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">sites</span><span class="op">$</span><span class="va">site_code</span><span class="op">)</span><span class="op">)</span>
+<span class="va">site_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">donnees_inj_cell_id</span><span class="op">$</span><span class="va">site_code</span><span class="op">)</span>,
+                               <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">sites_df</span><span class="op">$</span><span class="va">site_code</span><span class="op">)</span><span class="op">)</span>
 <span class="va">site_abs</span></code></pre></div>
 <p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certaines cellules n’existent pas dans Coléo, il sera nécessaire de les importer avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous pouvez utiliser l’objet <code>site_abs</code> que vous venez de créer et qui contient la liste des sites à injecter dans Coléo. Suivez les étapes détaillées en déroulant la vignette <strong>Injection des sites</strong> ci-dessous.</p>
 <script>
@@ -376,13 +376,13 @@ function myFunction2() {
 <a href="#myDIV_sites" class="anchor"></a><strong>7.3.2.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les sites absents de Coléo.</h5>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Sélection des lignes du tableau concernant les sites manquants</span>
-<span class="va">site_df</span> <span class="op">&lt;-</span> <span class="va">camp</span><span class="op">[</span><span class="va">camp</span><span class="op">$</span><span class="va">site_code</span> <span class="op">%in%</span> <span class="va">site_abs</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cell_id"</span>, <span class="st">"site_code"</span>, <span class="st">"type_hab"</span>, <span class="st">"opened_at"</span>, <span class="st">"lat"</span>, <span class="st">"lon"</span><span class="op">)</span><span class="op">]</span>
 
-<span class="co"># Retrait des lignes dupliquées</span>
-<span class="va">site_df</span> <span class="op">&lt;-</span> <span class="va">site_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">site_df</span><span class="op">)</span>,<span class="op">]</span>
+<span class="va">site_df</span> <span class="op">&lt;-</span> <span class="va">nouveau_donnees_cell_id</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">site_code</span> <span class="op">%in%</span> <span class="va">site_abs</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">cell_id</span>, <span class="va">site_code</span>, <span class="va">type_hab</span>, <span class="va">opened_at</span>, <span class="va">lat</span>, <span class="va">lon</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="co"># Retrait des lignes dupliquées</span>
+  <span class="va">distinct</span>
 
-<span class="co"># Changement du nom de la variable "type_hab" pour correspondre à celle de Coléo ("type")</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">site_df</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">site_df</span><span class="op">)</span> <span class="op">==</span> <span class="st">"type_hab"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"type"</span>
 
 <span class="co"># Création de la variable geom à partir des variables "lat" &amp; "lon"</span>
 <span class="va">site_df_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">site_df</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span> <span class="co"># Création de la liste</span>
@@ -421,7 +421,7 @@ function myFunction2() {
 <code class="sourceCode R"><span class="co"># Mise à jour de la liste des sites provenant de Coléo</span>
 <span class="fu">rcoleo</span><span class="fu">:::</span><span class="fu"><a href="../reference/clear_cache_rcoleo.html">clear_cache_rcoleo</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Vider le cache de rcoleo associé aux requetes GET</span>
 <span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_sites.html">get_sites</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html" class="external-link">rbind.fill</a></span>, <span class="va">sites</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
+<span class="va">sites_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">sites</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 </div>
 <script>
 document.getElementById("myDIV_sites").style.display ="none"
@@ -431,10 +431,9 @@ document.getElementById("myDIV_sites").style.display ="none"
 <p>Vous pouvez maintenant récupérer l’ID unique des sites.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Récupération des site_id</span>
-<span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
-                         <span class="va">sites</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"id"</span>, <span class="st">"site_code"</span><span class="op">)</span><span class="op">]</span>,
-                         by <span class="op">=</span> <span class="st">"site_code"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"site_id"</span></code></pre></div>
+<span class="va">donnees_inj_cell_site_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">donnees_inj_cell_id</span>,
+                                          <span class="va">sites_df</span> <span class="op">%&gt;%</span>
+                                            <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span>site_id <span class="op">=</span> <span class="va">id</span>, <span class="va">site_code</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="pour-les-noms-despèces" class="section level4">
 <h4 class="hasAnchor">
@@ -442,8 +441,8 @@ document.getElementById("myDIV_sites").style.display ="none"
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.3.3. Vérification</span>
 <span class="co"># Test pour vérifier l'existence des noms des espèces dans Coléo</span>
-<span class="va">sp_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">camp</span><span class="op">$</span><span class="va">taxa_name</span><span class="op">)</span>,
-                             <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">species</span><span class="op">$</span><span class="va">name</span><span class="op">)</span><span class="op">)</span>
+<span class="va">sp_abs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/COLEO_comp.html">COLEO_comp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">donnees_inj_cell_site_id</span><span class="op">$</span><span class="va">taxa_name</span><span class="op">)</span>,
+                             <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">species_df</span><span class="op">$</span><span class="va">name</span><span class="op">)</span><span class="op">)</span>
 <span class="va">sp_abs</span></code></pre></div>
 <p>La sortie R vous indique si vous pouvez passer à l’étape suivante ou non. Dans le cas où certaines cellules n’existent pas dans Coléo, il sera nécessaire de les importer avant de continuer l’insertions des nouvelles campagnes. Pour ce faire, vous pouvez utiliser l’objet <code>sp_abs</code> que vous venez de créer et qui contient la liste des noms d’espèces à injecter dans Coléo. Suivez les étapes détaillées en déroulant la vignette <strong>Injection des noms d’espèces</strong> ci-dessous.</p>
 <script>
@@ -460,21 +459,21 @@ function myFunction3() {
 <a href="#myDIV_taxa" class="anchor"></a><strong>7.3.3.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les noms d’espèce absents de Coléo.</h5>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Formatage du tableau à insérer</span>
-<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">camp</span><span class="op">[</span><span class="va">camp</span><span class="op">$</span><span class="va">taxa_name</span> <span class="op">%in%</span> <span class="va">sp_abs</span>,<span class="op">]</span>
-<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">taxa_df</span>,
-                    name <span class="op">=</span> <span class="va">taxa_name</span>,
-                    <span class="va">vernacular_fr</span>,
-                    <span class="va">rank</span>,
-                    <span class="va">category</span>,
-                    <span class="va">tsn</span><span class="op">)</span> <span class="co"># colonnes nécessaires</span></code></pre></div>
+
+<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">donnees_inj_cell_site_id</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">taxa_name</span> <span class="op">%in%</span> <span class="va">sp_abs</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span>name <span class="op">=</span> <span class="va">taxa_name</span>,
+         <span class="va">vernacular_fr</span>,
+         <span class="va">rank</span>,
+         <span class="va">category</span>,
+         <span class="va">tsn</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="co"># Retrait des lignes dupliquées</span>
+  <span class="va">distinct</span></code></pre></div>
 <h5 id="cette-étape-permet-de-formatter-les-données-afin-de-pouvoir-les-injecter-dans-la-base-de-données-coléo.">
 <strong>7.3.3.2.</strong> Cette étape permet de formatter les données afin de pouvoir les injecter dans la base de données Coléo.</h5>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Retrait des lignes dupliquées</span>
-<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">taxa_df</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">taxa_df</span><span class="op">)</span>,<span class="op">]</span> 
-
-<span class="co"># Formatage des données sous forme de liste</span>
-<span class="va">taxa_df_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">taxa_df</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># Formatage des données sous forme de liste</span>
+<span class="va">taxa_df_ls</span> <span class="op">&lt;-</span> <span class="fu">transpose</span><span class="op">(</span><span class="va">taxa_df</span><span class="op">)</span></code></pre></div>
 <h5 id="on-injecte-dans-la-base-de-données-coléo.">
 <strong>7.3.3.3.</strong> On injecte dans la base de données Coléo.</h5>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
