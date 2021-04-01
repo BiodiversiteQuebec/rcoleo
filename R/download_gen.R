@@ -73,7 +73,7 @@ query_df_gen <- function(query_df, query_info, endpoint, ...) {
 #'   a list-column of data.frames
 #' @param query_info The names of the columns that hold the query information. passed to [query_df_gen()]
 #' @param endpoint the name of the endpoint to query. passed to [query_df_gen()]
-#' @param request_col_name name of column holding the responses
+#' @param request_col_name name of column where the responses will go after the request! ie, the output.
 #' @param token the authentification token
 #'
 #' @return A data.frame just like the `starting_df`, but with a list-column

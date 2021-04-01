@@ -13,6 +13,8 @@
 #' @export
 get_all_observations_from_a_site <- function(site_df, token = bearer()){
 
+  # assumes that request_info_col is a list-column, could check his
+
   test_camp <- download_all_requests(starting_df = site_df,
                                      token = token,
                                      request_info_col = "campaigns",
@@ -23,12 +25,12 @@ get_all_observations_from_a_site <- function(site_df, token = bearer()){
                                      endpoint = "campaigns",
                                      request_col_name = "camp_resp")
 
-  # rename this column
+  # rename this column using rcoleo::fix_id_name
   test_camp$camp_resp <- purrr::map(test_camp$camp_resp,
                                     fix_id_name,
                                     replace_id = "campaign_id")
 
-  #
+  # request the observations of that site
   test_obs <- download_all_requests(starting_df = test_camp,
                                     request_info_col = "camp_resp",
                                     query_info = "campaign_id",
