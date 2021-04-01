@@ -1,3 +1,12 @@
+#' query one endpoint and get a dataframe
+#'
+#' @param endpoint the name of the endpoint
+#' @param ... extra arguements to get_gen
+#'
+#' @return a data.frame of endpoint answers
+#' @export
+#'
+#' @examples
 query_gen <- function(endpoint, ...) {
 
   assertthat::assert_that(

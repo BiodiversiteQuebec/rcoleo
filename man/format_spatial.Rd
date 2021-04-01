@@ -9,9 +9,6 @@ format_spatial(df_to_inject)
 \arguments{
 \item{df_to_inject}{data.frame to be injected}
 }
-\value{
-
-}
 \description{
 the location of data needs to be correctly formatted for injection into coleo
 }

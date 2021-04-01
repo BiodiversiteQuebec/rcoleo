@@ -20,7 +20,10 @@ Imports:
     here,
     memoise,
     assertthat,
-    sf
+    sf,
+    magrittr,
+    geojsonio,
+    rlang
 Suggests: 
     knitr,
     rmarkdown,

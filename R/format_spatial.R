@@ -6,7 +6,8 @@
 #'
 #' @param df_to_inject data.frame to be injected
 #'
-#' @return
+#' @importFrom magrittr `%>%`
+#' @importFrom rlang .data
 #' @export
 format_spatial <- function(df_to_inject) {
 
@@ -15,13 +16,13 @@ format_spatial <- function(df_to_inject) {
   assertthat::assert_that(assertthat::has_name(df_to_inject, "lat"))
 
   formatted_input_data <- df_to_inject %>%
-    dplyr::mutate(geoj = purrr::map2(.x = lon, .y = lat,
+    dplyr::mutate(geoj = purrr::map2(.x = .data$lon, .y = .data$lat,
                        ~ geojsonio::geojson_list(c(lon = .x, lat =  .y),
                                                  lat = "lat", lon = "lon")),
-           feat = purrr::map(geoj, "features"),
-           feat = purrr::map(feat, purrr::flatten),
-           geom = purrr::map(feat, "geometry"),
-           geom = purrr::map(geom, ~ purrr::splice(.x,
+           feat = purrr::map(.data$geoj, "features"),
+           feat = purrr::map(.data$feat, purrr::flatten),
+           geom = purrr::map(.data$feat, "geometry"),
+           geom = purrr::map(.data$geom, ~ purrr::splice(.x,
                                      crs = list(type = "name",
                                                 properties = list(name = "EPSG:4326")))))
 
