@@ -138,12 +138,12 @@
     
 <div id="cette-étape-permet-de-sélectionner-les-informations-nécessaires-pour-les-sites-absents-de-coléo-" class="section level5">
 <h5 class="hasAnchor">
-<a href="#cette-%C3%A9tape-permet-de-s%C3%A9lectionner-les-informations-n%C3%A9cessaires-pour-les-sites-absents-de-col%C3%A9o-" class="anchor"></a><strong>7.3.2.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les sites absents de Coléo.</h5>
+<a href="#cette-%C3%A9tape-permet-de-s%C3%A9lectionner-les-informations-n%C3%A9cessaires-pour-les-sites-absents-de-col%C3%A9o-" class="anchor" aria-hidden="true"></a><strong>7.3.2.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les sites absents de Coléo.</h5>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Sélection des lignes du tableau concernant les sites manquants</span>
 
 <span class="va">site_df</span> <span class="op">&lt;-</span> <span class="va">nouveau_donnees_cell_id</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">site_code</span> <span class="op">%in%</span> <span class="va">site_abs</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">site_code</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">site_abs</span><span class="op">)</span> <span class="op">%&gt;%</span>
   <span class="fu">select</span><span class="op">(</span><span class="va">cell_id</span>, <span class="va">site_code</span>, <span class="va">type_hab</span>, <span class="va">opened_at</span>, <span class="va">lat</span>, <span class="va">lon</span><span class="op">)</span> <span class="op">%&gt;%</span> 
   <span class="co"># Retrait des lignes dupliquées</span>
   <span class="va">distinct</span>
@@ -177,7 +177,7 @@
 </div>
 <div id="nous-pouvons-maintenant-insérer-les-nouveaux-sites-dans-la-base-de-données-coléo-" class="section level5">
 <h5 class="hasAnchor">
-<a href="#nous-pouvons-maintenant-ins%C3%A9rer-les-nouveaux-sites-dans-la-base-de-donn%C3%A9es-col%C3%A9o-" class="anchor"></a><strong>7.3.2.2.</strong> Nous pouvons maintenant insérer les nouveaux sites dans la base de données Coléo.</h5>
+<a href="#nous-pouvons-maintenant-ins%C3%A9rer-les-nouveaux-sites-dans-la-base-de-donn%C3%A9es-col%C3%A9o-" class="anchor" aria-hidden="true"></a><strong>7.3.2.2.</strong> Nous pouvons maintenant insérer les nouveaux sites dans la base de données Coléo.</h5>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Envoi de la liste des nouveaux sites vers Coléo</span>
 <span class="va">COLEO_sites</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_sites.html">post_sites</a></span><span class="op">(</span><span class="va">site_df_ls</span><span class="op">)</span></code></pre></div>
@@ -185,7 +185,7 @@
 </div>
 <div id="attention-finissez-en-faisant-la-mise-à-jour-de-la-liste-des-sites-présents-dans-coléo-" class="section level5">
 <h5 class="hasAnchor">
-<a href="#attention-finissez-en-faisant-la-mise-%C3%A0-jour-de-la-liste-des-sites-pr%C3%A9sents-dans-col%C3%A9o-" class="anchor"></a><strong>7.3.2.3.</strong> ATTENTION, finissez en faisant la mise à jour de la liste des sites présents dans Coléo.</h5>
+<a href="#attention-finissez-en-faisant-la-mise-%C3%A0-jour-de-la-liste-des-sites-pr%C3%A9sents-dans-col%C3%A9o-" class="anchor" aria-hidden="true"></a><strong>7.3.2.3.</strong> ATTENTION, finissez en faisant la mise à jour de la liste des sites présents dans Coléo.</h5>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Mise à jour de la liste des sites provenant de Coléo</span>
 <span class="fu">rcoleo</span><span class="fu">:::</span><span class="fu"><a href="../reference/clear_cache_rcoleo.html">clear_cache_rcoleo</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Vider le cache de rcoleo associé aux requetes GET</span>

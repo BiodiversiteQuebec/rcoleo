@@ -149,7 +149,7 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 </div>
 <div id="créer-une-base-de-données-excel" class="section level2">
 <h2 class="hasAnchor">
-<a href="#cr%C3%A9er-une-base-de-donn%C3%A9es-excel" class="anchor"></a>1. Créer une base de données excel</h2>
+<a href="#cr%C3%A9er-une-base-de-donn%C3%A9es-excel" class="anchor" aria-hidden="true"></a>1. Créer une base de données excel</h2>
 <p>Afin d’injecter des nouvelles campagnes faisant l’inventaire des papillons, il vous faut créer un fichier excel avec les colonnes suivantes :</p>
 <table class="table">
 <colgroup>
@@ -265,12 +265,12 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 </div>
 <div id="corriger-la-base-de-données" class="section level2">
 <h2 class="hasAnchor">
-<a href="#corriger-la-base-de-donn%C3%A9es" class="anchor"></a>2. Corriger la base de données</h2>
+<a href="#corriger-la-base-de-donn%C3%A9es" class="anchor" aria-hidden="true"></a>2. Corriger la base de données</h2>
 <p>Il est très important de s’assurer que la base de données excel soit sans erreur <strong>avant</strong> de l’injecter dans Coléo. Coléo n’a pas de système de correction et va prendre toutes les entrées, même si elles contiennent des erreurs.</p>
 </div>
 <div id="créer-un-projet-r" class="section level2">
 <h2 class="hasAnchor">
-<a href="#cr%C3%A9er-un-projet-r" class="anchor"></a>3. Créer un projet R</h2>
+<a href="#cr%C3%A9er-un-projet-r" class="anchor" aria-hidden="true"></a>3. Créer un projet R</h2>
 <p>Dans RStudio,</p>
 <ul>
 <li>Aller dans <code>File</code> &gt; <code>New Project</code> &gt; <code>New Directory</code> &gt; <code>New Project</code>
@@ -281,18 +281,18 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 </div>
 <div id="sauvegarder-la-base-de-données-en-format--csv-dans-le-même-dossier-que-le-projet-r" class="section level2">
 <h2 class="hasAnchor">
-<a href="#sauvegarder-la-base-de-donn%C3%A9es-en-format--csv-dans-le-m%C3%AAme-dossier-que-le-projet-r" class="anchor"></a>4. Sauvegarder la base de données en format .csv dans le même dossier que le projet R</h2>
+<a href="#sauvegarder-la-base-de-donn%C3%A9es-en-format--csv-dans-le-m%C3%AAme-dossier-que-le-projet-r" class="anchor" aria-hidden="true"></a>4. Sauvegarder la base de données en format .csv dans le même dossier que le projet R</h2>
 <div class="blue">
 <p><strong>Rappel</strong> - L’encodage du fichier .csv doit être en “UTF-8”</p>
 </div>
 </div>
 <div id="installer-et-charger-les-packages-nécessaires" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installer-et-charger-les-packages-n%C3%A9cessaires" class="anchor"></a>5. Installer et charger les packages nécessaires</h2>
+<a href="#installer-et-charger-les-packages-n%C3%A9cessaires" class="anchor" aria-hidden="true"></a>5. Installer et charger les packages nécessaires</h2>
 <p>S’il ne s’agit pas de vos premières injections dans Coléo avec R, vous pouvez directement passer à l’<strong>étape 5.2</strong>. Sinon vous devez installer les packages nécessaires.</p>
 <div id="installation-des-packages" class="section level3">
 <h3 class="hasAnchor">
-<a href="#installation-des-packages" class="anchor"></a>5.1. Installation des packages</h3>
+<a href="#installation-des-packages" class="anchor" aria-hidden="true"></a>5.1. Installation des packages</h3>
 <p>Dans RStudio :</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 5.1. Installation des packages</span>
@@ -309,7 +309,7 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 </div>
 <div id="chargement-des-packages" class="section level3">
 <h3 class="hasAnchor">
-<a href="#chargement-des-packages" class="anchor"></a>5.2. Chargement des packages</h3>
+<a href="#chargement-des-packages" class="anchor" aria-hidden="true"></a>5.2. Chargement des packages</h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 5.2. Chargement des packages</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo" class="external-link">rcoleo</a></span><span class="op">)</span>
@@ -320,7 +320,7 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 </div>
 <div id="mise-en-cache-son-jeton-daccès" class="section level2">
 <h2 class="hasAnchor">
-<a href="#mise-en-cache-son-jeton-dacc%C3%A8s" class="anchor"></a>6. Mise en cache son jeton d’accès</h2>
+<a href="#mise-en-cache-son-jeton-dacc%C3%A8s" class="anchor" aria-hidden="true"></a>6. Mise en cache son jeton d’accès</h2>
 <p>Ce jeton permet d’apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l’utilisateur dans le menu à gauche.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 6. Mise en cache son jeton d'accès</span>
@@ -329,11 +329,11 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 </div>
 <div id="vérification-pré-injection" class="section level2">
 <h2 class="hasAnchor">
-<a href="#v%C3%A9rification-pr%C3%A9-injection" class="anchor"></a>7. Vérification pré-injection</h2>
+<a href="#v%C3%A9rification-pr%C3%A9-injection" class="anchor" aria-hidden="true"></a>7. Vérification pré-injection</h2>
 <p>La succession d’étape qui suivent permettent de vérifier si les cellules, les sites, les noms d’espèces et les attributs associés aux campagnes à injecter existent déjà dans Coléo.</p>
 <div id="création-dun-objet-r-avec-les-nouvelles-campagnes-à-insérer-dans-coléo" class="section level3">
 <h3 class="hasAnchor">
-<a href="#cr%C3%A9ation-dun-objet-r-avec-les-nouvelles-campagnes-%C3%A0-ins%C3%A9rer-dans-col%C3%A9o" class="anchor"></a>7.1. Création d’un objet R avec les nouvelles campagnes à insérer dans Coléo</h3>
+<a href="#cr%C3%A9ation-dun-objet-r-avec-les-nouvelles-campagnes-%C3%A0-ins%C3%A9rer-dans-col%C3%A9o" class="anchor" aria-hidden="true"></a>7.1. Création d’un objet R avec les nouvelles campagnes à insérer dans Coléo</h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.1. Création d'un objet contenant les nouvelles campagnes</span>
 <span class="va">donnees_inj</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_delim</a></span><span class="op">(</span><span class="st">"./lenomdevotrebasededonnées.csv"</span>,
@@ -344,7 +344,7 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 </div>
 <div id="acquisition-de-la-liste-des-cellules-des-sites-des-noms-despèce-de-référence-et-des-attributs-déjà-présentes-dans-coléo-et-création-dun-objet-r-pour-chacune" class="section level3">
 <h3 class="hasAnchor">
-<a href="#acquisition-de-la-liste-des-cellules-des-sites-des-noms-desp%C3%A8ce-de-r%C3%A9f%C3%A9rence-et-des-attributs-d%C3%A9j%C3%A0-pr%C3%A9sentes-dans-col%C3%A9o-et-cr%C3%A9ation-dun-objet-r-pour-chacune" class="anchor"></a>7.2. Acquisition de la liste des cellules, des sites, des noms d’espèce de référence et des attributs déjà présentes dans Coléo et création d’un objet R pour chacune</h3>
+<a href="#acquisition-de-la-liste-des-cellules-des-sites-des-noms-desp%C3%A8ce-de-r%C3%A9f%C3%A9rence-et-des-attributs-d%C3%A9j%C3%A0-pr%C3%A9sentes-dans-col%C3%A9o-et-cr%C3%A9ation-dun-objet-r-pour-chacune" class="anchor" aria-hidden="true"></a>7.2. Acquisition de la liste des cellules, des sites, des noms d’espèce de référence et des attributs déjà présentes dans Coléo et création d’un objet R pour chacune</h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.2. Acquisition des informations dans Coléo</span>
 <span class="co"># Acquisition cellules Coléo</span>
@@ -361,10 +361,10 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 </div>
 <div id="vérification-de-lexistence-des-cellules-sites-noms-despèces-et-des-attributs-associés-aux-nouvelles-campagnes-dans-coléo" class="section level3">
 <h3 class="hasAnchor">
-<a href="#v%C3%A9rification-de-lexistence-des-cellules-sites-noms-desp%C3%A8ces-et-des-attributs-associ%C3%A9s-aux-nouvelles-campagnes-dans-col%C3%A9o" class="anchor"></a>7.3. Vérification de l’existence des cellules, sites, noms d’espèces et des attributs associés aux nouvelles campagnes dans Coléo</h3>
+<a href="#v%C3%A9rification-de-lexistence-des-cellules-sites-noms-desp%C3%A8ces-et-des-attributs-associ%C3%A9s-aux-nouvelles-campagnes-dans-col%C3%A9o" class="anchor" aria-hidden="true"></a>7.3. Vérification de l’existence des cellules, sites, noms d’espèces et des attributs associés aux nouvelles campagnes dans Coléo</h3>
 <div id="pour-les-cellules" class="section level4">
 <h4 class="hasAnchor">
-<a href="#pour-les-cellules" class="anchor"></a>7.3.1. Pour les cellules</h4>
+<a href="#pour-les-cellules" class="anchor" aria-hidden="true"></a>7.3.1. Pour les cellules</h4>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.3.1. Vérification</span>
 <span class="co"># Test pour vérifier l'existence des cellules dans Coléo</span>
@@ -383,7 +383,7 @@ function myFunction1() {
 }
 </script><div id="myDIV_cells">
 <h5 id="cette-étape-permet-denregistrer-un-objet-dans-r-avec-les-informations-de-toutes-les-cellules-existantes." class="hasAnchor">
-<a href="#myDIV_cells" class="anchor"></a><strong>7.3.1.1.</strong> Cette étape permet d’enregistrer un objet dans R avec les informations de toutes les cellules existantes.</h5>
+<a href="#myDIV_cells" class="anchor" aria-hidden="true"></a><strong>7.3.1.1.</strong> Cette étape permet d’enregistrer un objet dans R avec les informations de toutes les cellules existantes.</h5>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">shp_cells</span> <span class="op">&lt;-</span> <span class="fu">rgdal</span><span class="fu">::</span><span class="fu">readOGR</span><span class="op">(</span>dsn <span class="op">=</span> <span class="st">"./shp"</span>,
                             layer <span class="op">=</span> <span class="st">"Cellule_terrain_2016-2020"</span><span class="op">)</span> <span class="co"># Ici le fichier shapefile est placé dans un dossier shp et on appelle tous les fichiers nommés "Cellule_terrain_2016_2020"</span></code></pre></div>
@@ -441,7 +441,7 @@ document.getElementById("myDIV_cells").style.display ="none"
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Récupération des cell_id</span>
 <span class="va">donnees_inj_cell_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">donnees_inj</span>,
-                                     <span class="va">cells_df</span> <span class="op">%&gt;%</span>
+                                     <span class="va">cells_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
                                        <span class="co"># notez qu'on change le nom de ce column</span>
                                        <span class="co"># id, pour etre plus specifique :</span>
                                        <span class="co"># c'est le id des cells</span>
@@ -449,7 +449,7 @@ document.getElementById("myDIV_cells").style.display ="none"
 </div>
 <div id="pour-les-sites" class="section level4">
 <h4 class="hasAnchor">
-<a href="#pour-les-sites" class="anchor"></a>7.3.2. Pour les sites</h4>
+<a href="#pour-les-sites" class="anchor" aria-hidden="true"></a>7.3.2. Pour les sites</h4>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.3.2. Vérification</span>
 <span class="co"># Test pour vérifier l'existence des sites dans Coléo</span>
@@ -468,13 +468,13 @@ function myFunction2() {
 }
 </script><div id="myDIV_sites">
 <h5 id="cette-étape-permet-de-sélectionner-les-informations-nécessaires-pour-les-sites-absents-de-coléo." class="hasAnchor">
-<a href="#myDIV_sites" class="anchor"></a><strong>7.3.2.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les sites absents de Coléo.</h5>
+<a href="#myDIV_sites" class="anchor" aria-hidden="true"></a><strong>7.3.2.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les sites absents de Coléo.</h5>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Sélection des lignes du tableau concernant les sites manquants</span>
 
-<span class="va">site_df</span> <span class="op">&lt;-</span> <span class="va">nouveau_donnees_cell_id</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">site_code</span> <span class="op">%in%</span> <span class="va">site_abs</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">cell_id</span>, <span class="va">site_code</span>, <span class="va">type_hab</span>, <span class="va">opened_at</span>, <span class="va">lat</span>, <span class="va">lon</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+<span class="va">site_df</span> <span class="op">&lt;-</span> <span class="va">nouveau_donnees_cell_id</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">site_code</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">site_abs</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">cell_id</span>, <span class="va">site_code</span>, <span class="va">type_hab</span>, <span class="va">opened_at</span>, <span class="va">lat</span>, <span class="va">lon</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> 
   <span class="co"># Retrait des lignes dupliquées</span>
   <span class="va">distinct</span>
 
@@ -527,12 +527,12 @@ document.getElementById("myDIV_sites").style.display ="none"
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Récupération des site_id</span>
 <span class="va">donnees_inj_cell_site_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">donnees_inj_cell_id</span>,
-                                          <span class="va">sites_df</span> <span class="op">%&gt;%</span>
+                                          <span class="va">sites_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
                                             <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span>site_id <span class="op">=</span> <span class="va">id</span>, <span class="va">site_code</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="pour-les-noms-despèces" class="section level4">
 <h4 class="hasAnchor">
-<a href="#pour-les-noms-desp%C3%A8ces" class="anchor"></a>7.3.3. Pour les noms d’espèces</h4>
+<a href="#pour-les-noms-desp%C3%A8ces" class="anchor" aria-hidden="true"></a>7.3.3. Pour les noms d’espèces</h4>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.3.3. Vérification</span>
 <span class="co"># Test pour vérifier l'existence des noms des espèces dans Coléo</span>
@@ -551,17 +551,17 @@ function myFunction3() {
 }
 </script><div id="myDIV_taxa">
 <h5 id="cette-étape-permet-de-sélectionner-les-informations-nécessaires-pour-les-noms-despèce-absents-de-coléo." class="hasAnchor">
-<a href="#myDIV_taxa" class="anchor"></a><strong>7.3.3.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les noms d’espèce absents de Coléo.</h5>
+<a href="#myDIV_taxa" class="anchor" aria-hidden="true"></a><strong>7.3.3.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les noms d’espèce absents de Coléo.</h5>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Formatage du tableau à insérer</span>
 
-<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">donnees_inj_cell_site_id</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">taxa_name</span> <span class="op">%in%</span> <span class="va">sp_abs</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">donnees_inj_cell_site_id</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">taxa_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">sp_abs</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span>name <span class="op">=</span> <span class="va">taxa_name</span>,
          <span class="va">vernacular_fr</span>,
          <span class="va">rank</span>,
          <span class="va">category</span>,
-         <span class="va">tsn</span><span class="op">)</span> <span class="op">%&gt;%</span>
+         <span class="va">tsn</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="co"># Retrait des lignes dupliquées</span>
   <span class="va">distinct</span></code></pre></div>
 <h5 id="cette-étape-permet-de-formatter-les-données-afin-de-pouvoir-les-injecter-dans-la-base-de-données-coléo.">
@@ -586,7 +586,7 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </div>
 <div id="injection-des-campagnes-de-chiroptères" class="section level2">
 <h2 class="hasAnchor">
-<a href="#injection-des-campagnes-de-chiropt%C3%A8res" class="anchor"></a>8. Injection des campagnes de chiroptères</h2>
+<a href="#injection-des-campagnes-de-chiropt%C3%A8res" class="anchor" aria-hidden="true"></a>8. Injection des campagnes de chiroptères</h2>
 <p>Pour une injection complète d’une campagne, il est nécessaire de passer par l’importation d’informations successives dans différentes tables de Coléo. La hiérarchie des tables à renseigner est cruciale, sans quoi l’injection de la campagne est vouée à l’échec. Les prochaines étapes détaillent l’ajout d’information dans les tables:</p>
 <ol style="list-style-type: decimal">
 <li>Campagnes (“<em>/campaigns</em>”)</li>
@@ -597,7 +597,7 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </ol>
 <div id="injections-des-informations-sur-les-nouvelles-campagnes" class="section level3">
 <h3 class="hasAnchor">
-<a href="#injections-des-informations-sur-les-nouvelles-campagnes" class="anchor"></a>8.1. Injections des informations sur les nouvelles campagnes</h3>
+<a href="#injections-des-informations-sur-les-nouvelles-campagnes" class="anchor" aria-hidden="true"></a>8.1. Injections des informations sur les nouvelles campagnes</h3>
 <p>Les champs de la table <strong>campagnes</strong> (“/campaigns”) de Coléo qui seront remplis sont les suivants :</p>
 <ul>
 <li><em>site_id</em></li>
@@ -610,7 +610,7 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </ul>
 <div id="on-commence-par-séléctionner-les-champs-dinterêts-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts-" class="anchor"></a>8.1.1. On commence par séléctionner les champs d’interêts.</h4>
+<a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts-" class="anchor" aria-hidden="true"></a>8.1.1. On commence par séléctionner les champs d’interêts.</h4>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.1. Sélection</span>
 <span class="va">donnees_inj_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">donnees_inj_cell_site_id</span>,
@@ -619,37 +619,37 @@ document.getElementById("myDIV_taxa").style.display ="none"
                            <span class="va">technician_1</span>,
                            <span class="va">technician_2</span>,
                            <span class="va">opened_at</span>,
-                           <span class="va">closed_at</span><span class="op">)</span> <span class="op">%&gt;%</span>
+                           <span class="va">closed_at</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="co"># 8.1.2. Retrait des duplicat</span>
   <span class="va">distinct</span></code></pre></div>
 </div>
 <div id="on-garde-une-ligne-unique-par-nouvelle-campagne-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-garde-une-ligne-unique-par-nouvelle-campagne-" class="anchor"></a>8.1.2. On garde une ligne unique par nouvelle campagne.</h4>
+<a href="#on-garde-une-ligne-unique-par-nouvelle-campagne-" class="anchor" aria-hidden="true"></a>8.1.2. On garde une ligne unique par nouvelle campagne.</h4>
 <p>avec <code><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct()</a></code>, en haut</p>
 </div>
 <div id="on-créé-la-liste-pour-le-nom-des-techniciens-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-cr%C3%A9%C3%A9-la-liste-pour-le-nom-des-techniciens-" class="anchor"></a>8.1.3. On créé la liste pour le nom des techniciens.</h4>
+<a href="#on-cr%C3%A9%C3%A9-la-liste-pour-le-nom-des-techniciens-" class="anchor" aria-hidden="true"></a>8.1.3. On créé la liste pour le nom des techniciens.</h4>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.3. Création liste de technicien.ne.s</span>
 
-<span class="va">donnees_inj_camp_tech</span> <span class="op">&lt;-</span> <span class="va">donnees_inj_camp</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>technicians <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">technician_1</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">donnees_inj_camp_tech</span> <span class="op">&lt;-</span> <span class="va">donnees_inj_camp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>technicians <span class="op">=</span> <span class="fu">map</span><span class="op">(</span><span class="va">technician_1</span>, <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">.x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">technician_1</span><span class="op">)</span>
 
 <span class="co"># Chaque niveau de la liste correspond à une association des deux noms des technicien/ne/s pour chaque ligne du tableau</span></code></pre></div>
 </div>
 <div id="on-transforme-le-tableau-en-liste-pour-pouvoir-injecter-les-données-dans-coléo-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-transforme-le-tableau-en-liste-pour-pouvoir-injecter-les-donn%C3%A9es-dans-col%C3%A9o-" class="anchor"></a>8.1.4. On transforme le tableau en liste pour pouvoir injecter les données dans Coléo.</h4>
+<a href="#on-transforme-le-tableau-en-liste-pour-pouvoir-injecter-les-donn%C3%A9es-dans-col%C3%A9o-" class="anchor" aria-hidden="true"></a>8.1.4. On transforme le tableau en liste pour pouvoir injecter les données dans Coléo.</h4>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.4. Conversion de l'objet pour l'injection</span>
 <span class="va">camp_ls</span> <span class="op">&lt;-</span> <span class="fu">transpose</span><span class="op">(</span><span class="va">donnees_inj_camp_tech</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-injecte-" class="anchor"></a>8.1.5. On injecte.</h4>
+<a href="#on-injecte-" class="anchor" aria-hidden="true"></a>8.1.5. On injecte.</h4>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.5. Injection</span>
 <span class="va">COLEO_camp_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_campaigns.html">post_campaigns</a></span><span class="op">(</span><span class="va">camp_ls</span><span class="op">)</span> </code></pre></div>
@@ -657,7 +657,7 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </div>
 <div id="on-récupère-la-liste-de-campagnes-provenant-de-coléo-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-r%C3%A9cup%C3%A8re-la-liste-de-campagnes-provenant-de-col%C3%A9o-" class="anchor"></a>8.1.6. On récupère la liste de campagnes provenant de Coléo.</h4>
+<a href="#on-r%C3%A9cup%C3%A8re-la-liste-de-campagnes-provenant-de-col%C3%A9o-" class="anchor" aria-hidden="true"></a>8.1.6. On récupère la liste de campagnes provenant de Coléo.</h4>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.6. Liste des campagnes</span>
 <span class="va">campaigns</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_campaigns.html">get_campaigns</a></span><span class="op">(</span><span class="op">)</span>
@@ -666,11 +666,11 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </div>
 <div id="on-récupère-le-id-unique-pour-chaque-campagne-nouvellement-insérées-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-r%C3%A9cup%C3%A8re-le-id-unique-pour-chaque-campagne-nouvellement-ins%C3%A9r%C3%A9es-" class="anchor"></a>8.1.7. On récupère le id unique pour chaque campagne nouvellement insérées.</h4>
+<a href="#on-r%C3%A9cup%C3%A8re-le-id-unique-pour-chaque-campagne-nouvellement-ins%C3%A9r%C3%A9es-" class="anchor" aria-hidden="true"></a>8.1.7. On récupère le id unique pour chaque campagne nouvellement insérées.</h4>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.7. Récupération des IDs des campagnes</span>
 <span class="va">donnees_inj_cell_site_camp_id</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">donnees_inj_cell_site_id</span>,
-                                      <span class="va">campaigns_df</span> <span class="op">%&gt;%</span>
+                                      <span class="va">campaigns_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
                                         <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span>campaign_id <span class="op">=</span> <span class="va">id</span>,
                                                <span class="va">site_id</span>,
                                                <span class="va">opened_at</span>, 
@@ -680,40 +680,40 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </div>
 <div id="injections-des-repères-associés-aux-nouvelles-campagnes" class="section level3">
 <h3 class="hasAnchor">
-<a href="#injections-des-rep%C3%A8res-associ%C3%A9s-aux-nouvelles-campagnes" class="anchor"></a>8.2. Injections des repères associés aux nouvelles campagnes</h3>
+<a href="#injections-des-rep%C3%A8res-associ%C3%A9s-aux-nouvelles-campagnes" class="anchor" aria-hidden="true"></a>8.2. Injections des repères associés aux nouvelles campagnes</h3>
 <p>Les champs de la table <strong>repères</strong> (“/landmarks”) de Coléo qui peuvent être remplis sont les suivants : * <em>campaign_id</em> * <em>geom</em></p>
 <div id="on-commence-par-séléctionner-les-champs-dinterêts--1" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts--1" class="anchor"></a>On commence par séléctionner les champs d’interêts.</h4>
+<a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts--1" class="anchor" aria-hidden="true"></a>On commence par séléctionner les champs d’interêts.</h4>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.1. Sélection</span>
 <span class="va">land_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">donnees_inj_cell_site_camp_id</span>,
                            <span class="va">campaign_id</span>,
                            <span class="va">lat</span>,
-                           <span class="va">lon</span><span class="op">)</span> <span class="op">%&gt;%</span>
+                           <span class="va">lon</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="co"># 8.2.2. Retrait des duplicats</span>
   <span class="va">distinct</span></code></pre></div>
 <p>On garde une ligne par repère (c’est-à-dire par campagne), avec <code>distinct</code></p>
 </div>
 <div id="on-créé-le-champs-geom-de-coléo-sous-forme-de-liste-en-utilisant-les-variables-lat-lon-du-tableau-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-cr%C3%A9%C3%A9-le-champs-geom-de-col%C3%A9o-sous-forme-de-liste-en-utilisant-les-variables-lat-lon-du-tableau-" class="anchor"></a>On créé le champs <code>geom</code> de Coléo, sous forme de liste, en utilisant les variables <em>lat</em> &amp; <em>lon</em> du tableau.</h4>
+<a href="#on-cr%C3%A9%C3%A9-le-champs-geom-de-col%C3%A9o-sous-forme-de-liste-en-utilisant-les-variables-lat-lon-du-tableau-" class="anchor" aria-hidden="true"></a>On créé le champs <code>geom</code> de Coléo, sous forme de liste, en utilisant les variables <em>lat</em> &amp; <em>lon</em> du tableau.</h4>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.4. Création de la variable `geom`</span>
 <span class="va">land_camp_formatted</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/format_spatial.html">format_spatial</a></span><span class="op">(</span><span class="va">land_camp</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-transforme-le-tableau-en-liste-pour-pouvoir-linjecter-dans-coléo-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-transforme-le-tableau-en-liste-pour-pouvoir-linjecter-dans-col%C3%A9o-" class="anchor"></a>On transforme le tableau en liste pour pouvoir l’injecter dans Coléo.</h4>
+<a href="#on-transforme-le-tableau-en-liste-pour-pouvoir-linjecter-dans-col%C3%A9o-" class="anchor" aria-hidden="true"></a>On transforme le tableau en liste pour pouvoir l’injecter dans Coléo.</h4>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.3. Conversion de l'objet pour l'injection</span>
-<span class="va">land_ls</span> <span class="op">&lt;-</span> <span class="va">land_camp_formatted</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">campaign_id</span>, <span class="va">geom</span><span class="op">)</span> <span class="op">%&gt;%</span>
+<span class="va">land_ls</span> <span class="op">&lt;-</span> <span class="va">land_camp_formatted</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">campaign_id</span>, <span class="va">geom</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="va">transpose</span></code></pre></div>
 </div>
 <div id="il-est-maintenant-possible-de-procéder-à-linjection-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#il-est-maintenant-possible-de-proc%C3%A9der-%C3%A0-linjection-" class="anchor"></a>Il est maintenant possible de procéder à l’injection.</h4>
+<a href="#il-est-maintenant-possible-de-proc%C3%A9der-%C3%A0-linjection-" class="anchor" aria-hidden="true"></a>Il est maintenant possible de procéder à l’injection.</h4>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.6. Injection</span>
 <span class="va">COLEO_land_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_landmarks.html">post_landmarks</a></span><span class="op">(</span><span class="va">land_ls</span><span class="op">)</span></code></pre></div>
@@ -722,7 +722,7 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </div>
 <div id="injections-des-appareils" class="section level3">
 <h3 class="hasAnchor">
-<a href="#injections-des-appareils" class="anchor"></a>8.3. Injections des appareils</h3>
+<a href="#injections-des-appareils" class="anchor" aria-hidden="true"></a>8.3. Injections des appareils</h3>
 <p>Les champs de la table <strong>appareils</strong> (“/devices”) de Coléo qui peuvent être remplis sont les suivants :</p>
 <ul>
 <li><em>campaign_id</em></li>
@@ -731,20 +731,20 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </ul>
 <div id="on-commence-par-séléctionner-les-champs-dinterêts--2" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts--2" class="anchor"></a>8.3.1. On commence par séléctionner les champs d’interêts.</h4>
+<a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts--2" class="anchor" aria-hidden="true"></a>8.3.1. On commence par séléctionner les champs d’interêts.</h4>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.3.1. Sélection</span>
 <span class="va">app_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">donnees_inj_cell_site_camp_id</span>,
                           <span class="va">campaign_id</span>,
-                          <span class="va">mic_ultra_code</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>mic_h_cm_ultra <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">%&gt;%</span>
+                          <span class="va">mic_ultra_code</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>mic_h_cm_ultra <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="va">distinct</span>
 
 <span class="va">app_camp_ls</span> <span class="op">&lt;-</span> <span class="fu">transpose</span><span class="op">(</span><span class="va">app_camp</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte--1" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-injecte--1" class="anchor"></a>8.3.4. On injecte.</h4>
+<a href="#on-injecte--1" class="anchor" aria-hidden="true"></a>8.3.4. On injecte.</h4>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.3.4. Injection</span>
 <span class="va">COLEO_app_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_environments.html">post_environments</a></span><span class="op">(</span><span class="va">app_camp_ls</span><span class="op">)</span></code></pre></div>
@@ -753,7 +753,7 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </div>
 <div id="insertion-des-observations" class="section level3">
 <h3 class="hasAnchor">
-<a href="#insertion-des-observations" class="anchor"></a>8.5. Insertion des observations</h3>
+<a href="#insertion-des-observations" class="anchor" aria-hidden="true"></a>8.5. Insertion des observations</h3>
 <p>Les champs de la table <strong>observations</strong> (“/observations”) de Coléo qui peuvent être remplis sont les suivants :</p>
 <ul>
 <li><em>campaign_id</em></li>
@@ -763,7 +763,7 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </ul>
 <div id="on-sélectionne-les-champs-dintérêts-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-s%C3%A9lectionne-les-champs-dint%C3%A9r%C3%AAts-" class="anchor"></a>8.5.1. On sélectionne les champs d’intérêts.</h4>
+<a href="#on-s%C3%A9lectionne-les-champs-dint%C3%A9r%C3%AAts-" class="anchor" aria-hidden="true"></a>8.5.1. On sélectionne les champs d’intérêts.</h4>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.5.1. Création &amp; sélection</span>
 <span class="co"># Création de 2 variables nécessaires</span>
@@ -776,21 +776,21 @@ document.getElementById("myDIV_taxa").style.display ="none"
                           <span class="va">time_obs</span>,
                           <span class="co"># note column s'il y en a</span>
                           notes <span class="op">=</span> <span class="cn">NULL</span>,
-                          <span class="va">campaign_id</span><span class="op">)</span> <span class="op">%&gt;%</span>
+                          <span class="va">campaign_id</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>is_valid <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-garde-une-ligne-par-campagne-on-formatte-les-données-à-insérer-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-garde-une-ligne-par-campagne-on-formatte-les-donn%C3%A9es-%C3%A0-ins%C3%A9rer-" class="anchor"></a>8.5.2. On garde une ligne par campagne &amp; on formatte les données à insérer.</h4>
+<a href="#on-garde-une-ligne-par-campagne-on-formatte-les-donn%C3%A9es-%C3%A0-ins%C3%A9rer-" class="anchor" aria-hidden="true"></a>8.5.2. On garde une ligne par campagne &amp; on formatte les données à insérer.</h4>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.5.2. Retrait des duplicats</span>
-<span class="va">obs_camp_ls</span> <span class="op">&lt;-</span> <span class="va">obs_camp</span> <span class="op">%&gt;%</span>
-  <span class="va">distinct</span> <span class="op">%&gt;%</span>
+<span class="va">obs_camp_ls</span> <span class="op">&lt;-</span> <span class="va">obs_camp</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+  <span class="va">distinct</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
   <span class="va">transpose</span></code></pre></div>
 </div>
 <div id="on-injecte--2" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-injecte--2" class="anchor"></a>8.5.3. On injecte.</h4>
+<a href="#on-injecte--2" class="anchor" aria-hidden="true"></a>8.5.3. On injecte.</h4>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.5.4. Injection</span>
 <span class="va">COLEO_obs_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_obs.html">post_obs</a></span><span class="op">(</span><span class="va">obs_camp_ls</span><span class="op">)</span></code></pre></div>
@@ -798,7 +798,7 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </div>
 <div id="on-récupère-la-liste-des-observations-de-coléo-et-on-met-à-jour-le-tableau-de-campagnes-à-injecter-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-r%C3%A9cup%C3%A8re-la-liste-des-observations-de-col%C3%A9o-et-on-met-%C3%A0-jour-le-tableau-de-campagnes-%C3%A0-injecter-" class="anchor"></a>8.5.5. On récupère la liste des observations de Coléo et on met à jour le tableau de campagnes à injecter.</h4>
+<a href="#on-r%C3%A9cup%C3%A8re-la-liste-des-observations-de-col%C3%A9o-et-on-met-%C3%A0-jour-le-tableau-de-campagnes-%C3%A0-injecter-" class="anchor" aria-hidden="true"></a>8.5.5. On récupère la liste des observations de Coléo et on met à jour le tableau de campagnes à injecter.</h4>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.5.5. Acquisition de la liste d'observations de Coléo</span>
 <span class="va">obs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_gen.html">get_gen</a></span><span class="op">(</span><span class="st">"/observations"</span><span class="op">)</span>
@@ -811,7 +811,7 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </div>
 <div id="injections-des-observations-despèce" class="section level3">
 <h3 class="hasAnchor">
-<a href="#injections-des-observations-desp%C3%A8ce" class="anchor"></a>8.6. Injections des observations d’espèce</h3>
+<a href="#injections-des-observations-desp%C3%A8ce" class="anchor" aria-hidden="true"></a>8.6. Injections des observations d’espèce</h3>
 <p>Les champs de la table <strong>observations des espèces</strong> (“/obs_species”) de Coléo qui peuvent être remplis sont les suivants :</p>
 <ul>
 <li><em>observation_id</em></li>
@@ -822,7 +822,7 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </ul>
 <div id="on-sélectionne-les-champs-dintérêts--1" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-s%C3%A9lectionne-les-champs-dint%C3%A9r%C3%AAts--1" class="anchor"></a>8.6.1. On sélectionne les champs d’intérêts.</h4>
+<a href="#on-s%C3%A9lectionne-les-champs-dint%C3%A9r%C3%AAts--1" class="anchor" aria-hidden="true"></a>8.6.1. On sélectionne les champs d’intérêts.</h4>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co"># 8.6.1. Sélection</span></span>
 <span id="cb38-2"><a href="#cb38-2"></a>obs_spe_camp &lt;-<span class="st"> </span>dplyr<span class="op">::</span><span class="kw">select</span>(camp</span>
 <span id="cb38-3"><a href="#cb38-3"></a>                              observation_id,</span>
@@ -834,14 +834,14 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </div>
 <div id="on-formatte-les-données-à-injecter-" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-formatte-les-donn%C3%A9es-%C3%A0-injecter-" class="anchor"></a>8.6.2. On formatte les données à injecter.</h4>
+<a href="#on-formatte-les-donn%C3%A9es-%C3%A0-injecter-" class="anchor" aria-hidden="true"></a>8.6.2. On formatte les données à injecter.</h4>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.6.2. Conversion de l'objet pour l'injection</span>
 <span class="va">obs_spe_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">obs_spe_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="on-injecte--3" class="section level4">
 <h4 class="hasAnchor">
-<a href="#on-injecte--3" class="anchor"></a>8.6.3. On injecte.</h4>
+<a href="#on-injecte--3" class="anchor" aria-hidden="true"></a>8.6.3. On injecte.</h4>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.6.3. Injection</span>
 <span class="va">COLEO_obsref_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_obs_species.html">post_obs_species</a></span><span class="op">(</span><span class="va">obs_spe_camp_ls</span><span class="op">)</span></code></pre></div>
