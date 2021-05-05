@@ -33,7 +33,8 @@ endpoints <- function(){
     devices = "/devices",
     obs_species = "/obs_species",
     efforts = "/efforts",
-    summary = "/campaigns_summary"
+    summary = "/campaigns_summary",
+    species_list = "/species_list"
   )
 }
 

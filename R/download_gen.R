@@ -34,7 +34,7 @@ query_df_gen <- function(query_df, query_info, endpoint, ...) {
   if (endpoint == "observations") assertthat::assert_that(query_info == "campaign_id")
 
   # select the variables required for a request and ask the API
-  queries <- purrr::transpose(query_df[query_info])
+  queries <- purrr::transpose(as.data.frame(query_df)[query_info])
 
   # send a GET request to the specified endpoint.
   responses <- purrr::map(queries,
