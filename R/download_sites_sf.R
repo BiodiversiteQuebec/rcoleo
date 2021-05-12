@@ -16,7 +16,7 @@ download_sites_sf <- function(...) {
   rcoleo_sites <- rcoleo::get_sites(...)
 
   # extract the body of the response from the nested list. this might be a list
-  body <- rcoleo_sites[[1]]$body
+  body <- purrr::flatten(purrr::map(rcoleo_sites, "body"))
 
   if (!is.list(body)) stop("Response from get_sites is not a list. Did you change the API or rcoleo functions?")
 

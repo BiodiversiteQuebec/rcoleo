@@ -1,4 +1,4 @@
-context("gen_gen")
+context("test get_gen and query_gen")
 
 test_that("API returns sensible error message when not authorised", {
   ## Once the api key is set up, you'll need to make it *not* available here, something like
@@ -27,14 +27,15 @@ test_that("API returns sensible error message when not authorised", {
 
 test_that("can get species names from a site df", {
 
-  # download_sites_sf(site_code = c("148_101_F01", "145_141_H01"))
-
-
-
+  test_sites <- c("148_101_F01", "145_141_H01")
   ## need to restructure the code and test all the downloading function
-  # one_site <- download_sites_sf(site_code = "148_101_F01")
+  n_sites <- download_sites_sf(site_code = test_sites)
   #
-  # query_df_gen(one_site, query_info = "site_code", endpoint = "species_list")
-  # # this last line is wrong
-  # query_df_gen(one_site$campaigns[[1]], query_info = "campaign_id", endpoint = "observations")
+  resplist <- purrr::map(n_sites$site_code,
+             ~ query_gen(endpoint = "species_list", list(site_code = .)))
+
+  # should get back the same number of things
+  expect_equal(length(test_sites), length(resplist))
+
 })
+
