@@ -39,3 +39,33 @@ test_that("can get species names from a site df", {
 
 })
 
+test_that("can get all species names for a campaign",{
+
+  resp <- query_gen("species_list", list(campaign_type = "acoustique"))
+
+  expect_s3_class(resp, "data.frame")
+  expect_type(resp[[1]], "character")
+  expect_equal(ncol(resp), 1)
+
+  })
+
+
+test_that("both campaign type and site work",{
+
+  resp <- query_gen("species_list", list(campaign_type = "acoustique", site_code = "145_141_H01"))
+
+  expect_s3_class(resp, "data.frame")
+  expect_type(resp[[1]], "character")
+  expect_equal(ncol(resp), 1)
+
+})
+
+
+# tested and it was VERY slow!
+# test_that("sites_species works",{
+#
+#   # https://coleo.biodiversite-quebec.ca/api/v1/sites_species?campaign_type=insectes_sol
+#   # raw_resp <- get_gen("/sites_species", list(campaign_type = "insects_sol"))
+#
+#
+# })
