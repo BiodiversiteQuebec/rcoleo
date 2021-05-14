@@ -38,7 +38,16 @@ endpoints <- function(){
     sites_species = "/sites_species"
   )
 }
-
+# # short excerpt to update the list of campaign types if/when more get added!!
+# ss <- download_sites_sf()
+# purrr::keep(ss$campaigns, ~ nrow(.)>0) %>%
+#   purrr::map("type") %>%
+#   purrr::map(unique) %>%
+#   purrr::flatten_chr() %>% unique %>% dput
+campaign_types <- function(){
+  c("végétation", "papilionidés", "acoustique", "insectes_sol",
+    "mammifères", "odonates", "zooplancton")
+}
 
 
 # PRINT/MESSAGES HELPERS
