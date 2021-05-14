@@ -133,6 +133,9 @@
     <loc>/reference/get_species.html</loc>
   </url>
   <url>
+    <loc>/reference/get_species_list.html</loc>
+  </url>
+  <url>
     <loc>/reference/get_traps.html</loc>
   </url>
   <url>
@@ -209,5 +212,8 @@
   </url>
   <url>
     <loc>/reference/sf_sites.html</loc>
+  </url>
+  <url>
+    <loc>/reference/validate_campaign_type.html</loc>
   </url>
 </urlset>
