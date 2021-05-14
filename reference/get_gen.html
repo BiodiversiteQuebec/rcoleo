@@ -72,8 +72,6 @@
 
 
 
-<!-- dependencies from examples -->
-
 
   
 
@@ -190,14 +188,14 @@
     <p>Fonction générique pour retirer de l'information depuis l'API de Coléo</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_gen</span><span class='op'>(</span>
+    <div class="ref-usage sourceCode"><pre class='sourceCode r'><code><span class='fu'>get_gen</span><span class='op'>(</span>
   <span class='va'>endpoint</span>,
   query <span class='op'>=</span> <span class='cn'>NULL</span>,
   limit <span class='op'>=</span> <span class='fl'>100</span>,
   verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
   token <span class='op'>=</span> <span class='fu'>bearer</span><span class='op'>(</span><span class='op'>)</span>,
   <span class='va'>...</span>
-<span class='op'>)</span></pre>
+<span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -236,13 +234,13 @@
     <p>Les points d'accès de l'API sont énuméré dans l'environment de coléo, voir <code>print(endpoints)</code></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
+    <div class="ref-examples sourceCode"><pre class='sourceCode r'><code><span class='r-in'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span></span>
 <span class='r-in'><span class='va'>resp</span> <span class='op'>&lt;-</span> <span class='fu'>get_gen</span><span class='op'>(</span><span class='st'>"/cells"</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>resp</span><span class='op'>)</span> <span class='co'># Nombre de pages retourné par l'appel sur le point d'accès de l'API.</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='va'>resp</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span></span>
 <span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/class.html'>class</a></span><span class='op'>(</span><span class='va'>resp</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>)</span></span>
 <span class='r-in'><span class='op'>}</span></span>
-</pre>
+</code></pre></div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
