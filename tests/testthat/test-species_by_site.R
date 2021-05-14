@@ -34,6 +34,3 @@ test_that("can get a binary sxs matrix", {
 
 })
 
-test_that("can get a matrix for any site and campaign", {
-  species_list_sites()
-})
