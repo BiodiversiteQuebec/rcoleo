@@ -1,10 +1,22 @@
-species_list_sites <- function(campaign_type = "acoustique", site_code){
+# functions for getting species lists and species-by-site matrices for specific sites
+
+
+#' get the species list for a site
+#'
+#' @param campaign_type campaign type. Can be any valid campaign name, see [validate_campaign_type()]
+#' @param site_code any site code. can also be a vector
+#'
+#' @return the species list for a site, as a list
+#' @export
+get_species_list <- function(campaign_type = "acoustique", site_code){
 
   assertthat::assert_that(is.character(site_code))
 
+  camp_type <- validate_campaign_type(campaign_type)
+
   # function to query desired endpoing and campaign type
   query_fn <- function(s_c) query_gen("species_list",
-                                          list(campaign_type = campaign_type,
+                                          list(campaign_type = camp_type,
                                                site_code = s_c))
 
   purrr::map(purrr::set_names(site_code), query_fn)
@@ -31,4 +43,4 @@ species_site_matrix <- function(species_list){
   return(m)
 }
 
-
+## convenience function to combine these together

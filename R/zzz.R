@@ -45,8 +45,8 @@ endpoints <- function(){
 #   purrr::map(unique) %>%
 #   purrr::flatten_chr() %>% unique %>% dput
 campaign_types <- function(){
-  c("végétation", "papilionidés", "acoustique", "insectes_sol",
-    "mammifères", "odonates", "zooplancton")
+  c("v\u00e9g\u00e9tation", "papilionid\u00e9s", "acoustique", "insectes_sol",
+    "mammif\u00e8res", "odonates", "zooplancton")
 }
 
 

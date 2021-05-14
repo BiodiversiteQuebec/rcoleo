@@ -3,7 +3,7 @@
 #' Validate user input of campaign type
 #'
 #' Matches input against the valid campaign types. These are stored in an
-#' internal list at [campaign_types()]. If a new campaign type is added, this
+#' internal list at `zzz.R`. If a new campaign type is added, this
 #' will have to change.
 #'
 #' @param campaign_input Must be one of "végétation", "papilionidés",
