@@ -2,6 +2,7 @@ species_list_sites <- function(campaign_type = "acoustique", site_code){
 
   assertthat::assert_that(is.character(site_code))
 
+  # function to query desired endpoing and campaign type
   query_fn <- function(s_c) query_gen("species_list",
                                           list(campaign_type = campaign_type,
                                                site_code = s_c))
@@ -29,3 +30,5 @@ species_site_matrix <- function(species_list){
 
   return(m)
 }
+
+
