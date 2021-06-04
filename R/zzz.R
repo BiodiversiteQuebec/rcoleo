@@ -51,7 +51,7 @@ campaign_types <- function(){
 }
 
 site_types <- function(){
-  c("lac", "rivière", "forestier", "marais", "marais côtier", "toundrique", "tourbière")
+  c("lac", "rivi\u00e8re", "forestier", "marais", "marais c\u00f4tier", "toundrique", "tourbi\u00e8re")
 }
 
 
