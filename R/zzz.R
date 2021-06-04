@@ -35,7 +35,8 @@ endpoints <- function(){
     efforts = "/efforts",
     summary = "/campaigns_summary",
     species_list = "/species_list",
-    sites_species = "/sites_species"
+    sites_species = "/sites_species",
+    richness = "/richness"
   )
 }
 # # short excerpt to update the list of campaign types if/when more get added!!
@@ -47,6 +48,10 @@ endpoints <- function(){
 campaign_types <- function(){
   c("v\u00e9g\u00e9tation", "papilionid\u00e9s", "acoustique", "insectes_sol",
     "mammif\u00e8res", "odonates", "zooplancton")
+}
+
+site_types <- function(){
+  c("lac", "rivière", "forestier", "marais", "marais côtier", "toundrique", "tourbière")
 }
 
 
