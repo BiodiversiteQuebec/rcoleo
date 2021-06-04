@@ -15,7 +15,7 @@ get_richness <- function(campaign_type=NULL, site_type=NULL, site_code=NULL, by_
   camp_type <- validate_campaign_type(campaign_type)
   params <-  list(campaign_type = camp_type,
 	          	site_type = site_type,
-	          	site = site,
+	          	site_code = site_code,
 	          	by_site_type = by_site_type,
 	          	by_campaign_type = by_campaign_type
           	)
