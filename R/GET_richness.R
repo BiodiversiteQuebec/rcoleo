@@ -12,9 +12,9 @@
 #' @export
 get_richness <- function(campaign_type=NULL, site_type=NULL, site_code=NULL, by_site_type=NULL, by_campaign_type=NULL) {
 
-  camp_type <- validate_campaign_type(campaign_type)
+  camp_type <- if ( is.null(campaign_type) ) NULL else validate_campaign_type(campaign_type)
 
-  site_type_val <- validate_site_type(site_type)
+  site_type <- if ( is.null(site_type) ) NULL else validate_site_type(site_type)
 
   params <-  list(campaign_type = camp_type,
 	          	site_type = site_type,
@@ -22,7 +22,7 @@ get_richness <- function(campaign_type=NULL, site_type=NULL, site_code=NULL, by_
 	          	by_site_type = by_site_type,
 	          	by_campaign_type = by_campaign_type
           	)
-  params <- params[lapply(params,function(t){!is.null(t)})==TRUE]
+  params <- params[lapply(params,function(t){!is.null(t)}) == TRUE]
 
   # function to query desired endpoing and campaign type
   query_resp <- query_gen("richness",
