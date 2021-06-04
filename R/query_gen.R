@@ -5,8 +5,6 @@
 #'
 #' @return a data.frame of endpoint answers
 #' @export
-#'
-#' @examples
 query_gen <- function(endpoint, ...) {
 
   assertthat::assert_that(
