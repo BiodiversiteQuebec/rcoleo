@@ -124,6 +124,9 @@
     <loc>/reference/get_obs.html</loc>
   </url>
   <url>
+    <loc>/reference/get_richness.html</loc>
+  </url>
+  <url>
     <loc>/reference/get_samples.html</loc>
   </url>
   <url>
@@ -218,5 +221,8 @@
   </url>
   <url>
     <loc>/reference/validate_campaign_type.html</loc>
+  </url>
+  <url>
+    <loc>/reference/validate_site_type.html</loc>
   </url>
 </urlset>
