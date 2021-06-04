@@ -10,7 +10,7 @@
 #'
 #' @return data.frame with richness values. Richness is simply calculated as unique species names that are not in category "autres".
 #' @export
-get_richness <- function(campaign_type=NULL, site_type=NULL, site_code=NULL, by_site_type=NULL, by_campaign_type=NULL) {
+get_richness <- function(campaign_type=NULL, site_type=NULL, site_code=NULL, by_site= NULL, by_site_type=NULL, by_campaign_type=NULL) {
 
   camp_type <- validate_campaign_type(campaign_type)
 
@@ -19,6 +19,7 @@ get_richness <- function(campaign_type=NULL, site_type=NULL, site_code=NULL, by_
   params <-  list(campaign_type = camp_type,
 	          	site_type = site_type,
 	          	site_code = site_code,
+              by_site = by_site,
 	          	by_site_type = by_site_type,
 	          	by_campaign_type = by_campaign_type
           	)
