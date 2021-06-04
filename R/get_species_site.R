@@ -12,7 +12,8 @@ get_species_site <- function(campaign_type) {
 
   # function to query desired endpoing and campaign type
   query_resp <- query_gen("sites_species",
-                          list(campaign_type = camp_type))
+                          list(campaign_type = camp_type),
+                          token = bearer())
 
   return(query_resp)
 
