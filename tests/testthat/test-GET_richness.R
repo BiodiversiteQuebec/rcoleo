@@ -4,6 +4,6 @@ test_that("richness downloads correctly", {
 
   expect_s3_class(full_table, "tbl_df")
 
-  expect_eq(nrow(full_table), 1)
+  expect_equal(nrow(full_table), 1)
 
   })
