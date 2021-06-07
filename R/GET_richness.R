@@ -5,12 +5,13 @@
 #' @param campaign_type any campaign type. see [validate_campaign_type()]. Can be a partial match.
 #' @param site_type any site type.
 #' @param site_code a site_code.
-#' @param by_site_type whether to summarize across site_types.
-#' @param by_campaign_type whether to summarize across campaigns
+#' @param by_site whether to calculate richness by site
+#' @param by_site_type whether to calculate richness by site type
+#' @param by_campaign_type whether to calculature richness by campaign type
 #'
 #' @return data.frame with richness values. Richness is simply calculated as unique species names that are not in category "autres".
 #' @export
-get_richness <- function(campaign_type=NULL, site_type=NULL, site_code=NULL, by_site= NULL, by_site_type=NULL, by_campaign_type=NULL) {
+get_richness <- function(campaign_type=NULL, site_type=NULL, site_code=NULL, by_site= NULL, by_site_type=NULL, by_campaign_type=NULL, by_date=NULL) {
 
   camp_type <- if ( is.null(campaign_type) ) NULL else validate_campaign_type(campaign_type)
 
@@ -21,7 +22,8 @@ get_richness <- function(campaign_type=NULL, site_type=NULL, site_code=NULL, by_
 	          	site_code = site_code,
               by_site = by_site,
 	          	by_site_type = by_site_type,
-	          	by_campaign_type = by_campaign_type
+	          	by_campaign_type = by_campaign_type,
+              by_date = by_date,
           	)
   params <- params[lapply(params,function(t){!is.null(t)}) == TRUE]
 
