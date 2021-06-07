@@ -28,7 +28,7 @@ get_richness <- function(campaign_type=NULL, site_type=NULL, site_code=NULL, spe
               by_site_type = by_site_type,
 	          	by_campaign_type = by_campaign_type,
               by_date = by_date,
-              by_species_category = by_species_category,
+              by_species_category = by_species_category
           	)
   params <- params[lapply(params,function(t){!is.null(t)}) == TRUE]
 
