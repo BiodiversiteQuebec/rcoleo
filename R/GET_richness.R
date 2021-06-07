@@ -8,10 +8,11 @@
 #' @param by_site whether to calculate richness by site
 #' @param by_site_type whether to calculate richness by site type
 #' @param by_campaign_type whether to calculature richness by campaign type
+#' @param by_date whether to calculature richness by date
 #'
 #' @return data.frame with richness values. Richness is simply calculated as unique species names that are not in category "autres".
 #' @export
-get_richness <- function(campaign_type=NULL, site_type=NULL, site_code=NULL, by_site= NULL, by_site_type=NULL, by_campaign_type=NULL, by_date=NULL) {
+get_richness <- function(campaign_type=NULL, site_type=NULL, site_code=NULL, by_site=NULL, by_site_type=NULL, by_campaign_type=NULL, by_date=NULL) {
 
   camp_type <- if ( is.null(campaign_type) ) NULL else validate_campaign_type(campaign_type)
 
