@@ -8,18 +8,16 @@
 #'
 #' @return the species list for a site, as a list
 #' @export
-get_species_list <- function(campaign_type = "acoustique", site_code){
-
-  assertthat::assert_that(is.character(site_code))
+get_species_list <- function(campaign_type = NULL, site_code = NULL){
 
   camp_type <- validate_campaign_type(campaign_type)
 
-  # function to query desired endpoing and campaign type
-  query_fn <- function(s_c) query_gen("species_list",
-                                          list(campaign_type = camp_type,
-                                               site_code = s_c))
+  params <- list(campaign_type = camp_type, site_code = site_code)
 
-  purrr::map(purrr::set_names(site_code), query_fn)
+  params <- params[lapply(params,function(t){!is.null(t)}) == TRUE]
+
+  query_resp <- query_gen("species_list",params)
+  return(query_resp)
 }
 
 
