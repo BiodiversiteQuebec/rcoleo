@@ -22,8 +22,6 @@ test_that("species_by_site returns list", {
   expect_type(resp_veg, "list")
 
 
-  expect_s3_class(resp_veg[[1]], "tbl_df")
-
   expect_gt(nrow(resp_veg[[1]]), 0)
 
 })
