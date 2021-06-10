@@ -4,16 +4,20 @@
 \alias{get_species_list}
 \title{get the species list for a site}
 \usage{
-get_species_list(campaign_type = "acoustique", site_code)
+get_species_list(campaign_type = NULL, site_code = NULL)
 }
 \arguments{
 \item{campaign_type}{campaign type. Can be any valid campaign name, see \code{\link[=validate_campaign_type]{validate_campaign_type()}}}
 
-\item{site_code}{any site code. can also be a vector}
+\item{site_code}{any site code. Must be a single value}
 }
 \value{
 the species list for a site, as a list
 }
 \description{
 get the species list for a site
+}
+\details{
+This function downloads a species list and the number of times that species is observed.
+You must supply either the type of campaign, the code of the site, or both.
 }
