@@ -4,7 +4,7 @@ test_that("richness downloads correctly", {
 
   expect_s3_class(full_table, "tbl_df")
 
-  expect_gt(nrow(full_table), 3)
+  expect_equal(nrow(full_table), 1)
 
 
   get_richness(campaign_type = "ac")
