@@ -3,6 +3,8 @@
 #' get a datafram of unique site and species occurences for any type of sampling campaign.
 #'
 #' @param campaign_type any campaign type. see [validate_campaign_type()]. Can be a partial match.
+#' @param campaign_type any campaign type. see [validate_campaign_type()]. Can be a partial match.
+#' @param campaign_type any campaign type. see [validate_campaign_type()]. Can be a partial match.
 #'
 #' @return data. frame of species occurences in sites according to the database.
 #' @export

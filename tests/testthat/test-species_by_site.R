@@ -1,8 +1,4 @@
 
-two_sites <- c("124_86_H01", "145_141_H01")
-resp_2 <- get_species_list(site_code = two_sites)
-
-
 
 test_that("species_by_site returns list", {
 
@@ -11,10 +7,6 @@ test_that("species_by_site returns list", {
 
   expect_type(resp, "list")
 
-  expect_type(resp_2, "list")
-
-  expect_named(resp_2, two_sites)
-
 
   # for vegetation
   resp_veg <- get_species_list(campaign_type = "v", site_code = "148_101_H01")
@@ -22,9 +14,21 @@ test_that("species_by_site returns list", {
   expect_type(resp_veg, "list")
 
 
-  expect_s3_class(resp_veg[[1]], "tbl_df")
+  expect_gt(nrow(resp_veg), 0)
 
-  expect_gt(nrow(resp_veg[[1]]), 0)
+})
+
+test_that("get_species_list works for one NULL or another, but not both", {
+  resp_veg <- get_species_list("v")
+  expect_gt(nrow(resp_veg), 100)
+
+
+  resp_onesite <- get_species_list(site_code = "148_101_H01")
+
+  # greather than 10, arbitrary number
+  expect_gt(nrow(resp_onesite), 10)
+
+  expect_error(get_species_list(campaign_type = NULL, site_code = NULL))
 
 })
 

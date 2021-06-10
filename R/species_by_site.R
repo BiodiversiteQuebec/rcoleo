@@ -4,22 +4,26 @@
 #' get the species list for a site
 #'
 #' @param campaign_type campaign type. Can be any valid campaign name, see [validate_campaign_type()]
-#' @param site_code any site code. can also be a vector
+#' @param site_code any site code. Must be a single value
+#'
+#' @details This function downloads a species list and the number of times that species is observed.
+#' You must supply either the type of campaign, the code of the site, or both.
 #'
 #' @return the species list for a site, as a list
 #' @export
-get_species_list <- function(campaign_type = "acoustique", site_code){
+get_species_list <- function(campaign_type = NULL, site_code = NULL){
 
-  assertthat::assert_that(is.character(site_code))
+  # need to supply a site_code
+  assertthat::assert_that(is.character(site_code) | is.character(campaign_type))
 
-  camp_type <- validate_campaign_type(campaign_type)
+  camp_type <- if ( is.null(campaign_type) ) NULL else validate_campaign_type(campaign_type)
 
-  # function to query desired endpoing and campaign type
-  query_fn <- function(s_c) query_gen("species_list",
-                                          list(campaign_type = camp_type,
-                                               site_code = s_c))
+  params <- list(campaign_type = camp_type, site_code = site_code)
 
-  purrr::map(purrr::set_names(site_code), query_fn)
+  params <- params[lapply(params,function(t){!is.null(t)}) == TRUE]
+
+  query_resp <- query_gen("species_list",params)
+  return(query_resp)
 }
 
 

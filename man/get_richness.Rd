@@ -8,8 +8,12 @@ get_richness(
   campaign_type = NULL,
   site_type = NULL,
   site_code = NULL,
+  species_category = NULL,
+  by_site = NULL,
   by_site_type = NULL,
-  by_campaign_type = NULL
+  by_campaign_type = NULL,
+  by_date = NULL,
+  by_species_category = NULL
 )
 }
 \arguments{
@@ -19,9 +23,17 @@ get_richness(
 
 \item{site_code}{a site_code.}
 
-\item{by_site_type}{whether to summarize across site_types.}
+\item{species_category}{a species category, for ex. "poissons".}
 
-\item{by_campaign_type}{whether to summarize across campaigns}
+\item{by_site}{whether to calculate richness by site}
+
+\item{by_site_type}{whether to calculate richness by site type}
+
+\item{by_campaign_type}{whether to calculature richness by campaign type}
+
+\item{by_date}{whether to calculature richness by date}
+
+\item{by_species_category}{whether to calculature richness by species_category}
 }
 \value{
 data.frame with richness values. Richness is simply calculated as unique species names that are not in category "autres".
