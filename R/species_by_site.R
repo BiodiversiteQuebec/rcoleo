@@ -20,7 +20,7 @@ get_species_list <- function(campaign_type = NULL, site_code = NULL){
 
   params <- list(campaign_type = camp_type, site_code = site_code)
 
-  params <- params[lapply(params,function(t){!is.null(t)}) == TRUE]
+  params <- purrr::discard(params, is.null)
 
   query_resp <- query_gen("species_list",params)
   return(query_resp)
