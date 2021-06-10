@@ -191,8 +191,12 @@
   campaign_type <span class='op'>=</span> <span class='cn'>NULL</span>,
   site_type <span class='op'>=</span> <span class='cn'>NULL</span>,
   site_code <span class='op'>=</span> <span class='cn'>NULL</span>,
+  species_category <span class='op'>=</span> <span class='cn'>NULL</span>,
+  by_site <span class='op'>=</span> <span class='cn'>NULL</span>,
   by_site_type <span class='op'>=</span> <span class='cn'>NULL</span>,
-  by_campaign_type <span class='op'>=</span> <span class='cn'>NULL</span>
+  by_campaign_type <span class='op'>=</span> <span class='cn'>NULL</span>,
+  by_date <span class='op'>=</span> <span class='cn'>NULL</span>,
+  by_species_category <span class='op'>=</span> <span class='cn'>NULL</span>
 <span class='op'>)</span></code></pre></div>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -211,12 +215,28 @@
       <td><p>a site_code.</p></td>
     </tr>
     <tr>
+      <th>species_category</th>
+      <td><p>a species category, for ex. "poissons".</p></td>
+    </tr>
+    <tr>
+      <th>by_site</th>
+      <td><p>whether to calculate richness by site</p></td>
+    </tr>
+    <tr>
       <th>by_site_type</th>
-      <td><p>whether to summarize across site_types.</p></td>
+      <td><p>whether to calculate richness by site type</p></td>
     </tr>
     <tr>
       <th>by_campaign_type</th>
-      <td><p>whether to summarize across campaigns</p></td>
+      <td><p>whether to calculature richness by campaign type</p></td>
+    </tr>
+    <tr>
+      <th>by_date</th>
+      <td><p>whether to calculature richness by date</p></td>
+    </tr>
+    <tr>
+      <th>by_species_category</th>
+      <td><p>whether to calculature richness by species_category</p></td>
     </tr>
     </table>
 
