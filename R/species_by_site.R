@@ -10,7 +10,7 @@
 #' @export
 get_species_list <- function(campaign_type = NULL, site_code = NULL){
 
-  camp_type <- validate_campaign_type(campaign_type)
+  camp_type <- if ( is.null(campaign_type) ) NULL else validate_campaign_type(campaign_type)
 
   params <- list(campaign_type = camp_type, site_code = site_code)
 
