@@ -45,7 +45,7 @@ test_that("can get all species names for a campaign",{
 
   expect_s3_class(resp, "data.frame")
   expect_type(resp[[1]], "character")
-  expect_equal(ncol(resp), 2)
+  expect_equal(ncol(resp), 3)
 
   })
 
@@ -57,7 +57,7 @@ test_that("both campaign type and site work",{
 
   expect_s3_class(resp, "data.frame")
   expect_type(resp[[1]], "character")
-  expect_equal(ncol(resp), 2)
+  expect_equal(ncol(resp), 3)
 
 })
 
