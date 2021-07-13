@@ -36,7 +36,8 @@ endpoints <- function(){
     summary = "/campaigns_summary",
     species_list = "/species_list",
     sites_species = "/sites_species",
-    richness = "/richness"
+    richness = "/richness",
+    richness_mean = "/richness/mean"
   )
 }
 # # short excerpt to update the list of campaign types if/when more get added!!

@@ -41,7 +41,7 @@ get_richness <- function(campaign_type=NULL, site_type=NULL, site_code=NULL, spe
     params <-  list(by_site_type = by_site_type,
                     by_campaign_type = by_campaign_type)
     params <- params[lapply(params,function(t){!is.null(t)}) == TRUE]
-    query_resp <- query_gen("richness/mean", params)
+    query_resp <- query_gen("richness_mean", params)
   }
   return(query_resp)
 
