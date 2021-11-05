@@ -5,7 +5,7 @@
 #' @inheritParams post_cells
 #' @export
 
-post_obs_soil_decomposition <- function(data_list, ...) {
+post_obs_decomposition_sol <- function(data_list, ...) {
   post_gen_list(data_list, "obs_soil_decomposition", ...)
 }
 
