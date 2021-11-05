@@ -29,9 +29,11 @@ get_gen <- function(endpoint, query = NULL, limit = 100, verbose = TRUE, token =
 
   request_header <- httr::add_headers(`Content-type` = "application/json",
                                       Authorization = paste("Bearer", token))
+
   # First call used to set pages
   # ua defined in zzz.R
-  resp <- mem_get(url,
+  # replaced memoise::mem_get with httr::GET
+  resp <- httr::GET(url,
                   config = request_header,
                   ua,
                   query = query, ...)
@@ -79,7 +81,8 @@ download_pages <- function(resp, url, query, request_header, limit, verbose, tok
               appendLF = FALSE)
     # cat("Data retrieval", signif(100*(page+1)/(pages+1), 3), "%   \r")
     query$page <- page
-    resp <- mem_get(url,
+    #mem_get replaced with httr::GET
+    resp <- httr::GET(url,
                     config = request_header,
                     ua,
                     query = query, ...)
