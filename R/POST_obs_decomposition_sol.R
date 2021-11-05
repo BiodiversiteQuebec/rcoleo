@@ -1,6 +1,6 @@
-#' Publication d'une espèce sur la base de données de Coléo
+#' Publication d'une observation de décomposition du sol sur la base de données de Coléo
 #'
-#' Cette fonction applique la méthode POST sur le point d'entrées `obs_species` de l'API de Coleo
+#' Cette fonction applique la méthode POST sur le point d'entrées `obs_soil_decomposition` de l'API de Coleo
 #'
 #' @inheritParams post_cells
 #' @export
