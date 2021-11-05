@@ -32,6 +32,7 @@ endpoints <- function(){
     lures = "/lures",
     devices = "/devices",
     obs_species = "/obs_species",
+    obs_soil_decomposition = "/obs_soil_decomposition",
     efforts = "/efforts",
     summary = "/campaigns_summary",
     species_list = "/species_list",
