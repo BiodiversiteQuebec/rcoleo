@@ -224,110 +224,41 @@ La sortie R vous informe sur le déroulement de l'insertion. Le message `Good jo
 
 ### 8.3. Injections des observations associées aux nouvelles campagnes
 
-Les champs de la table **observations** ("/observations") de Coléo qui seront remplis sont les suivants :
-
-* *date_obs*
-* *is_valid* : 1 par défaut
-* *campaign_id*
-* *depth* : Profondeur_m
-* *notes* : correspond aux variables `Date_denombrement` & `Taxonomiste`
-
-
-#### 8.3.1. On séléctionne les champs d'interêts & on matche les noms de variables avec celles de Coléo.
+Nous devons procéder dans une boucle afin d'assurer une certain cohérence entre les tables observations et obs_soil_decomposition. 
 
 ```r
-# 8.3.1. Création & sélection
-# Création de 2 variables nécessaires
+
 camp$date_obs <- camp$opened_at
 camp$is_valid <- 1 # valeur de 1 par défaut
 
-# Sélection des champs d'intérêts
-obs_camp <- dplyr::select(camp,
-                          campaign_id,
-                          date_obs,
-                          is_valid
-                          )
-```
+for (row in 1:nrow(camp)) {
+    this <- camp[row,]
+    ## OBSERVATION
+    obs_camp <- dplyr::select(this,
+                              campaign_id,
+                              date_obs,
+                              is_valid
+    )
 
-#### 8.3.2. On garde une ligne par campagne.
+    obs <- rcoleo::post_obs(apply(obs_camp, 1, as.list))
+    observation_id <- obs[[1]]$body$id
+    this$observation_id <- observation_id
+    #Observation décomposition du sol
+    if(!is.null(observation_id)){
+      obs_spe_camp <- dplyr::select(this,
+                                    observation_id,
+                                    bag_no,
+                                    type=type_bag,
+                                    date_end=closed_at,
+                                    start_weight,
+                                    end_weight_with_bag,
+                                    end_weight_tea,
+                                    shading,
+                                    human_impact
+      )
+      resp<-rcoleo::post_obs_decomposition_sol(apply(obs_spe_camp, 1, as.list))
+    }
+}
 
-```r
-# 8.3.2. Retrait des duplicats
-#obs_camp <- obs_camp[!duplicated(obs_camp),]
-```
-
-#### 8.3.3. On transforme le tableau en liste pour l'injection dans Coléo.
-
-```r
-# 8.3.3. Conversion de l'objet pour l'insertion
-obs_ls <- apply(obs_camp, 1, as.list)
-```
-
-#### 8.3.4. Il est maintenant possible de procéder à l'injection.
-
-```r
-# 8.3.4. Injection
-COLEO_obs_inj <- rcoleo::post_obs(obs_ls)
-```
-La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).
-
-#### 8.3.5. On récupère la liste des observations de Coléo et on met à jour le tableau de campagnes à injecter.
-
-```r
-# 8.3.5. Acquisition de la liste des observations de Coléo
-obs <- rcoleo::get_gen("/observations")
-obs <- do.call(plyr::rbind.fill, obs$body)
-
-# Mise à jour des données à injecter avec l'observation_id
-camp <- dplyr::left_join(camp, obs[, c("id", "campaign_id", "date_obs")], by = c("campaign_id", "date_obs"))
-names(camp)[names(camp) == "id"] <- "observation_id"
-```
-
-### 8.4. Injections des valeurs de décomposition du sol associées aux nouvelles campagnes
-
-Les champs de la table **observations de décomposition du sol** de Coléo qui peuvent être remplis sont les suivants :
-
-* *bag_no* : numéro du sachet
-* *type* : 'thé vert','rooibos'
-* *date_end* : date de la collecte du sachet
-* *start_weight* : 
-* *end_weight_with_bag* : 
-* *end_weight_tea* : 
-* *shading* : 
-* *human_impact* : 
-
-
-
-#### 8.4.1. On séléctionne les champs d'interêts.
-
-```r
-# 8.4.1. Sélection
-obs_spe_camp <- dplyr::select(camp,
-                              observation_id,
-                              bag_no,
-                              type,
-                              date_end=closed_at,
-                              start_weight,
-                              end_weight_with_bag,
-                              end_weight_tea,
-                              shading,
-                              human_impact
-                              )
-                              
-```
-
-#### 8.4.2. On transforme le jeu de données en liste pour l'injection dans Coléo.
-
-```r
-# 8.4.2. Conversion de l'objet pour l'injection
-obs_spe_camp_ls <- apply(obs_spe_camp, 1, as.list)
-```
-
-#### 8.4.3. Il est maintenant possible de procéder à l'injection.
-
-```r
-# 8.4.3. Injection
-COLEO_obsref_inj <- rcoleo::post_obs_decomposition_sol(obs_spe_camp_ls)
 
 ```
-La sortie R vous informe sur le déroulement de l'insertion. Le message `Good job ! Toutes les insertions ont été créées dans COLEO` indique que les informations ont bien été enregistrées dans Coléo. Bravo ! Vous venez de terminer les étapes d'injections des campagnes **zooplancton** ! Dans le cas inverse, le message `Oups... un problème est survenu` apparait, suivi des codes de statut pour chaque requête d'injections (pour plus d'informations à propos des [codes de statut](https://http.cat/)).
