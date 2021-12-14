@@ -22,9 +22,11 @@ format_spatial <- function(df_to_inject) {
            feat = purrr::map(.data$geoj, "features"),
            feat = purrr::map(.data$feat, purrr::flatten),
            geom = purrr::map(.data$feat, "geometry"),
-           geom = purrr::map(.data$geom, ~ purrr::splice(.x,
-                                     crs = list(type = "name",
-                                                properties = list(name = "EPSG:4326")))))
+           geom = purrr::map(.data$geom,
+                             ~ rlang::list2(!!!.x,
+                                            crs = list(type = "name",
+                                                       properties = list(name = "EPSG:4326"))))) %>%
+    select(-geoj, -feat, -lat, -lon)
 
   return(formatted_input_data)
 

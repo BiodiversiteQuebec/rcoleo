@@ -13,7 +13,8 @@ get_richness(
   by_site_type = NULL,
   by_campaign_type = NULL,
   by_date = NULL,
-  by_species_category = NULL
+  by_species_category = NULL,
+  mean = NULL
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ get_richness(
 \item{by_date}{whether to calculature richness by date}
 
 \item{by_species_category}{whether to calculature richness by species_category}
+
+\item{mean}{whether to return the mean richness for campaigns across a given campaign type or site type}
 }
 \value{
 data.frame with richness values. Richness is simply calculated as unique species names that are not in category "autres".

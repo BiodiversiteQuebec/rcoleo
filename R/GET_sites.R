@@ -9,8 +9,6 @@
 #' head(get_sites())
 #' }
 #' @export
-
-
 get_sites <- function(site_code = NULL, ...) {
 
   # Preparation de l'objet de sortie
