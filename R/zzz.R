@@ -48,8 +48,7 @@ endpoints <- function(){
 #   purrr::map(unique) %>%
 #   purrr::flatten_chr() %>% unique %>% dput
 campaign_types <- function(){
-  c("v\u00e9g\u00e9tation", "papilionid\u00e9s", "acoustique", "insectes_sol",
-    "mammif\u00e8res", "odonates", "zooplancton")
+  c('végétation', 'végétation_transect', 'sol', 'acoustique', 'phénologie', 'mammifères', 'papilionidés', 'odonates', 'insectes_sol', 'ADNe', 'zooplancton', 'sol', 'décomposition_sol', 'température_eau', 'température_sol', 'marais_profondeur_température')
 }
 
 site_types <- function(){
