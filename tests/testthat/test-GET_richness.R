@@ -12,6 +12,6 @@ test_that("richness downloads correctly", {
   get_richness(campaign_type = "in")
 
 
-  get_richness(campaign_type = "v")
+  get_richness(campaign_type = "végétation")
 
   })
