@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rcoleo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.7</span>
       </span>
     </div>
 
@@ -55,8 +55,8 @@
   </a>
 </li>
 <li>
-  <a href="https://coleo.biodiversite-quebec.ca/docs/">
-    <span class="fas fa-book fa-lg"></span>
+  <a href="https://coleo.biodiversite-quebec.ca/docs/" class="external-link">
+    <span class="fa fa-book fa-lg"></span>
      
   </a>
 </li>
@@ -102,7 +102,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo">
+  <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -125,9 +125,8 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="documentation-du-paquet-rcoleo-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#documentation-du-paquet-rcoleo-" class="anchor" aria-hidden="true"></a>Documentation du paquet <code>rcoleo</code> <img src="reference/figures/logo.svg" width="130" height="150" align="right">
+<div class="section level1">
+<div class="page-header"><h1 id="documentation-du-paquet-rcoleo-">Documentation du paquet <code>rcoleo</code> <img src="reference/figures/logo.svg" width="130" height="150" align="right"><a class="anchor" aria-label="anchor" href="#documentation-du-paquet-rcoleo-"></a>
 </h1></div>
 <!-- badges: start -->
 
@@ -135,19 +134,19 @@
 <p><code>rcoleo</code> un paquet R permettant le retrait et l’analyse des données collectées dans le cadre du programme de suivi de la biodiversité (BdQc).</p>
 <p>Ce paquet R expose les services <code>RESTFull</code> de l’API de Coléo. Coléo est un système d’information sur la biodiversité du Québec développé par le laboratoire d’Écologie Intégrative de l’Université de Sherbrooke.</p>
 <p><a href="https://coleo.biodiversite-quebec.ca/docs/" class="external-link">Pour en savoir davantage…</a></p>
-<div id="installer-le-paquet-rcoleo" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installer-le-paquet-rcoleo" class="anchor" aria-hidden="true"></a>Installer le paquet <code>rcoleo</code>
+<div class="section level2">
+<h2 id="installer-le-paquet-rcoleo">Installer le paquet <code>rcoleo</code>
+<a class="anchor" aria-label="anchor" href="#installer-le-paquet-rcoleo"></a>
 </h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"ReseauBiodiversiteQuebec/rcoleo"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="sauthentifier-auprès-de-lapi" class="section level2">
-<h2 class="hasAnchor">
-<a href="#sauthentifier-aupr%C3%A8s-de-lapi" class="anchor" aria-hidden="true"></a>S’authentifier auprès de l’API</h2>
-<div id="stratégie-1-mise-en-cache" class="section level3">
-<h3 class="hasAnchor">
-<a href="#strat%C3%A9gie-1-mise-en-cache" class="anchor" aria-hidden="true"></a>Stratégie 1: Mise en cache</h3>
+<div class="section level2">
+<h2 id="sauthentifier-auprès-de-lapi">S’authentifier auprès de l’API<a class="anchor" aria-label="anchor" href="#sauthentifier-aupr%C3%A8s-de-lapi"></a>
+</h2>
+<div class="section level3">
+<h3 id="stratégie-1-mise-en-cache">Stratégie 1: Mise en cache<a class="anchor" aria-label="anchor" href="#strat%C3%A9gie-1-mise-en-cache"></a>
+</h3>
 <p>Il est <strong>fortement recommandé</strong> de mettre en cache votre jeton d’accès (jeton d’accès stocké dans un fichier <code>rds</code>) afin de s’assurer qu’il ne soit pas visible ou transmis avec votre code à un autre utilisateur. Ce jeton d’accès est unique et révocable.</p>
 <p>Pour cela, il vous suffit simplement d’enregistrer le jeton d’accès directement en tant que <em>Environment variable</em></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -157,17 +156,17 @@
 <p>(utilizez votre propre token ici)</p>
 <p><em>Le jeton d’accès est un exemple ici et n’est aucunement valide.</em></p>
 </div>
-<div id="stratégie-2-argument" class="section level3">
-<h3 class="hasAnchor">
-<a href="#strat%C3%A9gie-2-argument" class="anchor" aria-hidden="true"></a>Stratégie 2: Argument</h3>
+<div class="section level3">
+<h3 id="stratégie-2-argument">Stratégie 2: Argument<a class="anchor" aria-label="anchor" href="#strat%C3%A9gie-2-argument"></a>
+</h3>
 <p>Vous pouvez également passer votre jeton d’accès comme un argument pour chacune des fonctions <code>GET</code>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sites</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/get_sites.html">get_sites</a></span><span class="op">(</span>token<span class="op">=</span><span class="st">"7f8df438e1be96a18436e9dab5d97d68ed0e0441d9b68f59e0ce631b2919f3aa"</span><span class="op">)</span></code></pre></div>
 <p><em>Le jeton d’accès est un exemple ici et n’est aucunement valide.</em></p>
 </div>
-<div id="roadmap-to-200" class="section level3">
-<h3 class="hasAnchor">
-<a href="#roadmap-to-200" class="anchor" aria-hidden="true"></a>Roadmap to 2.0.0</h3>
+<div class="section level3">
+<h3 id="roadmap-to-200">Roadmap to 2.0.0<a class="anchor" aria-label="anchor" href="#roadmap-to-200"></a>
+</h3>
 <ul>
 <li>
 <input type="checkbox" disabled>
@@ -185,10 +184,8 @@ Export DwC-A</li>
     <div class="links">
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/">https://​github.com/​ReseauBiodiversiteQuebec/​rcoleo/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/issues">https://​github.com/​ReseauBiodiversiteQuebec/​rcoleo/​issues</a>
-</li>
+<li><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -196,15 +193,22 @@ Export DwC-A</li>
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
 
 
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing rcoleo</a></li>
+</ul>
+</div>
+
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Steve Vissault <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-0866-4376" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Steve Vissault <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-0866-4376" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
@@ -226,7 +230,7 @@ Export DwC-A</li>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
 </div>
 
       </footer>

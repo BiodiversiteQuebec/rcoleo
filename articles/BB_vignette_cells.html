@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rcoleo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.7</span>
       </span>
     </div>
 
@@ -56,7 +56,7 @@
 </li>
 <li>
   <a href="https://coleo.biodiversite-quebec.ca/docs/" class="external-link">
-    <span class="fas fa-book fa-lg"></span>
+    <span class="fa fa-book fa-lg"></span>
      
   </a>
 </li>
@@ -129,23 +129,25 @@
       <h1 data-toc-skip></h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/vignettes/BB_vignette_cells.Rmd" class="external-link"><code>vignettes/BB_vignette_cells.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/HEAD/vignettes/BB_vignette_cells.Rmd" class="external-link"><code>vignettes/BB_vignette_cells.Rmd</code></a></small>
       <div class="hidden name"><code>BB_vignette_cells.Rmd</code></div>
 
     </div>
 
     
     
-<div id="cette-étape-permet-denregistrer-un-objet-dans-r-avec-les-informations-de-toutes-les-cellules-existantes-" class="section level5">
-<h5 class="hasAnchor">
-<a href="#cette-%C3%A9tape-permet-denregistrer-un-objet-dans-r-avec-les-informations-de-toutes-les-cellules-existantes-" class="anchor" aria-hidden="true"></a><strong>7.3.1.1.</strong> Cette étape permet d’enregistrer un objet dans R avec les informations de toutes les cellules existantes.</h5>
+<div class="section level5">
+<h5 id="cette-étape-permet-denregistrer-un-objet-dans-r-avec-les-informations-de-toutes-les-cellules-existantes-">
+<strong>7.3.1.1.</strong> Cette étape permet d’enregistrer un objet dans R avec les informations de toutes les cellules existantes.<a class="anchor" aria-label="anchor" href="#cette-%C3%A9tape-permet-denregistrer-un-objet-dans-r-avec-les-informations-de-toutes-les-cellules-existantes-"></a>
+</h5>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">shp_cells</span> <span class="op">&lt;-</span> <span class="fu">rgdal</span><span class="fu">::</span><span class="fu">readOGR</span><span class="op">(</span>dsn <span class="op">=</span> <span class="st">"./shp"</span>,
                             layer <span class="op">=</span> <span class="st">"Cellule_terrain_2016-2020"</span><span class="op">)</span> <span class="co"># Ici le fichier shapefile est placé dans un dossier shp et on appelle tous les fichiers nommés "Cellule_terrain_2016_2020"</span></code></pre></div>
 </div>
-<div id="cette-étape-permet-dextraire-les-informations-nécessaires-concernant-les-nouvelles-cellules-et-de-formater-ces-informations-de-sorte-à-pouvoir-les-insérer-dans-coléo-" class="section level5">
-<h5 class="hasAnchor">
-<a href="#cette-%C3%A9tape-permet-dextraire-les-informations-n%C3%A9cessaires-concernant-les-nouvelles-cellules-et-de-formater-ces-informations-de-sorte-%C3%A0-pouvoir-les-ins%C3%A9rer-dans-col%C3%A9o-" class="anchor" aria-hidden="true"></a><strong>7.3.1.2.</strong> Cette étape permet d’extraire les informations nécessaires concernant les nouvelles cellules et de formater ces informations de sorte à pouvoir les insérer dans Coléo.</h5>
+<div class="section level5">
+<h5 id="cette-étape-permet-dextraire-les-informations-nécessaires-concernant-les-nouvelles-cellules-et-de-formater-ces-informations-de-sorte-à-pouvoir-les-insérer-dans-coléo-">
+<strong>7.3.1.2.</strong> Cette étape permet d’extraire les informations nécessaires concernant les nouvelles cellules et de formater ces informations de sorte à pouvoir les insérer dans Coléo.<a class="anchor" aria-label="anchor" href="#cette-%C3%A9tape-permet-dextraire-les-informations-n%C3%A9cessaires-concernant-les-nouvelles-cellules-et-de-formater-ces-informations-de-sorte-%C3%A0-pouvoir-les-ins%C3%A9rer-dans-col%C3%A9o-"></a>
+</h5>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Création d'une liste vide pour l'objet final</span>
 <span class="va">shp_cells_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>
@@ -176,17 +178,19 @@
   <span class="va">shp_cells_list</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">cells_ls</span>
 <span class="op">}</span></code></pre></div>
 </div>
-<div id="nous-pouvons-maintenant-insérer-les-nouvelles-cellules-dans-la-base-de-données-coléo-" class="section level5">
-<h5 class="hasAnchor">
-<a href="#nous-pouvons-maintenant-ins%C3%A9rer-les-nouvelles-cellules-dans-la-base-de-donn%C3%A9es-col%C3%A9o-" class="anchor" aria-hidden="true"></a><strong>7.3.1.3.</strong> Nous pouvons maintenant insérer les nouvelles cellules dans la base de données Coléo.</h5>
+<div class="section level5">
+<h5 id="nous-pouvons-maintenant-insérer-les-nouvelles-cellules-dans-la-base-de-données-coléo-">
+<strong>7.3.1.3.</strong> Nous pouvons maintenant insérer les nouvelles cellules dans la base de données Coléo.<a class="anchor" aria-label="anchor" href="#nous-pouvons-maintenant-ins%C3%A9rer-les-nouvelles-cellules-dans-la-base-de-donn%C3%A9es-col%C3%A9o-"></a>
+</h5>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Envoi de la liste de nouvelles cellules vers Coléo</span>
 <span class="va">COLEO_cells</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_cells.html">post_cells</a></span><span class="op">(</span><span class="va">shp_cells_list</span><span class="op">)</span></code></pre></div>
 <p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/" class="external-link">codes de statut</a>).</p>
 </div>
-<div id="attention-finissez-en-faisant-la-mise-à-jour-de-la-liste-des-cellules-présentes-dans-coléo-" class="section level5">
-<h5 class="hasAnchor">
-<a href="#attention-finissez-en-faisant-la-mise-%C3%A0-jour-de-la-liste-des-cellules-pr%C3%A9sentes-dans-col%C3%A9o-" class="anchor" aria-hidden="true"></a><strong>7.3.1.4.</strong> ATTENTION, finissez en faisant la mise à jour de la liste des cellules présentes dans Coléo.</h5>
+<div class="section level5">
+<h5 id="attention-finissez-en-faisant-la-mise-à-jour-de-la-liste-des-cellules-présentes-dans-coléo-">
+<strong>7.3.1.4.</strong> ATTENTION, finissez en faisant la mise à jour de la liste des cellules présentes dans Coléo.<a class="anchor" aria-label="anchor" href="#attention-finissez-en-faisant-la-mise-%C3%A0-jour-de-la-liste-des-cellules-pr%C3%A9sentes-dans-col%C3%A9o-"></a>
+</h5>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Mise à jour de la liste des cellules provenant de Coléo</span>
 <span class="fu">rcoleo</span><span class="fu">:::</span><span class="fu"><a href="../reference/clear_cache_rcoleo.html">clear_cache_rcoleo</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Vider le cache de rcoleo associé aux requetes GET</span>
@@ -210,7 +214,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
 </div>
 
       </footer>

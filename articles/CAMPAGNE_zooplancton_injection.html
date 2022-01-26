@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rcoleo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.7</span>
       </span>
     </div>
 
@@ -56,7 +56,7 @@
 </li>
 <li>
   <a href="https://coleo.biodiversite-quebec.ca/docs/" class="external-link">
-    <span class="fas fa-book fa-lg"></span>
+    <span class="fa fa-book fa-lg"></span>
      
   </a>
 </li>
@@ -131,7 +131,7 @@
             
             <h4 data-toc-skip class="date">10 novembre 2020</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/vignettes/CAMPAGNE_zooplancton_injection.Rmd" class="external-link"><code>vignettes/CAMPAGNE_zooplancton_injection.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/HEAD/vignettes/CAMPAGNE_zooplancton_injection.Rmd" class="external-link"><code>vignettes/CAMPAGNE_zooplancton_injection.Rmd</code></a></small>
       <div class="hidden name"><code>CAMPAGNE_zooplancton_injection.Rmd</code></div>
 
     </div>
@@ -147,9 +147,9 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <div class="red">
 <p>Vignette en cours de développement</p>
 </div>
-<div id="créer-une-base-de-données-excel" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cr%C3%A9er-une-base-de-donn%C3%A9es-excel" class="anchor" aria-hidden="true"></a>1. Créer une base de données excel</h2>
+<div class="section level2">
+<h2 id="créer-une-base-de-données-excel">1. Créer une base de données excel<a class="anchor" aria-label="anchor" href="#cr%C3%A9er-une-base-de-donn%C3%A9es-excel"></a>
+</h2>
 <p>Afin d’injecter des nouvelles campagnes <em>zooplancton</em> dans la base de données Coléo, vous devez regrouper les informations suivantes dans un fichier excel :</p>
 <table class="table">
 <colgroup>
@@ -257,14 +257,14 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <li>vérifier l’encodage de votre fichier qui doit correspondre à “UTF-8”.</li>
 </ul>
 </div>
-<div id="corriger-la-base-de-données" class="section level2">
-<h2 class="hasAnchor">
-<a href="#corriger-la-base-de-donn%C3%A9es" class="anchor" aria-hidden="true"></a>2. Corriger la base de données</h2>
+<div class="section level2">
+<h2 id="corriger-la-base-de-données">2. Corriger la base de données<a class="anchor" aria-label="anchor" href="#corriger-la-base-de-donn%C3%A9es"></a>
+</h2>
 <p>Il est très important de s’assurer que la base de données excel soit sans erreur <strong>avant</strong> de l’injecter dans Coléo. Coléo n’a pas de système de correction et va prendre toutes les entrées, même si elles contiennent des erreurs.</p>
 </div>
-<div id="créer-un-projet-r" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cr%C3%A9er-un-projet-r" class="anchor" aria-hidden="true"></a>3. Créer un projet R</h2>
+<div class="section level2">
+<h2 id="créer-un-projet-r">3. Créer un projet R<a class="anchor" aria-label="anchor" href="#cr%C3%A9er-un-projet-r"></a>
+</h2>
 <p>Dans RStudio,</p>
 <ul>
 <li>Aller dans <code>File</code> &gt; <code>New Project</code> &gt; <code>New Directory</code> &gt; <code>New Project</code>
@@ -273,20 +273,20 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 </ul>
 <p>Les projets permettent de travailler dans un répertoire de travail (<em>working directory</em>). La base de données doit donc être sauvegardée dans le même dossier que le projet afin de faire parti du répertoire de travail.</p>
 </div>
-<div id="sauvegarder-la-base-de-données-en-format--csv-dans-le-même-dossier-que-le-projet-r" class="section level2">
-<h2 class="hasAnchor">
-<a href="#sauvegarder-la-base-de-donn%C3%A9es-en-format--csv-dans-le-m%C3%AAme-dossier-que-le-projet-r" class="anchor" aria-hidden="true"></a>4. Sauvegarder la base de données en format .csv dans le même dossier que le projet R</h2>
+<div class="section level2">
+<h2 id="sauvegarder-la-base-de-données-en-format--csv-dans-le-même-dossier-que-le-projet-r">4. Sauvegarder la base de données en format .csv dans le même dossier que le projet R<a class="anchor" aria-label="anchor" href="#sauvegarder-la-base-de-donn%C3%A9es-en-format--csv-dans-le-m%C3%AAme-dossier-que-le-projet-r"></a>
+</h2>
 <div class="blue">
 <p><strong>Rappel</strong> - L’encodage du fichier .csv doit être en “UTF-8”</p>
 </div>
 </div>
-<div id="installer-et-charger-les-packages-nécessaires" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installer-et-charger-les-packages-n%C3%A9cessaires" class="anchor" aria-hidden="true"></a>5. Installer et charger les packages nécessaires</h2>
+<div class="section level2">
+<h2 id="installer-et-charger-les-packages-nécessaires">5. Installer et charger les packages nécessaires<a class="anchor" aria-label="anchor" href="#installer-et-charger-les-packages-n%C3%A9cessaires"></a>
+</h2>
 <p>S’il ne s’agit pas de vos premières injections dans Coléo avec R, vous pouvez directement passer à l’<strong>étape 5.2</strong>. Sinon vous devez installer les packages nécessaires.</p>
-<div id="installation-des-packages" class="section level3">
-<h3 class="hasAnchor">
-<a href="#installation-des-packages" class="anchor" aria-hidden="true"></a>5.1. Installation des packages</h3>
+<div class="section level3">
+<h3 id="installation-des-packages">5.1. Installation des packages<a class="anchor" aria-label="anchor" href="#installation-des-packages"></a>
+</h3>
 <p>Dans RStudio :</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 5.1. Installation des packages</span>
@@ -301,9 +301,9 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <span class="co"># Installation du package rcoleo à partir de github</span>
 <span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"ReseauBiodiversiteQuebec/rcoleo"</span><span class="op">)</span> </code></pre></div>
 </div>
-<div id="chargement-des-packages" class="section level3">
-<h3 class="hasAnchor">
-<a href="#chargement-des-packages" class="anchor" aria-hidden="true"></a>5.2. Chargement des packages</h3>
+<div class="section level3">
+<h3 id="chargement-des-packages">5.2. Chargement des packages<a class="anchor" aria-label="anchor" href="#chargement-des-packages"></a>
+</h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 5.2. Chargement des packages</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo" class="external-link">rcoleo</a></span><span class="op">)</span>
@@ -312,22 +312,22 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org" class="external-link">readr</a></span><span class="op">)</span></code></pre></div>
 </div>
 </div>
-<div id="mise-en-cache-son-jeton-daccès" class="section level2">
-<h2 class="hasAnchor">
-<a href="#mise-en-cache-son-jeton-dacc%C3%A8s" class="anchor" aria-hidden="true"></a>6. Mise en cache son jeton d’accès</h2>
+<div class="section level2">
+<h2 id="mise-en-cache-son-jeton-daccès">6. Mise en cache son jeton d’accès<a class="anchor" aria-label="anchor" href="#mise-en-cache-son-jeton-dacc%C3%A8s"></a>
+</h2>
 <p>Ce jeton permet d’apporter des modifications dans Coléo. Il est unique et se retrouve dans Coléo, sous le profil de l’utilisateur dans le menu à gauche.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 6. Mise en cache son jeton d'accès</span>
 <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="st">"votrejeton"</span>,<span class="st">".httr-oauth"</span><span class="op">)</span></code></pre></div>
 <p>Cette étape n’est faite qu’une fois et permet l’enregistrement de votre jeton dans le répertoire du projet R. Une fois faite, elle est supprimée du code d’injection. Le jeton est confidentiel.</p>
 </div>
-<div id="vérification-pré-injection" class="section level2">
-<h2 class="hasAnchor">
-<a href="#v%C3%A9rification-pr%C3%A9-injection" class="anchor" aria-hidden="true"></a>7. Vérification pré-injection</h2>
+<div class="section level2">
+<h2 id="vérification-pré-injection">7. Vérification pré-injection<a class="anchor" aria-label="anchor" href="#v%C3%A9rification-pr%C3%A9-injection"></a>
+</h2>
 <p>La succession d’étape qui suivent permettent de vérifier si les cellules, les sites, les noms d’espèces et les attributs associés aux campagnes à injecter existent déjà dans Coléo.</p>
-<div id="création-dun-objet-r-avec-les-nouvelles-campagnes-à-insérer-dans-coléo" class="section level3">
-<h3 class="hasAnchor">
-<a href="#cr%C3%A9ation-dun-objet-r-avec-les-nouvelles-campagnes-%C3%A0-ins%C3%A9rer-dans-col%C3%A9o" class="anchor" aria-hidden="true"></a>7.1. Création d’un objet R avec les nouvelles campagnes à insérer dans Coléo</h3>
+<div class="section level3">
+<h3 id="création-dun-objet-r-avec-les-nouvelles-campagnes-à-insérer-dans-coléo">7.1. Création d’un objet R avec les nouvelles campagnes à insérer dans Coléo<a class="anchor" aria-label="anchor" href="#cr%C3%A9ation-dun-objet-r-avec-les-nouvelles-campagnes-%C3%A0-ins%C3%A9rer-dans-col%C3%A9o"></a>
+</h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.1. Création d'un objet contenant les nouvelles campagnes</span>
 <span class="va">donnees_inj</span> <span class="op">&lt;-</span> <span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_delim</a></span><span class="op">(</span><span class="st">"./lenomdevotrebasededonnées.csv"</span>,
@@ -336,9 +336,9 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <p><strong>Vérification</strong> - Il est important de vérifier dans votre console si le tableau <code>camp</code> que vous venez de créer dans R possède bien le nombre de lignes et de colonnes attendu.</p>
 </div>
 </div>
-<div id="acquisition-de-la-liste-des-cellules-des-sites-des-noms-despèce-de-référence-et-des-attributs-déjà-présentes-dans-coléo-et-création-dun-objet-r-pour-chacune" class="section level3">
-<h3 class="hasAnchor">
-<a href="#acquisition-de-la-liste-des-cellules-des-sites-des-noms-desp%C3%A8ce-de-r%C3%A9f%C3%A9rence-et-des-attributs-d%C3%A9j%C3%A0-pr%C3%A9sentes-dans-col%C3%A9o-et-cr%C3%A9ation-dun-objet-r-pour-chacune" class="anchor" aria-hidden="true"></a>7.2. Acquisition de la liste des cellules, des sites, des noms d’espèce de référence et des attributs déjà présentes dans Coléo et création d’un objet R pour chacune</h3>
+<div class="section level3">
+<h3 id="acquisition-de-la-liste-des-cellules-des-sites-des-noms-despèce-de-référence-et-des-attributs-déjà-présentes-dans-coléo-et-création-dun-objet-r-pour-chacune">7.2. Acquisition de la liste des cellules, des sites, des noms d’espèce de référence et des attributs déjà présentes dans Coléo et création d’un objet R pour chacune<a class="anchor" aria-label="anchor" href="#acquisition-de-la-liste-des-cellules-des-sites-des-noms-desp%C3%A8ce-de-r%C3%A9f%C3%A9rence-et-des-attributs-d%C3%A9j%C3%A0-pr%C3%A9sentes-dans-col%C3%A9o-et-cr%C3%A9ation-dun-objet-r-pour-chacune"></a>
+</h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.2. Acquisition des informations dans Coléo</span>
 <span class="co"># Acquisition cellules Coléo</span>
@@ -353,12 +353,12 @@ div.blue { background-color:#e6f0ff; border-radius: 8px; padding: 5px;}
 <span class="va">species</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_species.html">get_species</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">species_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="va">rbind</span>, <span class="va">species</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="vérification-de-lexistence-des-cellules-sites-noms-despèces-et-des-attributs-associés-aux-nouvelles-campagnes-dans-coléo" class="section level3">
-<h3 class="hasAnchor">
-<a href="#v%C3%A9rification-de-lexistence-des-cellules-sites-noms-desp%C3%A8ces-et-des-attributs-associ%C3%A9s-aux-nouvelles-campagnes-dans-col%C3%A9o" class="anchor" aria-hidden="true"></a>7.3. Vérification de l’existence des cellules, sites, noms d’espèces et des attributs associés aux nouvelles campagnes dans Coléo</h3>
-<div id="pour-les-cellules" class="section level4">
-<h4 class="hasAnchor">
-<a href="#pour-les-cellules" class="anchor" aria-hidden="true"></a>7.3.1. Pour les cellules</h4>
+<div class="section level3">
+<h3 id="vérification-de-lexistence-des-cellules-sites-noms-despèces-et-des-attributs-associés-aux-nouvelles-campagnes-dans-coléo">7.3. Vérification de l’existence des cellules, sites, noms d’espèces et des attributs associés aux nouvelles campagnes dans Coléo<a class="anchor" aria-label="anchor" href="#v%C3%A9rification-de-lexistence-des-cellules-sites-noms-desp%C3%A8ces-et-des-attributs-associ%C3%A9s-aux-nouvelles-campagnes-dans-col%C3%A9o"></a>
+</h3>
+<div class="section level4">
+<h4 id="pour-les-cellules">7.3.1. Pour les cellules<a class="anchor" aria-label="anchor" href="#pour-les-cellules"></a>
+</h4>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.3.1. Vérification</span>
 <span class="co"># Test pour vérifier l'existence des cellules dans Coléo</span>
@@ -376,8 +376,8 @@ function myFunction1() {
     }
 }
 </script><div id="myDIV_cells">
-<h5 id="cette-étape-permet-denregistrer-un-objet-dans-r-avec-les-informations-de-toutes-les-cellules-existantes." class="hasAnchor">
-<a href="#myDIV_cells" class="anchor" aria-hidden="true"></a><strong>7.3.1.1.</strong> Cette étape permet d’enregistrer un objet dans R avec les informations de toutes les cellules existantes.</h5>
+<h5 id="cette-étape-permet-denregistrer-un-objet-dans-r-avec-les-informations-de-toutes-les-cellules-existantes.">
+<strong>7.3.1.1.</strong> Cette étape permet d’enregistrer un objet dans R avec les informations de toutes les cellules existantes.</h5>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">shp_cells</span> <span class="op">&lt;-</span> <span class="fu">rgdal</span><span class="fu">::</span><span class="fu">readOGR</span><span class="op">(</span>dsn <span class="op">=</span> <span class="st">"./shp"</span>,
                             layer <span class="op">=</span> <span class="st">"Cellule_terrain_2016-2020"</span><span class="op">)</span> <span class="co"># Ici le fichier shapefile est placé dans un dossier shp et on appelle tous les fichiers nommés "Cellule_terrain_2016_2020"</span></code></pre></div>
@@ -441,9 +441,9 @@ document.getElementById("myDIV_cells").style.display ="none"
                                        <span class="co"># c'est le id des cells</span>
                                        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span>cell_id <span class="op">=</span> <span class="va">id</span>, <span class="va">cell_code</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="pour-les-sites" class="section level4">
-<h4 class="hasAnchor">
-<a href="#pour-les-sites" class="anchor" aria-hidden="true"></a>7.3.2. Pour les sites</h4>
+<div class="section level4">
+<h4 id="pour-les-sites">7.3.2. Pour les sites<a class="anchor" aria-label="anchor" href="#pour-les-sites"></a>
+</h4>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.3.2. Vérification</span>
 <span class="co"># Test pour vérifier l'existence des sites dans Coléo</span>
@@ -461,8 +461,8 @@ function myFunction2() {
     }
 }
 </script><div id="myDIV_sites">
-<h5 id="cette-étape-permet-de-sélectionner-les-informations-nécessaires-pour-les-sites-absents-de-coléo." class="hasAnchor">
-<a href="#myDIV_sites" class="anchor" aria-hidden="true"></a><strong>7.3.2.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les sites absents de Coléo.</h5>
+<h5 id="cette-étape-permet-de-sélectionner-les-informations-nécessaires-pour-les-sites-absents-de-coléo.">
+<strong>7.3.2.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les sites absents de Coléo.</h5>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Sélection des lignes du tableau concernant les sites manquants</span>
 
@@ -524,9 +524,9 @@ document.getElementById("myDIV_sites").style.display ="none"
                                           <span class="va">sites_df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
                                             <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span>site_id <span class="op">=</span> <span class="va">id</span>, <span class="va">site_code</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="pour-les-noms-despèces" class="section level4">
-<h4 class="hasAnchor">
-<a href="#pour-les-noms-desp%C3%A8ces" class="anchor" aria-hidden="true"></a>7.3.3. Pour les noms d’espèces</h4>
+<div class="section level4">
+<h4 id="pour-les-noms-despèces">7.3.3. Pour les noms d’espèces<a class="anchor" aria-label="anchor" href="#pour-les-noms-desp%C3%A8ces"></a>
+</h4>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 7.3.3. Vérification</span>
 <span class="co"># Test pour vérifier l'existence des noms des espèces dans Coléo</span>
@@ -544,8 +544,8 @@ function myFunction3() {
     }
 }
 </script><div id="myDIV_taxa">
-<h5 id="cette-étape-permet-de-sélectionner-les-informations-nécessaires-pour-les-noms-despèce-absents-de-coléo." class="hasAnchor">
-<a href="#myDIV_taxa" class="anchor" aria-hidden="true"></a><strong>7.3.3.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les noms d’espèce absents de Coléo.</h5>
+<h5 id="cette-étape-permet-de-sélectionner-les-informations-nécessaires-pour-les-noms-despèce-absents-de-coléo.">
+<strong>7.3.3.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les noms d’espèce absents de Coléo.</h5>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Formatage du tableau à insérer</span>
 
@@ -578,9 +578,9 @@ document.getElementById("myDIV_taxa").style.display ="none"
 </div>
 </div>
 </div>
-<div id="injections-des-nouvelles-campagnes-de-zooplanctons" class="section level2">
-<h2 class="hasAnchor">
-<a href="#injections-des-nouvelles-campagnes-de-zooplanctons" class="anchor" aria-hidden="true"></a>8. Injections des nouvelles campagnes de zooplanctons</h2>
+<div class="section level2">
+<h2 id="injections-des-nouvelles-campagnes-de-zooplanctons">8. Injections des nouvelles campagnes de zooplanctons<a class="anchor" aria-label="anchor" href="#injections-des-nouvelles-campagnes-de-zooplanctons"></a>
+</h2>
 <p>Pour une injection complète d’une campagne, il est nécessaire de passer par l’importation d’informations successives dans différentes tables de Coléo. La hiérarchie des tables à renseigner est cruciale, sans quoi l’injection de la campagne est vouée à l’échec. Les prochaines étapes détaillent l’ajout d’information dans les tables:</p>
 <ol style="list-style-type: decimal">
 <li>Campagnes (“<em>/campaigns</em>”)</li>
@@ -588,9 +588,9 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <li>Observations (“<em>/observations</em>”)</li>
 <li>Observations des espèces (“<em>/obs_species</em>”)</li>
 </ol>
-<div id="injections-des-informations-sur-les-nouvelles-campagnes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#injections-des-informations-sur-les-nouvelles-campagnes" class="anchor" aria-hidden="true"></a>8.1. Injections des informations sur les nouvelles campagnes</h3>
+<div class="section level3">
+<h3 id="injections-des-informations-sur-les-nouvelles-campagnes">8.1. Injections des informations sur les nouvelles campagnes<a class="anchor" aria-label="anchor" href="#injections-des-informations-sur-les-nouvelles-campagnes"></a>
+</h3>
 <p>Les champs de la table <strong>campagnes</strong> (“/campaigns”) de Coléo qui peuvent être remplis sont les suivants :</p>
 <ul>
 <li><em>site_id</em></li>
@@ -604,9 +604,9 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <em>notes</em> : correspond au nom du lac <code>nom_lac</code>
 </li>
 </ul>
-<div id="on-commence-par-séléctionner-les-champs-dinterêts-on-matche-les-noms-de-variables-avec-celles-de-coléo-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts-on-matche-les-noms-de-variables-avec-celles-de-col%C3%A9o-" class="anchor" aria-hidden="true"></a>8.1.1. On commence par séléctionner les champs d’interêts &amp; on matche les noms de variables avec celles de Coléo.</h4>
+<div class="section level4">
+<h4 id="on-commence-par-séléctionner-les-champs-dinterêts-on-matche-les-noms-de-variables-avec-celles-de-coléo-">8.1.1. On commence par séléctionner les champs d’interêts &amp; on matche les noms de variables avec celles de Coléo.<a class="anchor" aria-label="anchor" href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts-on-matche-les-noms-de-variables-avec-celles-de-col%C3%A9o-"></a>
+</h4>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.1. Sélection</span>
 <span class="va">camp_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">camp</span>,
@@ -618,16 +618,16 @@ document.getElementById("myDIV_taxa").style.display ="none"
                            <span class="va">technician_2</span>,
                            notes <span class="op">=</span> <span class="va">nom_lac</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="on-garde-une-ligne-unique-par-nouvelle-campagne-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-garde-une-ligne-unique-par-nouvelle-campagne-" class="anchor" aria-hidden="true"></a>8.1.2. On garde une ligne unique par nouvelle campagne.</h4>
+<div class="section level4">
+<h4 id="on-garde-une-ligne-unique-par-nouvelle-campagne-">8.1.2. On garde une ligne unique par nouvelle campagne.<a class="anchor" aria-label="anchor" href="#on-garde-une-ligne-unique-par-nouvelle-campagne-"></a>
+</h4>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.2. Retrait des duplicat</span>
 <span class="va">camp_camp</span> <span class="op">&lt;-</span> <span class="va">camp_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">camp_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
 </div>
-<div id="on-créé-une-liste-pour-le-nom-des-techniciennes-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-cr%C3%A9%C3%A9-une-liste-pour-le-nom-des-techniciennes-" class="anchor" aria-hidden="true"></a>8.1.3. On créé une liste pour le nom des technicien/ne/s.</h4>
+<div class="section level4">
+<h4 id="on-créé-une-liste-pour-le-nom-des-techniciennes-">8.1.3. On créé une liste pour le nom des technicien/ne/s.<a class="anchor" aria-label="anchor" href="#on-cr%C3%A9%C3%A9-une-liste-pour-le-nom-des-techniciennes-"></a>
+</h4>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.3. Création liste de technicien.ne.s</span>
 <span class="va">tech</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Création d'un objet `list` vide</span>
@@ -641,32 +641,32 @@ document.getElementById("myDIV_taxa").style.display ="none"
 
 <span class="va">camp_camp</span><span class="op">$</span><span class="va">technicians</span> <span class="op">&lt;-</span> <span class="va">tech</span> <span class="co"># Ajout de la liste au tableau à injecter dans Coléo</span></code></pre></div>
 </div>
-<div id="on-tansforme-le-tableau-en-liste-afin-de-pouvoir-linjecter-dans-coléo-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-tansforme-le-tableau-en-liste-afin-de-pouvoir-linjecter-dans-col%C3%A9o-" class="anchor" aria-hidden="true"></a>8.1.4. On tansforme le tableau en liste afin de pouvoir l’injecter dans Coléo.</h4>
+<div class="section level4">
+<h4 id="on-tansforme-le-tableau-en-liste-afin-de-pouvoir-linjecter-dans-coléo-">8.1.4. On tansforme le tableau en liste afin de pouvoir l’injecter dans Coléo.<a class="anchor" aria-label="anchor" href="#on-tansforme-le-tableau-en-liste-afin-de-pouvoir-linjecter-dans-col%C3%A9o-"></a>
+</h4>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.4. Conversion de l'objet pour l'injection</span>
 <span class="va">camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">camp_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="il-est-maintenant-possible-de-procéder-à-linjection-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#il-est-maintenant-possible-de-proc%C3%A9der-%C3%A0-linjection-" class="anchor" aria-hidden="true"></a>8.1.5. Il est maintenant possible de procéder à l’injection.</h4>
+<div class="section level4">
+<h4 id="il-est-maintenant-possible-de-procéder-à-linjection-">8.1.5. Il est maintenant possible de procéder à l’injection.<a class="anchor" aria-label="anchor" href="#il-est-maintenant-possible-de-proc%C3%A9der-%C3%A0-linjection-"></a>
+</h4>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.5. Injection</span>
 <span class="va">COLEO_camp_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_campaigns.html">post_campaigns</a></span><span class="op">(</span><span class="va">camp_ls</span><span class="op">)</span></code></pre></div>
 <p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/" class="external-link">codes de statut</a>).</p>
 </div>
-<div id="on-récupère-la-liste-de-campagnes-provenant-de-coléo-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-r%C3%A9cup%C3%A8re-la-liste-de-campagnes-provenant-de-col%C3%A9o-" class="anchor" aria-hidden="true"></a>8.1.6. On récupère la liste de campagnes provenant de Coléo.</h4>
+<div class="section level4">
+<h4 id="on-récupère-la-liste-de-campagnes-provenant-de-coléo-">8.1.6. On récupère la liste de campagnes provenant de Coléo.<a class="anchor" aria-label="anchor" href="#on-r%C3%A9cup%C3%A8re-la-liste-de-campagnes-provenant-de-col%C3%A9o-"></a>
+</h4>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.6. Liste des campagnes</span>
 <span class="va">campaigns</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_campaigns.html">get_campaigns</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">campaigns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/do.call.html" class="external-link">do.call</a></span><span class="op">(</span><span class="fu">plyr</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/plyr/man/rbind.fill.html" class="external-link">rbind.fill</a></span>, <span class="va">campaigns</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="on-récupère-le-id-unique-pour-chaque-campagne-nouvellement-insérées-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-r%C3%A9cup%C3%A8re-le-id-unique-pour-chaque-campagne-nouvellement-ins%C3%A9r%C3%A9es-" class="anchor" aria-hidden="true"></a>8.1.7. On récupère le id unique pour chaque campagne nouvellement insérées.</h4>
+<div class="section level4">
+<h4 id="on-récupère-le-id-unique-pour-chaque-campagne-nouvellement-insérées-">8.1.7. On récupère le id unique pour chaque campagne nouvellement insérées.<a class="anchor" aria-label="anchor" href="#on-r%C3%A9cup%C3%A8re-le-id-unique-pour-chaque-campagne-nouvellement-ins%C3%A9r%C3%A9es-"></a>
+</h4>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.1.7. Récupération des IDs des campagnes</span>
 <span class="va">camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">camp</span>,
@@ -676,18 +676,18 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"campaign_id"</span></code></pre></div>
 </div>
 </div>
-<div id="injections-des-repères-associés-aux-nouvelles-campagnes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#injections-des-rep%C3%A8res-associ%C3%A9s-aux-nouvelles-campagnes" class="anchor" aria-hidden="true"></a>8.2. Injections des repères associés aux nouvelles campagnes</h3>
+<div class="section level3">
+<h3 id="injections-des-repères-associés-aux-nouvelles-campagnes">8.2. Injections des repères associés aux nouvelles campagnes<a class="anchor" aria-label="anchor" href="#injections-des-rep%C3%A8res-associ%C3%A9s-aux-nouvelles-campagnes"></a>
+</h3>
 <p>Les champs de la table <strong>repères</strong> (“/landmarks”) de Coléo qui seront remplis sont les suivants :</p>
 <ul>
 <li><em>campaign_id</em></li>
 <li>
 <em>geom</em> : créé à partir des variables “lat” &amp; “lon”</li>
 </ul>
-<div id="on-commence-par-séléctionner-les-champs-dinterêts-on-matche-les-noms-de-variables-avec-celles-de-coléo--1" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts-on-matche-les-noms-de-variables-avec-celles-de-col%C3%A9o--1" class="anchor" aria-hidden="true"></a>8.2.1. On commence par séléctionner les champs d’interêts &amp; on matche les noms de variables avec celles de Coléo.</h4>
+<div class="section level4">
+<h4 id="on-commence-par-séléctionner-les-champs-dinterêts-on-matche-les-noms-de-variables-avec-celles-de-coléo--1">8.2.1. On commence par séléctionner les champs d’interêts &amp; on matche les noms de variables avec celles de Coléo.<a class="anchor" aria-label="anchor" href="#on-commence-par-s%C3%A9l%C3%A9ctionner-les-champs-dinter%C3%AAts-on-matche-les-noms-de-variables-avec-celles-de-col%C3%A9o--1"></a>
+</h4>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.1. Sélection</span>
 <span class="va">land_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">camp</span>,
@@ -695,23 +695,23 @@ document.getElementById("myDIV_taxa").style.display ="none"
                            <span class="va">lat</span>,
                            <span class="va">lon</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="on-garde-une-ligne-par-repère-cest-à-dire-par-campagne-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-garde-une-ligne-par-rep%C3%A8re-cest-%C3%A0-dire-par-campagne-" class="anchor" aria-hidden="true"></a>8.2.2. On garde une ligne par repère (c’est-à-dire par campagne).</h4>
+<div class="section level4">
+<h4 id="on-garde-une-ligne-par-repère-cest-à-dire-par-campagne-">8.2.2. On garde une ligne par repère (c’est-à-dire par campagne).<a class="anchor" aria-label="anchor" href="#on-garde-une-ligne-par-rep%C3%A8re-cest-%C3%A0-dire-par-campagne-"></a>
+</h4>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.2. Retrait des duplicats</span>
 <span class="va">land_camp</span> <span class="op">&lt;-</span> <span class="va">land_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">land_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
 </div>
-<div id="on-transforme-le-tableau-en-liste-pour-pouvoir-linjecter-dans-coléo-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-transforme-le-tableau-en-liste-pour-pouvoir-linjecter-dans-col%C3%A9o-" class="anchor" aria-hidden="true"></a>8.2.3. On transforme le tableau en liste pour pouvoir l’injecter dans Coléo.</h4>
+<div class="section level4">
+<h4 id="on-transforme-le-tableau-en-liste-pour-pouvoir-linjecter-dans-coléo-">8.2.3. On transforme le tableau en liste pour pouvoir l’injecter dans Coléo.<a class="anchor" aria-label="anchor" href="#on-transforme-le-tableau-en-liste-pour-pouvoir-linjecter-dans-col%C3%A9o-"></a>
+</h4>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.3. Conversion de l'objet pour l'injection</span>
 <span class="va">land_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">land_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="on-créé-le-champs-geom-de-coléo-sous-forme-de-liste-en-utilisant-les-variables-lat-lon-du-tableau-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-cr%C3%A9%C3%A9-le-champs-geom-de-col%C3%A9o-sous-forme-de-liste-en-utilisant-les-variables-lat-lon-du-tableau-" class="anchor" aria-hidden="true"></a>8.2.4. On créé le champs <code>geom</code> de Coléo, sous forme de liste, en utilisant les variables <code>lat</code> &amp; <code>lon</code> du tableau.</h4>
+<div class="section level4">
+<h4 id="on-créé-le-champs-geom-de-coléo-sous-forme-de-liste-en-utilisant-les-variables-lat-lon-du-tableau-">8.2.4. On créé le champs <code>geom</code> de Coléo, sous forme de liste, en utilisant les variables <code>lat</code> &amp; <code>lon</code> du tableau.<a class="anchor" aria-label="anchor" href="#on-cr%C3%A9%C3%A9-le-champs-geom-de-col%C3%A9o-sous-forme-de-liste-en-utilisant-les-variables-lat-lon-du-tableau-"></a>
+</h4>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.4. Création de la variable `geom`</span>
 <span class="va">geom</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">land_camp</span>, <span class="fl">1</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span>
@@ -726,9 +726,9 @@ document.getElementById("myDIV_taxa").style.display ="none"
   
 <span class="op">}</span><span class="op">}</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="on-fusionne-les-deux-listes-en-prévision-de-linjection-dans-coléo-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-fusionne-les-deux-listes-en-pr%C3%A9vision-de-linjection-dans-col%C3%A9o-" class="anchor" aria-hidden="true"></a>8.2.5. On fusionne les deux listes en prévision de l’injection dans Coléo.</h4>
+<div class="section level4">
+<h4 id="on-fusionne-les-deux-listes-en-prévision-de-linjection-dans-coléo-">8.2.5. On fusionne les deux listes en prévision de l’injection dans Coléo.<a class="anchor" aria-label="anchor" href="#on-fusionne-les-deux-listes-en-pr%C3%A9vision-de-linjection-dans-col%C3%A9o-"></a>
+</h4>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.5. Fusion des listes</span>
 <span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">land_ls</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
@@ -743,18 +743,18 @@ document.getElementById("myDIV_taxa").style.display ="none"
  <span class="op">}</span>
 <span class="op">}</span></code></pre></div>
 </div>
-<div id="il-est-maintenant-possible-de-procéder-à-linjection--1" class="section level4">
-<h4 class="hasAnchor">
-<a href="#il-est-maintenant-possible-de-proc%C3%A9der-%C3%A0-linjection--1" class="anchor" aria-hidden="true"></a>8.2.6. Il est maintenant possible de procéder à l’injection.</h4>
+<div class="section level4">
+<h4 id="il-est-maintenant-possible-de-procéder-à-linjection--1">8.2.6. Il est maintenant possible de procéder à l’injection.<a class="anchor" aria-label="anchor" href="#il-est-maintenant-possible-de-proc%C3%A9der-%C3%A0-linjection--1"></a>
+</h4>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.2.6. Injection</span>
 <span class="va">COLEO_land_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_landmarks.html">post_landmarks</a></span><span class="op">(</span><span class="va">land_ls</span><span class="op">)</span></code></pre></div>
 <p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/" class="external-link">codes de statut</a>).</p>
 </div>
 </div>
-<div id="injections-des-observations-associées-aux-nouvelles-campagnes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#injections-des-observations-associ%C3%A9es-aux-nouvelles-campagnes" class="anchor" aria-hidden="true"></a>8.3. Injections des observations associées aux nouvelles campagnes</h3>
+<div class="section level3">
+<h3 id="injections-des-observations-associées-aux-nouvelles-campagnes">8.3. Injections des observations associées aux nouvelles campagnes<a class="anchor" aria-label="anchor" href="#injections-des-observations-associ%C3%A9es-aux-nouvelles-campagnes"></a>
+</h3>
 <p>Les champs de la table <strong>observations</strong> (“/observations”) de Coléo qui seront remplis sont les suivants :</p>
 <ul>
 <li><em>date_obs</em></li>
@@ -767,9 +767,9 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <em>notes</em> : correspond aux variables <code>Date_denombrement</code> &amp; <code>Taxonomiste</code>
 </li>
 </ul>
-<div id="on-séléctionne-les-champs-dinterêts-on-matche-les-noms-de-variables-avec-celles-de-coléo-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-s%C3%A9l%C3%A9ctionne-les-champs-dinter%C3%AAts-on-matche-les-noms-de-variables-avec-celles-de-col%C3%A9o-" class="anchor" aria-hidden="true"></a>8.3.1. On séléctionne les champs d’interêts &amp; on matche les noms de variables avec celles de Coléo.</h4>
+<div class="section level4">
+<h4 id="on-séléctionne-les-champs-dinterêts-on-matche-les-noms-de-variables-avec-celles-de-coléo-">8.3.1. On séléctionne les champs d’interêts &amp; on matche les noms de variables avec celles de Coléo.<a class="anchor" aria-label="anchor" href="#on-s%C3%A9l%C3%A9ctionne-les-champs-dinter%C3%AAts-on-matche-les-noms-de-variables-avec-celles-de-col%C3%A9o-"></a>
+</h4>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.3.1. Création &amp; sélection</span>
 <span class="co"># Création de 2 variables nécessaires</span>
@@ -785,31 +785,31 @@ document.getElementById("myDIV_taxa").style.display ="none"
                           <span class="va">is_valid</span>,
                           <span class="va">notes</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="on-garde-une-ligne-par-campagne-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-garde-une-ligne-par-campagne-" class="anchor" aria-hidden="true"></a>8.3.2. On garde une ligne par campagne.</h4>
+<div class="section level4">
+<h4 id="on-garde-une-ligne-par-campagne-">8.3.2. On garde une ligne par campagne.<a class="anchor" aria-label="anchor" href="#on-garde-une-ligne-par-campagne-"></a>
+</h4>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.3.2. Retrait des duplicats</span>
 <span class="va">obs_camp</span> <span class="op">&lt;-</span> <span class="va">obs_camp</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html" class="external-link">duplicated</a></span><span class="op">(</span><span class="va">obs_camp</span><span class="op">)</span>,<span class="op">]</span></code></pre></div>
 </div>
-<div id="on-transforme-le-tableau-en-liste-pour-linjection-dans-coléo-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-transforme-le-tableau-en-liste-pour-linjection-dans-col%C3%A9o-" class="anchor" aria-hidden="true"></a>8.3.3. On transforme le tableau en liste pour l’injection dans Coléo.</h4>
+<div class="section level4">
+<h4 id="on-transforme-le-tableau-en-liste-pour-linjection-dans-coléo-">8.3.3. On transforme le tableau en liste pour l’injection dans Coléo.<a class="anchor" aria-label="anchor" href="#on-transforme-le-tableau-en-liste-pour-linjection-dans-col%C3%A9o-"></a>
+</h4>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.3.3. Conversion de l'objet pour l'insertion</span>
 <span class="va">obs_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">obs_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="il-est-maintenant-possible-de-procéder-à-linjection--2" class="section level4">
-<h4 class="hasAnchor">
-<a href="#il-est-maintenant-possible-de-proc%C3%A9der-%C3%A0-linjection--2" class="anchor" aria-hidden="true"></a>8.3.4. Il est maintenant possible de procéder à l’injection.</h4>
+<div class="section level4">
+<h4 id="il-est-maintenant-possible-de-procéder-à-linjection--2">8.3.4. Il est maintenant possible de procéder à l’injection.<a class="anchor" aria-label="anchor" href="#il-est-maintenant-possible-de-proc%C3%A9der-%C3%A0-linjection--2"></a>
+</h4>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.3.4. Injection</span>
 <span class="va">COLEO_obs_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_obs.html">post_obs</a></span><span class="op">(</span><span class="va">obs_ls</span><span class="op">)</span></code></pre></div>
 <p>La sortie R vous informe sur le déroulement de l’insertion. Le message <code>Good job ! Toutes les insertions ont été créées dans COLEO</code> indique que les informations ont bien été enregistrées dans Coléo. Dans le cas inverse, le message <code>Oups... un problème est survenu</code> apparait, suivi des codes de statut pour chaque requête d’injections (pour plus d’informations à propos des <a href="https://http.cat/" class="external-link">codes de statut</a>).</p>
 </div>
-<div id="on-récupère-la-liste-des-observations-de-coléo-et-on-met-à-jour-le-tableau-de-campagnes-à-injecter-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-r%C3%A9cup%C3%A8re-la-liste-des-observations-de-col%C3%A9o-et-on-met-%C3%A0-jour-le-tableau-de-campagnes-%C3%A0-injecter-" class="anchor" aria-hidden="true"></a>8.3.5. On récupère la liste des observations de Coléo et on met à jour le tableau de campagnes à injecter.</h4>
+<div class="section level4">
+<h4 id="on-récupère-la-liste-des-observations-de-coléo-et-on-met-à-jour-le-tableau-de-campagnes-à-injecter-">8.3.5. On récupère la liste des observations de Coléo et on met à jour le tableau de campagnes à injecter.<a class="anchor" aria-label="anchor" href="#on-r%C3%A9cup%C3%A8re-la-liste-des-observations-de-col%C3%A9o-et-on-met-%C3%A0-jour-le-tableau-de-campagnes-%C3%A0-injecter-"></a>
+</h4>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.3.5. Acquisition de la liste des observations de Coléo</span>
 <span class="va">obs</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/get_gen.html">get_gen</a></span><span class="op">(</span><span class="st">"/observations"</span><span class="op">)</span>
@@ -820,9 +820,9 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">camp</span><span class="op">)</span> <span class="op">==</span> <span class="st">"id"</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"observation_id"</span></code></pre></div>
 </div>
 </div>
-<div id="injections-de-labondance-des-espèces-associées-aux-nouvelles-campagnes" class="section level3">
-<h3 class="hasAnchor">
-<a href="#injections-de-labondance-des-esp%C3%A8ces-associ%C3%A9es-aux-nouvelles-campagnes" class="anchor" aria-hidden="true"></a>8.4. Injections de l’abondance des espèces associées aux nouvelles campagnes</h3>
+<div class="section level3">
+<h3 id="injections-de-labondance-des-espèces-associées-aux-nouvelles-campagnes">8.4. Injections de l’abondance des espèces associées aux nouvelles campagnes<a class="anchor" aria-label="anchor" href="#injections-de-labondance-des-esp%C3%A8ces-associ%C3%A9es-aux-nouvelles-campagnes"></a>
+</h3>
 <p>Les champs de la table <strong>observations des espèces</strong> de Coléo qui peuvent être remplis sont les suivants :</p>
 <ul>
 <li>
@@ -834,9 +834,9 @@ document.getElementById("myDIV_taxa").style.display ="none"
 <em>value</em> : correspond à la variable <code>abondance</code>
 </li>
 </ul>
-<div id="on-séléctionne-les-champs-dinterêts-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-s%C3%A9l%C3%A9ctionne-les-champs-dinter%C3%AAts-" class="anchor" aria-hidden="true"></a>8.4.1. On séléctionne les champs d’interêts.</h4>
+<div class="section level4">
+<h4 id="on-séléctionne-les-champs-dinterêts-">8.4.1. On séléctionne les champs d’interêts.<a class="anchor" aria-label="anchor" href="#on-s%C3%A9l%C3%A9ctionne-les-champs-dinter%C3%AAts-"></a>
+</h4>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.4.1. Sélection</span>
 <span class="va">obs_spe_camp</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">camp</span>,
@@ -846,16 +846,16 @@ document.getElementById("myDIV_taxa").style.display ="none"
                               
 <span class="va">obs_spe_camp</span><span class="op">$</span><span class="va">variable</span> <span class="op">&lt;-</span> <span class="st">"abondance"</span></code></pre></div>
 </div>
-<div id="on-transforme-le-jeu-de-données-en-liste-pour-linjection-dans-coléo-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#on-transforme-le-jeu-de-donn%C3%A9es-en-liste-pour-linjection-dans-col%C3%A9o-" class="anchor" aria-hidden="true"></a>8.4.2. On transforme le jeu de données en liste pour l’injection dans Coléo.</h4>
+<div class="section level4">
+<h4 id="on-transforme-le-jeu-de-données-en-liste-pour-linjection-dans-coléo-">8.4.2. On transforme le jeu de données en liste pour l’injection dans Coléo.<a class="anchor" aria-label="anchor" href="#on-transforme-le-jeu-de-donn%C3%A9es-en-liste-pour-linjection-dans-col%C3%A9o-"></a>
+</h4>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.4.2. Conversion de l'objet pour l'injection</span>
 <span class="va">obs_spe_camp_ls</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/apply.html" class="external-link">apply</a></span><span class="op">(</span><span class="va">obs_spe_camp</span>, <span class="fl">1</span>, <span class="va">as.list</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="il-est-maintenant-possible-de-procéder-à-linjection--3" class="section level4">
-<h4 class="hasAnchor">
-<a href="#il-est-maintenant-possible-de-proc%C3%A9der-%C3%A0-linjection--3" class="anchor" aria-hidden="true"></a>8.4.3. Il est maintenant possible de procéder à l’injection.</h4>
+<div class="section level4">
+<h4 id="il-est-maintenant-possible-de-procéder-à-linjection--3">8.4.3. Il est maintenant possible de procéder à l’injection.<a class="anchor" aria-label="anchor" href="#il-est-maintenant-possible-de-proc%C3%A9der-%C3%A0-linjection--3"></a>
+</h4>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># 8.4.3. Injection</span>
 <span class="va">COLEO_obsref_inj</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_obs_species.html">post_obs_species</a></span><span class="op">(</span><span class="va">obs_spe_camp_ls</span><span class="op">)</span></code></pre></div>
@@ -882,7 +882,7 @@ document.getElementById("myDIV_taxa").style.display ="none"
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
 </div>
 
       </footer>

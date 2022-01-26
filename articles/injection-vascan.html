@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title> • rcoleo</title>
+<title>Injection de données vascane • rcoleo</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -19,7 +19,7 @@
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Injection de données vascane">
 <meta property="og:description" content="rcoleo">
 <meta property="og:image" content="/logo.svg">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -123,53 +123,51 @@
 
       
 
-      </header><script src="BB_vignette_taxa_names_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="injection-vascan_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip></h1>
+      <h1 data-toc-skip>Injection de données vascane</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/HEAD/vignettes/BB_vignette_taxa_names.Rmd" class="external-link"><code>vignettes/BB_vignette_taxa_names.Rmd</code></a></small>
-      <div class="hidden name"><code>BB_vignette_taxa_names.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/HEAD/vignettes/injection-vascan.Rmd" class="external-link"><code>vignettes/injection-vascan.Rmd</code></a></small>
+      <div class="hidden name"><code>injection-vascan.Rmd</code></div>
 
     </div>
 
     
     
-<div class="section level5">
-<h5 id="cette-étape-permet-de-sélectionner-les-informations-nécessaires-pour-les-noms-despèce-absents-de-coléo-">
-<strong>7.3.3.1.</strong> Cette étape permet de sélectionner les informations nécessaires pour les noms d’espèce absents de Coléo.<a class="anchor" aria-label="anchor" href="#cette-%C3%A9tape-permet-de-s%C3%A9lectionner-les-informations-n%C3%A9cessaires-pour-les-noms-desp%C3%A8ce-absents-de-col%C3%A9o-"></a>
-</h5>
+<p>Étant donné que les noms d’espèces hybrides comportent le caractère spécial “x”, il y a un problème avec httr::POST qui donne un message d’erreur au retour de l’insertion dans via l’API. Par contre, l’insertion fonctionne bien. Donc, voici un code temporaire utilisé pour l’injection en espérant que le bug dans httr soit réparé (<a href="https://github.com/r-lib/httr/issues/693" class="external-link uri">https://github.com/r-lib/httr/issues/693</a>).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Formatage du tableau à insérer</span>
-
-<span class="va">taxa_df</span> <span class="op">&lt;-</span> <span class="va">donnees_inj_cell_site_id</span> <span class="op">%&gt;%</span>
-  <span class="fu"><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">taxa_name</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">sp_abs</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="fu">select</span><span class="op">(</span>name <span class="op">=</span> <span class="va">taxa_name</span>,
-         <span class="va">vernacular_fr</span>,
-         <span class="va">rank</span>,
-         <span class="va">category</span>,
-         <span class="va">tsn</span><span class="op">)</span> <span class="op">%&gt;%</span>
-  <span class="co"># Retrait des lignes dupliquées</span>
-  <span class="va">distinct</span></code></pre></div>
-</div>
-<div class="section level5">
-<h5 id="cette-étape-permet-de-formatter-les-données-afin-de-pouvoir-les-injecter-dans-la-base-de-données-coléo-">
-<strong>7.3.3.2.</strong> Cette étape permet de formatter les données afin de pouvoir les injecter dans la base de données Coléo.<a class="anchor" aria-label="anchor" href="#cette-%C3%A9tape-permet-de-formatter-les-donn%C3%A9es-afin-de-pouvoir-les-injecter-dans-la-base-de-donn%C3%A9es-col%C3%A9o-"></a>
-</h5>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Formatage des données sous forme de liste</span>
-<span class="va">taxa_df_ls</span> <span class="op">&lt;-</span> <span class="fu">transpose</span><span class="op">(</span><span class="va">taxa_df</span><span class="op">)</span></code></pre></div>
-</div>
-<div class="section level5">
-<h5 id="on-injecte-dans-la-base-de-données-coléo-">
-<strong>7.3.3.3.</strong> On injecte dans la base de données Coléo.<a class="anchor" aria-label="anchor" href="#on-injecte-dans-la-base-de-donn%C3%A9es-col%C3%A9o-"></a>
-</h5>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Injection</span>
-<span class="va">COLEO_taxa</span> <span class="op">&lt;-</span> <span class="fu">rcoleo</span><span class="fu">::</span><span class="fu"><a href="../reference/post_species.html">post_species</a></span><span class="op">(</span><span class="va">taxa_df_ls</span><span class="op">)</span></code></pre></div>
-<p><strong><em>ATTENTION</em></strong> Réfléchir au fait que toutes les informations pour les espèces ne sont pas renseignées avec cette méthode</p>
-</div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo" class="external-link">rcoleo</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">## Attaching package: 'dplyr'</span></code></pre>
+<pre><code><span class="co">## The following objects are masked from 'package:stats':</span>
+<span class="co">## </span>
+<span class="co">##     filter, lag</span></code></pre>
+<pre><code><span class="co">## The following objects are masked from 'package:base':</span>
+<span class="co">## </span>
+<span class="co">##     intersect, setdiff, setequal, union</span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">donnees_vascan</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">'/home/glaroc/Dropbox/Atlas/coléo-données/rcoleo_plantes_vasculaires_FL2021_avechybride.csv'</span>,sep<span class="op">=</span><span class="st">'|'</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning in file(file, "rt"): cannot open file '/home/glaroc/Dropbox/Atlas/coléo-</span>
+<span class="co">## données/rcoleo_plantes_vasculaires_FL2021_avechybride.csv': No such file or</span>
+<span class="co">## directory</span></code></pre>
+<pre><code><span class="co">## Error in file(file, "rt"): cannot open the connection</span></code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">taxa_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_species.html">get_species</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Error in bearer(): Aucune autorisation détectée</span></code></pre>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">especes_bd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">taxa_list</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Error in list2(...): object 'taxa_list' not found</span></code></pre>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">nouvelles_especes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter-joins.html" class="external-link">anti_join</a></span><span class="op">(</span><span class="va">donnees_vascan</span>, <span class="va">especes_bd</span>, by <span class="op">=</span> <span class="st">"name"</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Error in anti_join(donnees_vascan, especes_bd, by = "name"): object 'donnees_vascan' not found</span></code></pre>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">nouvelles_especes</span><span class="op">)</span><span class="op">)</span><span class="op">{</span>
+  <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="../reference/post_gen.html">post_gen</a></span><span class="op">(</span><span class="st">"/taxa"</span>,<span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/transpose.html" class="external-link">transpose</a></span><span class="op">(</span><span class="va">nouvelles_especes</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span><span class="op">)</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>
+<span class="op">}</span></code></pre></div>
+<pre><code><span class="co">## Error in nrow(nouvelles_especes): object 'nouvelles_especes' not found</span></code></pre>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

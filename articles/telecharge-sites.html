@@ -42,7 +42,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rcoleo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.7</span>
       </span>
     </div>
 
@@ -56,7 +56,7 @@
 </li>
 <li>
   <a href="https://coleo.biodiversite-quebec.ca/docs/" class="external-link">
-    <span class="fas fa-book fa-lg"></span>
+    <span class="fa fa-book fa-lg"></span>
      
   </a>
 </li>
@@ -129,7 +129,7 @@
       <h1 data-toc-skip>Telecharger les sites</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/master/vignettes/telecharge-sites.Rmd" class="external-link"><code>vignettes/telecharge-sites.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo/blob/HEAD/vignettes/telecharge-sites.Rmd" class="external-link"><code>vignettes/telecharge-sites.Rmd</code></a></small>
       <div class="hidden name"><code>telecharge-sites.Rmd</code></div>
 
     </div>
@@ -139,7 +139,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ReseauBiodiversiteQuebec/rcoleo" class="external-link">rcoleo</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="http://purrr.tidyverse.org" class="external-link">purrr</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">tidyverse</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/message.html" class="external-link">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span><span class="op">)</span>
 
 <span class="va">all_taxa</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_species.html">get_species</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">all_taxa_df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">all_taxa</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">body</span><span class="op">)</span>
@@ -382,7 +382,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.6.1.9001.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
 </div>
 
       </footer>
