@@ -6,7 +6,7 @@ output: html_document
 Étant donné que les noms d'espèces hybrides comportent le caractère spécial "x", il y a un problème avec httr::POST qui donne un message d'erreur au retour de l'insertion dans via l'API. Par contre, l'insertion fonctionne bien. Donc, voici un code temporaire utilisé pour l'injection en espérant que le bug dans httr soit réparé (https://github.com/r-lib/httr/issues/693). 
 
 
-````{r}
+````{r vascan_demo, error = TRUE}
 
 library(rcoleo)
 library(dplyr)
