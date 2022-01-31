@@ -6,8 +6,10 @@
 #' internal list at `zzz.R`. If a new campaign type is added, this
 #' will have to change.
 #'
-#' @param campaign_input Must be one of "végétation", "papilionidés",
-#'   "acoustique", "insectes_sol", "mammifères", "odonates" or "zooplancton".
+#' @param campaign_input Must be one of 'végétation', 'végétation_transect',
+#' 'sol', 'acoustique', 'phénologie', 'mammifères', 'papilionidés', 'odonates',
+#' 'insectes_sol', 'ADNe', 'zooplancton', 'sol', 'décomposition_sol',
+#' 'température_eau', 'température_sol', 'marais_profondeur_température'.
 #'   NOTE that partial matching is enabled: you can input "v" and get
 #'   "végétation" or "pap" and get "papilionidés"
 #'

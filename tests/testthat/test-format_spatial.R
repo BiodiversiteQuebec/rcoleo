@@ -14,6 +14,6 @@ test_that("format spatial gives errors for bad inputs, correct format for good o
 
   expect_type(object = formatted_output$geom, type = "list")
 
-  expect_equal(names(formatted_output$geom[[1]]), c("type", "coordinates", "type", "properties"))
+  expect_equal(names(formatted_output$geom[[1]]), c("type", "coordinates"))
 
   })

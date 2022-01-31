@@ -9,7 +9,7 @@ test_that("species_by_site returns list", {
 
 
   # for vegetation
-  resp_veg <- get_species_list(campaign_type = "v", site_code = "148_101_H01")
+  resp_veg <- get_species_list(campaign_type = "végétation", site_code = "148_101_H01")
 
   expect_type(resp_veg, "list")
 
@@ -19,7 +19,7 @@ test_that("species_by_site returns list", {
 })
 
 test_that("get_species_list works for one NULL or another, but not both", {
-  resp_veg <- get_species_list("v")
+  resp_veg <- get_species_list("végétation")
   expect_gt(nrow(resp_veg), 100)
 
 
