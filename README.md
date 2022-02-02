@@ -42,19 +42,3 @@ RCOLEO_TOKEN=7f8df438e1be96a18436e9dab5d97d68ed0e0441d9b68f59e0ce631b2919f3aa
 (utilizez votre propre token ici)
 
 *Le jeton d'accès est un exemple ici et n'est aucunement valide.*
-
-### Stratégie 2: Argument 
-
-Vous pouvez également passer votre jeton d'accès comme un argument pour chacune des fonctions `GET`: 
-
-```r
-sites <- get_sites(token="7f8df438e1be96a18436e9dab5d97d68ed0e0441d9b68f59e0ce631b2919f3aa")
-```
-
-*Le jeton d'accès est un exemple ici et n'est aucunement valide.*
-
-
-### Roadmap to 2.0.0
-
-- [ ] Use the login page to stored the token
-- [ ] Export DwC-A
