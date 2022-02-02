@@ -1,6 +1,6 @@
 # functions that work with get_name_table()
 
-
+#
 get_name_table_column <- function(db_table, column = "input_column"){
 
   nm_tbl <- coleo_get_name_table()
