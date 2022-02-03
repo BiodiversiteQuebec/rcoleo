@@ -1,7 +1,7 @@
-# functions that work with get_name_table()
+# functions that work with coleo_get_name_table()
 
 #
-get_name_table_column <- function(db_table, column = "input_column"){
+coleo_get_name_table_column <- function(db_table, column = "input_column"){
 
   nm_tbl <- coleo_get_name_table()
 
@@ -25,8 +25,8 @@ get_name_table_column <- function(db_table, column = "input_column"){
 
 }
 
-get_rename_vec_input_to_db <- function(db_table){
-  inputs <- get_name_table_column(db_table)
-  upload <- get_name_table_column(db_table, column = "db_column")
+coleo_get_rename_vec_input_to_db <- function(db_table){
+  inputs <- coleo_get_name_table_column(db_table)
+  upload <- coleo_get_name_table_column(db_table, column = "db_column")
   purrr::set_names(inputs, upload)
 }

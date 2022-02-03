@@ -9,9 +9,9 @@
 #'
 #' @return un tbl, nested
 #' @export
-prep_input_data <- function(df, db_table){
+coleo_prep_input_data <- function(df, db_table){
 
-  input_fields <- get_name_table_column(db_table)
+  input_fields <- coleo_get_name_table_column(db_table)
 
   not_in_table <- setdiff(names(df), input_fields)
 
@@ -24,7 +24,7 @@ prep_input_data <- function(df, db_table){
   }
 
   # rename the dataset
-  rename_vec <- get_rename_vec_input_to_db(db_table)
+  rename_vec <- coleo_get_rename_vec_input_to_db(db_table)
 
   df_info_renamed <- df_info_only %>%
     dplyr::rename(any_of(rename_vec))
