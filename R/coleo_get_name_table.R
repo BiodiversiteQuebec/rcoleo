@@ -134,7 +134,7 @@ tibble::tribble(
 }
 
 
-#' Table des tables nécessaires pour chaque type de campagne
+#' Retourne un vecteur contenant les noms valides de campagnes
 #'
 #' @param
 #'
@@ -150,7 +150,7 @@ coleo_return_valid_campaigns <- function(){
 }
 
 
-#' Find the names of the campaigns required
+#' Table des tables requises par type de campagne
 #'
 #' @param
 #'
