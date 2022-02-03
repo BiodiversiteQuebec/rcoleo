@@ -15,7 +15,8 @@ test_that("coleo_name_table_functions", {
 
   expect_equal(coleo_get_rename_vec_input_to_db("campaigns"),
                c(site_id = "site_id", opened_at = "camp_opened_at", closed_at = "camp_closed_at",
-                 type = "camp_type", technician_1 = "technician_1", technician_2 = "technician_2"
-  ))
+                 type = "camp_type", technician_1 = "technician_1", technician_2 = "technician_2",
+                 notes = "camp_notes")
+  )
 
-  })
+})
