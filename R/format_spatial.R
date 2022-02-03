@@ -14,15 +14,16 @@ format_spatial <- function(df_to_inject) {
   ## dataframe must have lat and lon columns
   assertthat::assert_that(assertthat::has_name(df_to_inject, "lon"))
   assertthat::assert_that(assertthat::has_name(df_to_inject, "lat"))
+  assertthat::assert_that(inherits(df_to_inject, "rowwise_df"))
+
 
   formatted_input_data <- df_to_inject %>%
-    dplyr::mutate(geoj = purrr::map2(.x = .data$lon,
-                                     .y = .data$lat,
-                                     ~ geojsonio::geojson_list(c(lon = .x, lat =  .y),
-                                                               lat = "lat", lon = "lon")),
-                  feat = purrr::map(.data$geoj, "features"),
-                  feat = purrr::map(.data$feat, purrr::flatten),
-                  geom = purrr::map(.data$feat, "geometry"))
+    dplyr::mutate(geoj = list(geojsonio::geojson_list(c(lon = lon,
+                                                        lat =  lat),
+                                                      lat = "lat", lon = "lon")),
+                  feat = list(geoj[["features"]]),
+                  feat = list(purrr::flatten(feat)),
+                  geom = list(feat[["geometry"]]))
 
   keep_these <- which(! names(formatted_input_data) %in% c("geoj", "feat", "lat", "lon") )
 

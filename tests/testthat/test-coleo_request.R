@@ -25,7 +25,6 @@ with_mock_dir("coleo_request_real", {
   test_that("returns answer for a real code",{
     real_site <- coleo_request_general(cell_code = "139_87", table = "cells")
 
-    browser()
     answer <- httr2::resp_body_json(real_site)[[1]]
 
     expect_equal(length(answer), 7)
