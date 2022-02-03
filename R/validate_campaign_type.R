@@ -3,7 +3,7 @@
 #' Validate user input of campaign type
 #'
 #' Matches input against the valid campaign types. These are stored in an
-#' internal list at `zzz.R`. If a new campaign type is added, this
+#' internal table at `coleo_get_name_table.R`. If a new campaign type is added, this
 #' will have to change.
 #'
 #' @param campaign_input Must be one of 'végétation', 'végétation_transect',
@@ -19,11 +19,11 @@
 #' @export
 validate_campaign_type <- function(campaign_input) {
 
-  vec_camps <- campaign_types()
+  vec_camps <- coleo_return_valid_campaigns()
 
   ind <- pmatch(campaign_input, vec_camps)
 
-  if (is.na(ind)) stop("This does not match any input. Verify spelling, including accents. Verify that rcoleo::campaign_types() is up to date.")
+  if (is.na(ind)) stop("This does not match any input. Verify spelling, including accents. Verify that rcoleo::coleo_return_valid_campaigns() is up to date.")
 
   return(vec_camps[ind])
 
@@ -35,7 +35,7 @@ validate_campaign_type <- function(campaign_input) {
 #' Validate user input of site type
 #'
 #' Matches input against the valid site types. These are stored in an
-#' internal list at `zzz.R`. If a new site type is added, this
+#' internal table at `coleo_get_name_table.R`. If a new site type is added, this
 #' will have to change.
 #'
 #' @param site_input Must be one of "végétation", "papilionidés",
@@ -49,7 +49,7 @@ validate_campaign_type <- function(campaign_input) {
 #' @export
 validate_site_type <- function(site_input) {
 
-  vec_sites <- site_types()
+  vec_sites <- coleo_return_valid_site_type()
 
   ind <- pmatch(site_input, vec_sites)
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/coleo_get_name_table.R
 \name{coleo_get_required_tables}
 \alias{coleo_get_required_tables}
-\title{Find the names of the campaigns required}
+\title{Table des tables requises par type de campagne}
 \usage{
 coleo_get_required_tables()
 }
@@ -10,5 +10,5 @@ coleo_get_required_tables()
 
 }
 \description{
-Find the names of the campaigns required
+Table des tables requises par type de campagne
 }

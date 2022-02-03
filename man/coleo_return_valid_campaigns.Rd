@@ -2,7 +2,7 @@
 % Please edit documentation in R/coleo_get_name_table.R
 \name{coleo_return_valid_campaigns}
 \alias{coleo_return_valid_campaigns}
-\title{Table des tables nécessaires pour chaque type de campagne}
+\title{Retourne un vecteur contenant les noms valides de campagnes}
 \usage{
 coleo_return_valid_campaigns()
 }
@@ -10,5 +10,5 @@ coleo_return_valid_campaigns()
 
 }
 \description{
-Table des tables nécessaires pour chaque type de campagne
+Retourne un vecteur contenant les noms valides de campagnes
 }

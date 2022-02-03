@@ -18,6 +18,6 @@ request.
 }
 \description{
 Matches input against the valid site types. These are stored in an
-internal list at \code{zzz.R}. If a new site type is added, this
+internal table at \code{coleo_get_name_table.R}. If a new site type is added, this
 will have to change.
 }

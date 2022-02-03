@@ -150,6 +150,22 @@ coleo_return_valid_campaigns <- function(){
 }
 
 
+#' Retourne un vecteur contenant les noms valides de type de site
+#'
+#' @param
+#'
+#' @return
+#' @export
+#'
+coleo_return_valid_site_type <- function(){
+  full_tbl <- coleo_get_name_table()
+
+  legal_vals <- subset(full_tbl, table == "sites" & input_column == "site_type")[["legal_values"]][[1]]
+
+  return(legal_vals)
+}
+
+
 #' Table des tables requises par type de campagne
 #'
 #' @param
