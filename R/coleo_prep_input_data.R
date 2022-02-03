@@ -18,6 +18,8 @@ coleo_prep_input_data <- function(df, db_table){
   if(db_table != "observations") {
     df_info_only <- df %>%
       tidyr::nest(data = any_of(not_in_table))
+    # test with nest_by
+
   } else {
     message("nesting is not necessary for those tables")
     df_info_only <- df
