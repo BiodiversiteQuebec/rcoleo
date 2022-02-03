@@ -12,6 +12,4 @@ test_that("coleo_get_name_table makes a table", {
   # confirm function
   expect_type(nm_tbl$required_class[[1]], "builtin")
 
-
-
 })

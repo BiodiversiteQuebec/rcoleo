@@ -8,9 +8,11 @@
 #' @export
 coleo_return_required_tables <- function(camp_type) {
 
-  # test that camp_type is valid choice
-
   full_tbl <- coleo_get_required_tables()
+
+  # test that camp_type is valid choice
+  assertthat::assert_that(camp_type %in% names(full_tbl)[-1],
+                          msg = "Not one of the database campaign type")
 
   tbls <- full_tbl[full_tbl[,camp_type]==1, "table"][[1]]
 
