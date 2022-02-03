@@ -1,4 +1,5 @@
-# functions that work with get_name_table()
+# functions that work with coleo_get_name_table()
+
 
 # Retoune les d'une colonne de coleo_get_name_table() pour une table
 ## db_table : le nom d'une table de la bd
@@ -52,5 +53,4 @@ get_required_name_table <- function(db_table) {
   subset(nm_tbl, is_required == 1 & table == db_table)[,"input_column"][[1]]
 
   full_tbl[full_tbl[,camp_type]==1, "table"][[1]]
-
 }

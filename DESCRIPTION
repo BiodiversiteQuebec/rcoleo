@@ -13,7 +13,7 @@ BugReports: https://github.com/ReseauBiodiversiteQuebec/rcoleo/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports:
+Imports: 
     httr,
     jsonlite,
     stringr,
@@ -27,12 +27,14 @@ Imports:
     sf,
     magrittr,
     geojsonio,
-    rlang
+    rlang,
+    httr2
 Suggests: 
+    httptest2,
     knitr,
+    pkgdown,
     rmarkdown,
     RPostgreSQL,
-    pkgdown,
     testthat,
     withr
 RoxygenNote: 7.1.2

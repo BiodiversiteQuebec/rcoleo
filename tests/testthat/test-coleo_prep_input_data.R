@@ -8,7 +8,7 @@ test_that("coleo_prep_input_data works as expected", {
   )
 
 
-  prep_input_data(fake_pap_data, "sites")
+  coleo_prep_input_data(fake_pap_data, "sites")
 
 
 })
