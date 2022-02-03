@@ -81,7 +81,7 @@ coleo_get_required_name_table <- function(db_table) {
 
   req_nm_table <- nm_tbl[]
 
-  out <- subset(nm_tbl, is_required == 1 & table == db_table)[,"input_column"][[1]]
+  out <- subset(nm_tbl, isTRUE(is_required) & table == db_table)[,"input_column"][[1]]
 
   return(out)
 }

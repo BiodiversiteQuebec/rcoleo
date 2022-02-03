@@ -36,4 +36,4 @@ test_that("coleo_name_table_functions", {
                  "site_lat", "site_lon"
                  ))
 
-  })
+})

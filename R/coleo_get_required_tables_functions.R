@@ -7,6 +7,9 @@
 #' @return
 #' @export
 coleo_return_required_tables <- function(camp_type) {
+
+  # test that camp_type is valid choice
+
   full_tbl <- coleo_get_required_tables()
 
   tbls <- full_tbl[full_tbl[,camp_type]==1, "table"][[1]]
