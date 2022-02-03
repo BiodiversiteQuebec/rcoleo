@@ -1,10 +1,41 @@
 # functions that work with coleo_get_name_table()
 
+#' Retourne un vecteur contenant les noms valides de campagnes
+#'
+#' @param
+#'
+#' @return
+#' @export
+#'
+coleo_return_valid_campaigns <- function(){
+  full_tbl <- coleo_get_name_table()
 
-# Retoune les d'une colonne de coleo_get_name_table() pour une table
+  legal_vals <- subset(full_tbl, table == "campaigns" & input_column == "camp_type")[["legal_values"]][[1]]
+
+  return(legal_vals)
+}
+
+
+#' Retourne un vecteur contenant les noms valides de type de site
+#'
+#' @param
+#'
+#' @return
+#' @export
+#'
+coleo_return_valid_site_types <- function(){
+  full_tbl <- coleo_get_name_table()
+
+  legal_vals <- subset(full_tbl, table == "sites" & input_column == "site_type")[["legal_values"]][[1]]
+
+  return(legal_vals)
+}
+
+
+# Retoune les noms d'une colonne de coleo_get_name_table() pour une table
 ## db_table : le nom d'une table de la bd
 ## column : le nom de colone de la coleo_get_name_table() ("table", "input_column", "db_column", "is_required", "required_class", "legal_values")
-get_name_table_column <- function(db_table, column = "input_column"){
+coleo_get_name_table_column <- function(db_table, column = "input_column"){
 
   nm_tbl <- coleo_get_name_table()
 
@@ -30,9 +61,9 @@ get_name_table_column <- function(db_table, column = "input_column"){
 
 # Retoune un vecteur des noms valides de colonnes du jeu de données pour une table de la base de données
 ## db_table : le nom d'une table de la bd
-get_rename_vec_input_to_db <- function(db_table){
-  inputs <- get_name_table_column(db_table)
-  upload <- get_name_table_column(db_table, column = "db_column")
+coleo_get_rename_vec_input_to_db <- function(db_table){
+  inputs <- coleo_get_name_table_column(db_table)
+  upload <- coleo_get_name_table_column(db_table, column = "db_column")
   out <- purrr::set_names(inputs, upload)
 
   return(out)
@@ -41,7 +72,7 @@ get_rename_vec_input_to_db <- function(db_table){
 
 # Retourne les noms valides de colonnes du jeu de données REQUIS pour une table de la base de données
 ## db_table : le nom d'une table de la bd
-get_required_name_table <- function(db_table) {
+coleo_get_required_name_table <- function(db_table) {
 
   nm_tbl <- coleo_get_name_table()
 
@@ -50,7 +81,7 @@ get_required_name_table <- function(db_table) {
 
   req_nm_table <- nm_tbl[]
 
-  subset(nm_tbl, is_required == 1 & table == db_table)[,"input_column"][[1]]
+  out <- subset(nm_tbl, is_required == 1 & table == db_table)[,"input_column"][[1]]
 
-  full_tbl[full_tbl[,camp_type]==1, "table"][[1]]
+  return(out)
 }

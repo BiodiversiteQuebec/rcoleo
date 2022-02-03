@@ -13,7 +13,7 @@
 #' @param
 #'
 #' @return
-#'
+#' @export
 coleo_get_name_table <- function(){
 tibble::tribble(
                    ~table,           ~input_column,            ~db_column, ~is_required,            ~required_class,                                                                                                                                                                                                                                              ~legal_values,
@@ -131,91 +131,4 @@ tibble::tribble(
                "obs_edna",            "edna_notes",               "notes",        FALSE, .Primitive("is.character"),                                                                                                                                                                                                                                                         NA
   )
 
-}
-
-
-#' Retourne un vecteur contenant les noms valides de campagnes
-#'
-#' @param
-#'
-#' @return
-#' @export
-#'
-coleo_return_valid_campaigns <- function(){
-  full_tbl <- coleo_get_name_table()
-
-  legal_vals <- subset(full_tbl, table == "campaigns" & input_column == "camp_type")[["legal_values"]][[1]]
-
-  return(legal_vals)
-}
-
-
-#' Retourne un vecteur contenant les noms valides de type de site
-#'
-#' @param
-#'
-#' @return
-#' @export
-#'
-coleo_return_valid_site_type <- function(){
-  full_tbl <- coleo_get_name_table()
-
-  legal_vals <- subset(full_tbl, table == "sites" & input_column == "site_type")[["legal_values"]][[1]]
-
-  return(legal_vals)
-}
-
-
-#' Table des tables requises par type de campagne
-#'
-#' @param
-#'
-#' @return
-#'
-#' @examples
-coleo_get_required_tables <- function(){
-
-tibble::tribble(
-                       ~table, ~végétation, ~végétation_transect, ~sol, ~acoustique, ~phénologie, ~mammifères, ~papilionidés, ~odonates, ~insectes_sol, ~ADNe, ~zooplancton, ~température_eau, ~température_sol, ~marais_profondeur_température,
-                      "cells",           0,                    0,    0,           0,           0,           0,             0,         0,             0,     0,            0,                0,                0,                              0,
-                      "sites",           0,                    0,    0,           0,           0,           0,             0,         0,             1,     0,            0,                0,                0,                              0,
-                  "campaigns",           0,                    0,    0,           0,           0,           0,             0,         0,             1,     0,            0,                0,                0,                              0,
-                    "efforts",           0,                    0,    0,           0,           0,           0,             0,         0,             0,     0,            0,                0,                0,                              0,
-               "environments",           0,                    0,    0,           0,           0,           0,             0,         0,             0,     0,            0,                0,                0,                              0,
-                    "devices",           0,                    0,    0,           0,           0,           0,             0,         0,             0,     0,            0,                0,                0,                              0,
-                      "lures",           0,                    0,    0,           0,           0,           0,             0,         0,             0,     0,            0,                0,                0,                              0,
-                      "traps",           0,                    0,    0,           0,           0,           0,             0,         0,             1,     0,            0,                0,                0,                              0,
-                  "landmarks",           0,                    0,    0,           0,           0,           0,             0,         0,             1,     0,            0,                0,                0,                              0,
-                    "samples",           0,                    0,    0,           0,           0,           0,             0,         0,             1,     0,            0,                0,                0,                              0,
-               "thermographs",           0,                    0,    0,           0,           0,           0,             0,         0,             0,     0,            0,                0,                0,                              0,
-               "observations",           0,                    0,    0,           0,           0,           0,             0,         0,             1,     0,            0,                0,                0,                              0,
-                "obs_species",           0,                    0,    0,           0,           0,           0,             0,         0,             1,     0,            0,                0,                0,                              0,
-                 "attributes",           0,                    0,    0,           0,           0,           0,             0,         0,             0,     0,            0,                0,                0,                              0,
-                "ref_species",           0,                    0,    0,           0,           0,           0,             0,         0,             1,     0,            0,                0,                0,                              0,
-     "obs_soil_decomposition",           0,                    0,    0,           0,           0,           0,             0,         0,             0,     0,            0,                0,                0,                              0,
-                   "obs_edna",           0,                    0,    0,           0,           0,           0,             0,         0,             0,     0,            0,                0,                0,                              0,
-                   "obs_soil",           0,                    0,    0,           0,           0,           0,             0,         0,             0,     0,            0,                0,                0,                              0,
-      "obs_temperature_depth",           0,                    0,    0,           0,           0,           0,             0,         0,             0,     0,            0,                0,                0,                              0,
-                      "media",           0,                    0,    0,           0,           0,           0,             0,         0,             0,     0,            0,                0,                0,                              0,
-                  "obs_media",           0,                    0,    0,           0,           0,           0,             0,         0,             0,     0,            0,                0,                0,                              0
-     )
-
-}
-
-#' Trouver les tables requises pour un type de capagne donné
-#'
-#' @param camp_type un type de campagne valide.
-#'
-#' @return
-#' @export
-#'
-#' @examples
-coleo_return_required_tables <- function(camp_type) {
-  full_tbl <- coleo_get_required_tables()
-
-  #tbls <- subset(full_tbl, camp_type == 1)[["table"]][[1]]
-
-  tbls <- full_tbl[full_tbl[,camp_type]==1, "table"][[1]]
-
-  return(tbls)
 }
