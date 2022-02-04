@@ -4,12 +4,10 @@
 \alias{coleo_validate}
 \title{Title}
 \usage{
-coleo_validate(data, campaign_type)
+coleo_validate(data)
 }
 \arguments{
-\item{data}{dataset to validate}
-
-\item{campaign_type}{type of campaign to be injected.}
+\item{data}{jeu de données à valider}
 }
 \value{
 
