@@ -6,11 +6,10 @@ test_that("coleo_get_name_table makes a table", {
 
   expect_equal(dput(sapply(nm_tbl, class)),
                c(table = "character", input_column = "character", db_column = "character",
-                 required_class = "list", legal_values = "list"))
+                 is_required = "logical", required_class = "list", legal_values = "list"
+                 ))
 
   # confirm function
   expect_type(nm_tbl$required_class[[1]], "builtin")
-
-
 
 })

@@ -20,6 +20,6 @@ request.
 }
 \description{
 Matches input against the valid campaign types. These are stored in an
-internal list at \code{zzz.R}. If a new campaign type is added, this
+internal table at \code{coleo_get_name_table.R}. If a new campaign type is added, this
 will have to change.
 }
