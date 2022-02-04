@@ -79,9 +79,7 @@ coleo_get_required_name_table <- function(db_table) {
   assertthat::assert_that(db_table %in% unique(nm_tbl$table),
                           msg = "Not one of the database tables")
 
-  req_nm_table <- nm_tbl[]
-
-  out <- subset(nm_tbl, isTRUE(is_required) & table == db_table)[,"input_column"][[1]]
+  out <- subset(nm_tbl, is_required & table == db_table)[,"input_column"][[1]]
 
   return(out)
 }
