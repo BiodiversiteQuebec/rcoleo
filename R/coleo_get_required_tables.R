@@ -11,7 +11,7 @@
 coleo_get_required_tables <- function(){
 
 tibble::tribble(
-                       ~table, ~`végétation`, ~`végétation_transect`, ~sol, ~acoustique, ~`phénologie`, ~mammifères, ~`papilionidés`, ~odonates, ~insectes_sol, ~ADNe, ~zooplancton, ~`température_eau`, ~`température_sol`, ~marais_profondeur_température,
+                       ~table, ~`végétation`, ~`végétation_transect`, ~sol, ~acoustique, ~`phénologie`, ~`mammifères`, ~`papilionidés`, ~odonates, ~insectes_sol, ~ADNe, ~zooplancton, ~`température_eau`, ~`température_sol`, ~marais_profondeur_température,
                       "cells",             0,                      0,    0,           0,             0,           0,               0,         0,             0,     0,            0,                  0,                  0,                              0,
                       "sites",             0,                      0,    0,           0,             0,           0,               0,         0,             0,     0,            0,                  0,                  0,                              0,
                   "campaigns",             0,                      0,    0,           0,             0,           0,               0,         0,             1,     0,            0,                  0,                  0,                              0,
