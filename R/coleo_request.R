@@ -26,12 +26,22 @@ coleo_request_code <- function(human_code, table, perform = TRUE){
 }
 
 
-coleo_request_general <- function(..., table, perform = TRUE){
-  # endpoint or whatever
-  request_info <- list(...)
+#' General request for the coleo database
+#'
+#' @param ... query parameters for the coleo database (in the format `name = value`)
+#' @param table name of database table to query
+#' @param perform Should the request be performed? defaults to TRUE.
+#'
+#' @return httr2 response object if perform = TRUE, a request object if perform = FALSE.
+#' @export
+coleo_request_general <- function(..., endpoint, perform = TRUE){
 
-  written_req <- coleo_begin_req() %>%
-    httr2::req_url_path_append(table) |>
+  assertthat::assert_that(endpoint %in% names(endpoints()))
+
+    request_info <- list(...)
+
+  written_req <- coleo_begin_req() |>
+    httr2::req_url_path_append(endpoint) |>
     httr2::req_url_query(!!!request_info)
 
   if(isTRUE(perform)){
@@ -39,5 +49,22 @@ coleo_request_general <- function(..., table, perform = TRUE){
   } else {
     return(written_req)
   }
+}
+
+
+coleo_pluck_one_id <- function(answer_resp){
+  answer_resp |>
+    httr2::resp_body_json() |>
+    # flatten might be safer than alternatives?
+    purrr::flatten() |>
+    purrr::pluck("id")
+}
+
+
+coleo_get_site_id <- function(site_code){
+  message(site_code)
+
+  coleo_request_general(site_code = site_code, endpoint = "sites") |>
+    coleo_pluck_one_id()
 }
 
