@@ -9,16 +9,16 @@ coleo_validate <- function(data) {
 
   # Check that there is a campaign type column and that it contains a unique value
   assertthat::assert_that(assertthat::has_name(data, "camp_type"),
-                          msg = "La colonne camp_type est manquante du jeu de donnée. Vérifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond à camp_type")
+                          msg = "Vérifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond à camp_type")
 
   campaign_type <- unique(data$camp_type)
   assertthat::assert_that(length(campaign_type) == 1 && campaign_type %in% coleo_return_valid_campaigns(),
-                          msg = "Les valeurs contenus dans la colonne camp_type ne sont pas valides. Vérifiez que toutes les valeurs de la colonne sont identiques et que la valeur est un type de campagne valide")
+                          msg = "Vérifiez que toutes les valeurs de la colonne camp_type sont identiques et que la valeur est un type de campagne valide")
 
   # Check that imported data has a column called site_code
   # This is necessary since the sites table's fields within input columns are not required to inject a data set, but the "site_code" input column is
   assertthat::assert_that(assertthat::has_name(data, "site_code"),
-                          msg = "Le jeu de données ne contient pas de colonne nommée site_code. Vérifiez qu'une colonne contient le code du site et que le nom de colone correspond à site_code")
+                          msg = "Vérifiez qu'une colonne contient le code du site et que le nom de colone correspond à site_code")
 
   # Check that the imported data has all of the required columns
   req_tbls <- coleo_return_required_tables(campaign_type)
@@ -27,7 +27,7 @@ coleo_validate <- function(data) {
   req_col_diff <- setdiff(req_columns, names(data))
 
   assertthat::assert_that(length(req_col_diff) == 0,
-                          msg = paste0("Le jeu de données ne contient pas toutes les colonnes requises pour être injecté. Vérifiez que les bons noms de colonnes sont utilisés et que toutes les colonnes sont présentes. Les colonnes requises sont : \n", paste0(req_columns, collapse = ", "), "\n\nLes colonnes absentes sont : \n", paste0(req_col_diff, collapse = ", ")))
+                          msg = paste0("Vérifiez que les bons noms de colonnes sont utilisés et que toutes les colonnes requises sont présentes. Les colonnes requises sont : \n", paste0(req_columns, collapse = ", "), "\n\nLes colonnes absentes sont : \n", paste0(req_col_diff, collapse = ", ")))
 
   # Check that all input columns are valid column names
   columns <- c(unlist(sapply(req_tbls, coleo_get_name_table_column)),
@@ -35,7 +35,7 @@ coleo_validate <- function(data) {
   possible_col_diff <- setdiff(names(data), columns)
 
   assertthat::assert_that(length(possible_col_diff) == 0,
-                          msg = paste0("Le jeu de données contient des colonnes au nom invalide. Vérifiez que les bons noms de colonnes sont utilisés. Les colonnes qui sont superflues doivent être retirées. Les colonnes valides peuvent être : \n", paste0(columns, collapse = ", "), "\n\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", ")))
+                          msg = paste0("Vérifiez que les bons noms de colonnes sont utilisés et que les colonnes superflues sont retirées. Les colonnes valides peuvent être : \n", paste0(columns, collapse = ", "), "\n\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", ")))
 
   # Check that input column types are valid
   tbl <- coleo_get_name_table()
@@ -50,7 +50,7 @@ coleo_validate <- function(data) {
   ## Are all input columns of the right class?
   erroneous_cols <- dat_names[!class_of_col]
   assertthat::assert_that(all(class_of_col),
-                          msg = paste0("Le jeu de données contient des colonnes de classe invalide. Vérifiez la classe des colonnes. Ces colonnes sont problématiques : \n", paste0(erroneous_cols, collapse = ", ")))
+                          msg = paste0("Vérifiez la classe des colonnes. Ces colonnes sont problématiques : \n", paste0(erroneous_cols, collapse = ", ")))
 
   # Check that the range of values contained within input columns are valid
   tbl_with_legal_values <- subset(tbl, !is.na(legal_values))
@@ -61,8 +61,15 @@ coleo_validate <- function(data) {
     all(unique(data[,x]) %in% legal_vals)
     })
 
+  invalid_cols <- which(tbl$input_column %in% names(valid_col_values)[!valid_col_values])
+  cols_valid_values <- tbl$legal_values[invalid_cols]
+  names(cols_valid_values) <- tbl$input_column[invalid_cols]
+  col_names <- tbl$input_column[invalid_cols]
+
   assertthat::assert_that(all(valid_col_values),
-                          msg = paste0("Le jeu de données contient des colonnes dont les valeurs ne sont pas valides. Ces colonnes sont problématiques : \n", paste0(names(valid_col_values)[!valid_col_values], collapse = ", ")))
+                          msg = paste0("Vérifiez les valeurs contenues dans les colonnes. Ces colonnes contiennent des valeurs invalides : \n", paste0(col_names, collapse = ", "), "\n\nLes valeurs possibles pour ces colonnes sont : \n", paste0(col_names, ": ", cols_valid_values, collapse = "\n")))
+
+
 
 
 
