@@ -56,8 +56,22 @@ test_that("coleo_validate", {
   dat_test <- dat
   dat_test$ref_taxa_rank <- "inconnu"
   dat_test$ref_taxa_category <- "na"
+
   testthat::expect_error(coleo_validate(dat_test),
                          regexp = "Vérifiez les valeurs contenues dans les colonnes.*")
+
+  ## Test that date format respects the YYYY-MM-DD convention
+  dat_test <- dat
+  dat_test$date_obs <- "95-05-15"
+
+  testthat::expect_error(coleo_validate(dat_test),
+                         regexp = "Vérifiez le format des valeurs de dates.*")
+
+  ## Test that the range of dates are returned
+  dat_test <- dat
+
+  testthat::expect_message(coleo_validate(dat_test),
+                         regexp = "Vérifiez que l'intervalle des dates injectées correspond aux attentes.*")
 
 })
 

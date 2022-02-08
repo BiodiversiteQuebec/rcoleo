@@ -74,8 +74,31 @@ coleo_validate <- function(data) {
 
 
   # Check that the format of the input column date is valid
-  ## Andrew's idea: [0-9]{4}-[0-9]{2}-[0-9]{2}
-  ## strsplit(date_col, “-“)
 
+  ## Identify columns containing dates
+  #strsplit(tbl$input_column, "\date", fixed = TRUE)
+  cols_date_name <- tbl$input_column[grepl("date", tbl$input_column, fixed = TRUE)]
+  cols_date <- cols_date_name[cols_date_name %in% dat_names]
+
+  if(length(cols_date) > 0) {
+
+    ## Check that the year contains 4 digits, the month 2, and the day 2
+    split <- strsplit(data[,cols_date], "-", fixed = TRUE)
+    date_ndigits <- sapply(split, nchar)
+    is_ndigits_valid <- all(date_ndigits[1,] == 4, date_ndigits[2,] == 2, date_ndigits[3,] == 2)
+
+    assertthat::assert_that(is_ndigits_valid,
+                            msg = paste0("Vérifiez le format des valeurs de dates. Les dates doivent etre du format YYYY-MM-DD." ))
+
+
+    ## Check that the values are within decent a range
+    range_year<- range(as.numeric(sapply(split, `[[`, 1)))
+    range_month <- range(as.numeric(sapply(split, `[[`, 2)))
+    range_day <- range(as.numeric(sapply(split, `[[`, 3)))
+
+    message(paste0("Vérifiez que l'intervalle des dates injectées correspond aux attentes. Les valeurs de dates se trouvent dans l'intervalle de l'année ", range_year[1], " à ", range_year[2], " du mois ", range_month[1], " à ", range_month[2], " et du jour ", range_day[1], " à ", range_day[2]))
+  }
+
+  # Check that the format of the input column containing time is valid
 
 }
