@@ -1,4 +1,4 @@
-#' Title
+#' Valide la forme du jeu de données à injecter
 #'
 #' @param data jeu de données à valider
 #'
@@ -8,12 +8,12 @@
 coleo_validate <- function(data) {
 
   # Check that there is a campaign type column and that it contains a unique value
-  assertthat::assert_that(assertthat::has_name(data, "camp_type"),
-                          msg = "Vérifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond à camp_type")
+  assertthat::assert_that(assertthat::has_name(data, "campaign_type"),
+                          msg = "Vérifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond à campaign_type")
 
-  campaign_type <- unique(data$camp_type)
+  campaign_type <- unique(data$campaign_type)
   assertthat::assert_that(length(campaign_type) == 1 && campaign_type %in% coleo_return_valid_campaigns(),
-                          msg = "Vérifiez que toutes les valeurs de la colonne camp_type sont identiques et que la valeur est un type de campagne valide")
+                          msg = "Vérifiez que toutes les valeurs de la colonne campaign_type sont identiques et que la valeur est un type de campagne valide")
 
   # Check that imported data has a column called site_code
   # This is necessary since the sites table's fields within input columns are not required to inject a data set, but the "site_code" input column is

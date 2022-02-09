@@ -2,7 +2,7 @@
 % Please edit documentation in R/coleo_validate.R
 \name{coleo_validate}
 \alias{coleo_validate}
-\title{Title}
+\title{Valide la forme du jeu de données à injecter}
 \usage{
 coleo_validate(data)
 }
@@ -13,5 +13,5 @@ coleo_validate(data)
 
 }
 \description{
-Title
+Valide la forme du jeu de données à injecter
 }
