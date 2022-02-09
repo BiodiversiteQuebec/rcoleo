@@ -1,4 +1,4 @@
-#' Title
+#' Valide la forme du jeu de données à injecter
 #'
 #' @param data jeu de données à valider
 #'
