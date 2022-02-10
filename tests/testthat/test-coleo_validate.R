@@ -12,7 +12,6 @@ dat <- data.frame(stringsAsFactors = FALSE,
                   observation_value = c(4L, 2L, 2L, 1L, 4L, 1L),
                   ref_taxa_rank = c("espèce","espèce","espèce","espèce","espèce","espèce"),
                   ref_taxa_name = c("Agroeca_ornata", "Camponotus_pennsylvanicus","Ceraticelus_laetabilis","Insecta","Insecta","Trochosa_terricola"),
-                  ref_taxa_category = c("arthropodes","arthropodes","arthropodes","arthropodes","arthropodes","arthropodes"),
                   ref_taxa_tsn = c(1:6))
 
 
@@ -22,7 +21,7 @@ test_that("coleo_validate", {
   ## Test for missing campaign_type column
   dat_test <- subset(dat, select = -c(campaign_type))
   testthat::expect_error(coleo_validate(dat_test),
-                         regexp = "Vérifiez qu'une colonne contient le type de campagne.*")
+                         regexp = "La colonne camp_type est manquante.*")
 
   ## Test for multiple values within the campaign_type column
   dat_test <- dat
@@ -33,24 +32,24 @@ test_that("coleo_validate", {
   ## Test for the presence of a column called site_code
   dat_test <- subset(dat, select = -c(site_code))
   testthat::expect_error(coleo_validate(dat_test),
-                         regexp = "Vérifiez qu'une colonne contient le code du site.*")
+                         regexp = "Le jeu de données ne contient pas de colonne nommée site_code.*")
 
   ## Test that the imported data has all of the required columns
   dat_test <- subset(dat, select = -c(observation_date))
   testthat::expect_error(coleo_validate(dat_test),
-                         regexp = "Vérifiez que les bons noms de colonnes sont utilisés.*")
+                         regexp = "Le jeu de données ne contient pas toutes les colonnes requises pour être injecté.*")
 
   ## test that all input columns are valid column names
   dat_test <- dat
   dat_test$erroneous_col <- "error"
   testthat::expect_error(coleo_validate(dat_test),
-                         regexp = "Vérifiez que les bons noms de colonnes sont utilisés et que les colonnes superflues sont retirées.*")
+                         regexp = "Le jeu de données contient des colonnes au nom invalide.*")
 
   ## Test that all values within each column is of the right class
   dat_test <- dat
   dat_test$observation_is_valid <- as.character(dat_test$observation_is_valid)
   testthat::expect_error(coleo_validate(dat_test),
-                         regexp = "Vérifiez la classe des colonnes.*")
+                         regexp = "Le jeu de données contient des colonnes de classe invalide.*")
 
   ## Test that the range of values contained within input columns are valid
   dat_test <- dat
