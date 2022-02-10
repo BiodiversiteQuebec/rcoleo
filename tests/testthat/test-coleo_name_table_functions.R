@@ -15,7 +15,7 @@ test_that("coleo_name_table_functions", {
 
   expect_equal(coleo_get_name_table_column("sites"),
                c("site_code", "site_name",
-                 "site_type", "site_opened_at", "site_lat", "site_lon", "site_notes"
+                 "site_type", "site_date_opened", "site_lat", "site_lon", "site_notes"
                ))
 
   expect_equal(coleo_get_name_table_column("sites", column = "db_column"),
@@ -26,13 +26,13 @@ test_that("coleo_name_table_functions", {
 
 
   expect_equal(coleo_get_rename_vec_input_to_db("campaigns"),
-               c(type = "camp_type", technician_1 = "technician_1",
-                 technician_2 = "technician_2", opened_at = "camp_opened_at", closed_at = "camp_closed_at",
-                 notes = "camp_notes"
+               c(type = "campaign_type", technician_1 = "campaign_technician_1", technician_2 = "campaign_technician_2",
+                 opened_at = "campaign_date_opened", closed_at = "campaign_date_closed",
+                 notes = "campaign_notes"
                  ))
 
   expect_equal(coleo_get_required_name_table("sites"),
-               c("site_code", "site_name", "site_type", "site_opened_at",
+               c("site_code", "site_name", "site_type", "site_date_opened",
                  "site_lat", "site_lon"
                  ))
 

@@ -10,7 +10,7 @@
 coleo_return_valid_campaigns <- function(){
   full_tbl <- coleo_get_name_table()
 
-  legal_vals <- subset(full_tbl, table == "campaigns" & input_column == "camp_type")[["legal_values"]][[1]]
+  legal_vals <- subset(full_tbl, table == "campaigns" & input_column == "campaign_type")[["legal_values"]][[1]]
 
   return(legal_vals)
 }

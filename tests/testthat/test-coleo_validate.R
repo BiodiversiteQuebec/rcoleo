@@ -3,13 +3,14 @@
 # Data set
 dat <- data.frame(stringsAsFactors = FALSE,
                   site_code = c("139_87_F01", "139_87_F01","139_87_F01","139_87_F01","139_87_F01", "139_87_F01"),
-                  camp_type = c("insectes_sol", "insectes_sol","insectes_sol","insectes_sol","insectes_sol","insectes_sol"),
+                  campaign_type = c("insectes_sol", "insectes_sol","insectes_sol","insectes_sol","insectes_sol","insectes_sol"),
                   sample_code = c("2018-0108","2018-0108", "2018-0108","2018-0108","2018-0108","2018-0108"),
-                  date_obs = c("2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24"),
-                  obs_is_valid = c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
-                  obs_taxa_name = c("Agroeca_ornata", "Camponotus_pennsylvanicus","Ceraticelus_laetabilis","Insecta","Insecta","Trochosa_terricola"),
-                  obs_variable = c("abundance", "abundance","abundance","abundance","abundance","abundance"),
-                  obs_value = c(4L, 2L, 2L, 1L, 4L, 1L),
+                  observation_date = c("2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24"),
+                  observation_is_valid = c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
+                  observation_taxa_name = c("Agroeca_ornata", "Camponotus_pennsylvanicus","Ceraticelus_laetabilis","Insecta","Insecta","Trochosa_terricola"),
+                  observation_variable = c("abundance", "abundance","abundance","abundance","abundance","abundance"),
+                  observation_value = c(4L, 2L, 2L, 1L, 4L, 1L),
+                  ref_taxa_rank = c("espèce","espèce","espèce","espèce","espèce","espèce"),
                   ref_taxa_name = c("Agroeca_ornata", "Camponotus_pennsylvanicus","Ceraticelus_laetabilis","Insecta","Insecta","Trochosa_terricola"),
                   ref_taxa_tsn = c(1:6))
 
@@ -17,16 +18,16 @@ dat <- data.frame(stringsAsFactors = FALSE,
 # Tests
 test_that("coleo_validate", {
 
-  ## Test for missing camp_type column
-  dat_test <- subset(dat, select = -c(camp_type))
+  ## Test for missing campaign_type column
+  dat_test <- subset(dat, select = -c(campaign_type))
   testthat::expect_error(coleo_validate(dat_test),
                          regexp = "La colonne camp_type est manquante.*")
 
-  ## Test for multiple values within the camp_type column
+  ## Test for multiple values within the campaign_type column
   dat_test <- dat
-  dat_test$camp_type <- c("sol", "insectes_sol","insectes_sol","insectes_sol","insectes_sol","insectes_sol")
+  dat_test$campaign_type <- c("sol", "insectes_sol","insectes_sol","insectes_sol","insectes_sol","insectes_sol")
   testthat::expect_error(coleo_validate(dat_test),
-                         regexp = "Les valeurs contenus dans la colonne camp_type ne sont pas valides.*")
+                         regexp = "Vérifiez que toutes les valeurs de la colonne campaign_type sont identiques.*")
 
   ## Test for the presence of a column called site_code
   dat_test <- subset(dat, select = -c(site_code))
@@ -34,7 +35,7 @@ test_that("coleo_validate", {
                          regexp = "Le jeu de données ne contient pas de colonne nommée site_code.*")
 
   ## Test that the imported data has all of the required columns
-  dat_test <- subset(dat, select = -c(date_obs))
+  dat_test <- subset(dat, select = -c(observation_date))
   testthat::expect_error(coleo_validate(dat_test),
                          regexp = "Le jeu de données ne contient pas toutes les colonnes requises pour être injecté.*")
 
@@ -46,15 +47,30 @@ test_that("coleo_validate", {
 
   ## Test that all values within each column is of the right class
   dat_test <- dat
-  dat_test$obs_is_valid <- as.character(dat_test$obs_is_valid)
+  dat_test$observation_is_valid <- as.character(dat_test$observation_is_valid)
   testthat::expect_error(coleo_validate(dat_test),
                          regexp = "Le jeu de données contient des colonnes de classe invalide.*")
 
   ## Test that the range of values contained within input columns are valid
   dat_test <- dat
-  dat_test$site_type <- "Forestier"
-#  testthat::expect_error(coleo_validate(dat_test),
-#                         regexp = "Le jeu de données contient des colonnes dont les valeurs ne sont pas valides.*")
+  dat_test$ref_taxa_rank <- "inconnu"
+  dat_test$ref_taxa_category <- "na"
+
+  testthat::expect_error(coleo_validate(dat_test),
+                         regexp = "Vérifiez les valeurs contenues dans les colonnes.*")
+
+  ## Test that date format respects the YYYY-MM-DD convention
+  dat_test <- dat
+  dat_test$observation_date <- "95-05-15"
+
+  testthat::expect_error(coleo_validate(dat_test),
+                         regexp = "Vérifiez le format des valeurs de dates.*")
+
+  ## Test that the range of dates are returned
+  dat_test <- dat
+
+  testthat::expect_message(coleo_validate(dat_test),
+                         regexp = "Vérifiez que l'intervalle des dates injectées correspond aux attentes.*")
 
 })
 
