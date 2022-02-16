@@ -83,20 +83,38 @@ coleo_validate <- function(data) {
   if(length(cols_date) > 0) {
 
     ## Check that the year contains 4 digits, the month 2, and the day 2
-    split <- strsplit(data[,cols_date], "-", fixed = TRUE)
-    date_ndigits <- sapply(split, nchar)
-    is_ndigits_valid <- all(date_ndigits[1,] == 4, date_ndigits[2,] == 2, date_ndigits[3,] == 2)
+    cols_ndigits <- sapply(cols_date, function(x) {
+      split <- strsplit(unlist(data[,x]), "-", fixed = TRUE)
+      date_ndigits <- sapply(split, nchar)
+      all(date_ndigits[1,] == 4, date_ndigits[2,] == 2, date_ndigits[3,] == 2)
+    })
+    is_ndigits_valid <- all(cols_ndigits)
 
     assertthat::assert_that(is_ndigits_valid,
                             msg = paste0("Vérifiez le format des valeurs de dates. Les dates doivent etre du format YYYY-MM-DD." ))
 
 
-    ## Check that the values are within decent a range
-    range_year<- range(as.numeric(sapply(split, `[[`, 1)))
-    range_month <- range(as.numeric(sapply(split, `[[`, 2)))
-    range_day <- range(as.numeric(sapply(split, `[[`, 3)))
+    ## Check that the values are within a decent range
+    ### Year
+    range_year <- sapply(data[cols_date], function(x) {
+      split <- strsplit(unlist(x), "-", fixed = TRUE)
+      range(as.numeric(sapply(split, `[[`, 1)))
+      }) |>
+      range()
+    ### Month
+    range_month <- sapply(data[cols_date], function(x) {
+      split <- strsplit(unlist(x), "-", fixed = TRUE)
+      range(as.numeric(sapply(split, `[[`, 2)))
+    }) |>
+      range()
+    ### Day
+    range_day <- sapply(data[cols_date], function(x) {
+      split <- strsplit(unlist(x), "-", fixed = TRUE)
+      range(as.numeric(sapply(split, `[[`, 3)))
+    }) |>
+      range()
 
-    message(paste0("Vérifiez que l'intervalle des dates injectées correspond aux attentes. Les valeurs de dates se trouvent dans l'intervalle de l'année ", range_year[1], " à ", range_year[2], " du mois ", range_month[1], " à ", range_month[2], " et du jour ", range_day[1], " à ", range_day[2]))
+    message(paste0("Vérifiez que l'intervalle des dates injectées correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ",")," se trouvent dans l'intervalle de l'année ", range_year[1], " à ", range_year[2], " du mois ", range_month[1], " à ", range_month[2], " et du jour ", range_day[1], " à ", range_day[2]))
   }
 
   # Check that the format of the input column containing time is valid
