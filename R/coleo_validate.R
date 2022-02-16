@@ -58,8 +58,8 @@ coleo_validate <- function(data) {
 
   valid_col_values <- sapply(cols_to_check, function(x) {
     legal_vals <- tbl$legal_values[which(tbl$input_column==x)][[1]]
-    all(unique(data[,x]) %in% legal_vals)
-    })
+    all(sapply(unique(data[,x]), function(x) x %in% legal_vals))
+  })
 
   invalid_cols <- which(tbl$input_column %in% names(valid_col_values)[!valid_col_values])
   cols_valid_values <- tbl$legal_values[invalid_cols]
