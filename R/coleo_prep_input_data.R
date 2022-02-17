@@ -21,7 +21,7 @@ coleo_prep_input_data <- function(df, db_table){
     # test with nest_by
 
   } else {
-    message("nesting is not necessary for those tables")
+    message("L'imbrication n'est pas necessaire pour cette table")
     df_info_only <- df
   }
 

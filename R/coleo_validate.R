@@ -109,7 +109,7 @@ if(length(cols_date) > 0) {
   }) |>
     range()
 
-  message(paste0("Dernière étape ! \nVérifiez que l'intervalle des dates injectées correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ",")," se trouvent dans l'intervalle de l'année ", range_year[1], " à ", range_year[2], " du mois ", range_month[1], " à ", range_month[2], " et du jour ", range_day[1], " à ", range_day[2], "\n\nSi les dates sont bonnes et qu'aucun autre message n'apparait, vous pouvez procéder à l'injection de données"))
+  message(paste0("Dernière étape ! \nVérifiez que l'intervalle des dates injectées correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ",")," se trouvent dans l'intervalle de l'année ", range_year[1], " à ", range_year[2], " du mois ", range_month[1], " à ", range_month[2], " et du jour ", range_day[1], " à ", range_day[2], "\n\nSi les dates sont bonnes et qu'aucun autre message n'apparait, vous pouvez procéder à l'injection des données"))
 }
 
 # Check that the format of the input column containing time is valid
