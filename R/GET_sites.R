@@ -27,7 +27,7 @@ get_sites <- function(site_code = NULL, ...) {
     stopifnot(is.character(site_code))
 
     # Obtenir les sites définis dans ids
-    for (id in 1:length(site_code)) {
+    for (id in 1:length(site_code)) {get
 
       responses[[id]] <- get_gen(endpoint, query = list(site_code = site_code[id]), ...)
 

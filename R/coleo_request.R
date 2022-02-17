@@ -68,3 +68,32 @@ coleo_get_site_id <- function(site_code){
     coleo_pluck_one_id()
 }
 
+
+coleo_process_site_resp <- function(resp){
+  # works but is ugly
+  full_data <- resp %>%
+    httr2::resp_body_json(.) %>%
+    tibble::tibble(data = .) %>%
+    tidyr::unchop(data, keep_empty = TRUE) %>%
+    dplyr::mutate(nm = names(data)) %>%
+    tidyr::pivot_wider(names_from = nm, values_from = data)
+
+  site_data <- full_data %>%
+    tidyr::unnest(!c("campaigns", "geom", "cell"),
+                  ptype =c(id = integer(0),
+                           cell_id = integer(0),
+                           off_station_code_id = vctrs::unspecified(),
+                           site_code = character(0),
+                           site_name = character(0),
+                           type = character(0),
+                           opened_at = character(0),
+                           geom = "named list",
+                           created_at = character(0),
+                           updated_at = character(0),
+                           cellId = integer(0),
+                           campaigns = list(0),
+                           cell = list(0)))  %>%
+    tidyr::hoist(cell,  cell_name = "name")
+
+  return(site_data)
+}
