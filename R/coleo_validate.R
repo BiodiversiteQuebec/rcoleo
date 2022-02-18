@@ -69,8 +69,11 @@ coleo_validate <- function(data) {
 
 
   # Check that the format of the input column date is valid
-  ## Andrew's idea: [0-9]{4}-[0-9]{2}-[0-9]{2}
-  ## strsplit(date_col, “-“)
+
+  ## Identify columns containing dates
+  #strsplit(tbl$input_column, "\date", fixed = TRUE)
+  cols_date_name <- tbl$input_column[grepl("date", tbl$input_column, fixed = TRUE)]
+  cols_date <- cols_date_name[cols_date_name %in% dat_names]
 
 
   if(length(cols_date) > 0) {

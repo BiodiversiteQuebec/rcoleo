@@ -22,7 +22,7 @@ test_that("coleo_validate", {
   ## Test for missing campaign_type column
   dat_test <- subset(dat, select = -c(campaign_type))
   testthat::expect_error(coleo_validate(dat_test),
-                         regexp = "La colonne camp_type est manquante.*")
+                         regexp = "Vérifiez qu'une colonne contient le type de campagne.*")
 
   ## Test for multiple values within the campaign_type column
   dat_test <- dat
