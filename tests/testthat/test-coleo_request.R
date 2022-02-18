@@ -74,13 +74,17 @@ with_mock_dir("Site processing works correctly", {
 
   resp <- coleo_request_general(site_code = "137_107_H02", endpoint = "sites")
 
-  test_that("request_general works for a valid site", {
+  test_that("resp is easily processed", {
 
     resp_df <- coleo_process_site_resp(resp)
 
     expect_equal(nrow(resp_df), 1)
     expect_equal(ncol(resp_df), 15)
     expect_equal(length(resp_df$id), 1)
+
+    resp_site_camp_df <- coleo_process_site_df(resp_df)
+
+    expect_type(resp_site_camp_df$campaign_type, "character")
   })
 
 

@@ -97,3 +97,17 @@ coleo_process_site_resp <- function(resp){
 
   return(site_data)
 }
+
+coleo_process_site_df <- function(site_df){
+
+  campaign_level_info <- site_df |>
+    tidyr::hoist(cell, cell_name = "name") |>
+    dplyr::select(-cell, -geom) |>
+    tidyr::unnest_longer(campaigns) |>
+    tidyr::hoist(campaigns,
+                 campaign_type = "type",
+                 campaign_id = "id") |>
+    dplyr::rename(site_id = id)
+
+  return(campaign_level_info)
+}
