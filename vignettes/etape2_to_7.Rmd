@@ -147,7 +147,7 @@ Vous pouvez maintenant récupérer l'ID unique des cellules.
 ``` {.r}
 # Récupération des cell_id
 donnees_inj_cell_id <- left_join(donnees_inj,
-                                     cells_df %>%
+                                     cells_df |>
                                        # notez qu'on change le nom de ce column
                                        # id, pour etre plus specifique :
                                        # c'est le id des cells

@@ -63,11 +63,11 @@ sites_purr_ls <- purrr::transpose(sites)
 all.equal(sites_ls, sites_purr_ls) # ok so there is some variation
 
 library(purrr)
-geom %>% map(is.list)
+geom |> map(is.list)
 
 crs_ls <- list(type="name",properties=list(name="EPSG:4326"))
 
-geom %>% map_if(is.list, append, list(crs = crs_ls))
+geom |> map_if(is.list, append, list(crs = crs_ls))
 
 # Fusionner les deux listes (geomations + sites)
 for(i in 1:length(sites_ls)){
@@ -87,7 +87,7 @@ sites_ls_test[[1]]["opened_at"] <- "2020-07-10"
 
 sites_ls_test[[1]]["site_code"] <- "135_104_Q99"
 
-sites_ls[[1]] %>% dput
+sites_ls[[1]] |> dput
 
 library(rcoleo)
 #responses <- post_sites(sites_ls_test)
@@ -165,7 +165,7 @@ for(l in 1:length(campaigns_ls)){
   campaigns_ls[[l]]$technicians <- as.list(tech_add$tech)
 }
 
-campaigns_ls[[1]] %>% dput
+campaigns_ls[[1]] |> dput
 
 
 #responses <- post_campaigns(campaigns_ls)
@@ -184,7 +184,7 @@ new_camps <- get_campaigns(
   closed_at=traps$closed_at,
   type=rep("insectes_sol",nrow(traps)))
 
-new_camp_df <- new_camps[[1]] %>% map_df("body")
+new_camp_df <- new_camps[[1]] |> map_df("body")
 
 new_camp_df$id
 
@@ -213,7 +213,7 @@ traps_ls <- lapply(traps_ls, function(x) {
 })
 
 
-traps_ls[[1]] %>% dput
+traps_ls[[1]] |> dput
 
 # responses <- post_traps(traps_ls)
 
@@ -266,7 +266,7 @@ samples <- unique(select(samples,site_code,opened_at,closed_at,sample_code,date_
 samples_ls <- apply(samples,1,as.list)
 names(samples_ls) <- NULL
 
-samples_ls[[5]] %>% dput
+samples_ls[[5]] |> dput
 
 # responses <- post_samples(samples_ls)
 

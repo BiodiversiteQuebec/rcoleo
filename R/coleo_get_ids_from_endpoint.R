@@ -8,13 +8,13 @@ get_ids_from_table <- function(df, db_table){
   }
 
   if (db_table == "campaigns") {
-    query_fields <- query_fields %>% drop_techs()
+    query_fields <- query_fields |> drop_techs()
   } else if (db_table == "observations") {
     query_fields <- c("date_obs", "campaign_id")
   }
   ## IF there are other restrictions on what should be "asked" of the db, put them here.
 
-  in_coleo <- df %>%
+  in_coleo <- df |>
     mutate(id_db = purrr::pmap(select(.,
                                       any_of(query_fields)),
                                coleo_gen_req,

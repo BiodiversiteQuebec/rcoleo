@@ -11,6 +11,6 @@ test_that("site_id from database", {
 
   expect_type(prepared_demo$data, "list")
 
-  prepared_demo %>%  dplyr::mutate(site_id = coleo_get_site_id(site_code))
+  prepared_demo |>  dplyr::mutate(site_id = coleo_get_site_id(site_code))
 
 })

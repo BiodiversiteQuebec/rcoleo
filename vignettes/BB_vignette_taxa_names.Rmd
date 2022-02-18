@@ -6,13 +6,13 @@ output: html_document
 ```{r make_taxa_df, eval=FALSE}
 # Formatage du tableau à insérer
 
-taxa_df <- donnees_inj_cell_site_id %>%
-  filter(taxa_name %in% sp_abs) %>%
+taxa_df <- donnees_inj_cell_site_id |>
+  filter(taxa_name %in% sp_abs) |>
   select(name = taxa_name,
          vernacular_fr,
          rank,
          category,
-         tsn) %>%
+         tsn) |>
   # Retrait des lignes dupliquées
   distinct
 

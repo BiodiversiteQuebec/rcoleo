@@ -124,9 +124,9 @@ substr(obs$espece, 1, 1) <- toupper(substr(obs$espece, 1, 1))
 # # On essaye d'aller chercher les noms latins
 # library(rvest)
 # odonates_ls <-
-# read_html("http://entomofaune.qc.ca/entomofaune/odonates/Liste_especes.html") %>%
-# html_nodes("table") %>%
-# .[[2]] %>%
+# read_html("http://entomofaune.qc.ca/entomofaune/odonates/Liste_especes.html") |>
+# html_nodes("table") |>
+# .[[2]] |>
 #  html_table(header=TRUE, trim=TRUE)
 # #
 # names(odonates_ls) <- str_replace_all(names(odonates_ls), " ", "_")

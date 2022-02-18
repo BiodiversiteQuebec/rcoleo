@@ -30,7 +30,9 @@ Imports:
     geojsonio,
     rlang,
     httr2,
-    taxize
+    taxize,
+    tidyr,
+    vctrs
 Suggests: 
     httptest2,
     knitr,

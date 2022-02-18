@@ -16,7 +16,7 @@ coleo_prep_input_data <- function(df, db_table){
   names_present <- intersect(input_fields, names(df))
 
   if(db_table != "observations") {
-    df_info_only <- df %>%
+    df_info_only <- df |>
       dplyr::nest_by(dplyr::across(dplyr::any_of(names_present)))
     # test with nest_by
 
@@ -28,7 +28,7 @@ coleo_prep_input_data <- function(df, db_table){
   # rename the dataset
   rename_vec <- coleo_get_rename_vec_input_to_db(db_table)
 
-  df_info_renamed <- df_info_only %>%
+  df_info_renamed <- df_info_only |>
     dplyr::rename(dplyr::any_of(rename_vec))
 
   #is there a lat or lon??

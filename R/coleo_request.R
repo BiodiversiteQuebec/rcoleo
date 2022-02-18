@@ -14,7 +14,7 @@ coleo_request_code <- function(human_code, table, perform = TRUE){
                                   sites = "site_code",
                                   stop("idk what to do with that"))
 
-  written_req <- coleo_begin_req() %>%
+  written_req <- coleo_begin_req() |>
     httr2::req_url_path_append(table) |>
     httr2::req_url_query(!!!requested_code)
 
@@ -71,14 +71,15 @@ coleo_get_site_id <- function(site_code){
 
 coleo_process_site_resp <- function(resp){
   # works but is ugly
-  full_data <- resp %>%
-    httr2::resp_body_json(.) %>%
-    tibble::tibble(data = .) %>%
-    tidyr::unchop(data, keep_empty = TRUE) %>%
-    dplyr::mutate(nm = names(data)) %>%
+  resp_list <- resp |>
+    httr2::resp_body_json()
+
+  full_data <- tibble::tibble(data = resp_list) |>
+    tidyr::unchop(data, keep_empty = TRUE) |>
+    dplyr::mutate(nm = names(data)) |>
     tidyr::pivot_wider(names_from = nm, values_from = data)
 
-  site_data <- full_data %>%
+  site_data <- full_data |>
     tidyr::unnest(!c("campaigns", "geom", "cell"),
                   ptype =c(id = integer(0),
                            cell_id = integer(0),
@@ -92,7 +93,7 @@ coleo_process_site_resp <- function(resp){
                            updated_at = character(0),
                            cellId = integer(0),
                            campaigns = list(0),
-                           cell = list(0)))  %>%
+                           cell = list(0)))  |>
     tidyr::hoist(cell,  cell_name = "name")
 
   return(site_data)

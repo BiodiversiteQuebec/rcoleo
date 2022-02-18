@@ -7,9 +7,9 @@ output: html_document
 ```{r site_injection, eval = FALSE}
 # Sélection des lignes du tableau concernant les sites manquants
 
-site_df <- nouveau_donnees_cell_id %>%
-  filter(site_code %in% site_abs) %>%
-  select(cell_id, site_code, type_hab, opened_at, lat, lon) %>% 
+site_df <- nouveau_donnees_cell_id |>
+  filter(site_code %in% site_abs) |>
+  select(cell_id, site_code, type_hab, opened_at, lat, lon) |> 
   # Retrait des lignes dupliquées
   distinct
 

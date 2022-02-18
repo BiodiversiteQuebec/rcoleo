@@ -10,9 +10,8 @@
 
 #' Table contenant pour chaque table de la base de données les noms de colonnes, les champs correspondants dans la base de données, les champs obligatoires, la classe des données par colonne et les valeurs possibles par colonnes
 #'
-#' @param
 #'
-#' @return
+#' @return information on which tables are required
 #' @export
 coleo_get_name_table <- function(){
 tibble::tribble(

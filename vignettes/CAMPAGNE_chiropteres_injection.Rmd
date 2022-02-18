@@ -110,7 +110,7 @@ donnees_inj_camp <- dplyr::select(donnees_inj_cell_site_id,
                            technician_1,
                            technician_2,
                            opened_at,
-                           closed_at) %>%
+                           closed_at) |>
   # 8.1.2. Retrait des duplicat
   distinct
 ```
@@ -124,8 +124,8 @@ avec `distinct()`, en haut
 ``` {.r}
 # 8.1.3. Création liste de technicien.ne.s
 
-donnees_inj_camp_tech <- donnees_inj_camp %>%
-  mutate(technicians = map(technician_1, ~ list(.x))) %>%
+donnees_inj_camp_tech <- donnees_inj_camp |>
+  mutate(technicians = map(technician_1, ~ list(.x))) |>
   select(-technician_1)
 
 # Chaque niveau de la liste correspond à une association des deux noms des technicien/ne/s pour chaque ligne du tableau
@@ -161,7 +161,7 @@ campaigns_df <- bind_rows(campaigns[[1]]$body)
 ``` {.r}
 # 8.1.7. Récupération des IDs des campagnes
 donnees_inj_cell_site_camp_id <- left_join(donnees_inj_cell_site_id,
-                                      campaigns_df %>%
+                                      campaigns_df |>
                                         select(campaign_id = id,
                                                site_id,
                                                opened_at, 
@@ -180,7 +180,7 @@ Les champs de la table **repères** ("/landmarks") de Coléo qui peuvent être r
 land_camp <- dplyr::select(donnees_inj_cell_site_camp_id,
                            campaign_id,
                            lat,
-                           lon) %>%
+                           lon) |>
   # 8.2.2. Retrait des duplicats
   distinct
 ```
@@ -198,8 +198,8 @@ land_camp_formatted <- rcoleo::format_spatial(land_camp)
 
 ``` {.r}
 # 8.2.3. Conversion de l'objet pour l'injection
-land_ls <- land_camp_formatted %>%
-  select(campaign_id, geom) %>%
+land_ls <- land_camp_formatted |>
+  select(campaign_id, geom) |>
   transpose
 ```
 
@@ -226,8 +226,8 @@ Les champs de la table **appareils** ("/devices") de Coléo qui peuvent être re
 # 8.3.1. Sélection
 app_camp <- dplyr::select(donnees_inj_cell_site_camp_id,
                           campaign_id,
-                          mic_ultra_code) %>%
-  mutate(mic_h_cm_ultra = NULL) %>%
+                          mic_ultra_code) |>
+  mutate(mic_h_cm_ultra = NULL) |>
   distinct
 
 app_camp_ls <- transpose(app_camp)
@@ -264,7 +264,7 @@ obs_camp <- dplyr::select(donnees_inj_cell_site_camp_id,
                           time_obs,
                           # note column s'il y en a
                           notes = NULL,
-                          campaign_id) %>%
+                          campaign_id) |>
   mutate(is_valid = 1)
 ```
 
@@ -272,8 +272,8 @@ obs_camp <- dplyr::select(donnees_inj_cell_site_camp_id,
 
 ``` {.r}
 # 8.5.2. Retrait des duplicats
-obs_camp_ls <- obs_camp %>%
-  distinct %>%
+obs_camp_ls <- obs_camp |>
+  distinct |>
   transpose
 ```
 

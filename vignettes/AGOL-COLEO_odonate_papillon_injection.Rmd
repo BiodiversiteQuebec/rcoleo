@@ -121,7 +121,7 @@ library(tidyr)
 data2$date <- as.character(data2$date)
 data2$date <- stringr::str_sub(data2$date, 1, 10)
 
-data2 <- data2 %>% 
+data2 <- data2 |> 
   separate(date,
            into = c("mm", "dd", "YYYY"),
            sep = "/")

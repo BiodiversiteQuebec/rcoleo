@@ -7,7 +7,7 @@
 coleo_return_valid_campaigns()
 }
 \value{
-
+character vector of all valid campaign types
 }
 \description{
 Retourne un vecteur contenant les noms valides de campagnes

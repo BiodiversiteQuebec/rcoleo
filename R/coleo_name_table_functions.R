@@ -2,9 +2,8 @@
 
 #' Retourne un vecteur contenant les noms valides de campagnes
 #'
-#' @param
 #'
-#' @return
+#' @return character vector of all valid campaign types
 #' @export
 #'
 coleo_return_valid_campaigns <- function(){
@@ -18,9 +17,8 @@ coleo_return_valid_campaigns <- function(){
 
 #' Retourne un vecteur contenant les noms valides de type de site
 #'
-#' @param
 #'
-#' @return
+#' @return character vector of all valid site types
 #' @export
 #'
 coleo_return_valid_site_types <- function(){

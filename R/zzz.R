@@ -43,10 +43,10 @@ endpoints <- function(){
 }
 # # short excerpt to update the list of campaign types if/when more get added!!
 # ss <- download_sites_sf()
-# purrr::keep(ss$campaigns, ~ nrow(.)>0) %>%
-#   purrr::map("type") %>%
-#   purrr::map(unique) %>%
-#   purrr::flatten_chr() %>% unique %>% dput
+# purrr::keep(ss$campaigns, ~ nrow(.)>0) |>
+#   purrr::map("type") |>
+#   purrr::map(unique) |>
+#   purrr::flatten_chr() |> unique |> dput
 campaign_types <- function(){
   c('v\u00e9g\u00e9tation', 'v\u00e9g\u00e9tation_transect', 'sol',
     'acoustique', 'ph\u00e9nologie', 'mammif\u00e8res', 'papilionid\u00e9s',

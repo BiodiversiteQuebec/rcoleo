@@ -6,7 +6,6 @@
 #'
 #' @param df_to_inject data.frame to be injected
 #'
-#' @importFrom magrittr `%>%`
 #' @importFrom rlang .data
 #' @export
 format_spatial <- function(df_to_inject) {
@@ -17,7 +16,7 @@ format_spatial <- function(df_to_inject) {
   assertthat::assert_that(inherits(df_to_inject, "rowwise_df"))
 
 
-  formatted_input_data <- df_to_inject %>%
+  formatted_input_data <- df_to_inject |>
     dplyr::mutate(geoj = list(geojsonio::geojson_list(c(lon = lon,
                                                         lat =  lat),
                                                       lat = "lat", lon = "lon")),

@@ -7,7 +7,7 @@
 coleo_get_required_tables()
 }
 \value{
-
+a tbl_df showing which tables are required for which injection efforts.
 }
 \description{
 Table des tables requises par type de campagne

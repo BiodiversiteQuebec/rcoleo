@@ -107,10 +107,10 @@ if (FALSE) {
 
 
 
-  resp %>%
-    httr2::resp_body_json(.) %>%
-    tibble::tibble(data = .) %>%
-    dplyr::mutate(data = list(head(data[[1]], 5))) %>%
+  resp |>
+    httr2::resp_body_json(.) |>
+    tibble::tibble(data = .) |>
+    dplyr::mutate(data = list(head(data[[1]], 5))) |>
     tidyr::unnest_wider(data,
                         ptype = c(id = integer(0),
                                   cell_id = integer(0),
@@ -136,18 +136,18 @@ if (FALSE) {
     # resp_no_null$cell<- list(tibble::as_tibble(resp_no_null$cell))
   }
 
-  df_for_all <- resp_no_null %>%
-    purrr::map_if(~length(.)>1, ~ list(tibble::tibble(data = .))) %>%
+  df_for_all <- resp_no_null |>
+    purrr::map_if(~length(.)>1, ~ list(tibble::tibble(data = .))) |>
     tibble::as_tibble()
 
-  df_for_all$campaigns[[1]] %>% tidyr::unnest_wider(data)
+  df_for_all$campaigns[[1]] |> tidyr::unnest_wider(data)
 
 
-  site_campaign_data <- df_for_all %>%
-    tidyr::unnest(campaigns) %>%
+  site_campaign_data <- df_for_all |>
+    tidyr::unnest(campaigns) |>
     tidyr::hoist(data,
                  campaign_id = "id",
-                 campaign_type = "type") %>%
+                 campaign_type = "type") |>
     dplyr::rename(campaign_data = data)
 
   site_campaign_data

@@ -7,7 +7,7 @@
 coleo_return_valid_site_types()
 }
 \value{
-
+character vector of all valid site types
 }
 \description{
 Retourne un vecteur contenant les noms valides de type de site
