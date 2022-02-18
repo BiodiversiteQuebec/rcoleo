@@ -22,9 +22,9 @@
             {
                 "id": 12,
                 "site_id": 12,
-                "type": "végétation",
+                "type": "vÃ©gÃ©tation",
                 "technicians": [
-                    "Caroline Dubé",
+                    "Caroline DubÃ©",
                     "Guillaume Tremblay"
                 ],
                 "opened_at": "2017-06-22",
@@ -37,7 +37,7 @@
             {
                 "id": 593,
                 "site_id": 12,
-                "type": "papilionidés",
+                "type": "papilionidÃ©s",
                 "technicians": [
                     "Caroline Dube",
                     "Guillaume Tremblay"
