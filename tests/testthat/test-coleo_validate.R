@@ -6,6 +6,7 @@ dat <- data.frame(stringsAsFactors = FALSE,
                   campaign_type = c("insectes_sol", "insectes_sol","insectes_sol","insectes_sol","insectes_sol","insectes_sol"),
                   sample_code = c("2018-0108","2018-0108", "2018-0108","2018-0108","2018-0108","2018-0108"),
                   observation_date = c("2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24"),
+                  campaign_date_opened = c("2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24"),
                   observation_is_valid = c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
                   observation_taxa_name = c("Agroeca_ornata", "Camponotus_pennsylvanicus","Ceraticelus_laetabilis","Insecta","Insecta","Trochosa_terricola"),
                   observation_variable = c("abundance", "abundance","abundance","abundance","abundance","abundance"),
@@ -31,39 +32,39 @@ test_that("coleo_validate", {
 
   ## Test for the presence of a column called site_code
   dat_test <- subset(dat, select = -c(site_code))
-  testthat::expect_error(coleo_validate(dat_test),
-                         regexp = "Le jeu de données ne contient pas de colonne nommée site_code.*")
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "Vérifiez qu'une colonne contient le code du site.*")
 
   ## Test that the imported data has all of the required columns
   dat_test <- subset(dat, select = -c(observation_date))
-  testthat::expect_error(coleo_validate(dat_test),
-                         regexp = "Le jeu de données ne contient pas toutes les colonnes requises pour être injecté.*")
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "Vérifiez que les bons noms de colonnes sont utilisés.*")
 
   ## test that all input columns are valid column names
   dat_test <- dat
   dat_test$erroneous_col <- "error"
-  testthat::expect_error(coleo_validate(dat_test),
-                         regexp = "Le jeu de données contient des colonnes au nom invalide.*")
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "Vérifiez que les bons noms de colonnes sont utilisés et que les colonnes superflues sont retirées.*")
 
   ## Test that all values within each column is of the right class
   dat_test <- dat
   dat_test$observation_is_valid <- as.character(dat_test$observation_is_valid)
-  testthat::expect_error(coleo_validate(dat_test),
-                         regexp = "Le jeu de données contient des colonnes de classe invalide.*")
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "Vérifiez la classe des colonnes.*")
 
   ## Test that the range of values contained within input columns are valid
   dat_test <- dat
   dat_test$ref_taxa_rank <- "inconnu"
   dat_test$ref_taxa_category <- "na"
 
-  testthat::expect_error(coleo_validate(dat_test),
+  testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez les valeurs contenues dans les colonnes.*")
 
   ## Test that date format respects the YYYY-MM-DD convention
   dat_test <- dat
   dat_test$observation_date <- "95-05-15"
 
-  testthat::expect_error(coleo_validate(dat_test),
+  testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez le format des valeurs de dates.*")
 
   ## Test that the range of dates are returned

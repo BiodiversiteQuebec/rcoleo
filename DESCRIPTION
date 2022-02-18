@@ -29,7 +29,8 @@ Imports:
     magrittr,
     geojsonio,
     rlang,
-    httr2
+    httr2,
+    taxize
 Suggests: 
     httptest2,
     knitr,
