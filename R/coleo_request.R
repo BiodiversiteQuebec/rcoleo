@@ -1,3 +1,29 @@
+
+#' General request for the coleo database
+#'
+#' @param ... query parameters for the coleo database (in the format `name = value`)
+#' @param table name of database table to query
+#' @param perform Should the request be performed? defaults to TRUE.
+#'
+#' @return httr2 response object if perform = TRUE, a request object if perform = FALSE.
+#' @export
+coleo_request_general <- function(..., endpoint, perform = TRUE){
+
+  assertthat::assert_that(endpoint %in% names(endpoints()))
+
+    request_info <- list(...)
+
+  written_req <- coleo_begin_req() |>
+    httr2::req_url_path_append(endpoint) |>
+    httr2::req_url_query(!!!request_info)
+
+  if(isTRUE(perform)){
+    httr2::req_perform(written_req)
+  } else {
+    return(written_req)
+  }
+}
+
 # functions in this script make GET requests for specific information from the database
 
 # coleo_request_general runs any query on any table
@@ -26,45 +52,42 @@ coleo_request_code <- function(human_code, table, perform = TRUE){
 }
 
 
-#' General request for the coleo database
-#'
-#' @param ... query parameters for the coleo database (in the format `name = value`)
-#' @param table name of database table to query
-#' @param perform Should the request be performed? defaults to TRUE.
-#'
-#' @return httr2 response object if perform = TRUE, a request object if perform = FALSE.
-#' @export
-coleo_request_general <- function(..., endpoint, perform = TRUE){
-
-  assertthat::assert_that(endpoint %in% names(endpoints()))
-
-    request_info <- list(...)
-
-  written_req <- coleo_begin_req() |>
-    httr2::req_url_path_append(endpoint) |>
-    httr2::req_url_query(!!!request_info)
-
-  if(isTRUE(perform)){
-    httr2::req_perform(written_req)
-  } else {
-    return(written_req)
-  }
-}
-
-
 coleo_pluck_one_id <- function(answer_resp){
-  answer_resp |>
+  ans_id <- answer_resp |>
     httr2::resp_body_json() |>
     # flatten might be safer than alternatives?
     purrr::flatten() |>
     purrr::pluck("id")
+
+  # if there is no record in the DB, return NA rather than NULL
+  if(is.null(ans_id)) return(NA_integer_) else return(ans_id)
 }
 
 
+
+#' Download the site id
+#'
+#' @param site_code code pour le site, du format "123_92_F01"
+#'
+#' @return code for site (integer) or integer NA value
+#' @export
 coleo_get_site_id <- function(site_code){
   message(site_code)
 
   coleo_request_general(site_code = site_code, endpoint = "sites") |>
+    coleo_pluck_one_id()
+}
+
+#' Download the cell id
+#'
+#' @param site_code code pour la cellule, du format "123_92"
+#'
+#' @return code for cell (integer) or integer NA value
+#' @export
+coleo_get_cell_id <- function(cell_code){
+  message(cell_code)
+
+  coleo_request_general(cell_code = cell_code, endpoint = "cells") |>
     coleo_pluck_one_id()
 }
 

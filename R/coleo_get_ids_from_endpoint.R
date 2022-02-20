@@ -17,7 +17,7 @@ get_ids_from_table <- function(df, db_table){
   in_coleo <- df |>
     mutate(id_db = purrr::pmap(select(.,
                                       any_of(query_fields)),
-                               coleo_gen_req,
+                               coleo_request_general,
                                table = db_table))
 
   return(in_coleo)
