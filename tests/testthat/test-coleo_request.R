@@ -90,9 +90,16 @@ with_mock_dir("Site processing works correctly", {
 
 })
 
+with_mock_dir("coleo_request_by_code", {
+  # request ALL the cells
+  all_cells <- coleo_request_by_code(human_code = NULL, table = "cells")
+  all_cells_list <- all_cells |> httr2::resp_body_json()
+  expect_equal(50L, all_cells_list |> length())
+})
 
 
 
+# is any of this needed?
 
 if (FALSE) {
 

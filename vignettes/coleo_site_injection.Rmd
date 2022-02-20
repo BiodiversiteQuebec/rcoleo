@@ -176,6 +176,17 @@ This column has `NA_integer_` where the site needs to be injected.
 
 
 
+### Workflow
+
+* validate the whole dataset
+* prepare the data for one table
+* request IDs from the database
+* if and only if the ID is absent, create a request to inject it (in a list col)
+* check that these are formatted correctly by printing a few
+* if and only if the ID is absent, inject that record, return response
+* extract the ID code from that response
+* combine ID codes from injection with those already there. Rename any columns. drop old columns. unnest the data nested in "prepare the data".
+
 
 
 
