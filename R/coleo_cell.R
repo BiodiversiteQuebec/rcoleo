@@ -32,7 +32,7 @@ coleo_cell_geom_fmt <- function(cell_geom){
   # take a single sf class polygon and return the nested list suitable for injection
 
   # test if object is sf or not.
-  if (!any("sfg" == class(cell_geom))) stop("This function is meant to work on sf objects.")
+  if (!any("sfg" == class(cell_geom) | "sfc" == class(cell_geom))) stop("This function is meant to work on sf objects.")
 
   one_cell_list <- geojsonio::geojson_list(cell_geom)
 
