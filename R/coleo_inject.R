@@ -9,7 +9,9 @@
 #' @export
 #'
 #' @examples coleo_inject_general("cells", cell_code = "444_33", name = "Middle Earth", geom = "")
-coleo_inject_general <- function(endpoint, ...){
+coleo_inject_general <- function(..., endpoint){
+
+  if(is.null(endpoint)) stop("Need to specify the endpoint")
 
   endpt <- rcoleo:::endpoints()[[endpoint]]
 

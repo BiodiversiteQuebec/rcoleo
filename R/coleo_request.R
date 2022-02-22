@@ -31,6 +31,19 @@ coleo_request_general <- function(..., endpoint, perform = TRUE){
 # the other two are specific and should probably be deleted.
 
 
+#' Request a database record by code
+#'
+#' many of the database records have unique human-readable codes. Site codes
+#' look like "CCC_CC_LCC" (C = chiffre, L=lettre) and cell codes look like
+#' "CCC_CC". this function takes one of these "human codes" and returns the
+#' information on that record.
+#'
+#' @param human_code human-readable database code
+#' @param table the database table to look for. Right now this is either "cells" or "sites"
+#' @param perform Should the request be performed? defaults to TRUE.
+#'
+#' @return if perform = TRUE, the answer is returned. if perform = FALSE, an httr2 query is returned.
+#' @export
 coleo_request_by_code <- function(human_code, table, perform = TRUE){
   # endpoint or whatever
   requested_code <- list(human_code)
