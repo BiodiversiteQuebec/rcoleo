@@ -18,6 +18,3 @@ an httr2 request, ready to be performed
 \description{
 General injection into the Coleo database
 }
-\examples{
-coleo_inject_general("cells", cell_code = "444_33", name = "Middle Earth", geom = "")
-}

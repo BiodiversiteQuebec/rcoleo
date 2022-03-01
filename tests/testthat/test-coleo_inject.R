@@ -15,6 +15,7 @@ with_mock_dir("inject a test site", {
                                     geom = one_cell_list,
                                     endpoint = "cells")
   # demo_test$body
+  # httr2::req_dry_run(demo_test)
 
   demo_result <- httr2::req_perform(demo_test)
 
@@ -25,5 +26,28 @@ with_mock_dir("inject a test site", {
   })
 
   test_that("ID for new record is a number", expect_gt(coleo_pluck_one_id(demo_result), 1L))
+
+
+
+  test_that("rowwise approach on a data frame yields the same output as a hand-crafted request", {
+
+    injection_df <- tibble::tibble(cell_code = "FFF_XXX",
+                                   name ="Middle Earth",
+                                   geom = list(one_cell_list))
+
+    one_post_in_df <- injection_df |>
+      dplyr::rowwise() |>
+      dplyr::mutate(req = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells")))
+
+
+    expect_equivalent(demo_test, one_post_in_df$req[[1]])
+  })
+
+  if (FALSE) {
+    # this does NOT work, because of the way that cur_data_all passes in the
+    # information. It passes in the geom as a list (which we don't want)
+
+    one_post_request <- coleo_inject_general_df(injection_df, endpoint = "cells")
+  }
 
 })
