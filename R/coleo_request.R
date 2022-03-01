@@ -66,7 +66,17 @@ coleo_request_by_code <- function(human_code, table, perform = TRUE){
 }
 
 
-coleo_pluck_one_id <- function(answer_resp){
+#' Extract an id from an API response
+#'
+#' this is a convenience function for processing the response from the COLEOs
+#' api. It should work for both new records (the response from POST requests)
+#' and existing ones (GET requests).
+#'
+#' @param answer_resp an HTTP response from the coleo API
+#'
+#' @return the ID as an integer or \code{NA_integer_}
+#' @export
+coleo_extract_id <- function(answer_resp){
   ans_id <- answer_resp |>
     httr2::resp_body_json() |>
     # flatten might be safer than alternatives?

@@ -49,8 +49,14 @@ coleo_get_name_table_column <- function(db_table, column = "input_column"){
 
   out <- input_names[[db_table]]
 
+  # let there be ID columns when needed
+
   if (db_table == "observations") {
     out <- c(out, "campaign_id")
+  }
+
+  if (db_table == "sites"){
+    out <- c(out, "cell_id")
   }
 
   return(out)

@@ -19,5 +19,5 @@ manually. First, you should inspect the contents with
 \code{\link[httr2]{req_dry_run}}
 }
 \description{
-Inject one dataframe row
+A "tidy" workflow keeps all the data together in one list
 }
