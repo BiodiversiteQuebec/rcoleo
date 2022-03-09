@@ -16,11 +16,111 @@ editor_options:
 
 the first step in injecting data in to the Coleo database is data validation (see vignette on data validation)
 
-Once data is validated we can begin injection
+Once data is validated we can begin injection.
+
+## injecting cells
+
+We start with an example of data from an imaginary cell:
+
+```{r dput_cell, include=FALSE}
+cell_data <- structure(list(cell_code = "111_777", name = "Middle Earth", 
+    geom = structure(list(structure(list(structure(c(-68.784529, 
+    -68.92058, -69.051611, -68.915541, -68.784529, 48.112211, 
+    48.02487, 48.11558, 48.203192, 48.112211), .Dim = c(5L, 2L
+    ))), class = c("XY", "POLYGON", "sfg"))), class = c("sfc_POLYGON", 
+    "sfc"), precision = 0, bbox = structure(c(xmin = -69.051611, 
+    ymin = 48.02487, xmax = -68.784529, ymax = 48.203192), class = "bbox"), crs = structure(list(
+        input = "NAD83", wkt = "GEOGCRS[\"NAD83\",\n    DATUM[\"North American Datum 1983\",\n        ELLIPSOID[\"GRS 1980\",6378137,298.257222101,\n            LENGTHUNIT[\"metre\",1]]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"latitude\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"longitude\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    ID[\"EPSG\",4269]]"), class = "crs"), n_empty = 0L)), row.names = c(NA, 
+-1L), groups = structure(list(.rows = structure(list(1L), ptype = integer(0), class = c("vctrs_list_of", 
+"vctrs_vctr", "list"))), row.names = c(NA, -1L), class = c("tbl_df", 
+"tbl", "data.frame")), class = c("rowwise_df", "tbl_df", "tbl", 
+"data.frame"))
+```
+
+```{r}
+library(sf)
+cell_data
+```
+
+Note that the column `geom` is a `POLYGON` type of object. We need to work with the literal spatial polygons that describe the shape of the cells. To get these, we need to read in the shapefiles directly, for example using `sf::read_sf("CelluleTerrain2016_2021_juin2021/CellulesTerrain2016_2021_juin2021.shp")`
+
+### reformatting Cell data
+
+Once we have this information, we need to reformat it to prepare for injection. We can use a function from `rcoleo` to facilitate this step
+
+```{r}
+cell_data_reformat <- cell_data |> 
+  rowwise() |> 
+  mutate(geom = list(rcoleo::coleo_cell_geom_fmt(geom)))
+
+str(cell_data_reformat)
+```
+
+This step transforms the `geom` column from a spatial object into a nested list. This is what we will inject into the COLEO database.
+
+Another important note is the use of `rowwise()` in the code above. This is a convenient way to work with dataframes going one row at a time. Here, each row contains one cell for injection. You can read more about it [here](https://dplyr.tidyverse.org/articles/rowwise.html). 
+
+### create the API request
+
+Before we inject our data, we will make our requests and inspect them to make sure they work.
+
+```{r}
+cell_data_req <- cell_data_reformat |> 
+  dplyr::mutate(inject_request = list(
+    coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells")
+    ))
+```
+
+This step makes our request. Important things to note:
+
+* we need to specify the endpoint where we will inject the data. Here it is `"cells"`
+* we use `dplyr::cur_data_all()` to access every column of the current row of the dataset
+* we use all the data in the current row. NOTE that if there is a column called "data", then `coleo_inject_general_df()` will drop it. 
+* This is the step where you need to have your access key saved for Rcoleo. see the rcoleo site to set that up!
+
+Let's look at this request column:
+
+```{r}
+cell_data_req$inject_request
+```
+
+We can access the actual body of the request with:
+
+```{r}
+httr2::req_dry_run(cell_data_req$inject_request[[1]])
+```
+
+This is our last chance to make SURE we are injecting the right thing. The code at the bottom is JSON and is what will be injected into the database.
+
+### Injecting data
+
+When we are sure that we've got the right data, we can proceed to injection:
+
+```{r}
+cell_data_inject_result <- cell_data_req |> 
+  dplyr::mutate(inject_result = list(httr2::req_perform(inject_request)))
+
+cell_data_inject_result
+cell_data_inject_result$inject_result
+```
+
+Here we've done two things:
+
+* performed the request using `httr2::req_perform`. This actually injects the data
+* wrapped the result in a `list()` and saved the results in a new data.frame
+
+This second step is important. This lets us access interesting information in the response. for example, we can extract the ID of the cell we just injected:
+
+```{r}
+cell_data_inject_result |> 
+  mutate(id = coleo_extract_id(inject_result))
+```
+
+This is possible because when we inject data, the API sends back a response that contains the new ID that was made for the new observation.
 
 ## Injecting sites
 
-In all campaigns, the first step is to confirm that all the sites are present. 
+he first step is to confirm that all the sites are present. 
 
 We begin by preparing the dataset for injection
 
@@ -40,17 +140,30 @@ insect_demo <- tibble::tribble(
 
 ```
 
-
+These data look like this
 
 ```{r}
 knitr::kable(insect_demo)
 ```
 
-first we prepare it 
+We will use rcoleo to prepare and inject the data. Note that all the functions in rcoleo begin with `coleo_`
+
+```{r}
+library(rcoleo)
+```
+
+first we "prepare" the data. The data preparation process does three things:
+
+1. it identifies which columns are necessary to inject a particular database column
+1. any other columns are *nested* into a list-column called "data"
+1. finally, the columns are renamed to be ready for injection into the database.
 
 ```{r}
 insect_demo_site_prep <- rcoleo::coleo_prep_input_data(insect_demo, db_table = "sites")
+insect_demo_site_prep
 ```
+
+Here, for example
 
 Data preparation nests all the data which is not needed for injection into a particular table.
 Here we are injecting data into the site table. these present data contain only the site_code.
@@ -61,8 +174,12 @@ Here we are injecting data into the site table. these present data contain only 
 suppressPackageStartupMessages(library(tidyverse))
 library(rcoleo)
 
-site_id_results <- insect_demo_site_prep |> 
-  mutate(site_id = coleo_get_site_id(site_code))
+
+site_id_df <- insect_demo_site_prep |>
+  nest_by(site_code) |>
+  mutate(site_resp = list(rcoleo:::coleo_request_by_code(human_code = site_code, table = "sites")),
+         site_id = rcoleo:::coleo_extract_id(site_resp))
+
 
 head(site_id_results)
 
@@ -86,12 +203,6 @@ This column has `NA_integer_` where the site needs to be injected.
 * if and only if the ID is absent, inject that record, return response
 * extract the ID code from that response
 * combine ID codes from injection with those already there. Rename any columns. drop old columns. unnest the data nested in "prepare the data".
-
-
-
-
-
-
 
 
 
