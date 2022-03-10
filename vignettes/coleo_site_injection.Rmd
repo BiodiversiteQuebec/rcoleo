@@ -109,7 +109,7 @@ Here we've done two things:
 * performed the request using `httr2::req_perform`. This actually injects the data
 * wrapped the result in a `list()` and saved the results in a new data.frame
 
-This second step is important. This lets us access interesting information in the response. for example, we can extract the ID of the cell we just injected:
+This second step is important -- it lets us preserve the response from the server. This response contains interesting information. For example, we can extract the ID of the cell we just injected:
 
 ```{r}
 cell_data_inject_result |> 
@@ -119,6 +119,15 @@ cell_data_inject_result |>
 This is possible because when we inject data, the API sends back a response that contains the new ID that was made for the new observation.
 
 ## Injecting sites
+
+```{r}
+tibble::tribble(
+  ~cell_code,    ~site_code,    ~site_name,  ~site_type, ~site_lat,  ~site_lon, ~site_date_opened,
+   "141_124", "141_124_F01", "Les Basques", "forestier", 48.133559, -68.899209,      "2020-01-01"
+  )
+
+```
+
 
 he first step is to confirm that all the sites are present. 
 
