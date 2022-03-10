@@ -39,6 +39,7 @@ cell_data <- structure(list(cell_code = "111_777", name = "Middle Earth",
 
 ```{r}
 library(sf)
+library(dplyr)
 cell_data
 ```
 
