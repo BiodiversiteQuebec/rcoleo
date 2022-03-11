@@ -22,12 +22,12 @@ coleo_return_required_tables <- function(camp_type) {
 
 #' Trouver les colonnes requises, leur classe et les valeurs admissibles pour un type de campagne donné
 #'
-#' @param camp_type un type de campagne valide.
+#' @param campaign_type un type de campagne valide.
 #' @param required_only boolean. Si FALSE, retourne toutes les colonnes admissibles pour le type de campagne. Autrement, retourne que les colonnes requises pour une injection valide
 #'
 #' @return
 #' @export
-coleo_return_df_cols <- function(camp_type, required_only = TRUE) {
+coleo_return_df_cols <- function(campaign_type, required_only = TRUE) {
 
   # Tables requises pour un type de campagne
   req_tbls <- coleo_return_required_tables(campaign_type)
@@ -65,4 +65,32 @@ coleo_return_df_cols <- function(camp_type, required_only = TRUE) {
                                            valeurs_acceptées = req_values))
 
   View(req_cols)
+}
+
+
+#' Trouver les colonnes requises, leur classe et les valeurs admissibles pour un type de campagne donné
+#'
+#' @param campaign_type un type de campagne valide.
+#' @param required_only boolean. Si FALSE, retourne toutes les colonnes admissibles pour le type de campagne. Autrement, retourne que les colonnes requises pour une injection valide
+#'
+#' @return
+#' @export
+coleo_return_cols <- function(campaign_type, required_only = TRUE) {
+
+  # Tables requises pour un type de campagne
+  req_tbls <- coleo_return_required_tables(campaign_type)
+
+  resp_cols <- coleo_request_general(table = "campaigns", endpoint = "table_columns")
+  cols_df <- purrr::map_dfr(httr2::resp_body_json(resp_cols), as.data.frame)
+  cols_df
+
+  # useful as validation after the renaming, to confirm that there are NO injections not in the possible column names
+
+
+  resp_enum <- coleo_request_general(enum = "enum_sites_type", endpoint = "enum_options")
+  httr2::resp_body_json(resp_enum) |> purrr::flatten() |> purrr::flatten_chr()
+
+  # tricky part will be getting the enum thing
+
+  cols_df
 }
