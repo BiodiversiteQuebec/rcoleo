@@ -14,6 +14,13 @@ editor_options:
   chunk_output_type: console
 ---
 
+
+```{r, include=FALSE}
+library(httptest2)
+start_vignette("coleo_site_injection")
+```
+
+
 the first step in injecting data in to the Coleo database is data validation (see vignette on data validation)
 
 Once data is validated we can begin injection.
@@ -59,7 +66,7 @@ str(cell_data_reformat)
 
 This step transforms the `geom` column from a spatial object into a nested list. This is what we will inject into the COLEO database.
 
-Another important note is the use of `rowwise()` in the code above. This is a convenient way to work with dataframes going one row at a time. Here, each row contains one cell for injection. You can read more about it [here](https://dplyr.tidyverse.org/articles/rowwise.html). 
+Another important point is the use of `rowwise()` in the code above. This is a convenient way to work with dataframes going one row at a time. Here, each row contains one cell for injection. You can read more about it [here](https://dplyr.tidyverse.org/articles/rowwise.html). 
 
 ### create the API request
 
@@ -78,6 +85,7 @@ This step makes our request. Important things to note:
 * we use `dplyr::cur_data_all()` to access every column of the current row of the dataset
 * we use all the data in the current row. NOTE that if there is a column called "data", then `coleo_inject_general_df()` will drop it. 
 * This is the step where you need to have your access key saved for Rcoleo. see the rcoleo site to set that up!
+* we use `list()` to wrap the result of `coleo_inject_general_df()` because we want to store the prepared column in our dataframe, inside a list.
 
 Let's look at this request column:
 
@@ -98,11 +106,10 @@ This is our last chance to make SURE we are injecting the right thing. The code 
 When we are sure that we've got the right data, we can proceed to injection:
 
 ```{r}
-cell_data_inject_result <- cell_data_req |> 
-  dplyr::mutate(inject_result = list(httr2::req_perform(inject_request)))
+cell_data_inject_result <- coleo_execute_injection(cell_data_req)
 
 cell_data_inject_result
-cell_data_inject_result$inject_result
+cell_data_inject_result$result
 ```
 
 Here we've done two things:
@@ -114,94 +121,78 @@ This second step is important -- it lets us preserve the response from the serve
 
 ```{r}
 cell_data_inject_result |> 
-  mutate(id = coleo_extract_id(inject_result))
+  mutate(id = coleo_extract_id(result))
 ```
 
 This is possible because when we inject data, the API sends back a response that contains the new ID that was made for the new observation.
 
+**NOTE** the above step could also be completed manually:
+
+```{r, eval=FALSE}
+cell_data_req |> 
+  dplyr::mutate(inject_result = list(httr2::req_perform(inject_request)))
+```
+
+
 ## Injecting sites
 
+We begin with a demonstration site:
+
 ```{r}
-tibble::tribble(
+imaginary_sites <- tibble::tribble(
   ~cell_code,    ~site_code,    ~site_name,  ~site_type, ~site_lat,  ~site_lon, ~site_date_opened,
-   "141_124", "141_124_F01", "Les Basques", "forestier", 48.133559, -68.899209,      "2020-01-01"
-  )
+   "111_777",   "111_777_N09", "Mordor",     "tourbière", 48.133559,     -68.42,      "2020-01-01",
+   "111_777",   "111_777_E03", "Lorien",     "forestier", 41.133559,     -67.33,      "2020-01-01"
+  ) |> 
+  rowwise()
 
 ```
 
+We begin by preparing the dataset for injection. 
 
-he first step is to confirm that all the sites are present. 
-
-We begin by preparing the dataset for injection
-
-```{r, include=FALSE}
-library(httptest2)
-start_vignette("coleo_site_injection")
-```
-
-Here is a demo dataset that we will use
-
-```{r, include=TRUE}
-insect_demo <- tibble::tribble(
-    ~site_code, ~campaign_type, ~campaign_date_opened, ~campaign_date_closed, ~observation_date, ~observation_is_valid, ~trap_code, ~land_lat, ~land_lon, ~sample_code,                         ~campaign_technician_1, ~ref_taxa_rank, ~ref_taxa_tsn,          ~ref_taxa_name,  ~observation_taxa_name, ~observation_variable, ~observation_value, ~observation_notes,
-  "102_90_F01", "insectes_sol",          "2020-06-02",          "2020-06-23",      "2020-06-23",                  TRUE,    "MP-11",  48.16126, -78.67106,  "2020-0083", "Isabelle_Dumais,Alexane_Gaudet,Annie_Hibbert",       "espèce",            NA,     "Cybaeopsis_euopla",     "Cybaeopsis_euopla",           "abondance",                  1,                 NA,
-  "102_90_F01", "insectes_sol",          "2020-06-23",          "2020-07-14",      "2020-07-14",                  TRUE,    "MP-25",  48.16133, -78.67088,  "2020-0095", "Isabelle_Dumais,Alexane_Gaudet,Annie_Hibbert",       "espèce",            NA, "Bathyphantes_pallidus", "Bathyphantes_pallidus",           "abondance",                  1,                 NA
-  )
-
-```
-
-These data look like this
+First, we obtain the cell ID. We need the cell ID, and not the cell_code, so we have to query the database to obtain it.
 
 ```{r}
-knitr::kable(insect_demo)
+imaginary_sites_cellID <- imaginary_sites |> 
+  mutate(cell_resp = list(coleo_request_by_code(cell_code, table = "cells")),
+         cell_id = coleo_extract_id(cell_resp)) 
+
+imaginary_sites_cellID
 ```
 
-We will use rcoleo to prepare and inject the data. Note that all the functions in rcoleo begin with `coleo_`
+this code does two things:
+
+1. request the cell information using the `cell_code`. We do this with a convenience function called `coleo_request_by_code`. This function can take a "human readable" code and return the database record for that observation.
+1. extract the code as a numeric variable.
+
+Now that we have the `cell_id` we can drop the `cell_code` and the `cell_resp` column. We can also format the data for injection:
 
 ```{r}
-library(rcoleo)
+imaginary_sites_for_injection <- imaginary_sites_cellID |> 
+  select(-cell_code, -cell_resp) |> 
+  coleo_prep_input_data(db_table = "sites")
+
+imaginary_sites_for_injection
 ```
 
-first we "prepare" the data. The data preparation process does three things:
+the function `coleo_prep_input_data` has automaticaly renamed the columns, reformatted the spatial information, and nested any unnecessary columns as "data".
 
-1. it identifies which columns are necessary to inject a particular database column
-1. any other columns are *nested* into a list-column called "data"
-1. finally, the columns are renamed to be ready for injection into the database.
+Now we prepare the injection request, inspect them, and inject them:
 
 ```{r}
-insect_demo_site_prep <- rcoleo::coleo_prep_input_data(insect_demo, db_table = "sites")
-insect_demo_site_prep
+imaginary_requests <- imaginary_sites_for_injection |> 
+  mutate(inject_request = list(coleo_inject_general_df(cur_data_all(), endpoint = "sites")))
+
+# visually inspect the injection
+httr2::req_dry_run(imaginary_requests$inject_request[[1]])
+
+# run and save all the injections
+imaginary_injected <- coleo_execute_injection(imaginary_requests)
+
+imaginary_injected
 ```
 
-Here, for example
-
-Data preparation nests all the data which is not needed for injection into a particular table.
-Here we are injecting data into the site table. these present data contain only the site_code.
-
-
-```{r}
-
-suppressPackageStartupMessages(library(tidyverse))
-library(rcoleo)
-
-
-site_id_df <- insect_demo_site_prep |>
-  nest_by(site_code) |>
-  mutate(site_resp = list(rcoleo:::coleo_request_by_code(human_code = site_code, table = "sites")),
-         site_id = rcoleo:::coleo_extract_id(site_resp))
-
-
-head(site_id_results)
-
-
-```
-
-
-the result is a dataframe with a column for site_id
-
-This column has `NA_integer_` where the site needs to be injected.
-
-
+These two sites were injected successfully!
 
 ### Workflow
 
