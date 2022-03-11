@@ -44,9 +44,13 @@ cell_data <- structure(list(cell_code = "111_777", name = "Middle Earth",
 "data.frame"))
 ```
 
-```{r}
+```{r, message = FALSE, warning=FALSE}
 library(sf)
 library(dplyr)
+library(rcoleo)
+```
+
+```{r}
 cell_data
 ```
 

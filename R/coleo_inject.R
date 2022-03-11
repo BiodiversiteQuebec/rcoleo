@@ -43,7 +43,6 @@ coleo_inject_general <- function(..., endpoint){
 #'   manually. First, you should inspect the contents with
 #'   \code{\link[httr2]{req_dry_run}}
 #' @export
-#'
 coleo_inject_general_df <- function(df_one_row, endpoint){
 
   df_one_row <-as.list(df_one_row)
