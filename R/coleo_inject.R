@@ -43,7 +43,6 @@ coleo_inject_general <- function(..., endpoint){
 #'   manually. First, you should inspect the contents with
 #'   \code{\link[httr2]{req_dry_run}}
 #' @export
-#'
 coleo_inject_general_df <- function(df_one_row, endpoint){
 
   df_one_row <-as.list(df_one_row)
@@ -59,4 +58,38 @@ coleo_inject_general_df <- function(df_one_row, endpoint){
   rcoleo:::coleo_begin_req() %>%
     httr2::req_url_path_append(endpt) %>%
     httr2::req_body_json(data = df_one_row)
+}
+
+
+#' Inject data into coleo
+#'
+#' Takes a dataframe with a column of httr2 POST requests and actually performs
+#' them
+#'
+#' @param df a dataframe with one (and only one) column containing http requests
+#'   to inject data
+#'
+#' @return the same dataframe, with three new columns: the http response, the
+#'   error message (if any) and a column \code{success} which is TRUE if that
+#'   row was successfully injected
+#' @export
+coleo_execute_injection <- function(df){
+
+
+    which_req <- which(sapply(df, \(x) class(x[[1]])) == "httr2_request")
+
+    if(length(which_req) != 1) stop("you must have only one request column")
+
+
+    df_result <- df |>
+      dplyr::mutate(inject_result = list(
+        purrr::safely(httr2::req_perform)(.data[[names(which_req)]])
+      ))
+
+    df_result |>
+      dplyr::mutate(result = list(inject_result$result),
+             error = list(inject_result$error),
+             success = is.null(error)) |>
+      dplyr::select(-inject_result)
+
 }

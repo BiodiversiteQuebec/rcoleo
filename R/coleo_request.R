@@ -99,7 +99,7 @@ coleo_get_site_id <- function(site_code){
   message(site_code)
 
   coleo_request_general(site_code = site_code, endpoint = "sites") |>
-    coleo_pluck_one_id()
+    coleo_extract_id()
 }
 
 #' Download the cell id
@@ -112,6 +112,6 @@ coleo_get_cell_id <- function(cell_code){
   message(cell_code)
 
   coleo_request_general(cell_code = cell_code, endpoint = "cells") |>
-    coleo_pluck_one_id()
+    coleo_extract_id()
 }
 

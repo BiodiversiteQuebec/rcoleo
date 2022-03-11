@@ -41,7 +41,7 @@ with_mock_dir("coleo_request_real", {
     expect_equal(length(resp_body), 7)
 
     # can pluck one id successfully from site request
-    expect_equal(coleo_pluck_one_id(real_cell), 161)
+    expect_equal(coleo_extract_id(real_cell), 161)
 
 })
 
@@ -64,7 +64,7 @@ with_mock_dir("site id download and extraction", {
   })
 
   test_that("can coleo_pluck_id correctly", {
-    expect_equal(coleo_pluck_one_id(real_site), 94)
+    expect_equal(coleo_extract_id(real_site), 94)
   })
 
   })

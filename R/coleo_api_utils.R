@@ -5,7 +5,8 @@ coleo_error_message <- function(resp){
     httr2::resp_body_json()
 
   server_message <- resp_json$message
-  error_message <- resp_json$errors |> purrr::map_chr("message") |> paste(collapse = "; ")
+  error_message <- paste(resp_json$errors[[1]], collapse = ": ")
+
   return(paste0(server_message,
                 ": ",
                 error_message))
