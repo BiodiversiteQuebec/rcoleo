@@ -25,22 +25,39 @@ with_mock_dir("inject a test site", {
     expect_type(demo_test$body$data, "list")
   })
 
-  test_that("ID for new record is a number", expect_gt(coleo_pluck_one_id(demo_result), 1L))
+  test_that("ID for new record is a number", expect_gt(coleo_extract_id(demo_result), 1L))
 
 
+  injection_df <- tibble::tibble(cell_code = "FFF_XXX",
+                                 name ="Middle Earth",
+                                 geom = list(one_cell_list))
+
+  one_post_in_df <- injection_df |>
+    dplyr::rowwise() |>
+    dplyr::mutate(req = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells")))
 
   test_that("rowwise approach on a data frame yields the same output as a hand-crafted request", {
-
-    injection_df <- tibble::tibble(cell_code = "FFF_XXX",
-                                   name ="Middle Earth",
-                                   geom = list(one_cell_list))
-
-    one_post_in_df <- injection_df |>
-      dplyr::rowwise() |>
-      dplyr::mutate(req = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells")))
-
-
     expect_equivalent(demo_test, one_post_in_df$req[[1]])
+  })
+
+  test_that("duplicate request columns cause error", {
+
+
+    dup_requests <- one_post_in_df
+
+    dup_requests$req2 <- dup_requests$req
+
+    expect_error(coleo_execute_injection(dup_reqests))
+  })
+
+  test_that("injection returns the correct response", {
+
+    one_post_response <- coleo_execute_injection(one_post_in_df)
+
+    expect_true(all(c("result", "error", "success") %in% names(one_post_response)))
+    expect_s3_class(one_post_response$result[[1]], "httr2_response")
+    expect_equal(one_post_response$success, TRUE)
+
   })
 
   if (FALSE) {
