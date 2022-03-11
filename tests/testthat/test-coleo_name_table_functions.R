@@ -15,12 +15,13 @@ test_that("coleo_name_table_functions", {
 
   expect_equal(coleo_get_name_table_column("sites"),
                c("site_code", "site_name",
-                 "site_type", "site_date_opened", "site_lat", "site_lon", "site_notes"
+                 "site_type", "site_date_opened",
+                 "site_lat", "site_lon", "site_notes", "cell_id"
                ))
 
   expect_equal(coleo_get_name_table_column("sites", column = "db_column"),
                c("site_code", "site_name",
-                 "type", "opened_at", "lat", "lon", "notes"))
+                 "type", "opened_at", "lat", "lon", "notes", "cell_id"))
 
   expect_error(coleo_get_name_table_column("sites", column = "foobar"), regexp = "column should.*")
 
