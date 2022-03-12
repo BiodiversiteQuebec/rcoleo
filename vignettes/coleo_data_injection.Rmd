@@ -1,11 +1,12 @@
 ---
-title: "Injection des sites"
+title: "Injecting coleo data"
 author: "Andrew MacDonald"
 date: "`r Sys.Date()`"
 output:
   prettydoc::html_pretty:
     theme: cayman
     highlight: github
+    toc: true
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEncoding{UTF-8}
@@ -17,13 +18,8 @@ editor_options:
 
 ```{r, include=FALSE}
 library(httptest2)
-start_vignette("coleo_site_injection")
+start_vignette("coleo_data_injection")
 ```
-
-
-the first step in injecting data in to the Coleo database is data validation (see vignette on data validation)
-
-Once data is validated we can begin injection.
 
 ## injecting cells
 
@@ -50,6 +46,12 @@ library(dplyr)
 library(rcoleo)
 ```
 
+
+```{r roadmap, include = FALSE}
+rcoleo:::coleo_get_required_tables() |> dplyr::filter(insectes_sol ==1)
+```
+
+
 ```{r}
 cell_data
 ```
@@ -60,7 +62,7 @@ Note that the column `geom` is a `POLYGON` type of object. We need to work with 
 
 Once we have this information, we need to reformat it to prepare for injection. We can use a function from `rcoleo` to facilitate this step
 
-```{r}
+```{r cell_fmt_geom, message=FALSE}
 cell_data_reformat <- cell_data |> 
   rowwise() |> 
   mutate(geom = list(rcoleo::coleo_cell_geom_fmt(geom)))
@@ -72,7 +74,7 @@ This step transforms the `geom` column from a spatial object into a nested list.
 
 Another important point is the use of `rowwise()` in the code above. This is a convenient way to work with dataframes going one row at a time. Here, each row contains one cell for injection. You can read more about it [here](https://dplyr.tidyverse.org/articles/rowwise.html). 
 
-### create the API request
+### Create the API request
 
 Before we inject our data, we will make our requests and inspect them to make sure they work.
 
@@ -80,7 +82,7 @@ Before we inject our data, we will make our requests and inspect them to make su
 cell_data_req <- cell_data_reformat |> 
   dplyr::mutate(inject_request = list(
     coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells")
-    ))
+  ))
 ```
 
 This step makes our request. Important things to note:
@@ -93,8 +95,8 @@ This step makes our request. Important things to note:
 
 Let's look at this request column:
 
-```{r}
-cell_data_req$inject_request
+```{r, results='hold'}
+print(cell_data_req$inject_request[[1]])
 ```
 
 We can access the actual body of the request with:
@@ -105,7 +107,7 @@ httr2::req_dry_run(cell_data_req$inject_request[[1]])
 
 This is our last chance to make SURE we are injecting the right thing. The code at the bottom is JSON and is what will be injected into the database.
 
-### Injecting data
+### Injecting a cell
 
 When we are sure that we've got the right data, we can proceed to injection:
 
@@ -197,6 +199,145 @@ imaginary_injected
 ```
 
 These two sites were injected successfully!
+
+## Campaigns
+
+This vignette will show how to inject fake soil insect data, which will allow us to show the injection of 7 different tables:
+
+1. campaigns
+1. traps
+1. landmarks
+1. samples
+1. observations
+1. obs_species
+1. ref_species
+
+We start with some fake campaign information. This dataset contains ALL the columns we need to inject all the tables mentioned above.
+
+```{r}
+imaginary_insects <- tibble::tribble(
+  ~site_code, ~campaign_type, ~campaign_date_opened, ~campaign_date_closed, ~observation_date, ~observation_is_valid, ~trap_code, ~land_lat, ~land_lon, ~sample_code, ~campaign_technician_1, ~ref_taxa_rank, ~ref_taxa_tsn, ~ref_taxa_name, ~observation_taxa_name, ~observation_variable, ~observation_value, ~observation_notes,
+      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",  "sous-classe",            NA, "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,                 NA,
+      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",            NA, "Fake_beetleB",         "Fake_beetleB",           "abondance",                  6,                 NA,
+      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",            NA, "Fake_beetleC",         "Fake_beetleC",           "abondance",                  10,                 NA,
+      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",            NA, "Fake_beetleR",         "Fake_beetleR",           "abondance",                  11,                 NA,
+      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "classe",            NA, "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,                 NA,
+      "111_777_E03", "insectes_sol",          "2020-06-30",          "2020-07-21",      "2020-07-21",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0105",       "Legolas, Gimli",  "sous-classe",            NA, "Fake_beetleL",         "Fake_beetleL",           "abondance",                  3,                 NA,
+      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "classe",            NA, "Fake_beetleG",         "Fake_beetleG",           "abondance",                  1,                 NA,
+      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "espèce",            NA, "Fake_beetleH",         "Fake_beetleH",           "abondance",                  1,                 NA
+  )
+
+knitr::kable(imaginary_insects)
+```
+
+
+Important things to notice about the data are:
+
+* the only site-level information is the `site_code`
+* all the columns have prefixes (e.g. "*campaign_*type" or "*land_*lat). This is to differentiate columns which might have the same name but which are destined for different database tables. these will be automatically renamed during data preparation
+* the format of dates is correct: AAAA-MM-JJ
+* all columns have the correct values.
+
+In a real workflow, a validation step will confirm that all of the above points are true. Getting the data in teh correct format is most of the work of injection.
+
+### data preparation
+
+First we need to obtain the database ID for site. The process is the same as above:
+
+```{r}
+site_id_imaginary <- imaginary_insects |> 
+  rowwise() |> 
+  mutate(coleo_id = list(coleo_request_by_code(human_code = site_code, table = "sites")),
+         site_id = coleo_extract_id(coleo_id)) |> 
+  select(-site_code, -coleo_id) |> 
+  dplyr::relocate(site_id)
+```
+
+This code queries the database for the site_id, then removes the site code.
+
+
+```{r}
+prepared_imaginary <- coleo_prep_input_data(site_id_imaginary, db_table = "campaigns")
+```
+
+There is one more step; we need to manually place the technicians into a list 
+(NOTE should this be automated?)
+
+```{r}
+for_injection_imaginary <- prepared_imaginary |> 
+  mutate(technicians = list(if_else(is.na(technician_1), true = list(NA_character_), false = list(technician_1)))) |> 
+  ungroup() |> 
+  select(-technician_1) |> 
+  rowwise()
+
+for_injection_imaginary
+
+```
+
+we're now ready to inject the data, using the same workflow as above:
+
+```{r}
+requests_imaginary <- for_injection_imaginary |> 
+  mutate(inject_request = list(coleo_inject_general_df(cur_data_all(), endpoint = "campaigns")))
+
+httr2::req_dry_run(requests_imaginary$inject_request[[1]])
+```
+
+Once we have the right format, we can perform the injections
+
+```{r}
+camp_injected_imaginary <- coleo_execute_injection(requests_imaginary)
+
+camp_injected_imaginary
+```
+
+this is the first of *seven* tables we need to inject. Every time we inject a table, the database gives a new ID to those records. Then, we need to use thse IDs when we inject the subsequent tables. Because we have preserved the responses, this is straightforward:
+
+```{r}
+
+camp_id_imaginary <- camp_injected_imaginary |> 
+  mutate(campaign_id = coleo_extract_id(result)) |> 
+  select(campaign_id, data) |> 
+  tidyr::unnest(cols = c(data))
+
+```
+
+
+## Traps
+
+```{r}
+trap_inject_imaginary <- camp_id_imaginary |> 
+  coleo_prep_input_data(db_table = "traps") |> 
+  mutate(inject_request = list(coleo_inject_general_df(cur_data_all(), endpoint =  "traps")))
+
+trap_inject_imaginary
+```
+
+```{r}
+trap_inject_imaginary$inject_request[[1]] |> httr2::req_dry_run()
+```
+
+```{r}
+trap_response_imaginary <- trap_inject_imaginary |> coleo_execute_injection()
+
+trap_camp_ids_imaginary <- trap_response_imaginary |>
+  mutate(trap_id = coleo_extract_id(result)) |> 
+  ungroup() |> 
+  select(campaign_id, trap_id, data) |> 
+  tidyr::unnest(cols = c(data))
+```
+
+NOTE that this time we keep both campaign and trap IDs
+
+
+```{r}
+trap_camp_ids_imaginary |> 
+  coleo_prep_input_data("landmarks")
+```
+
+
+
+
 
 ### Workflow
 
