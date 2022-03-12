@@ -244,7 +244,7 @@ In a real workflow, a validation step will confirm that all of the above points 
 
 First we need to obtain the database ID for site. The process is the same as above:
 
-```{r}
+```{r get-site-id}
 site_id_imaginary <- imaginary_insects |> 
   rowwise() |> 
   mutate(coleo_id = list(coleo_request_by_code(human_code = site_code, table = "sites")),
@@ -377,8 +377,19 @@ samp_response |>
 
 ```{r}
 coleo_prepare_injection <- function(df, db_table){
-  
+  df |> 
+    coleo_prep_input_data(db_table) |> 
+    dplyr::mutate(inject_request = list(coleo_inject_general_df(cur_data_all(), endpoint = db_table)))
 }
+
+coleo_polish_injection <- function(df){
+  # get the name of the type of table just injected
+  
+  df |> 
+    mutate()
+}
+
+
 ```
 
 

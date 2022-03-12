@@ -1,0 +1,59 @@
+[
+    {
+        "id": 313,
+        "cell_id": 631,
+        "off_station_code_id": null,
+        "site_code": "111_777_E03",
+        "site_name": "Lorien",
+        "type": "forestier",
+        "opened_at": "2020-01-01",
+        "geom": {
+            "type": "Point",
+            "coordinates": [
+                -67.33,
+                41.133559
+            ]
+        },
+        "notes": null,
+        "created_at": "2022-03-12T20:46:20.797Z",
+        "updated_at": "2022-03-12T20:46:20.797Z",
+        "cellId": 631,
+        "campaigns": [
+
+        ],
+        "cell": {
+            "id": 631,
+            "name": "Middle Earth",
+            "cell_code": "111_777",
+            "geom": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -68.784529,
+                            48.112211
+                        ],
+                        [
+                            -68.92058,
+                            48.02487
+                        ],
+                        [
+                            -69.051611,
+                            48.11558
+                        ],
+                        [
+                            -68.915541,
+                            48.203192
+                        ],
+                        [
+                            -68.784529,
+                            48.112211
+                        ]
+                    ]
+                ]
+            },
+            "created_at": "2022-03-12T20:46:20.262Z",
+            "updated_at": "2022-03-12T20:46:20.262Z"
+        }
+    }
+]
