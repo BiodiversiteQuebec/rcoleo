@@ -50,14 +50,13 @@ endpoints <- function(){
 #   purrr::map(unique) |>
 #   purrr::flatten_chr() |> unique |> dput
 campaign_types <- function(){
-  c('v\u00e9g\u00e9tation', 'v\u00e9g\u00e9tation_transect', 'sol',
-    'acoustique', 'ph\u00e9nologie', 'mammif\u00e8res', 'papilionid\u00e9s',
-    'odonates', 'insectes_sol', 'ADNe', 'zooplancton', 'sol', 'd\u00e9composition_sol',
-    'temp\u00e9rature_eau', 'temp\u00e9rature_sol', 'marais_profondeur_temp\u00e9rature')
+  camp_types_resp <- coleo_request_general(enum = "enum_campaigns_type", endpoint = "enum_options")
+  unlist(httr2::resp_body_json(camp_types_resp), use.names = FALSE)
 }
 
 site_types <- function(){
-  c("lac", "rivi\u00e8re", "forestier", "marais", "marais c\u00f4tier", "toundrique", "tourbi\u00e8re")
+  camp_types_resp <- coleo_request_general(enum = "enum_sites_type", endpoint = "enum_options")
+  unlist(httr2::resp_body_json(camp_types_resp), use.names = FALSE)
 }
 
 
