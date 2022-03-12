@@ -329,13 +329,57 @@ trap_camp_ids_imaginary <- trap_response_imaginary |>
 
 NOTE that this time we keep both campaign and trap IDs
 
+## landmarks
 
 ```{r}
-trap_camp_ids_imaginary |> 
-  coleo_prep_input_data("landmarks")
+repere_inject_imaginary <- trap_camp_ids_imaginary |> 
+  coleo_prep_input_data("landmarks") |> 
+  mutate(inject_request = list(coleo_inject_general_df(cur_data_all(), endpoint = "landmarks")))
+```
+
+```{r}
+httr2::req_dry_run(repere_inject_imaginary$inject_request[[1]])
+```
+
+```{r}
+repere_response <- coleo_execute_injection(repere_inject_imaginary)
+
+land_id_imaginary <- repere_response |> 
+  mutate(landmark_id = coleo_extract_id(result)) |> 
+  ungroup() |> 
+  select(ends_with("_id"), data) |> 
+  tidyr::unnest(cols = c(data))
+```
+
+## Samples
+
+```{r}
+samp_inject_imaginary <- land_id_imaginary |> 
+  coleo_prep_input_data("samples") |> 
+  mutate(inject_request = list(coleo_inject_general_df(cur_data_all(), endpoint = "samples")))
+```
+
+```{r}
+httr2::req_dry_run(samp_inject_imaginary$inject_request[[1]])
+
+samp_response <- coleo_execute_injection(samp_inject_imaginary)
+
+samp_response |> 
+  mutate(sample_id = coleo_extract_id(result)) |> 
+  ungroup() |> 
+  select(ends_with("id"), data) |> 
+  tidyr::unnest(cols = c(data))
+
 ```
 
 
+## Observations
+
+```{r}
+coleo_prepare_injection <- function(df, db_table){
+  
+}
+```
 
 
 

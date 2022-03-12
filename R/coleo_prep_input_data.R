@@ -17,7 +17,9 @@ coleo_prep_input_data <- function(df, db_table){
 
   # find and also preserve any columns that end in "_id".
   # TODO rely here on coleo_return_cols to get the actual ID columns needed
-  id_names <- names(df)[grepl(pattern = ".*_id", x = names(df))]
+  colnames_of_tbl <- coleo_get_column_names(tbl = db_table)$column_name
+
+  id_names <- colnames_of_tbl[grepl(pattern = ".*_id", x = colnames_of_tbl)]
 
   nesting_names <- c(id_names, names_present)
 
