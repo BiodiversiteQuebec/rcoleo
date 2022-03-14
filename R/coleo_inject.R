@@ -73,7 +73,7 @@ coleo_inject_general_df <- function(df_one_row, endpoint){
 #'   error message (if any) and a column \code{success} which is TRUE if that
 #'   row was successfully injected
 #' @export
-coleo_execute_injection <- function(df){
+coleo_injection_execute <- function(df){
 
 
     which_req <- which(sapply(df, \(x) class(x[[1]])) == "httr2_request")

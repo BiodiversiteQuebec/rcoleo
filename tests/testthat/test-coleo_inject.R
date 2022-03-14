@@ -47,12 +47,12 @@ with_mock_dir("inject a test site", {
 
     dup_requests$req2 <- dup_requests$req
 
-    expect_error(coleo_execute_injection(dup_reqests))
+    expect_error(coleo_injection_execute(dup_reqests))
   })
 
   test_that("injection returns the correct response", {
 
-    one_post_response <- coleo_execute_injection(one_post_in_df)
+    one_post_response <- coleo_injection_execute(one_post_in_df)
 
     expect_true(all(c("result", "error", "success") %in% names(one_post_response)))
     expect_s3_class(one_post_response$result[[1]], "httr2_response")

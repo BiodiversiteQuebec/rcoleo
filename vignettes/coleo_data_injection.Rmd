@@ -112,7 +112,7 @@ This is our last chance to make SURE we are injecting the right thing. The code 
 When we are sure that we've got the right data, we can proceed to injection:
 
 ```{r}
-cell_data_inject_result <- coleo_execute_injection(cell_data_req)
+cell_data_inject_result <- coleo_injection_execute(cell_data_req)
 
 cell_data_inject_result
 cell_data_inject_result$result
@@ -193,7 +193,7 @@ imaginary_requests <- imaginary_sites_for_injection |>
 httr2::req_dry_run(imaginary_requests$inject_request[[1]])
 
 # run and save all the injections
-imaginary_injected <- coleo_execute_injection(imaginary_requests)
+imaginary_injected <- coleo_injection_execute(imaginary_requests)
 
 imaginary_injected
 ```
@@ -286,7 +286,7 @@ httr2::req_dry_run(requests_imaginary$inject_request[[1]])
 Once we have the right format, we can perform the injections
 
 ```{r}
-camp_injected_imaginary <- coleo_execute_injection(requests_imaginary)
+camp_injected_imaginary <- coleo_injection_execute(requests_imaginary)
 
 camp_injected_imaginary
 ```
@@ -318,7 +318,7 @@ trap_inject_imaginary$inject_request[[1]] |> httr2::req_dry_run()
 ```
 
 ```{r}
-trap_response_imaginary <- trap_inject_imaginary |> coleo_execute_injection()
+trap_response_imaginary <- trap_inject_imaginary |> coleo_injection_execute()
 
 trap_camp_ids_imaginary <- trap_response_imaginary |>
   mutate(trap_id = coleo_extract_id(result)) |> 
@@ -342,7 +342,7 @@ httr2::req_dry_run(repere_inject_imaginary$inject_request[[1]])
 ```
 
 ```{r}
-repere_response <- coleo_execute_injection(repere_inject_imaginary)
+repere_response <- coleo_injection_execute(repere_inject_imaginary)
 
 land_id_imaginary <- repere_response |> 
   mutate(landmark_id = coleo_extract_id(result)) |> 
@@ -362,7 +362,7 @@ samp_inject_imaginary <- land_id_imaginary |>
 ```{r}
 httr2::req_dry_run(samp_inject_imaginary$inject_request[[1]])
 
-samp_response <- coleo_execute_injection(samp_inject_imaginary)
+samp_response <- coleo_injection_execute(samp_inject_imaginary)
 
 samp_response |> 
   mutate(sample_id = coleo_extract_id(result)) |> 
