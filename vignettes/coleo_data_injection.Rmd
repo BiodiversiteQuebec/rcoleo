@@ -21,7 +21,7 @@ library(httptest2)
 start_vignette("coleo_data_injection")
 ```
 
-## injecting cells
+## Cells
 
 We start with an example of data from an imaginary cell:
 
@@ -140,7 +140,7 @@ cell_data_req |>
 ```
 
 
-## Injecting sites
+## Sites
 
 We begin with a demonstration site:
 
@@ -217,14 +217,14 @@ We start with some fake campaign information. This dataset contains ALL the colu
 ```{r}
 imaginary_insects <- tibble::tribble(
   ~site_code, ~campaign_type, ~campaign_date_opened, ~campaign_date_closed, ~observation_date, ~observation_is_valid, ~trap_code, ~land_lat, ~land_lon, ~sample_code, ~campaign_technician_1, ~ref_taxa_rank, ~ref_taxa_tsn, ~ref_taxa_name, ~observation_taxa_name, ~observation_variable, ~observation_value, ~observation_notes,
-      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",  "sous-classe",            NA, "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,                 NA,
-      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",            NA, "Fake_beetleB",         "Fake_beetleB",           "abondance",                  6,                 NA,
-      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",            NA, "Fake_beetleC",         "Fake_beetleC",           "abondance",                  10,                 NA,
-      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",            NA, "Fake_beetleR",         "Fake_beetleR",           "abondance",                  11,                 NA,
-      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "classe",            NA, "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,                 NA,
-      "111_777_E03", "insectes_sol",          "2020-06-30",          "2020-07-21",      "2020-07-21",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0105",       "Legolas, Gimli",  "sous-classe",            NA, "Fake_beetleL",         "Fake_beetleL",           "abondance",                  3,                 NA,
-      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "classe",            NA, "Fake_beetleG",         "Fake_beetleG",           "abondance",                  1,                 NA,
-      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "espèce",            NA, "Fake_beetleH",         "Fake_beetleH",           "abondance",                  1,                 NA
+      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",  "sous-classe",            9999, "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,                "fascinating",
+      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",            9999, "Fake_beetleB",         "Fake_beetleB",           "abondance",                  6,                NA,
+      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",            9999, "Fake_beetleC",         "Fake_beetleC",           "abondance",                  10,               "incomplet",
+      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",            9999, "Fake_beetleR",         "Fake_beetleR",           "abondance",                  11,               NA,
+      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "classe",            9999, "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,                NA,
+      "111_777_E03", "insectes_sol",          "2020-06-30",          "2020-07-21",      "2020-07-21",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0105",       "Legolas, Gimli",  "sous-classe",            9999, "Fake_beetleL",         "Fake_beetleL",           "abondance",                  3,                "not sure about one",
+      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "classe",            9999, "Fake_beetleG",         "Fake_beetleG",           "abondance",                  1,                NA,
+      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "espèce",            9999, "Fake_beetleH",         "Fake_beetleH",           "abondance",                  1,                NA
   )
 
 knitr::kable(imaginary_insects)
@@ -257,45 +257,45 @@ This code queries the database for the site_id, then removes the site code.
 
 
 ```{r}
-prepared_imaginary <- coleo_prep_input_data(site_id_imaginary, db_table = "campaigns")
+camp_prep_imaginary <- coleo_prep_input_data(site_id_imaginary, db_table = "campaigns")
 ```
 
 There is one more step; we need to manually place the technicians into a list 
 (NOTE should this be automated?)
 
 ```{r}
-for_injection_imaginary <- prepared_imaginary |> 
+camp_prep_imaginary_tech <- camp_prep_imaginary |> 
   mutate(technicians = list(if_else(is.na(technician_1), true = list(NA_character_), false = list(technician_1)))) |> 
   ungroup() |> 
   select(-technician_1) |> 
   rowwise()
 
-for_injection_imaginary
+camp_prep_imaginary_tech
 
 ```
 
 we're now ready to inject the data, using the same workflow as above:
 
 ```{r}
-requests_imaginary <- for_injection_imaginary |> 
+camp_requests_imaginary <- camp_prep_imaginary_tech |> 
   mutate(inject_request = list(coleo_inject_general_df(cur_data_all(), endpoint = "campaigns")))
 
-httr2::req_dry_run(requests_imaginary$inject_request[[1]])
+httr2::req_dry_run(camp_requests_imaginary$inject_request[[1]])
 ```
 
 Once we have the right format, we can perform the injections
 
 ```{r}
-camp_injected_imaginary <- coleo_injection_execute(requests_imaginary)
+camp_response_imaginary <- coleo_injection_execute(camp_requests_imaginary)
 
-camp_injected_imaginary
+camp_response_imaginary
 ```
 
 this is the first of *seven* tables we need to inject. Every time we inject a table, the database gives a new ID to those records. Then, we need to use thse IDs when we inject the subsequent tables. Because we have preserved the responses, this is straightforward:
 
 ```{r}
 
-camp_id_imaginary <- camp_injected_imaginary |> 
+camp_id_imaginary <- camp_response_imaginary |> 
   mutate(campaign_id = coleo_extract_id(result)) |> 
   select(campaign_id, data) |> 
   tidyr::unnest(cols = c(data))
@@ -320,7 +320,7 @@ trap_inject_imaginary$inject_request[[1]] |> httr2::req_dry_run()
 ```{r}
 trap_response_imaginary <- trap_inject_imaginary |> coleo_injection_execute()
 
-trap_camp_ids_imaginary <- trap_response_imaginary |>
+trap_ids_imaginary <- trap_response_imaginary |>
   mutate(trap_id = coleo_extract_id(result)) |> 
   ungroup() |> 
   select(campaign_id, trap_id, data) |> 
@@ -332,7 +332,7 @@ NOTE that this time we keep both campaign and trap IDs
 ## landmarks
 
 ```{r}
-repere_inject_imaginary <- trap_camp_ids_imaginary |> 
+repere_inject_imaginary <- trap_ids_imaginary |> 
   coleo_prep_input_data("landmarks") |> 
   mutate(inject_request = list(coleo_inject_general_df(cur_data_all(), endpoint = "landmarks")))
 ```
@@ -354,41 +354,74 @@ land_id_imaginary <- repere_response |>
 ## Samples
 
 ```{r}
-samp_inject_imaginary <- land_id_imaginary |> 
-  coleo_prep_input_data("samples") |> 
-  mutate(inject_request = list(coleo_inject_general_df(cur_data_all(), endpoint = "samples")))
+samp_inject_imaginary <- coleo_injection_prep(land_id_imaginary, "samples")
 ```
 
 ```{r}
 httr2::req_dry_run(samp_inject_imaginary$inject_request[[1]])
+```
 
+
+```{r}
 samp_response <- coleo_injection_execute(samp_inject_imaginary)
+```
 
-samp_response |> 
-  mutate(sample_id = coleo_extract_id(result)) |> 
-  ungroup() |> 
-  select(ends_with("id"), data) |> 
-  tidyr::unnest(cols = c(data))
+```{r}
+sample_id_imaginary <- coleo_injection_final(samp_response)
 
+knitr::kable(sample_id_imaginary)
 ```
 
 
 ## Observations
 
 ```{r}
-coleo_prepare_injection <- function(df, db_table){
-  df |> 
-    coleo_prep_input_data(db_table) |> 
-    dplyr::mutate(inject_request = list(coleo_inject_general_df(cur_data_all(), endpoint = db_table)))
-}
+obs_inject_imaginary <- coleo_injection_prep(sample_id_imaginary, "observations")
+# httr2::req_dry_run(obs_inject_imaginary$inject_request[[1]])
+# 
+# obs_query <- obs_inject_imaginary |> 
+#   mutate(dl_id = list(coleo_request_general(date_obs = date_obs,
+#                                             #sample_id = sample_id,
+#                                             #is_valid = is_valid, 
+#                                             campaign_id = campaign_id, endpoint = "observations")))
+# 
+# obs_query$dl_id[[1]]
+# obs_query
+# httr2::resp_body_json(obs_query$dl_id[[1]])
+# 
+# obs_query |> 
+#   mutate(observation_id = coleo_extract_id(dl_id)) |> glimpse()
+```
 
-coleo_polish_injection <- function(df){
-  # get the name of the type of table just injected
+```{r, eval = FALSE}
+obs_response <- coleo_injection_execute(obs_inject_imaginary)
+
+obs_response |> glimpse()
+
+obs_response |> coleo_injection_final()
+```
+
+
+## recovering injected records
+
+sometimes (e.g. you got interrupted) you need to find a record you already injected. Can this be done easily?
+
+```{r}
+camp_find <- camp_requests_imaginary |> 
+  mutate(dl_id = list(coleo_request_general(site_id = site_id,
+                                            type = type, 
+                                            opened_at = opened_at, endpoint = "campaigns", perform = TRUE)))
+
+camp_find |> 
+  mutate(id = coleo_extract_id(dl_id))
+
+
   
-  df |> 
-    mutate()
-}
+```
 
+however, this doesn't work for every table; why is that? 
+
+```{r}
 
 ```
 

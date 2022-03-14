@@ -16,13 +16,13 @@ coleo_prep_input_data <- function(df, db_table){
   names_present <- intersect(input_fields, names(df))
 
   # find and also preserve any columns that end in "_id".
-  # TODO rely here on coleo_return_cols to get the actual ID columns needed
+  # use API to get the actual ID columns needed
   colnames_of_tbl <- coleo_get_column_names(tbl = db_table)$column_name
-
   id_names <- colnames_of_tbl[grepl(pattern = ".*_id", x = colnames_of_tbl)]
 
   nesting_names <- c(id_names, names_present)
 
+  # Critical to not nest observations!
   if(db_table != "observations") {
     df_info_only <- df |>
       dplyr::nest_by(dplyr::across(dplyr::any_of(nesting_names)))
@@ -30,7 +30,7 @@ coleo_prep_input_data <- function(df, db_table){
 
   } else {
     message("L'imbrication n'est pas necessaire pour cette table")
-    df_info_only <- df
+    df_info_only <- rowwise(df)
   }
 
   # rename the dataset

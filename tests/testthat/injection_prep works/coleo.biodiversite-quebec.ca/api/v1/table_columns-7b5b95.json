@@ -1,0 +1,37 @@
+[
+    {
+        "column_name": "id",
+        "data_type": "integer",
+        "udt_name": "int4"
+    },
+    {
+        "column_name": "sample_code",
+        "data_type": "character varying",
+        "udt_name": "varchar"
+    },
+    {
+        "column_name": "date_samp",
+        "data_type": "date",
+        "udt_name": "date"
+    },
+    {
+        "column_name": "trap_id",
+        "data_type": "integer",
+        "udt_name": "int4"
+    },
+    {
+        "column_name": "notes",
+        "data_type": "text",
+        "udt_name": "text"
+    },
+    {
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz"
+    },
+    {
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz"
+    }
+]

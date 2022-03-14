@@ -1,0 +1,88 @@
+[
+    {
+        "id": 879,
+        "site_id": 331,
+        "type": "insectes_sol",
+        "technicians": [
+            "Legolas, Gimli"
+        ],
+        "opened_at": "2020-06-30",
+        "closed_at": "2020-07-21",
+        "notes": null,
+        "created_at": "2022-03-14T14:21:50.840Z",
+        "updated_at": "2022-03-14T14:21:50.840Z",
+        "siteId": 331,
+        "efforts": [
+
+        ],
+        "environment": null,
+        "site": {
+            "id": 331,
+            "cell_id": 641,
+            "off_station_code_id": null,
+            "site_code": "111_777_E03",
+            "site_name": "Lorien",
+            "type": "forestier",
+            "opened_at": "2020-01-01",
+            "geom": {
+                "type": "Point",
+                "coordinates": [
+                    -67.33,
+                    41.133559
+                ]
+            },
+            "notes": null,
+            "created_at": "2022-03-14T14:21:50.066Z",
+            "updated_at": "2022-03-14T14:21:50.066Z",
+            "cellId": 641
+        },
+        "device": null,
+        "lures": [
+
+        ],
+        "landmarks": [
+            {
+                "id": 637,
+                "campaign_id": 879,
+                "tree_code": null,
+                "taxa_name": null,
+                "dbh": 0,
+                "dbh_unit": "mm",
+                "axis": null,
+                "azimut": 0,
+                "distance": 0,
+                "distance_unit": "cm",
+                "geom": {
+                    "type": "Point",
+                    "coordinates": [
+                        -74.4487,
+                        50.56698
+                    ]
+                },
+                "type": "gps",
+                "thermograph_type": "eau",
+                "notes": null,
+                "created_at": "2022-03-14T14:21:51.619Z",
+                "updated_at": "2022-03-14T14:21:51.619Z",
+                "campaignId": 879,
+                "trapId": null,
+                "deviceId": null,
+                "lureId": null,
+                "thermographs": [
+
+                ]
+            }
+        ],
+        "traps": [
+            {
+                "id": 72,
+                "trap_code": "B-NE1",
+                "campaign_id": 879,
+                "notes": null,
+                "created_at": "2022-03-14T14:21:51.264Z",
+                "updated_at": "2022-03-14T14:21:51.264Z",
+                "campaignId": 879
+            }
+        ]
+    }
+]
