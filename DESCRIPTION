@@ -19,6 +19,7 @@ Imports:
     jsonlite,
     stringr,
     dplyr (>= 1.0.7),
+    httpuv,
     plyr,
     tibble,
     purrr,

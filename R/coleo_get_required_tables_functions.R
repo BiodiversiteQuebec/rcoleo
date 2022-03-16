@@ -62,7 +62,7 @@ coleo_return_df_cols <- function(campaign_type, required_only = TRUE) {
   # Assembler l'info dans un df
   req_cols <- as.data.frame(tibble::tibble(noms_colonnes = req_columns,
                                            classe = req_class,
-                                           valeurs_acceptées = req_values))
+                                           valeurs_acceptees = req_values))
 
   View(req_cols)
 }
@@ -109,7 +109,7 @@ coleo_return_cols <- function(campaign_type) {
   table <- c()
   noms_de_champs <- c()
   classe <- c()
-  valeurs_acceptées <- list()
+  valeurs_acceptees <- list()
   # Sauver les noms de colonne pour chaque table
   for(tbl in req_tbls){
     # Get columns from table
@@ -127,7 +127,7 @@ coleo_return_cols <- function(campaign_type) {
     table <- c(table, rep(tbl, nrow(cols_df)))
     noms_de_champs <- c(noms_de_champs, cols_df$column_name)
     classe <- c(classe, cols_df$data_type)
-    valeurs_acceptées <- c(valeurs_acceptées, values_df)
+    valeurs_acceptees <- c(valeurs_acceptees, values_df)
   }
   #-------------------------------------------------------------------------------
   # Assembler l'info dans un df
@@ -135,7 +135,7 @@ coleo_return_cols <- function(campaign_type) {
   df <- as.data.frame(tibble::tibble(table = table,
                                      noms_de_champs = noms_de_champs,
                                      classe = classe,
-                                     valeurs_acceptées = valeurs_acceptées))
+                                     valeurs_acceptees = valeurs_acceptees))
   #-------------------------------------------------------------------------------
   # Special column class pour injection
   #-------------------------------------------------------------------------------
@@ -157,12 +157,12 @@ coleo_return_cols <- function(campaign_type) {
       lat_row <- data.frame(table = df$table[geom_cols[i]],
                             noms_de_champs = "lat",
                                classe = "numeric",
-                               valeurs_acceptées = NA_character_)
+                               valeurs_acceptees = NA_character_)
       df <- rbind(df, lat_row)
       lon_row <- data.frame(table = df$table[geom_cols[i]],
                             noms_de_champs = "lon",
                             classe = "numeric",
-                            valeurs_acceptées = NA_character_)
+                            valeurs_acceptees = NA_character_)
       df <- rbind(df, lon_row)
     }
     df <- df[-geom_cols,]
