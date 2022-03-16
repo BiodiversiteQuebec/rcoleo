@@ -2,7 +2,7 @@
 #' General request for the coleo database
 #'
 #' @param ... query parameters for the coleo database (in the format `name = value`)
-#' @param table name of database table to query
+#' @param endpoint name of API endpoint where this request should go
 #' @param perform Should the request be performed? defaults to TRUE.
 #'
 #' @return httr2 response object if perform = TRUE, a request object if perform = FALSE.
@@ -86,32 +86,3 @@ coleo_extract_id <- function(answer_resp){
   # if there is no record in the DB, return NA rather than NULL
   if(is.null(ans_id)) return(NA_integer_) else return(ans_id)
 }
-
-
-
-#' Download the site id
-#'
-#' @param site_code code pour le site, du format "123_92_F01"
-#'
-#' @return code for site (integer) or integer NA value
-#' @export
-coleo_get_site_id <- function(site_code){
-  message(site_code)
-
-  coleo_request_general(site_code = site_code, endpoint = "sites") |>
-    coleo_extract_id()
-}
-
-#' Download the cell id
-#'
-#' @param site_code code pour la cellule, du format "123_92"
-#'
-#' @return code for cell (integer) or integer NA value
-#' @export
-coleo_get_cell_id <- function(cell_code){
-  message(cell_code)
-
-  coleo_request_general(cell_code = cell_code, endpoint = "cells") |>
-    coleo_extract_id()
-}
-
