@@ -8,7 +8,7 @@
 #' }
 #' @export
 get_all_obs <- function(){
-  obs_list <- rcoleo::get_gen(endpoints()$observations)
+  obs_list <- get_gen(endpoints()$observations)
   obs_df <- do.call(rbind, obs_list$body)
 
   camps <- get_gen(endpoints()$campaigns)

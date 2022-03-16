@@ -38,7 +38,7 @@ query_df_gen <- function(query_df, query_info, endpoint, ...) {
 
   # send a GET request to the specified endpoint.
   responses <- purrr::map(queries,
-                          rcoleo::get_gen,
+                          get_gen,
                           endpoint = endpoints()[[endpoint]], ...)
 
 
