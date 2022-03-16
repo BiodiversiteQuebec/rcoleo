@@ -168,7 +168,7 @@ coleo_injection_final <- function(df){
 
   # ALMOST offensively fashionable way to dynamically name a column
   df_id <- df |>
-    dplyr::mutate(!!name_id := if_else(is.null(error),
+    dplyr::mutate(!!name_id := dplyr::if_else(is.null(error),
                                        true = coleo_extract_id(result),
                                        false = NA_integer_)
     )
