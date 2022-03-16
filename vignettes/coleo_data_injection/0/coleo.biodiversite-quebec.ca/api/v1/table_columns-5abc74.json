@@ -1,0 +1,52 @@
+[
+    {
+        "column_name": "name",
+        "data_type": "character varying",
+        "udt_name": "varchar"
+    },
+    {
+        "column_name": "vernacular_fr",
+        "data_type": "character varying",
+        "udt_name": "varchar"
+    },
+    {
+        "column_name": "rank",
+        "data_type": "USER-DEFINED",
+        "udt_name": "enum_ref_species_rank"
+    },
+    {
+        "column_name": "tsn",
+        "data_type": "integer",
+        "udt_name": "int4"
+    },
+    {
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz"
+    },
+    {
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz"
+    },
+    {
+        "column_name": "category",
+        "data_type": "USER-DEFINED",
+        "udt_name": "enum_ref_species_category"
+    },
+    {
+        "column_name": "vascan_id",
+        "data_type": "integer",
+        "udt_name": "int4"
+    },
+    {
+        "column_name": "bryoquel_id",
+        "data_type": "integer",
+        "udt_name": "int4"
+    },
+    {
+        "column_name": "vernacular_en",
+        "data_type": "character varying",
+        "udt_name": "varchar"
+    }
+]

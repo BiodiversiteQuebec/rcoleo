@@ -19,6 +19,7 @@ editor_options:
 ```{r, include=FALSE}
 library(httptest2)
 start_vignette("coleo_data_injection")
+knitr::opts_chunk$set(error = TRUE)
 ```
 
 ## Cells
@@ -216,16 +217,15 @@ We start with some fake campaign information. This dataset contains ALL the colu
 
 ```{r}
 imaginary_insects <- tibble::tribble(
-  ~site_code, ~campaign_type, ~campaign_date_opened, ~campaign_date_closed, ~observation_date, ~observation_is_valid, ~trap_code, ~land_lat, ~land_lon, ~sample_code, ~campaign_technician_1, ~ref_taxa_rank, ~ref_taxa_tsn, ~ref_taxa_name, ~observation_taxa_name, ~observation_variable, ~observation_value, ~observation_notes,
-      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",  "sous-classe",            9999, "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,                "fascinating",
-      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",            9999, "Fake_beetleB",         "Fake_beetleB",           "abondance",                  6,                NA,
-      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",            9999, "Fake_beetleC",         "Fake_beetleC",           "abondance",                  10,               "incomplet",
-      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",            9999, "Fake_beetleR",         "Fake_beetleR",           "abondance",                  11,               NA,
-      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "classe",            9999, "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,                NA,
-      "111_777_E03", "insectes_sol",          "2020-06-30",          "2020-07-21",      "2020-07-21",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0105",       "Legolas, Gimli",  "sous-classe",            9999, "Fake_beetleL",         "Fake_beetleL",           "abondance",                  3,                "not sure about one",
-      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "classe",            9999, "Fake_beetleG",         "Fake_beetleG",           "abondance",                  1,                NA,
-      "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "espèce",            9999, "Fake_beetleH",         "Fake_beetleH",           "abondance",                  1,                NA
+     ~site_code, ~campaign_type, ~campaign_date_opened, ~campaign_date_closed, ~observation_date, ~observation_is_valid, ~trap_code, ~land_lat, ~land_lon, ~sample_code, ~campaign_technician_1, ~ref_taxa_rank, ~ref_taxa_tsn, ~ref_taxa_name, ~observation_taxa_name, ~observation_variable, ~observation_value,   ~observation_notes,
+  "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",  "sous-classe",      9999,       "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,        "fascinating",
+  "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",      9998,       "Fake_beetleB",         "Fake_beetleB",           "abondance",                  6,                   NA,
+  "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",      9997,       "Fake_beetleC",         "Fake_beetleC",           "abondance",                 10,          "incomplet",
+  "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "classe",      9999,       "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,                   NA,
+  "111_777_E03", "insectes_sol",          "2020-06-30",          "2020-07-21",      "2020-07-21",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0105",       "Legolas, Gimli",  "sous-classe",      9998,       "Fake_beetleB",         "Fake_beetleB",           "abondance",                  3, "not sure about one",
+  "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "classe",    117273,       "Danaus plexippus",     "Danaus plexippus",       "abondance",                  1,                   NA
   )
+
 
 knitr::kable(imaginary_insects)
 ```
@@ -377,29 +377,135 @@ knitr::kable(sample_id_imaginary)
 
 ```{r}
 obs_inject_imaginary <- coleo_injection_prep(sample_id_imaginary, "observations")
-# httr2::req_dry_run(obs_inject_imaginary$inject_request[[1]])
-# 
-# obs_query <- obs_inject_imaginary |> 
-#   mutate(dl_id = list(coleo_request_general(date_obs = date_obs,
-#                                             #sample_id = sample_id,
-#                                             #is_valid = is_valid, 
-#                                             campaign_id = campaign_id, endpoint = "observations")))
-# 
-# obs_query$dl_id[[1]]
-# obs_query
-# httr2::resp_body_json(obs_query$dl_id[[1]])
-# 
-# obs_query |> 
-#   mutate(observation_id = coleo_extract_id(dl_id)) |> glimpse()
+
 ```
 
-```{r, eval = FALSE}
+```{r, error=TRUE}
+httr2::req_dry_run(obs_inject_imaginary$inject_request[[1]])
+
 obs_response <- coleo_injection_execute(obs_inject_imaginary)
 
 obs_response |> glimpse()
 
-obs_response |> coleo_injection_final()
+obs_response$result
+obs_response$error
+
+obs_id_imaginary <- obs_response |> coleo_injection_final()
+
+knitr::kable(obs_id_imaginary)
+
 ```
+
+## Species
+
+This can be done at any point, but it is simplest to inject species right at the end
+
+```{r}
+obs_id_imaginary |> 
+  coleo_prep_input_data("ref_species")
+
+species_inject_imaginary <- obs_id_imaginary |> 
+  coleo_injection_prep("ref_species")
+
+
+httr2::req_dry_run(species_inject_imaginary$inject_request[[1]])
+
+spp_response <- coleo_injection_execute(species_inject_imaginary)
+
+spp_response
+```
+
+Here we see that all the responses show `TRUE` for success. 
+This column will show FALSE if there is an error from the API. 
+However, because of the difference in the response for the taxa table, this might not always appear.
+To double check, we can extract the HTTP status code.
+
+```{r}
+
+spp_response |> 
+  mutate(result_code = httr2::resp_status(result))
+
+```
+
+* 201 means a record was created, while 
+* 400 means that it was not
+
+### Succeed until you fail
+
+The goal is to inject species until you can't anymore
+
+some INTERESTING ERRORS occur here
+
+* it is impossible to inject a NAME that exists already
+* its also impossible to inject a TSN that exists already
+* note that indicating a different taxonomic rank doesn't cause the injection to happen twice. What matters is unique NAMES and unique TSN values
+
+We can look at the errors that resulted: 
+
+```{r}
+spp_response |> 
+  filter(name == "Danaus plexippus") |> 
+  purrr::pluck("error")
+```
+
+NOTE for developer/ designer. You may wonder why we don't first download the records which exist already, and simply not inject anything that is there already. This would work, but I chose to avoid it for two reasons. First, because good work on validation already exists in the database and I didn't want to duplicate it. Second, because making the injection process conditional (i.e. adding logic like "attempt injection, but only if record was not found in a previous search") would add more complication to the code. 
+Instead I suggest that a data-validation step involve a series of checks:
+
+* Are all species names spelled correctly?
+* are all TSNs correct?
+* Does the same species name always have the same tsn? this could be untrue if, for example, if a typo introduced some variation.
+* is "rank" correct, and alwasy the same for the same tsn + name combination?
+
+
+Download and examine the species that have been injected
+
+```{r}
+species_search <- species_inject_imaginary |>
+  mutate(name = if_else(name == "Fake_beetleC", "Fake_beetleX", name)) |> 
+  mutate(dl_id = list(coleo_request_general(name = name, tsn = tsn,
+                                            endpoint = "taxa", perform = TRUE)))
+
+dd <- species_search |> 
+  mutate(db_answer = list(dl_id |>
+                            httr2::resp_body_json() |> 
+                            purrr::flatten() |> 
+                            purrr::discard(is.null) |> 
+                            tibble::as_tibble())
+  ) |>
+  ungroup() |> 
+  tidyr::unnest(db_answer, names_repair = \(x) paste0(x, "_DB"))
+
+dd
+```
+
+
+
+## observation species
+
+The final table to inject is the observations-species table. 
+
+We DO NOT need a species_id, because the _scientific name_ is the ID. This is why it is so critical to have the correct name!
+
+```{r}
+obs_species_inject_imaginary <- obs_id_imaginary |> 
+  coleo_injection_prep("obs_species")
+
+httr2::req_dry_run(obs_species_inject_imaginary$inject_request[[1]])
+
+obs_species_response <- obs_species_inject_imaginary |> coleo_injection_execute()
+
+obs_species_response
+```
+
+DONE
+
+
+WAIT, now we want to make sure we are not injecting a species TWICE 
+
+```{r}
+species_inject_imaginary
+```
+
 
 
 ## recovering injected records
@@ -420,11 +526,6 @@ camp_find |>
 ```
 
 however, this doesn't work for every table; why is that? 
-
-```{r}
-
-```
-
 
 
 ### Workflow

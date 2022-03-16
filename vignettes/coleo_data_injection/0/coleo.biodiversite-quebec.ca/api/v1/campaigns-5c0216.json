@@ -1,7 +1,7 @@
 [
     {
-        "id": 878,
-        "site_id": 331,
+        "id": 892,
+        "site_id": 345,
         "type": "insectes_sol",
         "technicians": [
             "Legolas, Gimli"
@@ -9,16 +9,16 @@
         "opened_at": "2020-06-08",
         "closed_at": "2020-06-30",
         "notes": null,
-        "created_at": "2022-03-14T14:21:50.788Z",
-        "updated_at": "2022-03-14T14:21:50.788Z",
-        "siteId": 331,
+        "created_at": "2022-03-16T13:51:04.013Z",
+        "updated_at": "2022-03-16T13:51:04.013Z",
+        "siteId": 345,
         "efforts": [
 
         ],
         "environment": null,
         "site": {
-            "id": 331,
-            "cell_id": 641,
+            "id": 345,
+            "cell_id": 648,
             "off_station_code_id": null,
             "site_code": "111_777_E03",
             "site_name": "Lorien",
@@ -32,9 +32,9 @@
                 ]
             },
             "notes": null,
-            "created_at": "2022-03-14T14:21:50.066Z",
-            "updated_at": "2022-03-14T14:21:50.066Z",
-            "cellId": 641
+            "created_at": "2022-03-16T13:51:03.276Z",
+            "updated_at": "2022-03-16T13:51:03.276Z",
+            "cellId": 648
         },
         "device": null,
         "lures": [
@@ -42,39 +42,8 @@
         ],
         "landmarks": [
             {
-                "id": 636,
-                "campaign_id": 878,
-                "tree_code": null,
-                "taxa_name": null,
-                "dbh": 0,
-                "dbh_unit": "mm",
-                "axis": null,
-                "azimut": 0,
-                "distance": 0,
-                "distance_unit": "cm",
-                "geom": {
-                    "type": "Point",
-                    "coordinates": [
-                        -74.4487,
-                        50.56698
-                    ]
-                },
-                "type": "gps",
-                "thermograph_type": "eau",
-                "notes": null,
-                "created_at": "2022-03-14T14:21:51.579Z",
-                "updated_at": "2022-03-14T14:21:51.579Z",
-                "campaignId": 878,
-                "trapId": null,
-                "deviceId": null,
-                "lureId": null,
-                "thermographs": [
-
-                ]
-            },
-            {
-                "id": 635,
-                "campaign_id": 878,
+                "id": 653,
+                "campaign_id": 892,
                 "tree_code": null,
                 "taxa_name": null,
                 "dbh": 0,
@@ -93,9 +62,40 @@
                 "type": "gps",
                 "thermograph_type": "eau",
                 "notes": null,
-                "created_at": "2022-03-14T14:21:51.536Z",
-                "updated_at": "2022-03-14T14:21:51.536Z",
-                "campaignId": 878,
+                "created_at": "2022-03-16T13:51:04.951Z",
+                "updated_at": "2022-03-16T13:51:04.951Z",
+                "campaignId": 892,
+                "trapId": null,
+                "deviceId": null,
+                "lureId": null,
+                "thermographs": [
+
+                ]
+            },
+            {
+                "id": 654,
+                "campaign_id": 892,
+                "tree_code": null,
+                "taxa_name": null,
+                "dbh": 0,
+                "dbh_unit": "mm",
+                "axis": null,
+                "azimut": 0,
+                "distance": 0,
+                "distance_unit": "cm",
+                "geom": {
+                    "type": "Point",
+                    "coordinates": [
+                        -74.4487,
+                        50.56698
+                    ]
+                },
+                "type": "gps",
+                "thermograph_type": "eau",
+                "notes": null,
+                "created_at": "2022-03-16T13:51:05.002Z",
+                "updated_at": "2022-03-16T13:51:05.002Z",
+                "campaignId": 892,
                 "trapId": null,
                 "deviceId": null,
                 "lureId": null,
@@ -106,22 +106,22 @@
         ],
         "traps": [
             {
-                "id": 71,
+                "id": 89,
                 "trap_code": "B-NE1",
-                "campaign_id": 878,
+                "campaign_id": 892,
                 "notes": null,
-                "created_at": "2022-03-14T14:21:51.215Z",
-                "updated_at": "2022-03-14T14:21:51.215Z",
-                "campaignId": 878
+                "created_at": "2022-03-16T13:51:04.584Z",
+                "updated_at": "2022-03-16T13:51:04.584Z",
+                "campaignId": 892
             },
             {
-                "id": 70,
+                "id": 88,
                 "trap_code": "A-N1",
-                "campaign_id": 878,
+                "campaign_id": 892,
                 "notes": null,
-                "created_at": "2022-03-14T14:21:51.155Z",
-                "updated_at": "2022-03-14T14:21:51.155Z",
-                "campaignId": 878
+                "created_at": "2022-03-16T13:51:04.515Z",
+                "updated_at": "2022-03-16T13:51:04.515Z",
+                "campaignId": 892
             }
         ]
     }

@@ -116,18 +116,26 @@ coleo_injection_prep <- function(df, db_table){
 
   # unless it is observations
 
-  if(db_table != "observations") {
-    df_prep <- df |>
-      coleo_prep_input_data(db_table) |>
-      dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = db_table)))
-
-    # if its observations
-  } else {
+  if(db_table == "observations") {
     colnames_of_tbl <- coleo_get_column_names(tbl = db_table)$column_name
 
     df_prep <- df |>
       coleo_prep_input_data(db_table) |>
       dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::across(dplyr::any_of(colnames_of_tbl)), endpoint = db_table)))
+
+  } else if (db_table == "ref_species") {
+    # ref_species is the only table where the table name and the endpoint name are NOT THE SAME
+    # here we hard-code the difference. This lets us stay with the convention of using the table name as the argument (not the endpoint name)
+    df_prep <- df |>
+      coleo_prep_input_data(db_table) |>
+      dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "taxa")))
+
+
+    # if its observations
+  } else {
+    df_prep <- df |>
+      coleo_prep_input_data(db_table) |>
+      dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = db_table)))
 
   }
 
@@ -160,7 +168,10 @@ coleo_injection_final <- function(df){
 
   # ALMOST offensively fashionable way to dynamically name a column
   df_id <- df |>
-    dplyr::mutate(!!name_id := coleo_extract_id(result))
+    dplyr::mutate(!!name_id := if_else(is.null(error),
+                                       true = coleo_extract_id(result),
+                                       false = NA_integer_)
+    )
 
   if(newname != "observation") {
     df_out <- df_id |>
@@ -168,10 +179,15 @@ coleo_injection_final <- function(df){
       dplyr::select(dplyr::ends_with("id"), data) |>
       tidyr::unnest(cols = c(data))
   } else {
+    # once the observation table is injected, we only need observation_id. Here
+    # is a cheesy dplyr way to do it -- you can't drop a col if it is a grouping
+    # column ;)
     df_out <- df_id |>
       dplyr::ungroup() |>
-      dplyr::relocate(dplyr::ends_with("id")) |>
-      dplyr::select(-inject_request, -result, -error, -success)
+      dplyr::group_by(observation_id) |>
+      # dplyr::relocate(dplyr::ends_with("id")) |>
+      dplyr::select(-dplyr::ends_with("id"), -inject_request, -result, -error, -success) |>
+      dplyr::ungroup()
 
   }
 
