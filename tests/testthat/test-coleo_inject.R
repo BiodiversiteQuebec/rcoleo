@@ -28,8 +28,9 @@ with_mock_dir("inject a test site", {
   test_that("ID for new record is a number", expect_gt(coleo_extract_id(demo_result), 1L))
 
 
+  ## create -- but don't perform -- the same request
   injection_df <- tibble::tibble(cell_code = "FFF_XXX",
-                                 name ="Middle Earth",
+                                 name ="Beleriad",
                                  geom = list(one_cell_list))
 
   one_post_in_df <- injection_df |>
@@ -52,7 +53,13 @@ with_mock_dir("inject a test site", {
 
   test_that("injection returns the correct response", {
 
-    one_post_response <- coleo_injection_execute(one_post_in_df)
+    one_post_response <- tibble::tibble(cell_code = "FFF_ZZZ",
+                                        name ="Doriath",
+                                        geom = list(one_cell_list)) |>
+      dplyr::rowwise() |>
+      dplyr::mutate(req = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells"))) |>
+      coleo_injection_execute()
+
 
     expect_true(all(c("result", "error", "success") %in% names(one_post_response)))
     expect_s3_class(one_post_response$result[[1]], "httr2_response")
