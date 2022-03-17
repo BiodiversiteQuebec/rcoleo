@@ -11,7 +11,7 @@ with_mock_dir("inject a test site", {
                                c(-79.5175785437023, 48.5643904071127))))
 
   demo_test <- coleo_inject_general(cell_code = "FFF_XXX",
-                                    name ="Middle Earth",
+                                    name ="Beleriad",
                                     geom = one_cell_list,
                                     endpoint = "cells")
   # demo_test$body
