@@ -37,8 +37,8 @@ coleo_cell_geom_fmt <- function(cell_geom){
   one_cell_list <- geojsonio::geojson_list(cell_geom)
 
   one_cell_list$coordinates <- list(
-    setNames(split(one_cell_list$coordinates[[1]],
-                   seq_len(nrow(one_cell_list$coordinates[[1]]))),
+    purrr::set_names(split(one_cell_list$coordinates[[1]],
+                           seq_len(nrow(one_cell_list$coordinates[[1]]))),
              NULL))
 
   attr(one_cell_list, which = c("class")) <- NULL

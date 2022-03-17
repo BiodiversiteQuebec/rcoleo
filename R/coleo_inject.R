@@ -22,8 +22,8 @@ coleo_inject_general <- function(..., endpoint){
 
   endpt <- rcoleo:::endpoints()[[endpoint]]
 
-  rcoleo:::coleo_begin_req() %>%
-    httr2::req_url_path_append(endpt) %>%
+  rcoleo:::coleo_begin_req() |>
+    httr2::req_url_path_append(endpt) |>
     httr2::req_body_json(data = request_info)
 }
 
