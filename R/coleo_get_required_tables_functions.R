@@ -22,58 +22,11 @@ coleo_return_required_tables <- function(camp_type) {
 
 #' Trouver les colonnes requises, leur classe et les valeurs admissibles pour un type de campagne donné
 #'
-#' @param campaign_type un type de campagne valide.
-#' @param required_only boolean. Si FALSE, retourne toutes les colonnes admissibles pour le type de campagne. Autrement, retourne que les colonnes requises pour une injection valide
+#' @param campaign_type character string. Un type de campagne valide.
 #'
 #' @return
 #' @export
-coleo_return_df_cols <- function(campaign_type, required_only = TRUE) {
-
-  # Tables requises pour un type de campagne
-  req_tbls <- coleo_return_required_tables(campaign_type)
-
-  # Noms de colonnes requis pour ces tables
-  # Ajouter manuellement site_code
-  req_columns <- c(
-    unlist(
-      sapply(req_tbls,
-             ifelse(required_only,
-                    coleo_get_required_name_table,
-                    coleo_get_name_table_column))),
-    "site_code")
-
-  # Classes des colonnes requises
-  tbl <- coleo_get_name_table()
-  req_class <- lapply(req_columns, function(x) {
-    ## Table "campaign" peut demander la colonne campaign_id
-    ## Est demandé par la fonction coleo_get_name_table_column()
-    ifelse(x == "campaign_id", NA_character_,
-           tbl$required_class[[which(tbl$input_column==x)]])
-    })
-
-  # Valeurs des colonnes
-  req_values <- lapply(req_columns, function(x) {
-    # Table "campaign" peut demander la colonne campaign_id
-    ## Est demandé par la fonction coleo_get_name_table_column()
-    ifelse(x == "campaign_id", NA_character_,
-           list(tbl$legal_values[[which(tbl$input_column==x)]]))
-    })
-
-  # Assembler l'info dans un df
-  req_cols <- as.data.frame(tibble::tibble(noms_colonnes = req_columns,
-                                           classe = req_class,
-                                           valeurs_acceptées = req_values))
-
-  View(req_cols)
-}
-
-
-#' Trouver les colonnes requises, leur classe et les valeurs admissibles pour un type de campagne donné
 #'
-#' @param campaign_type un type de campagne valide.
-#'
-#' @return
-#' @export
 coleo_return_cols <- function(campaign_type) {
 
   #-------------------------------------------------------------------------------
@@ -123,6 +76,14 @@ coleo_return_cols <- function(campaign_type) {
                                      classe = classe,
                                      valeurs_acceptées = valeurs_acceptées))
   #-------------------------------------------------------------------------------
+  # site_code est requis pour l'injection
+  #-------------------------------------------------------------------------------
+  site_code_row <- data.frame(table = "sites",
+                              noms_de_champs = "site_code",
+                              classe = "numeric",
+                              valeurs_acceptées = NA_character_)
+  df <- rbind(df,site_code_row)
+  #-------------------------------------------------------------------------------
   # Special column class pour injection
   #-------------------------------------------------------------------------------
   # USER-DEFINED, character varying, text, date & timestamp with time zone -> character()
@@ -142,8 +103,8 @@ coleo_return_cols <- function(campaign_type) {
     for(i in seq_along(geom_cols)) {
       lat_row <- data.frame(table = df$table[geom_cols[i]],
                             noms_de_champs = "lat",
-                               classe = "numeric",
-                               valeurs_acceptées = NA_character_)
+                            classe = "numeric",
+                            valeurs_acceptées = NA_character_)
       df <- rbind(df, lat_row)
       lon_row <- data.frame(table = df$table[geom_cols[i]],
                             noms_de_champs = "lon",
@@ -156,11 +117,11 @@ coleo_return_cols <- function(campaign_type) {
 
   ## double precision -> numeric()
   change_to_numeric <- which(df$classe == "double precision")
-  df$classe[change_to_numeric] <- "character"
+  df$classe[change_to_numeric] <- "numeric"
 
   ## Boolean -> logical
-  change_to_numeric <- which(df$classe == "double precision")
-  df$classe[df$classe == "boolean"] <- "logical"
+  change_to_logical <- which(df$classe == "double boolean")
+  df$classe[change_to_logical] <- "logical"
 
   ## Remove id. To be added when prepping data for injection
   id_to_remove <- which(grepl("_id", df$noms_de_champs, fixed = TRUE) | df$noms_de_champs == "id")

@@ -7,7 +7,7 @@
 coleo_return_cols(campaign_type)
 }
 \arguments{
-\item{campaign_type}{un type de campagne valide.}
+\item{campaign_type}{character string. Un type de campagne valide.}
 }
 \value{
 
