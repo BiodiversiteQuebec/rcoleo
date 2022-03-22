@@ -20,12 +20,22 @@ coleo_return_required_tables <- function(camp_type) {
 }
 
 
+## convenience functions for extracting the columns of a table, and the types of a column
+
+coleo_get_column_names <- function(tbl){
+  resp_cols <- coleo_request_general(table = tbl, endpoint = "table_columns")
+  cols_df <- purrr::map_dfr(httr2::resp_body_json(resp_cols), as.data.frame)
+  return(cols_df)
+}
+
+coleo_get_enum_values <- function(enum_col_name){
+  resp_enum <- coleo_request_general(enum = enum_col_name, endpoint = "enum_options")
+  resp_chr <- httr2::resp_body_json(resp_enum) |> purrr::flatten() |> purrr::flatten_chr()
+  return(resp_chr)
+}
+
+
 #' Trouver les colonnes requises, leur classe et les valeurs admissibles pour un type de campagne donné
-#'
-#' @param campaign_type character string. Un type de campagne valide.
-#'
-#' @return
-#' @export
 #'
 coleo_return_cols <- function(campaign_type) {
 
@@ -47,18 +57,17 @@ coleo_return_cols <- function(campaign_type) {
   table <- c()
   noms_de_champs <- c()
   classe <- c()
-  valeurs_acceptées <- list()
+  valeurs_acceptees <- list()
   # Sauver les noms de colonne pour chaque table
   for(tbl in req_tbls){
     # Get columns from table
-    resp_cols <- coleo_request_general(table = tbl, endpoint = "table_columns")
-    cols_df <- purrr::map_dfr(httr2::resp_body_json(resp_cols), as.data.frame)
+
+    cols_df <- coleo_get_column_names(tbl = tbl)
 
     # Get values from enum columns
     values_df <- lapply(cols_df$udt_name, function(col) {
       if(grepl("enum", col)) {
-        resp_enum <- coleo_request_general(enum = col, endpoint = "enum_options")
-        httr2::resp_body_json(resp_enum) |> purrr::flatten() |> purrr::flatten_chr()
+        resp_enum <- coleo_get_enum_values(enum_col_name = col)
       }else NA_character_
     })
 
@@ -66,7 +75,7 @@ coleo_return_cols <- function(campaign_type) {
     table <- c(table, rep(tbl, nrow(cols_df)))
     noms_de_champs <- c(noms_de_champs, cols_df$column_name)
     classe <- c(classe, cols_df$data_type)
-    valeurs_acceptées <- c(valeurs_acceptées, values_df)
+    valeurs_acceptees <- c(valeurs_acceptees, values_df)
   }
   #-------------------------------------------------------------------------------
   # Assembler l'info dans un df
@@ -74,7 +83,7 @@ coleo_return_cols <- function(campaign_type) {
   df <- as.data.frame(tibble::tibble(table = table,
                                      noms_de_champs = noms_de_champs,
                                      classe = classe,
-                                     valeurs_acceptées = valeurs_acceptées))
+                                     valeurs_acceptees = valeurs_acceptees))
   #-------------------------------------------------------------------------------
   # site_code est requis pour l'injection
   #-------------------------------------------------------------------------------
@@ -103,13 +112,13 @@ coleo_return_cols <- function(campaign_type) {
     for(i in seq_along(geom_cols)) {
       lat_row <- data.frame(table = df$table[geom_cols[i]],
                             noms_de_champs = "lat",
-                            classe = "numeric",
-                            valeurs_acceptées = NA_character_)
+                               classe = "numeric",
+                               valeurs_acceptees = NA_character_)
       df <- rbind(df, lat_row)
       lon_row <- data.frame(table = df$table[geom_cols[i]],
                             noms_de_champs = "lon",
                             classe = "numeric",
-                            valeurs_acceptées = NA_character_)
+                            valeurs_acceptees = NA_character_)
       df <- rbind(df, lon_row)
     }
     df <- df[-geom_cols,]
@@ -136,5 +145,5 @@ coleo_return_cols <- function(campaign_type) {
   #-------------------------------------------------------------------------------
   df <- df[,c("noms_de_colonnes","classe","valeurs_acceptées")]
 
-  return(df)
+  return(tibble::as_tibble(df))
 }

@@ -1,0 +1,558 @@
+---
+title: "Injecting coleo data"
+author: "Andrew MacDonald"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r, include=FALSE}
+library(httptest2)
+start_vignette("coleo_data_injection")
+knitr::opts_chunk$set(error = TRUE, out.width = 80)
+```
+
+This vignette shows the process of injecting one complete dataset into the COLEO database.
+The example shown here follows the injection procedure for Insectes du Sol, but the process should be the same for any campaign type.
+
+
+All datasets require both the *cell* and the *site* to be uploaded first.
+For completeness, this vignette starts with showing this process before moving to more specific parts of the injection.
+
+
+<!-- TODO allow Cells and Sites to collapse in this vignette because we should not need them MOST of the time -->
+
+
+## Cells
+
+We start with an example of data from an imaginary cell:
+
+```{r dput_cell, include=FALSE}
+cell_data <- structure(list(cell_code = "111_777", name = "Middle Earth", 
+    geom = structure(list(structure(list(structure(c(-68.784529, 
+    -68.92058, -69.051611, -68.915541, -68.784529, 48.112211, 
+    48.02487, 48.11558, 48.203192, 48.112211), .Dim = c(5L, 2L
+    ))), class = c("XY", "POLYGON", "sfg"))), class = c("sfc_POLYGON", 
+    "sfc"), precision = 0, bbox = structure(c(xmin = -69.051611, 
+    ymin = 48.02487, xmax = -68.784529, ymax = 48.203192), class = "bbox"), crs = structure(list(
+        input = "NAD83", wkt = "GEOGCRS[\"NAD83\",\n    DATUM[\"North American Datum 1983\",\n        ELLIPSOID[\"GRS 1980\",6378137,298.257222101,\n            LENGTHUNIT[\"metre\",1]]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"latitude\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"longitude\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    ID[\"EPSG\",4269]]"), class = "crs"), n_empty = 0L)), row.names = c(NA, 
+-1L), groups = structure(list(.rows = structure(list(1L), ptype = integer(0), class = c("vctrs_list_of", 
+"vctrs_vctr", "list"))), row.names = c(NA, -1L), class = c("tbl_df", 
+"tbl", "data.frame")), class = c("rowwise_df", "tbl_df", "tbl", 
+"data.frame"))
+```
+
+```{r, message = FALSE, warning=FALSE}
+library(sf)
+library(dplyr)
+library(rcoleo)
+```
+
+
+
+```{r}
+cell_data
+```
+
+Note that the column `geom` is a `POLYGON` type of object. We need to work with the literal spatial polygons that describe the shape of the cells. To get these, we need to read in the shapefiles directly, for example using `sf::read_sf("CelluleTerrain2016_2021_juin2021/CellulesTerrain2016_2021_juin2021.shp")`
+
+### reformatting Cell data
+
+Once we have this information, we need to reformat it to prepare for injection. We can use a function from `rcoleo` to facilitate this step
+
+```{r cell_fmt_geom, message=FALSE}
+cell_data_reformat <- cell_data |> 
+  rowwise() |> 
+  mutate(geom = list(rcoleo::coleo_cell_geom_fmt(geom)))
+
+str(cell_data_reformat)
+```
+
+This step transforms the `geom` column from a spatial object into a nested list. This is what we will inject into the COLEO database.
+
+Another important point is the use of `rowwise()` in the code above. This is a convenient way to work with dataframes going one row at a time. Here, each row contains one cell for injection. You can read more about it [here](https://dplyr.tidyverse.org/articles/rowwise.html). 
+
+### Create the API request
+
+Before we inject our data, we will make our requests and inspect them to make sure they work.
+
+```{r}
+cell_data_req <- cell_data_reformat |> 
+  dplyr::mutate(inject_request = list(
+    coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells")
+  ))
+```
+
+This step makes our request. Important things to note:
+
+* we need to specify the endpoint where we will inject the data. Here it is `"cells"`
+* we use `dplyr::cur_data_all()` to access every column of the current row of the dataset
+* we use all the data in the current row. NOTE that if there is a column called "data", then `coleo_inject_general_df()` will drop it. 
+* This is the step where you need to have your access key saved for Rcoleo. see the rcoleo site to set that up!
+* we use `list()` to wrap the result of `coleo_inject_general_df()` because we want to store the prepared column in our dataframe, inside a list.
+
+Let's look at this request column:
+
+```{r, results='hold'}
+print(cell_data_req$inject_request[[1]])
+```
+
+We can access the actual body of the request with:
+
+```{r}
+httr2::req_dry_run(cell_data_req$inject_request[[1]])
+```
+
+This is our last chance to make SURE we are injecting the right thing. The code at the bottom is JSON and is what will be injected into the database.
+
+### Injecting a cell
+
+When we are sure that we've got the right data, we can proceed to injection:
+
+```{r}
+cell_data_inject_result <- coleo_injection_execute(cell_data_req)
+
+cell_data_inject_result
+cell_data_inject_result$result
+```
+
+the function `coleo_injection_execute` has done two things:
+
+* performed the request using `httr2::req_perform`. This actually injects the data
+* wrapped the result in a `list()` and saved the results in a new data.frame
+
+This second step is important -- it lets us preserve the response from the server. This response contains useful information. For example, we can extract the ID of the cell we just injected:
+
+```{r}
+cell_data_inject_result |> 
+  mutate(id = coleo_extract_id(result))
+```
+
+This is possible because when we inject data, the API sends back a response that contains the new ID that was made for the new observation.
+
+**NOTE** the above step could also be completed manually:
+
+```{r, eval=FALSE}
+cell_data_req |> 
+  dplyr::mutate(inject_result = list(httr2::req_perform(inject_request)))
+```
+
+
+## Sites
+
+We begin with a demonstration site:
+
+```{r}
+imaginary_sites <- tibble::tribble(
+  ~cell_code,    ~site_code,    ~site_name,  ~site_type, ~site_lat,  ~site_lon, ~site_date_opened,
+   "111_777",   "111_777_N09", "Mordor",     "tourbière", 48.133559,     -68.42,      "2020-01-01",
+   "111_777",   "111_777_E03", "Lorien",     "forestier", 41.133559,     -67.33,      "2020-01-01"
+  ) |> 
+  rowwise()
+
+```
+
+We begin by preparing the dataset for injection. 
+
+First, we obtain the cell ID. We need the cell ID, and not the cell_code, so we have to query the database to obtain it.
+
+```{r}
+imaginary_sites_cellID <- imaginary_sites |> 
+  mutate(cell_resp = list(coleo_request_by_code(cell_code, table = "cells")),
+         cell_id = coleo_extract_id(cell_resp)) 
+
+imaginary_sites_cellID
+```
+
+this code does two things:
+
+1. request the cell information using the `cell_code`. We do this with a convenience function called `coleo_request_by_code`. This function can take a "human readable" code and return the database record for that observation.
+1. extract the code as a numeric variable.
+
+Now that we have the `cell_id` we can drop the `cell_code` and the `cell_resp` column. We can also format the data for injection:
+
+```{r}
+imaginary_sites_for_injection <- imaginary_sites_cellID |> 
+  select(-cell_code, -cell_resp) |> 
+  coleo_prep_input_data(db_table = "sites")
+
+imaginary_sites_for_injection
+```
+
+the function `coleo_prep_input_data` has automaticaly renamed the columns, reformatted the spatial information, and nested any unnecessary columns as "data".
+
+Now we prepare the injection request, inspect them, and inject them:
+
+```{r}
+imaginary_requests <- imaginary_sites_for_injection |> 
+  mutate(inject_request = list(coleo_inject_general_df(cur_data_all(), endpoint = "sites")))
+
+# visually inspect the injection
+httr2::req_dry_run(imaginary_requests$inject_request[[1]])
+
+# run and save all the injections
+imaginary_injected <- coleo_injection_execute(imaginary_requests)
+
+imaginary_injected
+```
+
+These two sites were injected successfully!
+
+## Campaigns
+
+This vignette will show how to inject fake soil insect data, which will allow us to show the injection of 7 different tables:
+
+1. campaigns
+1. traps
+1. landmarks
+1. samples
+1. observations
+1. obs_species
+1. ref_species
+
+We start with some fake campaign information. This dataset contains ALL the columns we need to inject all the tables mentioned above.
+
+```{r}
+imaginary_insects <- tibble::tribble(
+     ~site_code, ~campaign_type, ~campaign_date_opened, ~campaign_date_closed, ~observation_date, ~observation_is_valid, ~trap_code, ~land_lat, ~land_lon, ~sample_code, ~campaign_technician_1, ~ref_taxa_rank, ~ref_taxa_tsn, ~ref_taxa_name, ~observation_taxa_name, ~observation_variable, ~observation_value,   ~observation_notes,
+  "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",  "sous-classe",      9999,       "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,        "fascinating",
+  "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",      9998,       "Fake_beetleB",         "Fake_beetleB",           "abondance",                  6,                   NA,
+  "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",      9997,       "Fake_beetleC",         "Fake_beetleC",           "abondance",                 10,          "incomplet",
+  "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "classe",      9999,       "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,                   NA,
+  "111_777_E03", "insectes_sol",          "2020-06-30",          "2020-07-21",      "2020-07-21",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0105",       "Legolas, Gimli",  "sous-classe",      9998,       "Fake_beetleB",         "Fake_beetleB",           "abondance",                  3, "not sure about one",
+  "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "classe",    117273,       "Danaus plexippus",     "Danaus plexippus",       "abondance",                  1,                   NA
+  )
+
+
+knitr::kable(imaginary_insects)
+```
+
+
+Important things to notice about the data are:
+
+* the only site-level information is the `site_code`
+* all the columns have prefixes (e.g. "*campaign_*type" or "*land_*lat). This is to differentiate columns which might have the same name but which are destined for different database tables. these will be automatically renamed during data preparation
+* the format of dates is correct: AAAA-MM-JJ
+* all columns have the correct values.
+
+In a real workflow, a validation step will confirm that all of the above points are true. Getting the data in the correct format is most of the work of injection.
+
+### Data preparation
+
+First we need to obtain the database ID for site. The process is the same as above:
+
+```{r get-site-id}
+site_id_imaginary <- imaginary_insects |> 
+  rowwise() |> 
+  mutate(coleo_id = list(coleo_request_by_code(human_code = site_code, table = "sites")),
+         site_id = coleo_extract_id(coleo_id)) |> 
+  select(-site_code, -coleo_id) |> 
+  dplyr::relocate(site_id)
+```
+
+This code queries the database for the site_id, then removes the site code.
+
+Now we use `coleo_prep_input_data` to prepare the campaign data
+
+```{r}
+camp_prep_imaginary <- coleo_prep_input_data(site_id_imaginary, db_table = "campaigns")
+```
+
+There is one more step: we need to manually place the technicians into a list.
+<!-- TODO (NOTE should this be automated?) handled by coleo_injection_prep? -->
+**NOTE** here we have only one technician column (`technician_1`) but some datasets have multiple technician columns. 
+That's fine, but the code below will need to be adapted in those cases
+
+```{r}
+camp_prep_imaginary_tech <- camp_prep_imaginary |> 
+  mutate(technicians = list(if_else(is.na(technician_1), true = list(NA_character_), false = list(technician_1)))) |> 
+  ungroup() |> 
+  select(-technician_1) |> 
+  rowwise()
+
+camp_prep_imaginary_tech
+
+```
+
+we're now ready to inject the data, using the same workflow as above:
+
+```{r}
+camp_requests_imaginary <- camp_prep_imaginary_tech |> 
+  mutate(inject_request = list(coleo_inject_general_df(cur_data_all(), endpoint = "campaigns")))
+
+httr2::req_dry_run(camp_requests_imaginary$inject_request[[1]])
+```
+
+Once we have the right format, we can perform the injections
+
+```{r}
+camp_response_imaginary <- coleo_injection_execute(camp_requests_imaginary)
+
+camp_response_imaginary
+```
+
+this is the first of *seven* tables we need to inject. Every time we inject a table, the database gives a new ID to those records. 
+Then, we need to use these IDs when we inject the subsequent tables. Because we have preserved the responses, this is straightforward:
+
+```{r}
+
+camp_id_imaginary <- camp_response_imaginary |> 
+  mutate(campaign_id = coleo_extract_id(result)) |> 
+  select(campaign_id, data) |> 
+  tidyr::unnest(cols = c(data))
+
+```
+
+
+## Traps
+
+The next table is the "traps". 
+Here I'm showing three functions which perform the three steps:
+
+* `coleo_injection_prep` prepares data
+* `coleo_injection_execute` executes the injection
+* `coleo_injection_final` "finalizes" the injection: extracts IDs, drops columns that are injected, unnests and ungroups the data.
+
+```{r}
+trap_inject_imaginary <- camp_id_imaginary |> 
+  coleo_injection_prep(db_table = "traps")
+
+trap_inject_imaginary
+```
+
+```{r}
+trap_inject_imaginary$inject_request[[1]] |> httr2::req_dry_run()
+```
+
+```{r}
+trap_response_imaginary <- trap_inject_imaginary |> coleo_injection_execute()
+
+trap_ids_imaginary <- trap_response_imaginary |>
+  coleo_injection_final()
+
+trap_ids_imaginary
+```
+
+NOTE that this time we keep both campaign and trap IDs
+
+## landmarks
+
+```{r}
+repere_inject_imaginary <- trap_ids_imaginary |> 
+  coleo_injection_prep("landmarks")
+```
+
+```{r}
+httr2::req_dry_run(repere_inject_imaginary$inject_request[[1]])
+```
+
+```{r}
+repere_response <- coleo_injection_execute(repere_inject_imaginary)
+
+land_id_imaginary <- repere_response |> 
+  coleo_injection_final()
+
+land_id_imaginary
+```
+
+## Samples
+
+```{r}
+samp_inject_imaginary <- coleo_injection_prep(land_id_imaginary, "samples")
+```
+
+```{r}
+httr2::req_dry_run(samp_inject_imaginary$inject_request[[1]])
+```
+
+
+```{r}
+samp_response <- coleo_injection_execute(samp_inject_imaginary)
+```
+
+```{r}
+sample_id_imaginary <- coleo_injection_final(samp_response)
+
+knitr::kable(sample_id_imaginary)
+```
+
+
+## Observations
+
+The observation table is different from previous tables, in that we inject one row for every single observation we've made. As a result, we perform as many injections as we have rows in the original dataset. That means that the pattern of nesting we used previously is no longer necessary. 
+
+However, that is easy to forget and slightly counterintuitive, which means that errors while injecting `observations` are one of the most common. 
+`coleo_injection_prep()` is designed to help prevent this: it will never nest any rows when preparing the "observations" table, and will tell you so in a message:
+
+```{r}
+obs_inject_imaginary <- coleo_injection_prep(sample_id_imaginary, "observations")
+
+```
+
+```{r, error=TRUE}
+httr2::req_dry_run(obs_inject_imaginary$inject_request[[1]])
+
+obs_response <- coleo_injection_execute(obs_inject_imaginary)
+
+obs_id_imaginary <- obs_response |> coleo_injection_final()
+
+knitr::kable(obs_id_imaginary)
+
+```
+
+## Species
+
+This can be done at any point, but it is simplest to inject species right at the end
+
+```{r}
+obs_id_imaginary |> 
+  coleo_prep_input_data("ref_species")
+
+species_inject_imaginary <- obs_id_imaginary |> 
+  coleo_injection_prep("ref_species")
+
+
+httr2::req_dry_run(species_inject_imaginary$inject_request[[1]])
+
+spp_response <- coleo_injection_execute(species_inject_imaginary)
+
+spp_response
+```
+
+Here we see that all the responses show `TRUE` for success. 
+This column will show FALSE if there is an error from the API. 
+However, because of a difference in the way this vignette is made, this might not always appear.
+To double check, we can extract the HTTP status code.
+
+```{r}
+
+spp_response |> 
+  mutate(result_code = httr2::resp_status(result))
+
+```
+
+* 201 means a record was created, while 
+* 400 means that it was not
+
+### Succeed until you fail
+
+The goal is to inject species until you can't anymore.
+
+some INTERESTING ERRORS occur here
+
+* it is impossible to inject a NAME that exists already
+* its also impossible to inject a TSN that exists already
+* note that indicating a different taxonomic rank doesn't cause the injection to happen twice. What matters is unique NAMES and unique TSN values
+
+We can look at the errors that resulted: 
+
+```{r}
+spp_response |> 
+  filter(name == "Danaus plexippus") |> 
+  purrr::pluck("error")
+```
+
+NOTE for developer/ designer. You may wonder why we don't first download the records which exist already, and simply not inject anything that is there already. This would work, but I chose to avoid it for two reasons. First, because good work on validation already exists in the database and I didn't want to duplicate it. Second, because making the injection process conditional (i.e. adding logic like "attempt injection, but only if record was not found in a previous search") would add more complication to the code. 
+Instead I suggest that a data-validation step involve a series of checks:
+
+* Are all species names spelled correctly?
+* are all TSNs correct?
+* Does the same species name always have the same tsn? this could be untrue if, for example, if a typo introduced some variation.
+* is "rank" correct, and always the same for the same tsn + name combination?
+
+
+Download and examine the species that have been injected
+
+```{r}
+species_search <- species_inject_imaginary |>
+  mutate(name = if_else(name == "Fake_beetleC", "Fake_beetleX", name)) |> 
+  mutate(dl_id = list(coleo_request_general(name = name, tsn = tsn,
+                                            endpoint = "taxa", perform = TRUE)))
+
+dd <- species_search |> 
+  mutate(db_answer = list(dl_id |>
+                            httr2::resp_body_json() |> 
+                            purrr::flatten() |> 
+                            purrr::discard(is.null) |> 
+                            tibble::as_tibble())
+  ) |>
+  ungroup() |> 
+  tidyr::unnest(db_answer, names_repair = \(x) paste0(x, "_DB"))
+
+dd
+```
+
+
+
+## observation species
+
+The final table to inject is the observations-species table. 
+
+We DO NOT need a species_id, because the _scientific name_ is the ID. This is why it is so critical to have the correct name!
+
+```{r}
+obs_species_inject_imaginary <- obs_id_imaginary |> 
+  coleo_injection_prep("obs_species")
+
+httr2::req_dry_run(obs_species_inject_imaginary$inject_request[[1]])
+
+obs_species_response <- obs_species_inject_imaginary |> coleo_injection_execute()
+
+obs_species_response
+```
+
+DONE
+
+
+
+## recovering injected records
+
+sometimes (e.g. you got interrupted) you need to find a record you already injected. Can this be done easily?
+
+```{r}
+camp_find <- camp_requests_imaginary |> 
+  mutate(dl_id = list(coleo_request_general(site_id = site_id,
+                                            type = type, 
+                                            opened_at = opened_at, endpoint = "campaigns", perform = TRUE)))
+
+camp_find |> 
+  mutate(id = coleo_extract_id(dl_id))
+
+
+  
+```
+
+however, this doesn't work for every table. 
+
+
+## Summary of  Workflow
+
+* validate the whole dataset
+* prepare the data for one table
+* request IDs from the database
+* if and only if the ID is absent, create a request to inject it (in a list col)
+* check that these are formatted correctly by printing a few
+* if and only if the ID is absent, inject that record, return response
+* extract the ID code from that response
+* combine ID codes from injection with those already there. Rename any columns. drop old columns. unnest the data nested in "prepare the data".
+
+## NOTE to vignette developers
+
+This vignette uses some pre-recorded API responses to demonstrate the workflow. These are all stored in a directory in the `vignettes/` folder. see `vignette("vignettes", "httptest2")`.
+
+HOWEVER you may get unexpected errors. This is caused by character encoding of French accents: the JSON saved may have a "?" character in place of an accented letter. Remember to check! 
+
+```{r, include=FALSE}
+end_vignette()
+```
+

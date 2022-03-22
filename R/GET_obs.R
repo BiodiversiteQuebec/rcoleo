@@ -73,7 +73,7 @@ get_obs <- function (site_code = NULL, opened_at = NULL, closed_at = NULL,
 
     for (r in 1:len) {
       #browser()
-      cc <- rcoleo::get_campaigns(site_code = site_code[r],
+      cc <- get_campaigns(site_code = site_code[r],
                                   opened_at = opened_at[r],
                                   closed_at = closed_at[r],
                                   type = type[r])

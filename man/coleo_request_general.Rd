@@ -9,9 +9,9 @@ coleo_request_general(..., endpoint, perform = TRUE)
 \arguments{
 \item{...}{query parameters for the coleo database (in the format \code{name = value})}
 
-\item{perform}{Should the request be performed? defaults to TRUE.}
+\item{endpoint}{name of API endpoint where this request should go}
 
-\item{table}{name of database table to query}
+\item{perform}{Should the request be performed? defaults to TRUE.}
 }
 \value{
 httr2 response object if perform = TRUE, a request object if perform = FALSE.

@@ -1,0 +1,57 @@
+[
+    {
+        "column_name": "id",
+        "data_type": "integer",
+        "udt_name": "int4"
+    },
+    {
+        "column_name": "cell_id",
+        "data_type": "integer",
+        "udt_name": "int4"
+    },
+    {
+        "column_name": "off_station_code_id",
+        "data_type": "character varying",
+        "udt_name": "varchar"
+    },
+    {
+        "column_name": "site_code",
+        "data_type": "character varying",
+        "udt_name": "varchar"
+    },
+    {
+        "column_name": "type",
+        "data_type": "USER-DEFINED",
+        "udt_name": "enum_sites_type"
+    },
+    {
+        "column_name": "opened_at",
+        "data_type": "date",
+        "udt_name": "date"
+    },
+    {
+        "column_name": "geom",
+        "data_type": "USER-DEFINED",
+        "udt_name": "geometry"
+    },
+    {
+        "column_name": "notes",
+        "data_type": "text",
+        "udt_name": "text"
+    },
+    {
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz"
+    },
+    {
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz"
+    },
+    {
+        "column_name": "site_name",
+        "data_type": "text",
+        "udt_name": "text"
+    }
+]

@@ -1,0 +1,37 @@
+[
+    {
+        "column_name": "id",
+        "data_type": "integer",
+        "udt_name": "int4"
+    },
+    {
+        "column_name": "taxa_name",
+        "data_type": "character varying",
+        "udt_name": "varchar"
+    },
+    {
+        "column_name": "variable",
+        "data_type": "character varying",
+        "udt_name": "varchar"
+    },
+    {
+        "column_name": "value",
+        "data_type": "double precision",
+        "udt_name": "float8"
+    },
+    {
+        "column_name": "observation_id",
+        "data_type": "integer",
+        "udt_name": "int4"
+    },
+    {
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz"
+    },
+    {
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz"
+    }
+]

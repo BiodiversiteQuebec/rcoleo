@@ -13,7 +13,7 @@
 #'
 #' @export
 download_sites_sf <- function(...) {
-  rcoleo_sites <- rcoleo::get_sites(...)
+  rcoleo_sites <- get_sites(...)
 
   # extract the body of the response from the nested list. this might be a list
   body <- purrr::flatten(purrr::map(rcoleo_sites, "body"))

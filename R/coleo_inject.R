@@ -22,8 +22,8 @@ coleo_inject_general <- function(..., endpoint){
 
   endpt <- rcoleo:::endpoints()[[endpoint]]
 
-  rcoleo:::coleo_begin_req() %>%
-    httr2::req_url_path_append(endpt) %>%
+  rcoleo:::coleo_begin_req() |>
+    httr2::req_url_path_append(endpt) |>
     httr2::req_body_json(data = request_info)
 }
 
@@ -73,7 +73,7 @@ coleo_inject_general_df <- function(df_one_row, endpoint){
 #'   error message (if any) and a column \code{success} which is TRUE if that
 #'   row was successfully injected
 #' @export
-coleo_execute_injection <- function(df){
+coleo_injection_execute <- function(df){
 
 
     which_req <- which(sapply(df, \(x) class(x[[1]])) == "httr2_request")
@@ -92,4 +92,104 @@ coleo_execute_injection <- function(df){
              success = is.null(error)) |>
       dplyr::select(-inject_result)
 
+}
+
+
+
+#' Prepare dataset for injection
+#'
+#' Take a dataset and prepare the data for injection into a
+#'
+#' @param df dataframe containing injection material.
+#' @param db_table the database table into which the data will be injected
+#'
+#' @return the same dataframe, but with a new column for injection request. Note
+#'   that the dataframe will be \code{rowwise} after this function
+#' @export
+coleo_injection_prep <- function(df, db_table){
+
+  # prep the data by nesting unneeded columns, renaming those remaining, and adding these to a request
+
+  # the exception is the observation table, where we should NOT nest. instead we
+  # rename and make the request using the columsn which the table accepts (if
+  # any of these are present)
+
+  # unless it is observations
+
+  if(db_table == "observations") {
+    colnames_of_tbl <- coleo_get_column_names(tbl = db_table)$column_name
+
+    df_prep <- df |>
+      coleo_prep_input_data(db_table) |>
+      dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::across(dplyr::any_of(colnames_of_tbl)), endpoint = db_table)))
+
+  } else if (db_table == "ref_species") {
+    # ref_species is the only table where the table name and the endpoint name are NOT THE SAME
+    # here we hard-code the difference. This lets us stay with the convention of using the table name as the argument (not the endpoint name)
+    df_prep <- df |>
+      coleo_prep_input_data(db_table) |>
+      dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "taxa")))
+
+
+    # if its observations
+  } else {
+    df_prep <- df |>
+      coleo_prep_input_data(db_table) |>
+      dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = db_table)))
+
+  }
+
+  return(df_prep)
+
+}
+
+#' Finalize coleo injection
+#'
+#' After successful injection, process the dataframe: extract the new ID from
+#' the injected records, store it in a new column, and drop all the injected
+#' columns
+#'
+#' @param df dataframe produced by \code{coleo_injection_execute}
+#'
+#' @return a data.frame. All the injected columns are gone, and it has no groups
+#'   or nested data. the ID of the records just injected is stored in a column
+#'   with the correct name
+#' @export
+coleo_injection_final <- function(df){
+  # get the name of the type of table just injected and make a name_id out of it.
+  newname <- df$inject_request[[1]] |>
+    httr2::req_dry_run(quiet = TRUE) |>
+    purrr::pluck("path") |>
+    basename() |>
+    sub(pattern = "s$", replacement = "")
+
+  name_id <- paste0(newname, "_id")
+
+
+  # ALMOST offensively fashionable way to dynamically name a column
+  df_id <- df |>
+    dplyr::mutate(!!name_id := dplyr::if_else(is.null(error),
+                                       true = coleo_extract_id(result),
+                                       false = NA_integer_)
+    )
+
+  if(newname != "observation") {
+    df_out <- df_id |>
+      dplyr::ungroup() |>
+      dplyr::select(dplyr::ends_with("id"), data) |>
+      tidyr::unnest(cols = c(data))
+  } else {
+    # once the observation table is injected, we only need observation_id. Here
+    # is a cheesy dplyr way to do it -- you can't drop a col if it is a grouping
+    # column ;)
+    df_out <- df_id |>
+      dplyr::ungroup() |>
+      dplyr::group_by(observation_id) |>
+      # dplyr::relocate(dplyr::ends_with("id")) |>
+      dplyr::select(-dplyr::ends_with("id"), -inject_request, -result, -error, -success) |>
+      dplyr::ungroup()
+
+  }
+
+  return(df_out)
 }
