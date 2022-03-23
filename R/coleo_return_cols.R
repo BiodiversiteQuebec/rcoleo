@@ -1,43 +1,11 @@
-# functions that work with coleo_get_required_tables()
-
-#' Trouver les tables requises pour un type de capamgne donné
+#' Trouver les colonnes, leur classe et les valeurs admissibles pour un type de campagne donné
 #'
-#' @param camp_type un type de campagne valide.
+#' @param campaign_type un type de campagne
+#' @param required.columns FALSE. Si TRUE, retourne seulement les colonnes requises pour procéder à l'injection
 #'
-#' @return
 #' @export
-coleo_return_required_tables <- function(camp_type) {
-
-  full_tbl <- coleo_get_required_tables()
-
-  # test that camp_type is valid choice
-  assertthat::assert_that(camp_type %in% names(full_tbl)[-1],
-                          msg = "Not one of the database campaign type")
-
-  tbls <- full_tbl[full_tbl[,camp_type]==1, "table"][[1]]
-
-  return(tbls)
-}
-
-
-## convenience functions for extracting the columns of a table, and the types of a column
-
-coleo_get_column_names <- function(tbl){
-  resp_cols <- coleo_request_general(table = tbl, endpoint = "table_columns")
-  cols_df <- purrr::map_dfr(httr2::resp_body_json(resp_cols), as.data.frame)
-  return(cols_df)
-}
-
-coleo_get_enum_values <- function(enum_col_name){
-  resp_enum <- coleo_request_general(enum = enum_col_name, endpoint = "enum_options")
-  resp_chr <- httr2::resp_body_json(resp_enum) |> purrr::flatten() |> purrr::flatten_chr()
-  return(resp_chr)
-}
-
-
-#' Trouver les colonnes requises, leur classe et les valeurs admissibles pour un type de campagne donné
 #'
-coleo_return_cols <- function(campaign_type) {
+coleo_return_cols <- function(campaign_type, required.columns = FALSE) {
 
   #-------------------------------------------------------------------------------
   # Vérifier que campaign_type est un choix valide
@@ -51,18 +19,25 @@ coleo_return_cols <- function(campaign_type) {
   #-------------------------------------------------------------------------------
   req_tbls <- coleo_return_required_tables(campaign_type)
   #-------------------------------------------------------------------------------
-  # Champs, classe des données et valeurs acceptées requises pour req_tbls
+  # Champs, classe des données et valeurs acceptées pour req_tbls
   #-------------------------------------------------------------------------------
   # Initialiser les objects pour sauver les infos
   table <- c()
   noms_de_champs <- c()
   classe <- c()
+  colonne_requise <- c()
   valeurs_acceptees <- list()
   # Sauver les noms de colonne pour chaque table
   for(tbl in req_tbls){
     # Get columns from table
-
     cols_df <- coleo_get_column_names(tbl = tbl)
+
+    # Si required.columns = TRUE, conserver seulement les colonnes requises
+    if(required.columns) cols_df <- subset(cols_df, is_nullable == "NO")
+
+    # Identifier les colonnes requises
+    cols_df$is_nullable[cols_df$is_nullable == "NO"] <- TRUE
+    cols_df$is_nullable[cols_df$is_nullable == "YES"] <- FALSE
 
     # Get values from enum columns
     values_df <- lapply(cols_df$udt_name, function(col) {
@@ -75,6 +50,7 @@ coleo_return_cols <- function(campaign_type) {
     table <- c(table, rep(tbl, nrow(cols_df)))
     noms_de_champs <- c(noms_de_champs, cols_df$column_name)
     classe <- c(classe, cols_df$data_type)
+    colonne_requise <- c(colonne_requise, cols_df$is_nullable)
     valeurs_acceptees <- c(valeurs_acceptees, values_df)
   }
   #-------------------------------------------------------------------------------
@@ -82,6 +58,7 @@ coleo_return_cols <- function(campaign_type) {
   #-------------------------------------------------------------------------------
   df <- as.data.frame(tibble::tibble(table = table,
                                      noms_de_champs = noms_de_champs,
+                                     colonne_requise = colonne_requise,
                                      classe = classe,
                                      valeurs_acceptees = valeurs_acceptees))
   #-------------------------------------------------------------------------------
@@ -89,8 +66,9 @@ coleo_return_cols <- function(campaign_type) {
   #-------------------------------------------------------------------------------
   site_code_row <- data.frame(table = "sites",
                               noms_de_champs = "site_code",
-                              classe = "numeric",
-                              valeurs_acceptées = NA_character_)
+                              colonne_requise = "TRUE",
+                              classe = "character",
+                              valeurs_acceptees = NA_character_)
   df <- rbind(df,site_code_row)
   #-------------------------------------------------------------------------------
   # Special column class pour injection
@@ -112,11 +90,13 @@ coleo_return_cols <- function(campaign_type) {
     for(i in seq_along(geom_cols)) {
       lat_row <- data.frame(table = df$table[geom_cols[i]],
                             noms_de_champs = "lat",
-                               classe = "numeric",
-                               valeurs_acceptees = NA_character_)
+                            colonne_requise = "TRUE",
+                            classe = "numeric",
+                            valeurs_acceptees = NA_character_)
       df <- rbind(df, lat_row)
       lon_row <- data.frame(table = df$table[geom_cols[i]],
                             noms_de_champs = "lon",
+                            colonne_requise = "TRUE",
                             classe = "numeric",
                             valeurs_acceptees = NA_character_)
       df <- rbind(df, lon_row)
@@ -129,21 +109,38 @@ coleo_return_cols <- function(campaign_type) {
   df$classe[change_to_numeric] <- "numeric"
 
   ## Boolean -> logical
-  change_to_logical <- which(df$classe == "double boolean")
+  change_to_logical <- which(df$classe == "boolean")
   df$classe[change_to_logical] <- "logical"
 
-  ## Remove id. To be added when prepping data for injection
+  #-------------------------------------------------------------------------------
+  # Enlever les colonnes qui sont générées automatiquement lors de l'injection
+  #-------------------------------------------------------------------------------
+  # Remove id. To be added when prepping data for injection
   id_to_remove <- which(grepl("_id", df$noms_de_champs, fixed = TRUE) | df$noms_de_champs == "id")
   df <- df[-id_to_remove,]
+  # Remove "created_at" et "updated_at"
+  row_to_remove <- which(grepl("created_at", df$noms_de_champs, fixed = TRUE) | df$noms_de_champs == "updated_at")
+  df <- df[-row_to_remove,]
   #-------------------------------------------------------------------------------
   # Définir les noms de colonnes à utiliser
   #-------------------------------------------------------------------------------
   ## Adjust names so that they are table_champ (whatch out for lat/lon!)
-  df$noms_de_colonnes <- paste(df$table, df$noms_de_champs, sep = "_")
+  df$noms_de_colonnes <- coleo_make_df_column_names(df$table, df$noms_de_champs)
   #-------------------------------------------------------------------------------
   # Nettoyer df
   #-------------------------------------------------------------------------------
-  df <- df[,c("noms_de_colonnes","classe","valeurs_acceptées")]
+  df <- df[,c("noms_de_colonnes","colonne_requise","classe","valeurs_acceptees")]
 
   return(tibble::as_tibble(df))
+}
+
+
+#' Trouver les colonnes requises, leur classe et les valeurs admissibles pour un type de campagne donné
+#'
+#'
+#' @param campaign_type un type de campagne
+#' @export
+#'
+coleo_return_required_cols <- function(campaign_type) {
+  coleo_return_cols(campaign_type, required.columns = TRUE)
 }
