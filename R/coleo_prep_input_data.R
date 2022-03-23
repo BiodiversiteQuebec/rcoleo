@@ -40,7 +40,13 @@ coleo_prep_input_data <- function(df, db_table){
     dplyr::rename(dplyr::any_of(rename_vec))
 
   #is there a lat or lon??
-  is_there_latlon <- sum(names(df_info_renamed) %in% c("lat", "lon")) == 2
+  is_there_lat <- grepl("lat", names(df_info_renamed))
+  is_there_lon <- grepl("lon", names(df_info_renamed))
+  is_there_latlon <- sum(is_there_lat,is_there_lon) == 2
+
+  # Rename lat/lon cols
+  names(df_info_renamed)[is_there_lat] <- "lat"
+  names(df_info_renamed)[is_there_lon] <- "lon"
 
   if (is_there_latlon) {
     df_info_renamed <- format_spatial(df_info_renamed)

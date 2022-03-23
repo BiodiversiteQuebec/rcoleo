@@ -8,7 +8,7 @@
 coleo_validate <- function(data) {
 
   # Check that there is a campaign type column and that it contains a unique value
-  if(!assertthat::has_name(data, "campaigns_type")) stop("Vérifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond à campaign_type. \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n")
+  if(!assertthat::has_name(data, "campaigns_type")) stop("Vérifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond à campaigns_type \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n")
 
   campaign_type <- unique(data$campaigns_type)
   campaigns <- coleo_return_valid_campaigns()

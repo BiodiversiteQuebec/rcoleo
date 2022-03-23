@@ -21,6 +21,15 @@ coleo_get_name_table <- function(db_table){
   resp_cols <- coleo_get_column_names(db_table)
   valid_col_names <- coleo_make_df_column_names(db_table, resp_cols$column_name)
 
+  # Ajouter lon/lat si geom présent
+  geom_cols <- grepl("geom",valid_col_names)
+  geoms <- strsplit(valid_col_names[geom_cols], split = "_")
+  geom_tables <- sapply(seq_along(geoms), function(x) geoms[[x]][1])
+  for(tbl in geom_tables) {
+    valid_col_names <- c(valid_col_names, paste(tbl,"lat", sep = "_"))
+    valid_col_names <- c(valid_col_names, paste(tbl,"lon", sep = "_"))
+  }
+
   return(valid_col_names)
 }
 
