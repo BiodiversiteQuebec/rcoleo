@@ -12,24 +12,17 @@ coleo_validate <- function(data) {
 
   campaign_type <- unique(data$campaigns_type)
   campaigns <- coleo_return_valid_campaigns()
-  if(!(length(campaign_type) == 1 && campaign_type %in% campaigns)) stop("Vérifiez que toutes les valeurs de la colonne campaign_type sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n")
-
-  # Check that imported data has a column called sites_site_code
-  # This is necessary since the sites table's fields within input columns are not required to inject a data set, but the "sites_site_code" input column is
-  if(!assertthat::has_name(data, "sites_site_code")) warning("Vérifiez qu'une colonne contient le code du site et que le nom de colonne correspond à site_code.\n")
+  if(!(length(campaign_type) == 1 && campaign_type %in% campaigns)) stop("Vérifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n")
 
   # Check that the imported data has all of the required columns
   ## compare required column names to present columns
-  req_tbls <- coleo_return_required_tables(campaign_type)
-  req_columns <- c(unlist(sapply(req_tbls, coleo_get_required_name_table)),
-                   "site_code") # site_code needs to be manually added
+  req_columns <- coleo_return_required_cols(campaign_type)$noms_de_colonnes
   req_col_diff <- setdiff(req_columns, names(data))
   ## Return warning if there's a mismatch
   if(length(req_col_diff) != 0) warning("Vérifiez que les bons noms de colonnes sont utilisés et que toutes les colonnes requises sont présentes. Les colonnes requises sont : \n", paste0(req_columns, collapse = ", "), "\n\nLes colonnes absentes sont : \n", paste0(req_col_diff, collapse = ", "), "\n")
 
   # Check that all input columns are valid column names
-  tbl <- coleo_return_cols(campaign_type)
-  columns <- tbl$noms_de_colonnes
+  columns <- coleo_return_cols(campaign_type)$noms_de_colonnes
   possible_col_diff <- setdiff(names(data), columns)
 
   if(length(possible_col_diff) != 0) warning("Vérifiez que les bons noms de colonnes sont utilisés et que les colonnes superflues sont retirées. Les colonnes valides peuvent être : \n", paste0(columns, collapse = ", "), "\n\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n")
@@ -39,6 +32,7 @@ coleo_validate <- function(data) {
 
   ## Check that all values within each column is of the right class
   valid_cols <- dat_names[dat_names %in% columns]
+  tbl <- coleo_return_cols(campaign_type)
   class_of_col <- sapply(valid_cols, function(x) {
     class_of_col_values <- sapply(data[,x], function(col_class) {
       class(col_class) == tbl$classe[[which(tbl$noms_de_colonnes==x)]]
@@ -51,16 +45,16 @@ coleo_validate <- function(data) {
   if(!all(class_of_col)) warning("Vérifiez la classe des colonnes. Ces colonnes sont problématiques : \n", paste0(erroneous_cols, collapse = ", "), "\n")
 
   # Check that the range of values contained within input columns are valid
-  tbl_with_legal_values <- subset(tbl, !is.na(valeurs_acceptées))
+  tbl_with_legal_values <- subset(tbl, !is.na(valeurs_acceptees))
   cols_to_check <- intersect(dat_names, tbl_with_legal_values$noms_de_colonnes)
 
   valid_col_values <- sapply(cols_to_check, function(x) {
-    legal_vals <- tbl$valeurs_acceptées[which(tbl$noms_de_colonnes==x)][[1]]
+    legal_vals <- tbl$valeurs_acceptees[which(tbl$noms_de_colonnes==x)][[1]]
     all(sapply(unique(data[,x]), function(x) x %in% legal_vals))
   })
 
   invalid_cols <- which(tbl$noms_de_colonnes %in% names(valid_col_values)[!valid_col_values])
-  cols_valid_values <- tbl$valeurs_acceptées[invalid_cols]
+  cols_valid_values <- tbl$valeurs_acceptees[invalid_cols]
   names(cols_valid_values) <- tbl$noms_de_colonnes[invalid_cols]
   col_names <- tbl$noms_de_colonnes[invalid_cols]
 

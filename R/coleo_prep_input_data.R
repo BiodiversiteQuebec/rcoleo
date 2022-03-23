@@ -11,7 +11,7 @@
 #' @export
 coleo_prep_input_data <- function(df, db_table){
 
-  input_fields <- coleo_get_name_table_column(db_table)
+  input_fields <- coleo_get_name_table(db_table)
 
   names_present <- intersect(input_fields, names(df))
 

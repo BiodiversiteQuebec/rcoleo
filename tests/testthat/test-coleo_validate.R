@@ -30,11 +30,6 @@ test_that("coleo_validate", {
   testthat::expect_error(coleo_validate(dat_test),
                          regexp = "Vérifiez que toutes les valeurs de la colonne campaigns_type sont identiques.*")
 
-  ## Test for the presence of a column called sites_site_code
-  dat_test <- subset(dat, select = -c(sites_site_code))
-  testthat::expect_warning(coleo_validate(dat_test),
-                         regexp = "Vérifiez qu'une colonne contient le code du site.*")
-
   ## Test that the imported data has all of the required columns
   dat_test <- subset(dat, select = -c(observations_date_obs))
   testthat::expect_warning(coleo_validate(dat_test),
@@ -62,7 +57,7 @@ test_that("coleo_validate", {
 
   ## Test that date format respects the YYYY-MM-DD convention
   dat_test <- dat
-  dat_test$observation_date <- "95-05-15"
+  dat_test$observations_date_obs <- "95-05-15"
 
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez le format des valeurs de dates.*")
