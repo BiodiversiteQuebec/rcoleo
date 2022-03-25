@@ -1,3 +1,7 @@
+########################
+# Fontions qui performent des requêtes sur coleo
+# - pour utilisation interne
+########################
 
 # Retoune un vecteur des noms valides de colonnes d'un jeu de données, nommés selon le nom de colonne de la table de la bd, pour une table de la base de données
 ## db_table : le nom d'une table de la bd
@@ -61,3 +65,29 @@ coleo_get_enum_values <- function(enum_col_name){
   return(resp_chr)
 }
 
+
+#' Retourne la table attributes ou les valeurs d'un champ si spécifié
+#'
+#' @param column un champ de la table attributes
+#'
+#' @return un data frame de la table attributes ou des valeurs contenues dans un champ
+coleo_get_attributes_table <- function(column = NULL) {
+  resp_json <- coleo_request_general(endpoint = "attributes") |>
+    httr2::resp_body_json() |>
+    replace_null() # Valeurs NULL empêchent la transformation en df
+    attributes_df <- purrr::map_dfr(resp_json, as.data.frame)
+
+  if(!is.null(column)) {
+    out <- attributes_df[,column]
+  } else {
+    out <- attributes_df
+  }
+
+  return(out)
+}
+
+## Helper function to remove null values from json request responses
+replace_null <- function(x){
+  x <- purrr::map(x, ~ replace(.x, is.null(.x), NA_character_))
+  purrr::map(x, ~ if(is.list(.x)) replace_null(.x) else .x)
+}

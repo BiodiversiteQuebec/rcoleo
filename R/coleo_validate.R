@@ -60,7 +60,14 @@ coleo_validate <- function(data) {
 
   if(!all(valid_col_values)) warning("Vérifiez les valeurs contenues dans les colonnes. Ces colonnes contiennent des valeurs invalides : \n", paste0(col_names, collapse = ", "), "\n\nLes valeurs possibles pour ces colonnes sont : \n", paste0(col_names, ": ", cols_valid_values, collapse = "\n"), "n")
 
+  # Check that variable field of obs_species table is valid
+  if("obs_species_variable" %in% dat_names) {
+    var <- unique(data$obs_species_variable)
+    possible_vars <- coleo_get_attributes_table(column = "variable")
+    are_vars_valid <- all(var %in% possible_vars)
 
+    if(!are_vars_valid) warning("Vérifiez les valeurs ", dput(var[!var %in% possible_vars]), " de la colonne obs_species_variable ou injectez ces valeurs dans la table attributes. Cette colonne contient une valeur qui n'est pas une valeur de la table attributes")
+  }
 
   # Check that the format of the input column date is valid
 
