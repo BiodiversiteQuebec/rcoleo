@@ -13,7 +13,7 @@ tibble::tribble(
 
   expect_equal(nrow(nested_df), 3)
 
-  expect_equal(ncol(nested_df$data[[1]]), 15)
+  expect_equal(ncol(nested_df$data[[1]]), 13)
 
   expect_s3_class(nested_df, "rowwise_df")
 

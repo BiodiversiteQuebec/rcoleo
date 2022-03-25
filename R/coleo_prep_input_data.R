@@ -11,7 +11,7 @@
 #' @export
 coleo_prep_input_data <- function(df, db_table){
 
-  input_fields <- coleo_get_name_table(db_table)
+  input_fields <- coleo_return_name_table(db_table)
 
   names_present <- intersect(input_fields, names(df))
 
@@ -34,7 +34,7 @@ coleo_prep_input_data <- function(df, db_table){
   }
 
   # rename the dataset
-  rename_vec <- coleo_get_rename_vec_input_to_db(db_table)
+  rename_vec <- coleo_return_rename_vec_input_to_db(db_table)
 
   df_info_renamed <- df_info_only |>
     dplyr::rename(dplyr::any_of(rename_vec))
