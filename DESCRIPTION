@@ -33,9 +33,9 @@ Imports:
     httr2,
     taxize,
     tidyr,
-    vctrs
+    vctrs,
+    httptest2
 Suggests: 
-    httptest2,
     knitr,
     pkgdown,
     rmarkdown,
