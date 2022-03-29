@@ -7,11 +7,10 @@
 #' @export
 #'
 coleo_return_valid_campaigns <- function(){
-  full_tbl <- coleo_get_name_table()
+  camp_types_resp <- coleo_request_general(enum = "enum_campaigns_type", endpoint = "enum_options")
+  campaigns <- unlist(httr2::resp_body_json(camp_types_resp), use.names = FALSE)
 
-  legal_vals <- subset(full_tbl, table == "campaigns" & input_column == "campaign_type")[["legal_values"]][[1]]
-
-  return(legal_vals)
+  return(campaigns)
 }
 
 
@@ -22,9 +21,8 @@ coleo_return_valid_campaigns <- function(){
 #' @export
 #'
 coleo_return_valid_site_types <- function(){
-  full_tbl <- coleo_get_name_table()
-
-  legal_vals <- subset(full_tbl, table == "sites" & input_column == "site_type")[["legal_values"]][[1]]
+  site_types_resp <- coleo_request_general(enum = "enum_sites_type", endpoint = "enum_options")
+  legal_vals <- unlist(httr2::resp_body_json(site_types_resp), use.names = FALSE)
 
   return(legal_vals)
 }
@@ -66,11 +64,12 @@ coleo_get_name_table_column <- function(db_table, column = "input_column"){
 # Retoune un vecteur des noms valides de colonnes du jeu de données pour une table de la base de données
 ## db_table : le nom d'une table de la bd
 coleo_get_rename_vec_input_to_db <- function(db_table){
-  inputs <- coleo_get_name_table_column(db_table)
-  upload <- coleo_get_name_table_column(db_table, column = "db_column")
-  out <- purrr::set_names(inputs, upload)
+  resp_cols <- coleo_request_general(table = tbl, endpoint = "table_columns")
+  cols_db <- purrr::map_dfr(httr2::resp_body_json(resp_cols), as.data.frame)
 
-  return(out)
+  valid_col_names <- paste(db_table, cols_db$column_name, sep = "_")
+
+  return(valid_col_names)
 }
 
 
