@@ -25,10 +25,8 @@ coleo_get_enum_values <- function(enum_col_name){
 #'
 #' @return un data frame de la table attributes ou des valeurs contenues dans un champ
 coleo_get_attributes_table <- function(column = NULL) {
-  resp_json <- coleo_request_general(endpoint = "attributes") |>
-    httr2::resp_body_json() |>
-    replace_null() # Valeurs NULL empêchent la transformation en df
-    attributes_df <- purrr::map_dfr(resp_json, as.data.frame)
+  attributes_df <- coleo_request_general(endpoint = "attributes") |>
+    httr2::resp_body_json(simplifyVector = TRUE)
 
   if(!is.null(column)) {
     out <- attributes_df[,column]
