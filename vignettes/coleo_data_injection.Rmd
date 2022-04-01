@@ -224,7 +224,7 @@ We start with some fake campaign information. This dataset contains ALL the colu
 
 ```{r}
 imaginary_insects <- tibble::tribble(
-     ~site_code, ~campaign_type, ~campaign_date_opened, ~campaign_date_closed, ~observation_date, ~observation_is_valid, ~trap_code, ~land_lat, ~land_lon, ~sample_code, ~campaign_technician_1, ~ref_taxa_rank, ~ref_taxa_tsn, ~ref_taxa_name, ~observation_taxa_name, ~observation_variable, ~observation_value,   ~observation_notes,
+     ~sites_site_code, ~campaigns_type, ~campaigns_opened_at, ~campaigns_closed_at, ~observations_date_obs, ~observations_is_valid, ~traps_trap_code, ~landmarks_lat, ~landmarks_lon, ~samples_sample_code, ~campaigns_technicians, ~ref_species_rank, ~ref_species_tsn, ~ref_species_name, ~obs_species_taxa_name, ~obs_species_variable, ~obs_species_value,   ~observations_notes,
   "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",  "sous-classe",      9999,       "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,        "fascinating",
   "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",      9998,       "Fake_beetleB",         "Fake_beetleB",           "abondance",                  6,                   NA,
   "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",      9997,       "Fake_beetleC",         "Fake_beetleC",           "abondance",                 10,          "incomplet",
@@ -240,8 +240,8 @@ knitr::kable(imaginary_insects)
 
 Important things to notice about the data are:
 
-* the only site-level information is the `site_code`
-* all the columns have prefixes (e.g. "*campaign_*type" or "*land_*lat). This is to differentiate columns which might have the same name but which are destined for different database tables. these will be automatically renamed during data preparation
+* the only site-level information is the `sites_site_code`
+* all the columns have prefixes (e.g. "*campaigns_*type" or "*landmarks_*lat). This is to differentiate columns which might have the same name but which are destined for different database tables. These will be automatically renamed during data preparation
 * the format of dates is correct: AAAA-MM-JJ
 * all columns have the correct values.
 
@@ -254,9 +254,9 @@ First we need to obtain the database ID for site. The process is the same as abo
 ```{r get-site-id}
 site_id_imaginary <- imaginary_insects |> 
   rowwise() |> 
-  mutate(coleo_id = list(coleo_request_by_code(human_code = site_code, table = "sites")),
+  mutate(coleo_id = list(coleo_request_by_code(human_code = sites_site_code, table = "sites")),
          site_id = coleo_extract_id(coleo_id)) |> 
-  select(-site_code, -coleo_id) |> 
+  select(-sites_site_code, -coleo_id) |> 
   dplyr::relocate(site_id)
 ```
 
@@ -269,15 +269,16 @@ camp_prep_imaginary <- coleo_prep_input_data(site_id_imaginary, db_table = "camp
 ```
 
 There is one more step: we need to manually place the technicians into a list.
+
 <!-- TODO (NOTE should this be automated?) handled by coleo_injection_prep? -->
-**NOTE** here we have only one technician column (`technician_1`) but some datasets have multiple technician columns. 
+**NOTE** here we have only one technician column (`campaigns_technicians`) but some datasets have multiple technician columns. 
 That's fine, but the code below will need to be adapted in those cases
 
 ```{r}
 camp_prep_imaginary_tech <- camp_prep_imaginary |> 
-  mutate(technicians = list(if_else(is.na(technician_1), true = list(NA_character_), false = list(technician_1)))) |> 
+  mutate(technicians = list(if_else(is.na(technicians), true = list(NA_character_), false = list(technicians)))) |> 
   ungroup() |> 
-  select(-technician_1) |> 
+  #select(-campaigns_technicians) |> 
   rowwise()
 
 camp_prep_imaginary_tech
@@ -301,7 +302,7 @@ camp_response_imaginary <- coleo_injection_execute(camp_requests_imaginary)
 camp_response_imaginary
 ```
 
-this is the first of *seven* tables we need to inject. Every time we inject a table, the database gives a new ID to those records. 
+This is the first of *seven* tables we need to inject. Every time we inject a table, the database gives a new ID to those records. 
 Then, we need to use these IDs when we inject the subsequent tables. Because we have preserved the responses, this is straightforward:
 
 ```{r}
