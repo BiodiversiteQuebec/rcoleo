@@ -30,12 +30,6 @@ inst/doc
 # Visual studio
 *.code-workspace
 *.vscode
-docs/*
 
 # example data
 *.xlsx
-docs
-
-test_download.R
-
-tests/testthat/testthat-problems.rds
