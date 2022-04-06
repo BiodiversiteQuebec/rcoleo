@@ -38,7 +38,7 @@ with_mock_dir("inject a test site", {
     dplyr::mutate(req = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells")))
 
   test_that("rowwise approach on a data frame yields the same output as a hand-crafted request", {
-    expect_equivalent(demo_test, one_post_in_df$req[[1]])
+    expect_equivalent(demo_test$body, one_post_in_df$req[[1]]$body)
   })
 
   test_that("duplicate request columns cause error", {

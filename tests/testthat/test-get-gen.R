@@ -60,16 +60,3 @@ test_that("both campaign type and site work",{
   expect_equal(ncol(resp), 3)
 
 })
-
-
-test_that("sites_species works",{
-
-  # https://coleo.biodiversite-quebec.ca/api/v1/sites_species?campaign_type=insectes_sol
-  raw_resp <- get_gen("/sites_species", list(campaign_type = "insectes_sol"))
-  expect_equal(ncol(raw_resp), 2)
-  expect_equal(sapply(raw_resp, typeof), c(site_code = "character", taxa_name = "character"))
-
-  raw_resp2 <-  query_gen("sites_species", list(campaign_type = "insectes_sol"))
-
-  expect_equal(raw_resp, raw_resp2)
-  })

@@ -82,8 +82,9 @@ with_mock_dir("Site processing works correctly", {
 
     resp_df <- coleo_process_site_resp(resp)
 
+    # This processing step returns everything in one row
     expect_equal(nrow(resp_df), 1)
-    expect_equal(ncol(resp_df), 15)
+    # things should be unnested now; here is one example
     expect_equal(length(resp_df$id), 1)
 
     resp_site_camp_df <- coleo_process_site_df(resp_df)
