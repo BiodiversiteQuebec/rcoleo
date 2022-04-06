@@ -9,7 +9,7 @@ dat <- data.frame(stringsAsFactors = FALSE,
                   campaigns_opened_at = c("2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24"),
                   observations_is_valid = c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
                   obs_species_taxa_name = c("Agroeca_ornata", "Camponotus_pennsylvanicus","Ceraticelus_laetabilis","Insecta","Insecta","Trochosa_terricola"),
-                  obs_species_variable = c("abundance", "abundance","abundance","abundance","abundance","abundance"),
+                  obs_species_variable = c("abondance", "abondance","abondance","abondance","abondance","abondance"),
                   obs_species_value = c(4, 2, 2, 1, 4, 1),
                   ref_species_rank = c("espèce","espèce","espèce","espèce","espèce","espèce"),
                   ref_species_name = c("Agroeca_ornata", "Camponotus_pennsylvanicus","Ceraticelus_laetabilis","Insecta","Insecta","Trochosa_terricola"),
@@ -30,11 +30,6 @@ test_that("coleo_validate", {
   testthat::expect_error(coleo_validate(dat_test),
                          regexp = "Vérifiez que toutes les valeurs de la colonne campaigns_type sont identiques.*")
 
-  ## Test for the presence of a column called sites_site_code
-  dat_test <- subset(dat, select = -c(sites_site_code))
-  testthat::expect_warning(coleo_validate(dat_test),
-                         regexp = "Vérifiez qu'une colonne contient le code du site.*")
-
   ## Test that the imported data has all of the required columns
   dat_test <- subset(dat, select = -c(observations_date_obs))
   testthat::expect_warning(coleo_validate(dat_test),
@@ -52,6 +47,12 @@ test_that("coleo_validate", {
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez la classe des colonnes.*")
 
+  ## Test that variable field of obs_species table is valid (obs_species_variable column)
+  dat_test <- dat
+  dat_test$obs_species_variable <- "abundance"
+  testthat::expect_warning(coleo_validate(dat_test),
+                           regexp = "Vérifiez les valeurs.*")
+
   ## Test that the range of values contained within input columns are valid
   dat_test <- dat
   dat_test$ref_species_rank <- "inconnu"
@@ -62,7 +63,7 @@ test_that("coleo_validate", {
 
   ## Test that date format respects the YYYY-MM-DD convention
   dat_test <- dat
-  dat_test$observation_date <- "95-05-15"
+  dat_test$observations_date_obs <- "95-05-15"
 
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez le format des valeurs de dates.*")

@@ -45,19 +45,26 @@ coleo_inject_general <- function(..., endpoint){
 #' @export
 coleo_inject_general_df <- function(df_one_row, endpoint){
 
-  df_one_row <-as.list(df_one_row)
+  df_one_row_ls <- as.list(df_one_row)
 
-  df_one_row$data <- NULL
+  # if there is a geom, flatten.
+  # this is a workaround for the behaviour of rowwise() when dealing with list-columns
+
+  if (any(names(df_one_row_ls) == "geom")) {
+    df_one_row_ls$geom <- df_one_row_ls$geom[[1]]
+  }
+
+  df_one_row_ls$data <- NULL
   endpt <- rcoleo:::endpoints()[[endpoint]]
 
 
   # drop all NULL or NA columns
-  df_one_row[which(is.na(df_one_row))] <- NULL
+  df_one_row_ls[which(is.na(df_one_row_ls))] <- NULL
 
 
   rcoleo:::coleo_begin_req() %>%
     httr2::req_url_path_append(endpt) %>%
-    httr2::req_body_json(data = df_one_row)
+    httr2::req_body_json(data = df_one_row_ls)
 }
 
 
@@ -106,6 +113,7 @@ coleo_injection_execute <- function(df){
 #' @return the same dataframe, but with a new column for injection request. Note
 #'   that the dataframe will be \code{rowwise} after this function
 #' @export
+
 coleo_injection_prep <- function(df, db_table){
 
   # prep the data by nesting unneeded columns, renaming those remaining, and adding these to a request
