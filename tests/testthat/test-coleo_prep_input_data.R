@@ -32,10 +32,13 @@ tibble::tribble(
   )
   out_tbl <- coleo_format_extra_col(df_test, "observations")
   out_tbl_1 <- coleo_format_extra_col(df_test[1,], "observations")
-  exp_json <- jsonlite::toJSON(list(a_variable = list(value = 1, units = 'm')), auto_unbox = TRUE)
+  exp_json_1 <- jsonlite::toJSON(list(a_variable = list(value = 1, units = 'm')), auto_unbox = TRUE)
+  out_tbl_4 <- coleo_format_extra_col(df_test[4,], "observations")
+  exp_json_4 <- jsonlite::toJSON(list(a_variable = list(units = 'm')), auto_unbox = TRUE)
 
   testthat::expect_s3_class(out_tbl, "data.frame")
   testthat::expect_equal(names(out_tbl), c("col_1","extra"))
-  testthat::expect_identical(out_tbl_1[[2]], exp_json)
+  testthat::expect_identical(out_tbl_1[[2]], exp_json_1)
+  testthat::expect_identical(out_tbl_4[[2]], exp_json_4)
 
 })
