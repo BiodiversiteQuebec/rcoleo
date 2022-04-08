@@ -10,6 +10,13 @@
 #' @return un tbl, nested
 #' @export
 coleo_prep_input_data <- function(df, db_table) {
+
+    # Is there extra columns
+  is_there_extra <- grepl(paste0(db_table, "_extra"), names(df))
+  if (any(is_there_extra)) {
+    df <- coleo_format_extra_col(df, db_table, extraCols = names(df)[is_there_extra])
+  }
+
   input_fields <- coleo_return_name_table(db_table)
 
   names_present <- intersect(input_fields, names(df))
@@ -29,13 +36,6 @@ coleo_prep_input_data <- function(df, db_table) {
   } else {
     message("L'imbrication n'est pas necessaire pour cette table")
     df_info_only <- dplyr::rowwise(df)
-  }
-
-  # Is there extra columns
-  is_there_extra <- grepl("extra", names(df_info_only))
-  if (any(is_there_extra)) {
-    df_info_only <- coleo_format_extra_col(df_info_only, db_table)
-    df_info_only <- dplyr::rowwise(df_info_only)
   }
 
   # rename the dataset
@@ -69,55 +69,67 @@ coleo_prep_input_data <- function(df, db_table) {
 #' @param db_table la table ciblée dans la base de données
 #'
 #' @return un tbl
-coleo_format_extra_col <- function(df, db_table) {
+coleo_format_extra_col <- function(df, db_table, extraCols) {
 
-  df <- tibble::as_tibble(df)
-  # Rename comlumns of interest
-  names(df)[grepl(paste0(db_table, "_extra_variable"), names(df))] <- "extra_variable"
-  names(df)[grepl(paste0(db_table, "_extra_type"), names(df))] <- "extra_type"
-  names(df)[grepl(paste0(db_table, "_extra_description"), names(df))] <- "extra_description"
-  names(df)[grepl(paste0(db_table, "_extra_value"), names(df))] <- "extra_value"
-  names(df)[grepl(paste0(db_table, "_extra_units"), names(df))] <- "extra_units"
+    df <- tibble::as_tibble(df)
 
-  # variable and value are minimally required
-  if (!"extra_type" %in% names(df)) df$extra_type <- NA_character_
-  if (!"extra_units" %in% names(df)) df$extra_units <- NA_character_
-  if (!"extra_description" %in% names(df)) df$extra_description <- NA_character_
+    df$extra <- jsonlite::toJSON(NA_character_)
 
-  df$extra <- jsonlite::toJSON(NA_character_)
-  for (i in 1:nrow(df)) {
-    if (is.null(df$extra_variable[i]) | is.na(df$extra_variable[i])) next
+     extra_col_groups <- split(extraCols, strsplit(extraCols, "_") |> purrr::map_chr(tail, 1))
+   
 
-    # Identify the variable
-    variable <- df$extra_variable[i]
-    # Select only columns of itnerest
-    colsOI <- df[i, grepl("extra_", names(df))]
-    colsOI <- subset(colsOI, select = -extra_variable)
-    colsOI <- colsOI[, !is.na(colsOI)[1, ]]
+    # Rowwise -------------------------------------------------------------
+    for (i in 1:nrow(df)) {
 
-    # Join extra columns into a list object
-    cols <- sapply(names(colsOI), function(x) strsplit(x, "extra_")[[1]][2])
-    list <- list()
-    for (col in seq_along(cols)) {
-      list_to_add <- list(unlist(colsOI[, col], use.names = FALSE))
-      names(list_to_add) <- cols[col]
-      list <- append(list, list_to_add)
+
+        # Group -----------------------------------------------------------
+        extra_list <- list()
+        j = 1
+        for (extra_group in seq_along(extra_col_groups)) {
+
+            # Group
+            group <- unlist(extra_col_groups[extra_group])
+
+            ## Subset df
+            df_group <- df[i, group]
+
+            ## Select variable
+            variable <-
+                df_group[,grepl(paste0(db_table, "_extra_variable_", extra_group), names(df_group))] |>
+                unlist()
+            if (is.null(variable) | is.na(variable)) next
+            
+            ## Select fields that aren't the variable
+            fields <- stringr::str_split(group, "_", simplify = TRUE)[,3]
+            fields <- fields[!fields %in% "variable"]
+
+            ## Select values into a named list
+            values <- df_group[,!grepl("variable", names(df_group))] |> unlist()
+            names(values) <- NULL
+            list_group <- sapply(values, list)
+            ### Remove NA's
+            is_values_na <- !is.na(list_group)
+            list_group <- list_group[is_values_na]
+            fields <- fields[is_values_na]
+            names(list_group) <- fields
+
+            ## Nest variable list
+            ### Skip if empty
+            if(length(list_group) > 0) {
+              extra_list[j] <- list(list_group)
+              names(extra_list)[j] <- variable
+
+              j = j + 1
+            }
+        }
+
+        df$extra[i] <- jsonlite::toJSON(extra_list, auto_unbox = TRUE)
     }
 
-    # Transform to a named nested list
-    extra_list <- list(list)
-    names(extra_list) <- variable
 
-    # Make it into a json object
-    df$extra[i] = jsonlite::toJSON(extra_list, auto_unbox = TRUE)
-  }
+    # Clean df
+    names(df)[grepl("^extra$", names(df))] <- paste0(db_table, "_extra")
+    out <- df[,!grepl(paste0(db_table, "_extra_"), names(df))]
 
-  # Clean df
-  out <- df[,!grepl("extra_", names(df))]
-  names(out)[grepl("^extra$", names(df))] <- paste0(db_table, "_extra")
-
-  return(out)
+    return(out)
 }
-
-
-
