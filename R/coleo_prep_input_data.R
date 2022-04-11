@@ -75,7 +75,8 @@ coleo_format_extra_col <- function(df, db_table, extraCols) {
 
     df$extra <- jsonlite::toJSON(NA_character_)
 
-     extra_col_groups <- split(extraCols, strsplit(extraCols, "_") |> purrr::map_chr(tail, 1))
+     extra_col_groups <- split(extraCols, strsplit(extraCols, "_") |> 
+      purrr::map_chr(tail, 1))
    
 
     # Rowwise -------------------------------------------------------------
@@ -104,8 +105,7 @@ coleo_format_extra_col <- function(df, db_table, extraCols) {
             fields <- fields[!fields %in% "variable"]
 
             ## Select values into a named list
-            values <- df_group[,!grepl("variable", names(df_group))] |> unlist()
-            names(values) <- NULL
+            values <- df_group[,!grepl("variable", names(df_group))] 
             list_group <- sapply(values, list)
             ### Remove NA's
             is_values_na <- !is.na(list_group)
