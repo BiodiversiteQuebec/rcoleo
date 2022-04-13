@@ -29,12 +29,11 @@ test_that("coleo_prep_input_data works as expected", {
     observations_extra_value_1 = c(1:3, NA, 5:6),
     observations_extra_units_1 = rep("m", 6)
   )
-  is_there_extra <- grepl(paste0("observations_extra"), names(df_test))
-  out_tbl <- coleo_format_extra_col(df_test, "observations", extraCols = names(df_test)[is_there_extra])
-  out_tbl_1 <- coleo_format_extra_col(df_test[1, ], "observations", extraCols = names(df_test)[is_there_extra])
+  out_tbl <- coleo_format_extra_col(df_test, "observations")
+  out_tbl_1 <- coleo_format_extra_col(df_test[1, ], "observations")
   exp_json_1 <- jsonlite::toJSON(list(a_variable = list(value = 1, units = "m")), auto_unbox = TRUE)
-  out_tbl_4 <- coleo_format_extra_col(df_test[4, ], "observations", extraCols = names(df_test)[is_there_extra])
-  exp_json_4 <- jsonlite::toJSON(list(a_variable = list(units = "m")), auto_unbox = TRUE)
+  out_tbl_4 <- coleo_format_extra_col(df_test[4, ], "observations")
+  exp_json_4 <- jsonlite::toJSON(list(a_variable = list(value = "", units = "m")), auto_unbox = TRUE)
   ### Tests
   testthat::expect_s3_class(out_tbl, "data.frame") # Format
   testthat::expect_equal(names(out_tbl), c("col_1", "observations_extra")) # Expected columns are returned
@@ -50,9 +49,8 @@ test_that("coleo_prep_input_data works as expected", {
     observations_extra_value_2 = c(1:3, NA, 5:6),
     observations_extra_units_2 = rep("mm", 6)
   )
-  is_there_extra <- grepl(paste0("observations_extra"), names(df_test_2_extra_cols))
-  out_tbl_extra_4 <- coleo_format_extra_col(df_test_2_extra_cols[4, ], "observations", extraCols = names(df_test_2_extra_cols)[is_there_extra])
-  out_tbl_extra_1 <- coleo_format_extra_col(df_test_2_extra_cols[1, ], "observations", extraCols = names(df_test_2_extra_cols)[is_there_extra])
+  out_tbl_extra_4 <- coleo_format_extra_col(df_test_2_extra_cols[4, ], "observations")
+  out_tbl_extra_1 <- coleo_format_extra_col(df_test_2_extra_cols[1, ], "observations")
   exp_json_two_variables <- jsonlite::toJSON(list(taxonomist = list(value = 1), helper = list(value = 1, units = "mm")), auto_unbox = TRUE)
   ### Tests
   testthat::expect_equal(names(out_tbl_extra_4), c("col_1", "observations_extra")) # Expected columns are returned
@@ -66,7 +64,6 @@ test_that("coleo_prep_input_data works as expected", {
     environments_extra_variable_1 = c(rep("wind", 5), NA),
     environments_extra_value_1 = c(1:3, NA, 5:6)
   )
-  is_there_extra <- grepl(paste0("environments_extra"), names(df_test_3_extra))
-  out_tbl_extra_cols_1 <- coleo_format_extra_col(df_test_3_extra[1, ], "environments", extraCols = names(df_test_3_extra)[is_there_extra])
+  out_tbl_extra_cols_1 <- coleo_format_extra_col(df_test_3_extra[1, ], "environments")
   testthat::expect_equal(names(out_tbl_extra_cols_1), c("col_1", "observations_extra_variable_1", "observations_extra_value_1", "environments_extra")) # Returns expected columns
 })

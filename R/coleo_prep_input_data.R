@@ -11,11 +11,8 @@
 #' @export
 coleo_prep_input_data <- function(df, db_table) {
 
-    # Is there extra columns
-  is_there_extra <- grepl(paste0(db_table, "_extra"), names(df))
-  if (any(is_there_extra)) {
-    df <- coleo_format_extra_col(df, db_table, extraCols = names(df)[is_there_extra])
-  }
+  # Format extra columns
+  df <- coleo_format_extra_col(df, db_table)
 
   input_fields <- coleo_return_name_table(db_table)
 
@@ -69,67 +66,71 @@ coleo_prep_input_data <- function(df, db_table) {
 #' @param db_table la table ciblée dans la base de données
 #'
 #' @return un tbl
-coleo_format_extra_col <- function(df, db_table, extraCols) {
+coleo_format_extra_col <- function(df, db_table) {
 
-    df <- tibble::as_tibble(df)
+  # Is there extra columns
+  is_there_extra <- grepl(paste0(db_table, "_extra"), names(df))
+  if (!any(is_there_extra)) return(df)
+  extraCols <- names(df)[is_there_extra]
 
-    df$extra <- jsonlite::toJSON(NA_character_)
+  df <- tibble::as_tibble(df)
 
-     extra_col_groups <- split(extraCols, strsplit(extraCols, "_") |> 
-      purrr::map_chr(tail, 1))
-   
+  df$extra <- jsonlite::toJSON(NA_character_)
 
-    # Rowwise -------------------------------------------------------------
-    for (i in 1:nrow(df)) {
+  extra_col_groups <- split(extraCols, strsplit(extraCols, "_") |>
+    purrr::map_chr(tail, 1))
 
 
-        # Group -----------------------------------------------------------
-        extra_list <- list()
-        j = 1
-        for (extra_group in seq_along(extra_col_groups)) {
+  # Rowwise -------------------------------------------------------------
+  for (i in 1:nrow(df)) {
 
-            # Group
-            group <- unlist(extra_col_groups[extra_group])
 
-            ## Subset df
-            df_group <- df[i, group]
+    # Group -----------------------------------------------------------
+    extra_list <- list()
+    j <- 1
+    for (extra_group in seq_along(extra_col_groups)) {
 
-            ## Select variable
-            variable <-
-                df_group[,grepl(paste0(db_table, "_extra_variable_", extra_group), names(df_group))] |>
-                unlist()
-            if (is.null(variable) | is.na(variable)) next
-            
-            ## Select fields that aren't the variable
-            fields <- stringr::str_split(group, "_", simplify = TRUE)[,3]
-            fields <- fields[!fields %in% "variable"]
+      # Group
+      group <- unlist(extra_col_groups[extra_group])
 
-            ## Select values into a named list
-            values <- df_group[,!grepl("variable", names(df_group))] 
-            list_group <- sapply(values, list)
-            ### Remove NA's
-            is_values_na <- !is.na(list_group)
-            list_group <- list_group[is_values_na]
-            fields <- fields[is_values_na]
-            names(list_group) <- fields
+      ## Subset df
+      df_group <- df[i, group]
 
-            ## Nest variable list
-            ### Skip if empty
-            if(length(list_group) > 0) {
-              extra_list[j] <- list(list_group)
-              names(extra_list)[j] <- variable
+      ## Select variable
+      variable <-
+        df_group[, grepl(paste0(db_table, "_extra_variable_", extra_group), names(df_group))] |>
+        unlist()
+      if (is.null(variable) | is.na(variable)) next
 
-              j = j + 1
-            }
-        }
+      ## Select fields that aren't the variable
+      fields <- stringr::str_split(group, "_", simplify = TRUE)[, 3]
+      fields <- fields[!fields %in% "variable"]
 
-        df$extra[i] <- jsonlite::toJSON(extra_list, auto_unbox = TRUE)
+      ## Select values into a named list
+      values <- df_group[, !grepl("variable", names(df_group))]
+      list_group <- sapply(values, list)
+      ### Replace NA's with nulls
+      is_values_na <- is.na(list_group)
+      list_group[is_values_na] <- ""
+      names(list_group) <- fields
+
+      ## Nest variable list
+      ### Skip if empty
+      if (length(list_group) > 0) {
+        extra_list[j] <- list(list_group)
+        names(extra_list)[j] <- variable
+
+        j <- j + 1
+      }
     }
 
+    df$extra[i] <- jsonlite::toJSON(extra_list, auto_unbox = TRUE)
+  }
 
-    # Clean df
-    names(df)[grepl("^extra$", names(df))] <- paste0(db_table, "_extra")
-    out <- df[,!grepl(paste0(db_table, "_extra_"), names(df))]
 
-    return(out)
+  # Clean df
+  names(df)[grepl("^extra$", names(df))] <- paste0(db_table, "_extra")
+  out <- df[, !grepl(paste0(db_table, "_extra_"), names(df))]
+
+  return(out)
 }
