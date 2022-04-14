@@ -50,19 +50,16 @@ coleo_inject_general_df <- function(df_one_row, endpoint){
   # if there is a nested list, flatten.
     # this is a workaround for the behaviour of rowwise() when dealing with list-columns
     # Injections in coleo will be rejected if nested lists containing a single object are flattened
-    # Nested lists containing more than one object need to be flattened
-  if (any(names(df_one_row_ls) == "geom")) {
-    df_one_row_ls$geom <- df_one_row_ls$geom[[1]]
+    # Technicians nested lists containing more than one object need to be flattened
+  if (any(names(df_one_row_ls) %in% "technicians")) {
+        n_techs <- df_one_row_ls["technicians"][[1]][[1]] |> length()
+    if (n_techs > 1) {
+      df_one_row_ls["technicians"] <- df_one_row_ls["technicians"][[1]]
+    }
   }
-
-  is_list <- sapply(df_one_row_ls, is.list)
-  for (col in which(is_list)) {
-
-    if (names(df_one_row_ls)[col] == "geom") next
-
-    n_objects <- df_one_row_ls[col][[1]][[1]] |> length()
-    if (n_objects < 2) next else df_one_row_ls[col] <- df_one_row_ls[col][[1]]
-  }
+    if (any(names(df_one_row_ls) %in% "geom")) {
+      df_one_row_ls["geom"] <- df_one_row_ls["geom"][[1]]
+    }
 
   df_one_row_ls$data <- NULL
   endpt <- rcoleo:::endpoints()[[endpoint]]
