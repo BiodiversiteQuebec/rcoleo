@@ -217,8 +217,9 @@ This vignette will show how to inject fake soil insect data, which will allow us
 1. landmarks
 1. samples
 1. observations
-1. obs_species
 1. ref_species
+1. obs_species
+
 
 We start with some fake campaign information. This dataset contains ALL the columns we need to inject all the tables mentioned above.
 
