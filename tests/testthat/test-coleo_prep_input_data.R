@@ -16,10 +16,12 @@ test_that("coleo_prep_input_data works as expected", {
 
   expect_s3_class(nested_df, "rowwise_df")
 
-  # campaign test should work too -- pointless with this data, since it has no site_id
+  # campaign test should work too -- Should add site_id column
   nested_camps <- coleo_prep_input_data(fake_pap_data, "campaigns")
 
   expect_s3_class(nested_camps, "rowwise_df")
+
+  expect_equal(names(nested_camps), c("site_id", "type", "data"))
 
   # Test extra columns
   ## Tests that an extra column is returned when there is columns table_extra_xxx

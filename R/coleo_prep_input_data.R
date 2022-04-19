@@ -7,6 +7,18 @@
 #' @export
 coleo_prep_input_data <- function(df, db_table) {
 
+  # Add site_id to campaigns table
+  if (db_table == "campaigns") {
+    df <- df |>
+      dplyr::nest_by(sites_site_code) |>
+      dplyr::mutate(coleo_id = list(coleo_request_by_code(human_code = sites_site_code, table = "sites")),
+            site_id = coleo_extract_id(coleo_id)) |>
+      dplyr::select(-sites_site_code, -coleo_id) |>
+      dplyr::relocate(site_id) |>
+      tidyr::unnest(cols = c(data)) |>
+      dplyr::ungroup()
+  }
+
   # Format extra columns
   df <- coleo_format_extra_col(df, db_table)
 

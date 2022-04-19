@@ -249,20 +249,7 @@ In a real workflow, a validation step will confirm that all of the above points 
 
 ### Data preparation
 
-First we need to obtain the database ID for site. The process is the same as above:
-
-```{r get-site-id}
-site_id_imaginary <- imaginary_insects |> 
-  rowwise() |> 
-  mutate(coleo_id = list(coleo_request_by_code(human_code = sites_site_code, table = "sites")),
-         site_id = coleo_extract_id(coleo_id)) |> 
-  select(-sites_site_code, -coleo_id) |> 
-  dplyr::relocate(site_id)
-```
-
-This code queries the database for the site_id, then removes the site code.
-
-Now we use `coleo_prep_input_data` to prepare the campaign data
+First we use `coleo_prep_input_data` to prepare the campaign data
 
 ```{r}
 camp_prep_imaginary <- coleo_prep_input_data(site_id_imaginary, db_table = "campaigns")
