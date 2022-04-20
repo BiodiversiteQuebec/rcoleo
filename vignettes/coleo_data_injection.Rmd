@@ -164,32 +164,16 @@ imaginary_sites <- tibble::tribble(
 
 We begin by preparing the dataset for injection. 
 
-First, we obtain the cell ID. We need the cell ID, and not the cell_code, so we have to query the database to obtain it.
+First, we format the data for injection:
 
 ```{r}
-imaginary_sites_cellID <- imaginary_sites |> 
-  mutate(cell_resp = list(coleo_request_by_code(cell_code, table = "cells")),
-         cell_id = coleo_extract_id(cell_resp)) 
-
-imaginary_sites_cellID
-```
-
-this code does two things:
-
-1. request the cell information using the `cell_code`. We do this with a convenience function called `coleo_request_by_code`. This function can take a "human readable" code and return the database record for that observation.
-1. extract the code as a numeric variable.
-
-Now that we have the `cell_id` we can drop the `cell_code` and the `cell_resp` column. We can also format the data for injection:
-
-```{r}
-imaginary_sites_for_injection <- imaginary_sites_cellID |> 
-  select(-cell_code, -cell_resp) |> 
+imaginary_sites_for_injection <- imaginary_sites |>
   coleo_prep_input_data(db_table = "sites")
 
 imaginary_sites_for_injection
 ```
 
-the function `coleo_prep_input_data` has automaticaly renamed the columns, reformatted the spatial information, and nested any unnecessary columns as "data".
+the function `coleo_prep_input_data` has automaticaly obtained cell ID and removed the cell_code, renamed the columns, reformatted the spatial information, and nested any unnecessary columns as "data".
 
 Now we prepare the injection request, inspect them, and inject them:
 
