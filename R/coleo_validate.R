@@ -38,8 +38,13 @@ coleo_validate <- function(data) {
   tbl <- coleo_return_cols(campaign_type)
   class_of_col <- sapply(valid_cols, function(x) {
     class_of_col_values <- sapply(data[,x], function(col_class) {
-      class(col_class) == tbl$classe[[which(tbl$noms_de_colonnes==x)]]
-      })
+      expected_class <- tbl$classe[[which(tbl$noms_de_colonnes==x)]]
+      if (expected_class == "integer") {
+        col_class %% 1 == 0
+      } else {
+        class(col_class) == expected_class
+      }
+    })
     all(class_of_col_values)
   })
 
