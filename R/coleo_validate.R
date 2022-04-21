@@ -7,25 +7,28 @@
 #'
 coleo_validate <- function(data) {
 
+  # Increase default warning message length
+  options(warning.length = 2000L)
+
   # Check that there is a campaign type column and that it contains a unique value
-  if(!assertthat::has_name(data, "campaigns_type")) stop("Vérifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond à campaigns_type \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n")
+  if(!assertthat::has_name(data, "campaigns_type")) stop("Vérifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond à campaigns_type \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n\n")
 
   campaign_type <- unique(data$campaigns_type)
   campaigns <- coleo_return_valid_campaigns()
-  if(!(length(campaign_type) == 1 && campaign_type %in% campaigns)) stop("Vérifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n")
+  if(!(length(campaign_type) == 1 && campaign_type %in% campaigns)) stop("Vérifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n\n")
 
   # Check that the imported data has all of the required columns
   ## compare required column names to present columns
   req_columns <- coleo_return_required_cols(campaign_type)$noms_de_colonnes
   req_col_diff <- setdiff(req_columns, names(data))
   ## Return warning if there's a mismatch
-  if(length(req_col_diff) != 0) warning("Vérifiez que les bons noms de colonnes sont utilisés et que toutes les colonnes requises sont présentes. Les colonnes requises sont : \n", paste0(req_columns, collapse = ", "), "\n\nLes colonnes absentes sont : \n", paste0(req_col_diff, collapse = ", "), "\n")
+  if(length(req_col_diff) != 0) warning("Vérifiez que les bons noms de colonnes sont utilisés et que toutes les colonnes requises sont présentes. Les colonnes requises sont : \n", paste0(req_columns, collapse = ", "), "\n\nLes colonnes absentes sont : \n", paste0(req_col_diff, collapse = ", "), "\n\n")
 
   # Check that all input columns are valid column names
   columns <- coleo_return_cols(campaign_type)$noms_de_colonnes
   possible_col_diff <- setdiff(names(data), columns)
 
-  if(length(possible_col_diff) != 0) warning("Vérifiez que les bons noms de colonnes sont utilisés et que les colonnes superflues sont retirées. Les colonnes valides peuvent être : \n", paste0(columns, collapse = ", "), "\n\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n")
+  if(length(possible_col_diff) != 0) warning("Vérifiez que les bons noms de colonnes sont utilisés et que les colonnes superflues sont retirées. Les colonnes valides peuvent être : \n", paste0(columns, collapse = ", "), "\n\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n\n")
 
   # Check that input column types are valid
   dat_names <- names(data)
@@ -42,7 +45,7 @@ coleo_validate <- function(data) {
 
   ## Are all input columns of the right class?
   erroneous_cols <- dat_names[!class_of_col]
-  if(!all(class_of_col)) warning("Vérifiez la classe des colonnes. Ces colonnes sont problématiques : \n", paste0(erroneous_cols, collapse = ", "), "\n")
+  if(!all(class_of_col)) warning("Vérifiez la classe des colonnes. Ces colonnes sont problématiques : \n", paste0(erroneous_cols, collapse = ", "), "\n\n")
 
   # Check that the range of values contained within input columns are valid
   tbl_with_legal_values <- subset(tbl, !is.na(valeurs_acceptees))
@@ -58,7 +61,7 @@ coleo_validate <- function(data) {
   names(cols_valid_values) <- tbl$noms_de_colonnes[invalid_cols]
   col_names <- tbl$noms_de_colonnes[invalid_cols]
 
-  if(!all(valid_col_values)) warning("Vérifiez les valeurs contenues dans les colonnes. Ces colonnes contiennent des valeurs invalides : \n", paste0(col_names, collapse = ", "), "\n\nLes valeurs possibles pour ces colonnes sont : \n", paste0(col_names, ": ", cols_valid_values, collapse = "\n"), "n")
+  if(!all(valid_col_values)) warning("Vérifiez les valeurs contenues dans les colonnes. Ces colonnes contiennent des valeurs invalides : \n", paste0(col_names, collapse = ", "), "\n\nLes valeurs possibles pour ces colonnes sont : \n", paste0(col_names, ": ", cols_valid_values, collapse = "\n"), "\n\n")
 
   # Check that variable field of obs_species table is valid
   if("obs_species_variable" %in% dat_names) {
@@ -66,7 +69,7 @@ coleo_validate <- function(data) {
     possible_vars <- coleo_get_attributes_table(column = "variable")
     are_vars_valid <- all(var %in% possible_vars)
 
-    if(!are_vars_valid) warning("Vérifiez les valeurs ", dput(var[!var %in% possible_vars]), " de la colonne obs_species_variable ou injectez ces valeurs dans la table attributes. Cette colonne contient une valeur qui n'est pas une valeur de la table attributes")
+    if(!are_vars_valid) warning("Vérifiez les valeurs ", dput(var[!var %in% possible_vars]), " de la colonne obs_species_variable ou injectez ces valeurs dans la table attributes. Cette colonne contient une valeur qui n'est pas une valeur de la table attributes\n\n")
   }
 
   # Check that the format of the input column date is valid
@@ -81,14 +84,19 @@ coleo_validate <- function(data) {
   if(length(cols_date) > 0) {
 
     ## Check that the year contains 4 digits, the month 2, and the day 2
+    na_in_dates <- c(FALSE)
     cols_ndigits <- sapply(cols_date, function(x) {
       split <- strsplit(unlist(data[,x]), "-", fixed = TRUE)
+      na <- is.na(split)
+      na_in_dates <- c(na_in_dates, any(na))
+      split <- split[!na]
       date_ndigits <- sapply(split, nchar)
       all(date_ndigits[1,] == 4, date_ndigits[2,] == 2, date_ndigits[3,] == 2)
     })
     is_ndigits_valid <- all(cols_ndigits)
+    is_na <- any(na_in_dates)
 
-    if(!is_ndigits_valid) warning("Vérifiez le format des valeurs de dates. Les dates doivent etre du format YYYY-MM-DD.\n")
+    if(!is_ndigits_valid | is_na) warning("Vérifiez le format des valeurs de dates. Les dates doivent etre du format YYYY-MM-DD.\n\n")
   }
 
 ## Check that the values are within a decent range
@@ -96,23 +104,26 @@ if(length(cols_date) > 0) {
   ### Year
   range_year <- sapply(data[cols_date], function(x) {
     split <- strsplit(unlist(x), "-", fixed = TRUE)
+    split <- split[!is.na(split)]
     range(as.numeric(sapply(split, `[[`, 1)))
   }) |>
     range()
   ### Month
   range_month <- sapply(data[cols_date], function(x) {
     split <- strsplit(unlist(x), "-", fixed = TRUE)
+    split <- split[!is.na(split)]
     range(as.numeric(sapply(split, `[[`, 2)))
   }) |>
     range()
   ### Day
   range_day <- sapply(data[cols_date], function(x) {
     split <- strsplit(unlist(x), "-", fixed = TRUE)
+    split <- split[!is.na(split)]
     range(as.numeric(sapply(split, `[[`, 3)))
   }) |>
     range()
 
-  message(paste0("Dernière étape ! \nVérifiez que l'intervalle des dates injectées correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ",")," se trouvent dans l'intervalle de l'année ", range_year[1], " à ", range_year[2], " du mois ", range_month[1], " à ", range_month[2], " et du jour ", range_day[1], " à ", range_day[2], "\n\nSi les dates sont bonnes et qu'aucun autre message n'apparait, vous pouvez procéder à l'injection des données"))
+  message(paste0("Dernière étape ! \nVérifiez que l'intervalle des dates injectées correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ",")," se trouvent dans l'intervalle de l'année ", range_year[1], " à ", range_year[2], " du mois ", range_month[1], " à ", range_month[2], " et du jour ", range_day[1], " à ", range_day[2], "\n\nSi les dates sont bonnes et qu'aucun autre message n'apparait, vous pouvez procéder à l'injection des données\n\n==================================================\n"))
 }
 
 # Check that the format of the input column containing time is valid
