@@ -77,6 +77,35 @@ coleo_validate <- function(data) {
     if(!are_vars_valid) warning("Vérifiez les valeurs ", dput(var[!var %in% possible_vars]), " de la colonne obs_species_variable ou injectez ces valeurs dans la table attributes. Cette colonne contient une valeur qui n'est pas une valeur de la table attributes\n\n")
   }
 
+  # Check that the format of the input column containing time is valid
+  ## Function to test digits number
+  time_digits <- function(time_ndigits) {
+    all(time_ndigits[1,] == 2, time_ndigits[2,] == 2, time_ndigits[3,] == 2)
+  }
+  possibly_time_digits <- purrr::possibly(time_digits, otherwise = FALSE)
+  ## Identify columns containing time
+    cols_time_name <- tbl$noms_de_colonnes[
+      grepl("time", tbl$noms_de_colonnes, fixed = TRUE)]
+    cols_time <- cols_time_name[cols_time_name %in% dat_names]
+
+  if (length(cols_time) > 0) {
+
+    ## Check time format (HH:MM:SS)
+    na_in_time <- c(FALSE)
+    cols_format <- sapply(cols_time, function(x) {
+      split <- strsplit(unlist(data[,x]), ":", fixed = TRUE)
+      na <- is.na(split)
+      na_in_time <- c(na_in_time, any(na))
+      split <- split[!na]
+      time_ndigits <- sapply(split, nchar)
+      possibly_time_digits(time_ndigits)
+    })
+    is_time_format <- all(cols_format)
+    is_time_na <- any(na_in_time)
+
+    if(!is_time_format | is_time_na) warning("Vérifiez le format des valeurs d'heure. L'heure doit etre du format \"HH:MM:SS\".\n\n")
+  }
+
   # Check that the format of the input column date is valid
 
   ## Identify columns containing dates
@@ -104,33 +133,30 @@ coleo_validate <- function(data) {
     if(!is_ndigits_valid | is_na) warning("Vérifiez le format des valeurs de dates. Les dates doivent etre du format YYYY-MM-DD.\n\n")
   }
 
-## Check that the values are within a decent range
-if(length(cols_date) > 0) {
-  ### Year
-  range_year <- sapply(data[cols_date], function(x) {
-    split <- strsplit(unlist(x), "-", fixed = TRUE)
-    split <- split[!is.na(split)]
-    range(as.numeric(sapply(split, `[[`, 1)))
-  }) |>
-    range()
-  ### Month
-  range_month <- sapply(data[cols_date], function(x) {
-    split <- strsplit(unlist(x), "-", fixed = TRUE)
-    split <- split[!is.na(split)]
-    range(as.numeric(sapply(split, `[[`, 2)))
-  }) |>
-    range()
-  ### Day
-  range_day <- sapply(data[cols_date], function(x) {
-    split <- strsplit(unlist(x), "-", fixed = TRUE)
-    split <- split[!is.na(split)]
-    range(as.numeric(sapply(split, `[[`, 3)))
-  }) |>
-    range()
+  ## Check that the values are within a decent range
+  if(length(cols_date) > 0) {
+    ### Year
+    range_year <- sapply(data[cols_date], function(x) {
+      split <- strsplit(unlist(x), "-", fixed = TRUE)
+      split <- split[!is.na(split)]
+      range(as.numeric(sapply(split, `[[`, 1)))
+    }) |>
+      range()
+    ### Month
+    range_month <- sapply(data[cols_date], function(x) {
+      split <- strsplit(unlist(x), "-", fixed = TRUE)
+      split <- split[!is.na(split)]
+      range(as.numeric(sapply(split, `[[`, 2)))
+    }) |>
+      range()
+    ### Day
+    range_day <- sapply(data[cols_date], function(x) {
+      split <- strsplit(unlist(x), "-", fixed = TRUE)
+      split <- split[!is.na(split)]
+      range(as.numeric(sapply(split, `[[`, 3)))
+    }) |>
+      range()
 
-  message(paste0("Dernière étape ! \nVérifiez que l'intervalle des dates injectées correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ",")," se trouvent dans l'intervalle de l'année ", range_year[1], " à ", range_year[2], " du mois ", range_month[1], " à ", range_month[2], " et du jour ", range_day[1], " à ", range_day[2], "\n\nSi les dates sont bonnes et qu'aucun autre message n'apparait, vous pouvez procéder à l'injection des données\n\n==================================================\n"))
-}
-
-# Check that the format of the input column containing time is valid
-
+    message(paste0("Dernière étape ! \nVérifiez que l'intervalle des dates injectées correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ",")," se trouvent dans l'intervalle de l'année ", range_year[1], " à ", range_year[2], " du mois ", range_month[1], " à ", range_month[2], " et du jour ", range_day[1], " à ", range_day[2], "\n\nSi les dates sont bonnes et qu'aucun autre message n'apparait, vous pouvez procéder à l'injection des données\n\n==================================================\n"))
+  }
 }
