@@ -32,7 +32,9 @@ coleo_prep_input_data <- function(df, db_table) {
       dplyr::ungroup()
 
     ## Format technicians
-    
+    if(class(df$campaigns_technicians) != "list"){
+    df$campaigns_technicians <- stringr::str_split(df$campaigns_technicians, ", ")
+    }
   }
 
   # Format extra columns
