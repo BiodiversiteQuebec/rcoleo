@@ -41,7 +41,9 @@ coleo_validate <- function(data) {
       expected_class <- tbl$classe[[which(tbl$noms_de_colonnes==x)]]
       if (expected_class == "integer") {
         col_class %% 1 == 0
-      } else {
+      } else if (expected_class == "list") {
+        class(data[,x][[1]]) == "list" # Workaround issues for items within lists being characters - Only asses class at the column scale
+      }else {
         class(col_class) == expected_class
       }
     })

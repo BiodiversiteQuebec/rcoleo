@@ -80,9 +80,16 @@ coleo_return_cols <- function(campaign_type, required.columns = FALSE) {
                                  df$classe == "date" |
                                  df$classe == "timestamp" |
                                  df$classe == "timestamp with time zone" |
-                                 df$classe == "time without time zone" |
-                                 df$classe == "ARRAY")
+                                 df$classe == "time without time zone")
   df$classe[change_to_character] <- "character"
+
+  # ARRAY -> list
+  change_to_list <- which(df$classe == "ARRAY")
+  df$classe[change_to_list] <- "list"
+  
+  # Environments_ wind and environments_sky are integers
+  sky_and_wind <- which(df$noms_de_champs == "sky" | df$noms_de_champs == "wind")
+  df$classe[sky_and_wind] <- "integer"
 
   # geom -> lat / lon (character())
   geom_cols <- which(df$noms_de_champs == "geom")

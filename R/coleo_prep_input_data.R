@@ -10,17 +10,18 @@ coleo_prep_input_data <- function(df, db_table) {
   # Add cell_id to sites table
   if (db_table == "sites") {
     df <- df |>
-      dplyr::nest_by(cell_code) |>
-      dplyr::mutate(coleo_id = list(coleo_request_by_code(human_code = cell_code, table = "cells")),
+      dplyr::nest_by(cells_cell_code) |>
+      dplyr::mutate(coleo_id = list(coleo_request_by_code(human_code = cells_cell_code, table = "cells")),
             cell_id = coleo_extract_id(coleo_id)) |>
-      dplyr::select(-cell_code, -coleo_id) |>
+      dplyr::select(-cells_cell_code, -coleo_id) |>
       dplyr::relocate(cell_id) |>
       tidyr::unnest(cols = c(data)) |>
       dplyr::ungroup()
   }
 
-  # Add site_id to campaigns table
+  # Campaigns table specific manipulations
   if (db_table == "campaigns") {
+    ## Add site_id to campaigns table
     df <- df |>
       dplyr::nest_by(sites_site_code) |>
       dplyr::mutate(coleo_id = list(coleo_request_by_code(human_code = sites_site_code, table = "sites")),
@@ -29,6 +30,9 @@ coleo_prep_input_data <- function(df, db_table) {
       dplyr::relocate(site_id) |>
       tidyr::unnest(cols = c(data)) |>
       dplyr::ungroup()
+
+    ## Format technicians
+    
   }
 
   # Format extra columns
