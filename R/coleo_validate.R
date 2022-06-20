@@ -28,6 +28,10 @@ coleo_validate <- function(data) {
   columns <- coleo_return_cols(campaign_type)$noms_de_colonnes
   possible_col_diff <- setdiff(names(data), columns)
 
+  ## Accept colnames that contains "extra" in it - extra columns
+  which_extra <- grepl("extra", possible_col_diff)
+  possible_col_diff <- possible_col_diff[!which_extra]
+
   if(length(possible_col_diff) != 0) warning("Vérifiez que les bons noms de colonnes sont utilisés et que les colonnes superflues sont retirées. Les colonnes valides peuvent être : \n", paste0(columns, collapse = ", "), "\n\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n\n")
 
   # Check that input column types are valid
@@ -159,6 +163,6 @@ coleo_validate <- function(data) {
     }) |>
       range()
 
-    message(paste0("Dernière étape ! \nVérifiez que l'intervalle des dates injectées correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ",")," se trouvent dans l'intervalle de l'année ", range_year[1], " à ", range_year[2], " du mois ", range_month[1], " à ", range_month[2], " et du jour ", range_day[1], " à ", range_day[2], "\n\nSi les dates sont bonnes et qu'aucun autre message n'apparait, vous pouvez procéder à l'injection des données\n\n==================================================\n"))
+    message(paste0("Dernière étape ! \nVérifiez que l'intervalle des dates injectées correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", ")," se trouvent dans l'intervalle de l'année ", range_year[1], " à ", range_year[2], " du mois ", range_month[1], " à ", range_month[2], " et du jour ", range_day[1], " à ", range_day[2], "\n\nSi les dates sont bonnes et qu'aucun autre message n'apparait, vous pouvez procéder à l'injection des données\n\n==================================================\n"))
   }
 }
