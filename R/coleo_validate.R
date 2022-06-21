@@ -42,12 +42,24 @@ coleo_validate <- function(data) {
   tbl <- coleo_return_cols(campaign_type)
   class_of_col <- sapply(valid_cols, function(x) {
     class_of_col_values <- sapply(data[,x], function(col_class) {
-      expected_class <- tbl$classe[[which(tbl$noms_de_colonnes==x)]]
+      expected_class <- tbl$classe[[which(tbl$noms_de_colonnes == x)]]
+      ## If an integer, check that it is a full number
       if (expected_class == "integer") {
         col_class %% 1 == 0
       } else if (expected_class == "list") {
-        class(data[,x][[1]]) == "list" # Workaround issues for items within lists being characters - Only asses class at the column scale
-      }else {
+        ## Check if column is a list
+        if (class(data[,x][[1]]) == "list") { # Workaround issues for items within lists being characters - Only asses class at the column scale
+          TRUE
+        } else {
+          ## If not a list, check if there is commas, and if there is none, accept characters
+          is_there_comas <- sapply(col_class, function(value) grepl(",", value)) |> any()
+          if (is_there_comas) {
+            FALSE
+          } else {
+            class(data[,x][[1]]) == "character"
+          }
+        }
+      } else {
         class(col_class) == expected_class
       }
     })
