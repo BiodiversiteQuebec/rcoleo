@@ -61,6 +61,13 @@ test_that("coleo_validate", {
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez les valeurs contenues dans les colonnes.*")
 
+  ## Test that the format of time respects the HH:MM:SS convention
+  dat_test <- dat
+  dat_test$observations_time_obs <- "95-05-15"
+
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "Vérifiez le format des valeurs d'heure*")
+
   ## Test that date format respects the YYYY-MM-DD convention
   dat_test <- dat
   dat_test$observations_date_obs <- "95-05-15"

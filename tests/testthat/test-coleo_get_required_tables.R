@@ -8,6 +8,6 @@ test_that("coleo_get_required_tables makes a table", {
   table_classes <- sapply(nm_tbl, class)
 
   expect_equal(unname(table_classes),
-               c("character", rep("numeric", 14)))
+               c("character", rep("numeric", 16)))
 
 })

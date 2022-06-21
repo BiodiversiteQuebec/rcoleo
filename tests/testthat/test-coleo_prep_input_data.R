@@ -1,14 +1,14 @@
 test_that("coleo_prep_input_data works as expected", {
   fake_pap_data <-
     tibble::tribble(
-      ~sites_site_code, ~type_hab, ~sites_lat, ~sites_lon, ~sites_opened_at, ~sites_closed_at, ~campaigns_type, ~campaigns_technician, ~temp_c, ~sky, ~wind, ~category, ~vernacular_fr, ~ref_taxa_rank, ~ref_taxa_taxa_name, ~ref_taxa_abondance, ~ref_taxa_tsn, ~observations_extra_variable_1, ~observations_extra_description_1, ~observations_extra_value_1, ~observations_extra_units_1,
+      ~sites_site_code, ~sites_type_hab, ~sites_lat, ~sites_lon, ~campaigns_opened_at, ~campaigns_closed_at, ~campaigns_type, ~campaigns_technicians, ~environments_temp_c, ~environments_sky, ~environments_wind, ~ref_species_category, ~ref_species_vernacular_fr, ~ref_species_taxa_rank, ~ref_species_taxa_name, ~obs_species_abondance, ~ref_taxa_tsn, ~observations_extra_variable_1, ~observations_extra_description_1, ~observations_extra_value_1, ~observations_extra_units_1,
       "131_120_H01", "tourbière", 48.57094, -70.86202, "2018-07-05", "2018-07-05", "papillonidés", "Ariel Ferland-Roy", "32", "1", "3", "arthropodes", "croissant nordique", "espèce", "Phyciodes cocyta", 1, NA, "longueur_poisson", "Longueur du poisson", 10, "cm",
       "136_95_H01", "tourbière", 45.99011, -73.30001, "2018-06-26", "2018-06-26", "papillonidés", "Virginie Boivin", "24", "1", "3", "arthropodes", "NA", "genre", "Crambus", 1, NA, "longueur_poisson", "Longueur du poisson", 12, "cm",
       "136_116_H01", "tourbière", 47.60274, -70.97671, "2018-07-13", "2018-07-13", "papillonidés", "Adine Seguin", "22", "2", "4", "arthropodes", "coliade intérieur", "espèce", "Colias interior", 1, NA, "longueur_poisson", "Longueur du poisson", 11.045, "cm"
     )
 
 
-  nested_df <- coleo_prep_input_data(fake_pap_data, "sites")
+  nested_df <- coleo_prep_input_data(fake_pap_data, "campaigns")
 
   expect_equal(nrow(nested_df), 3)
 
@@ -16,12 +16,7 @@ test_that("coleo_prep_input_data works as expected", {
 
   expect_s3_class(nested_df, "rowwise_df")
 
-  # campaign test should work too -- Should add site_id column
-  nested_camps <- coleo_prep_input_data(fake_pap_data, "campaigns")
-
-  expect_s3_class(nested_camps, "rowwise_df")
-
-  expect_equal(names(nested_camps), c("site_id", "type", "data"))
+  expect_equal(names(nested_df), c("site_id", "type", "technicians", "opened_at", "closed_at", "data"))
 
   # Test extra columns
   ## Tests that an extra column is returned when there is columns table_extra_xxx
