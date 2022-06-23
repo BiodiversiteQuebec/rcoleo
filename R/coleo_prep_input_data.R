@@ -7,6 +7,9 @@
 #' @export
 coleo_prep_input_data <- function(df, db_table) {
 
+  # Convert character NAs to actual NAs
+  df[df == "NA"] <- NA
+
   # Add cell_id to sites table
   if (db_table == "sites") {
     df <- df |>
