@@ -143,6 +143,24 @@ coleo_validate <- function(data) {
 
 
   #------------------------------------------------------------------------
+  # Check that complexes of species are correctly formated
+  #------------------------------------------------------------------------
+  is_complexes <- grepl("|", data$obs_species_taxa_name) |> which()
+  if(!length(is_complexes) == 0) {
+    cplx_valid <-sapply(data$obs_species_taxa_name[is_complexes], function(cplx) {
+      cplx_split <- strsplit(cplx, "|", fixed = TRUE) |> 
+        unlist() |>
+        stringr::str_trim()
+      cplx_formated <- paste(cplx_split, collapse = " | ")
+      identical(cplx, cplx_formated)
+    })
+
+    if(!all(cplx_valid)) warning("Vérifiez le format des complexes d'espèces : certain complexes sont incorrectement formatés. Les taxons composants le complexe doivent être séparés par une barre verticale flanquée d'un espace de chaque côté \" | \". Exemple : \"Acer saccharum | Acer negundo\"\n\n")
+
+  }
+
+
+  #------------------------------------------------------------------------
   # Check that variable field of obs_species table is valid
   #------------------------------------------------------------------------
   if("obs_species_variable" %in% dat_names) {
