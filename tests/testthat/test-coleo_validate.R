@@ -5,15 +5,15 @@ dat <- data.frame(stringsAsFactors = FALSE,
                   sites_site_code = c("139_87_F01", "139_87_F01","139_87_F01","139_87_F01","139_87_F01", "139_87_F01"),
                   campaigns_type = c("insectes_sol", "insectes_sol","insectes_sol","insectes_sol","insectes_sol","insectes_sol"),
                   samples_sample_code = c("2018-0108","2018-0108", "2018-0108","2018-0108","2018-0108","2018-0108"),
-                  observations_date_obs = c("2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24"),
+                  observations_date_obs = c(NA, "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24"),
                   campaigns_opened_at = c("2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24"),
-                  observations_is_valid = c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE),
-                  obs_species_taxa_name = c("Agroeca_ornata", "Camponotus_pennsylvanicus","Ceraticelus_laetabilis","Insecta","Insecta","Trochosa_terricola"),
-                  obs_species_variable = c("abondance", "abondance","abondance","abondance","abondance","abondance"),
-                  obs_species_value = c(4, 2, 2, 1, 4, 1),
-                  ref_species_rank = c("espèce","espèce","espèce","espèce","espèce","espèce"),
-                  ref_species_name = c("Agroeca_ornata", "Camponotus_pennsylvanicus","Ceraticelus_laetabilis","Insecta","Insecta","Trochosa_terricola"),
-                  ref_species_tsn = c(1:6))
+                  observations_is_valid = c(NA, TRUE, TRUE, TRUE, TRUE, TRUE),
+                  obs_species_taxa_name = c(NA, "Camponotus pennsylvanicus","Ceraticelus laetabilis","Insecta","Insecta","Trochosa terricola"),
+                  obs_species_variable = c(NA, "abondance","abondance","abondance","abondance","abondance"),
+                  obs_species_value = c(NA, 2, 2, 1, 4, 1),
+                  ref_species_rank = c(NA,"espèce","espèce","espèce","espèce","espèce"),
+                  ref_species_name = c(NA, "Agroeca ornata | Camponotus pennsylvanicus","Ceraticelus laetabilis","Insecta","Insecta","Trochosa terricola"),
+                  ref_species_tsn = c(NA, 1:5))
 
 
 # Tests
@@ -47,6 +47,15 @@ test_that("coleo_validate", {
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez la classe des colonnes.*")
 
+  ## Test that all campaigns without observations have all fields of 
+  ## taxonomic level equal to or inferior to the observation are NA in 
+  ## "empty" campaigns
+  dat_test <- dat
+  dat_test$ref_species_rank[1] <- "espèce"
+
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "Vérifiez les lignes sans observation.*")
+
   ## Test that variable field of obs_species table is valid (obs_species_variable column)
   dat_test <- dat
   dat_test$obs_species_variable <- "abundance"
@@ -60,6 +69,14 @@ test_that("coleo_validate", {
 
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez les valeurs contenues dans les colonnes.*")
+
+  ## Check that complexes of species are correctly formated
+  dat_test <- dat
+  dat_test$obs_species_taxa_name[2] <- "Agroeca ornata |Camponotus pennsylvanicus"
+  dat_test$ref_species_name = dat_test$obs_species_taxa_name
+
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "Vérifiez le format des complexes d'espèces :*")
 
   ## Test that the format of time respects the HH:MM:SS convention
   dat_test <- dat
