@@ -85,7 +85,7 @@ coleo_validate <- function(data) {
         class(col_class) == expected_class
       }
     })
-    all(class_of_col_values)
+    all(class_of_col_values, na.rm = TRUE)
   })
 
   # Are all input columns of the right class? -----------------------------
@@ -107,15 +107,13 @@ coleo_validate <- function(data) {
   no_obs <- 0
   for (row in 1:nrow(data)) {
     is_obs_na <- data$obs_species_taxa_name[row] |> is.na()
-    if(is_obs_na) no_obs <- no_obs + 1
     ## If no observation, then all fields of taxonomic level equal or lower to the observation need to be NA
     if(is_obs_na) {
+      no_obs <- no_obs + 1
       is_row_na <- data[row,na_cols] |> is.na() |> all()
-    } else {
-      is_row_na <- FALSE
+      # Save results --------------------------------------------------------
+      if(!is_row_na) row_not_empty <- c(row_not_empty, row)
     }
-    # Save results --------------------------------------------------------
-    if(!is_row_na) row_not_empty <- c(row_not_empty, row)
   }
 
   if(!is.null(row_not_empty)) warning(paste0("Vérifiez les lignes sans observation. Les champs qui décrivent le jeu de données, la localisation de l\'échantillonnage et les détails sur la campagne d'échantillonnage doivent être remplis, mais tous les autres champs qui décrivent l\'observation doivent être laissés vide.\n\n"))
