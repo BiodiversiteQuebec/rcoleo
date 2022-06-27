@@ -22,6 +22,7 @@ coleo_validate <- function(data) {
   campaigns <- coleo_return_valid_campaigns()
   if(!(length(campaign_type) == 1 && campaign_type %in% campaigns)) stop("Vérifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n\n")
 
+
   #------------------------------------------------------------------------
   # Check that the imported data has all of the required columns
   #------------------------------------------------------------------------
@@ -91,6 +92,18 @@ coleo_validate <- function(data) {
   # Are all input columns of the right class? -----------------------------
   erroneous_cols <- dat_names[!class_of_col]
   if(!all(class_of_col)) warning("Vérifiez la classe des colonnes. Ces colonnes sont problématiques : \n", paste0(erroneous_cols, collapse = ", "), "\n\n")
+
+
+  #------------------------------------------------------------------------
+  # Check that all sites exists in coleo
+  #------------------------------------------------------------------------
+  existing_sites <- get_gen(endpoint = "/sites")$body |>
+      dplyr::bind_rows()
+  are_sites_exists <- all(unique(data$sites_site_code) %in% existing_sites$site_code)
+  # Missing sites ---------------------------------------------------------
+  sites_x <- which(!unique(data$sites_site_code) %in% existing_sites$site_code)
+
+  if(!are_sites_exists) warning("Vérifiez les sites ", dput(unique(data$sites_site_code)[sites_x]), " de la colonne sites_site_code ou injectez ces sites dans la table sites de coleo. Cette colonne contient des sites qui n'existent pas dans coleo.\n\n")
 
 
   #------------------------------------------------------------------------

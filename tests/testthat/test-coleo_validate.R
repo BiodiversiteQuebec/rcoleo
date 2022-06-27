@@ -47,6 +47,13 @@ test_that("coleo_validate", {
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez la classe des colonnes.*")
 
+  ## Check that all sites exists in coleo
+  dat_test <- dat
+  dat_test$sites_site_code[1] <-  "000_000_F00"
+
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "*000_000_F00*")
+
   ## Test that all campaigns without observations have all fields of 
   ## taxonomic level equal to or inferior to the observation are NA in 
   ## "empty" campaigns
@@ -60,12 +67,11 @@ test_that("coleo_validate", {
   dat_test <- dat
   dat_test$obs_species_variable <- "abundance"
   testthat::expect_warning(coleo_validate(dat_test),
-                           regexp = "Vérifiez les valeurs.*")
+                           regexp = "*abundance*")
 
   ## Test that the range of values contained within input columns are valid
   dat_test <- dat
   dat_test$ref_species_rank <- "inconnu"
-  dat_test$ref_species_category <- "na"
 
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez les valeurs contenues dans les colonnes.*")
