@@ -208,3 +208,74 @@ coleo_injection_final <- function(df){
 
   return(df_out)
 }
+
+
+#' Inject data into coleo
+#'
+#' Takes a valid dataframe and performs autonomously the injection of all tables
+#'
+#' @param df a valid dataframe
+#'
+#' @return A message specifying the dataframe lines that were injected and that
+#' failed to be injected, and the resulting dataframes from
+#' coleo_injection_perform()
+#' @export
+coleo_inject <- function(df) {
+  #--------------------------------------------------------------------------
+  # 1. Extract tables to be injected
+  #--------------------------------------------------------------------------
+  campaign_type <- unique(df$campaigns_type)
+  tables <- rcoleo::coleo_return_required_tables(campaign_type)
+
+  #--------------------------------------------------------------------------
+  # 2. inject campaigns table
+  #--------------------------------------------------------------------------
+  failures <- FALSE
+  # Prep request
+  campaigns_requests <- df |>
+      rcoleo::coleo_injection_prep(db_table = "campaigns")
+  # Requests executions
+  campaigns_response <- coleo_injection_execute(campaigns_requests) # Real thing
+  resp <- table(campaigns_response$success)
+
+  # Output
+  cat(paste0("\nInjection of campaigns table lead to ", ifelse(is.na(resp['TRUE']), 0, resp['TRUE']), " successes, and ", ifelse(is.na(resp['FALSE']), 0, resp['FALSE']), " failures.\n"))
+
+  if(!is.na(resp['FALSE'])) {
+    cat("Only data for successfully injected campaigns are injected in the next tables. These following lines failed to inject: ", paste0(which(campaigns_response$success == FALSE), collapse = ", "), "\n")
+    failures <- TRUE
+    }
+  
+  # Get campaigns id
+  df_id <- campaigns_response[campaigns_response$success == TRUE] |>
+      coleo_injection_final()
+
+  #--------------------------------------------------------------------------
+  # 3. Inject other tables
+  #--------------------------------------------------------------------------
+  for(table in tables[-1]) {
+    # Prep request
+    requests <- df_id |>
+        rcoleo::coleo_injection_prep(db_table = table)
+    # Requests executions
+    response <- coleo_injection_execute(requests) # Real thing
+    resp <- table(response$success)
+
+    # Output
+    cat(paste0("\nInjection of ",table, " table lead to ", ifelse(is.na(resp['TRUE']), 0, resp['TRUE']), " successes, and ", ifelse(is.na(resp['FALSE']), 0, resp['FALSE']), " failures.\n"))
+
+    if(!is.na(resp['FALSE'])) {
+      cat("These lines failed to inject: ", dput(which(response$success == FALSE)), "\n")
+      failures <- TRUE
+      }
+
+    # Get id
+    # - FALSE success (failure) at all lines will cause an error
+    if(!is.na(resp['TRUE'])) {
+      df_id <- response |>
+        coleo_injection_final()
+    }
+  }
+
+  return(failures)
+}
