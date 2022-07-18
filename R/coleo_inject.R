@@ -266,7 +266,9 @@ coleo_inject <- function(df) {
 
     if(!is.na(resp['FALSE'])) {
       cat("These lines failed to inject: ", dput(which(response$success == FALSE)), "\n")
-      failures <- TRUE
+      ## It is expected that nor all ref_species are injected
+      ## - Each taxon is only injected once
+      if(table != "ref_species") failures <- TRUE
       }
 
     # Get id
