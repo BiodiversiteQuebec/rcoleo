@@ -19,22 +19,16 @@ Imports:
     jsonlite,
     stringr,
     dplyr (>= 1.0.7),
-    httpuv,
     plyr,
     tibble,
     purrr,
-    here,
     memoise,
     assertthat,
     sf,
-    magrittr,
     geojsonio,
     rlang,
     httr2,
-    taxize,
-    tidyr,
-    vctrs,
-    httptest2
+    tidyr
 Suggests: 
     knitr,
     pkgdown,
