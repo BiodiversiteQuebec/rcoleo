@@ -42,7 +42,7 @@ coleo_validate <- function(data) {
   which_extra <- grepl("extra", possible_col_diff)
   possible_col_diff <- possible_col_diff[!which_extra]
 
-  if(length(possible_col_diff) != 0) warning("V\U00E9rifiez que les bons noms de colonnes sont utilis\U00E9s et que les colonnes superflues sont retir\U00E9es. Les colonnes valides peuvent \U00E2tre : \n", paste0(columns, collapse = ", "), "\n\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n\n")
+  if(length(possible_col_diff) != 0) warning("V\U00E9rifiez que les bons noms de colonnes sont utilis\U00E9s et que les colonnes superflues sont", paste0(" retir\U00E9", "es"), ". Les colonnes valides peuvent \U00E2tre : \n", paste0(columns, collapse = ", "), "\n\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n\n")
 
 
   #------------------------------------------------------------------------
@@ -271,9 +271,9 @@ coleo_validate <- function(data) {
 
     message(paste0("Dernière étape ! \n
     i) V\U00E9rifiez les lignes qui représentent des campagnes vides. Il y a ", no_obs, " lignes sans observations.\n
-    ii) V\U00E9rifiez que l'intervalle des dates inject\U00E9es correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", ")," se trouvent dans l'intervalle de l'ann\U00E9e ", range_year[1], " \U00E0 ", range_year[2], " du mois ", range_month[1], " \U00E0 ", range_month[2], " et du jour ", range_day[1], "  \U00E0 ", range_day[2], "\n\n
-    iii) Si les donn\U00E9es sont bonnes et qu'aucun autre message n'apparait, vous pouvez proc\U00E9der à l'injection des donn\U00E9es\n\n
-    ==================================================\n"
+    ii) V\U00E9rifiez que l'intervalle des dates", paste0(" inject\U00E9", "es "), "correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", ")," se trouvent dans l'intervalle de", paste0(" l'ann\U00E9", "e "), range_year[1], " \U00E0 ", range_year[2], " du mois ", range_month[1], " \U00E0 ", range_month[2], " et du jour ", range_day[1], "  \U00E0 ", range_day[2], "\n\n
+    iii) Si les", paste0(" donn\U00E9", "es"), " sont bonnes et qu'aucun autre message n'apparait, vous pouvez proc\U00E9der à l'injection des", paste0(" donn\U00E9", "es "), 
+    "\n\n==================================================\n"
     ))
   }
 }

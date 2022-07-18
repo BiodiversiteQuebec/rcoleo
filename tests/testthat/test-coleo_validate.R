@@ -102,7 +102,7 @@ test_that("coleo_validate", {
   dat_test <- dat
 
   testthat::expect_message(coleo_validate(dat_test),
-                         regexp = "Vérifiez que l'intervalle des dates injectées correspond aux attentes.*")
+                         regexp = "*Vérifiez que l'intervalle des dates injectées correspond aux attentes.*")
 
 })
 
