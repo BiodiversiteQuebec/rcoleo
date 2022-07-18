@@ -79,11 +79,11 @@ coleo_validate <- function(data) {
           if (is_there_comas) {
             FALSE
           } else {
-            inherits(data[,x][[1]], "character")
+            class(data[,x][[1]]) <- "character"
           }
         }
       } else {
-        inherits(col_class, expected_class)
+        class(col_class) == expected_class
       }
     })
     all(class_of_col_values, na.rm = TRUE)
@@ -242,7 +242,7 @@ coleo_validate <- function(data) {
     is_ndigits_valid <- all(cols_ndigits)
     is_na <- any(na_in_dates)
 
-    if(!is_ndigits_valid | is_na)
+    if(!is_ndigits_valid | is_na) warning("V\U00E9rifiez le format des valeurs de dates. Les dates doivent \U00EAtre du format YYYY-MM-DD.\n\n")
   }
 
   # Check that the values are within a decent range -----------------------
