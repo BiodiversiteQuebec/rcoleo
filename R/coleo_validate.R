@@ -71,7 +71,7 @@ coleo_validate <- function(data) {
         col_class %% 1 == 0
       } else if (expected_class == "list") {
         ## Check if column is a list
-        if (inherits(data[,x][[1]], "list") { # Workaround issues for items within lists being characters - Only asses class at the column scale
+        if (inherits(data[,x][[1]], "list")) { # Workaround issues for items within lists being characters - Only asses class at the column scale
           TRUE
         } else {
           ## If not a list, check if there is commas, and if there is none, accept characters
