@@ -10,7 +10,6 @@ server <- function(){
   }
   return(s)
 }
-}
 #server <- function() "http://localhost:8080" # dev purpose
 base <- function() "/api/v1"
 
