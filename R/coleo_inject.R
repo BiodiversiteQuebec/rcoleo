@@ -247,7 +247,7 @@ coleo_inject <- function(df) {
     }
   
   # Get campaigns id
-  df_id <- campaigns_response[campaigns_response$success == TRUE] |>
+  df_id <- campaigns_response[campaigns_response$success == TRUE,] |>
       coleo_injection_final()
 
   #--------------------------------------------------------------------------
