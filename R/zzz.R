@@ -1,11 +1,15 @@
 # Config de base
-server <- Sys.getenv("COLEOAPI_SERVER")
-if (server==''){
-  if(file.exists(".local-server")){
-    server=as.character(readRDS(".local-server"))
-  }else{
-    server="https://coleo.biodiversite-quebec.ca"
+server <- function(){
+  s <- Sys.getenv("COLEOAPI_SERVER")
+  if (s==''){
+    if(file.exists(".local-server")){
+      s <- as.character(readRDS(".local-server"))
+    }else{
+      s <- "https://coleo.biodiversite-quebec.ca"
+    }
   }
+  return(s)
+}
 }
 #server <- function() "http://localhost:8080" # dev purpose
 base <- function() "/api/v1"
