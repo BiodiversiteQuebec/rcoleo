@@ -140,8 +140,8 @@ coleo_validate <- function(data) {
 
   valid_col_values <- sapply(cols_to_check, function(x) {
     legal_vals <- tbl$valeurs_acceptees[which(tbl$noms_de_colonnes==x)][[1]]
-    ## Also accept NAs in cetain columns
-    if(x %in% na_cols) legal_vals <- c(legal_vals, NA)
+    ## Also accept NAs
+    legal_vals <- c(legal_vals, NA)
     all(sapply(unique(data[,x]), function(x) x %in% legal_vals))
   })
 
