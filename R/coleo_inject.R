@@ -144,9 +144,6 @@ coleo_injection_prep <- function(df, db_table){
     df_prep <- df |>
       coleo_prep_input_data(db_table) |>
       dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "taxa")))
-
-
-    # if its observations
   } else {
     df_prep <- df |>
       coleo_prep_input_data(db_table) |>
@@ -188,22 +185,26 @@ coleo_injection_final <- function(df){
                                        false = NA_integer_)
     )
 
-  if(newname != "observation") {
+  if(!newname %in% c("observation", "lure")) {
     df_out <- df_id |>
       dplyr::ungroup() |>
       dplyr::select(dplyr::ends_with("id"), data) |>
       tidyr::unnest(cols = c(data))
-  } else {
+  } else if(newname == "observation") {
     # once the observation table is injected, we only need observation_id. Here
     # is a cheesy dplyr way to do it -- you can't drop a col if it is a grouping
     # column ;)
     df_out <- df_id |>
       dplyr::ungroup() |>
       dplyr::group_by(observation_id) |>
-      # dplyr::relocate(dplyr::ends_with("id")) |>
-      dplyr::select(-dplyr::ends_with("id"), -inject_request, -result, -error, -success) |>
+      dplyr::relocate(dplyr::ends_with("id")) |>
+      # dplyr::select(-dplyr::ends_with("id"), -inject_request, -result, -error, -success) |>
+      dplyr::select(-inject_request, -result, -error, -success) |>
       dplyr::ungroup()
-
+  } else {
+    # lures table are processed back to wide format later
+    # in coleo_inject_mam_lures()
+    return(df_id)
   }
 
   return(df_out)
@@ -239,13 +240,13 @@ coleo_inject <- function(df) {
   resp <- table(campaigns_response$success)
 
   # Output
-  cat(paste0("\nInjection of campaigns table lead to ", ifelse(is.na(resp['TRUE']), 0, resp['TRUE']), " successes, and ", ifelse(is.na(resp['FALSE']), 0, resp['FALSE']), " failures.\n"))
+  cat(paste0("\nInjection of campaigns table led to ", ifelse(is.na(resp['TRUE']), 0, resp['TRUE']), " successes, and ", ifelse(is.na(resp['FALSE']), 0, resp['FALSE']), " failures.\n"))
 
   if(!is.na(resp['FALSE'])) {
     cat("Only data for successfully injected campaigns are injected in the next tables. These following lines failed to inject: ", paste0(which(campaigns_response$success == FALSE), collapse = ", "), "\n")
     failures <- TRUE
     }
-  
+
   # Get campaigns id
   df_id <- campaigns_response[campaigns_response$success == TRUE,] |>
       coleo_injection_final()
@@ -254,35 +255,239 @@ coleo_inject <- function(df) {
   # 3. Inject other tables
   #--------------------------------------------------------------------------
   for(table in tables[-1]) {
-    # Prep request
-    requests <- df_id |>
-        rcoleo::coleo_injection_prep(db_table = table)
-    # Requests executions
-    response <- coleo_injection_execute(requests) # Real thing
-    resp <- table(response$success)
 
-    # Output
-    cat(paste0("\nInjection of ",table, " table lead to ", ifelse(is.na(resp['TRUE']), 0, resp['TRUE']), " successes, and ", ifelse(is.na(resp['FALSE']), 0, resp['FALSE']), " failures.\n"))
+    # Case-specific injections
+    if(campaign_type == "mammifères" & table == "lures") {
+      # Lures table for "mammifères" campaigns
+      inject_ls <- coleo_inject_mam_lures(df_id, failures)
+      df_id <- inject_ls[["df_id"]]
+      failures <- inject_ls[["failures"]]
 
-    if(!is.na(resp['FALSE'])) {
-      cat("These lines failed to inject: ", dput(which(response$success == FALSE)), "\n")
-      ## It is expected that not all ref_species are injected
-      ## - Each taxon is only injected once
-      if(table != "ref_species") failures <- TRUE
-      }
+    } else if (campaign_type == "mammifères" & table == "landmarks") {
+      # Landmarks table for "mammifères" campaigns
+      inject_ls <- coleo_inject_mam_landmarks(df_id, failures)
+      df_id <- inject_ls[["df_id"]]
+      failures <- inject_ls[["failures"]]
 
-    # Get id
-    # - Failure will cause an error
-    # - Only get id for successful injections
-    if(!is.na(resp['TRUE'])) {
-      response_t <- response[response$success == TRUE,]
-      response_f <- response[response$success == FALSE,]
-      df_id <- response_t |>
-        coleo_injection_final()
-      response_f[setdiff(names(df_id), names(response_f))] <- NA
-      rbind(df_id, response_f[,names(df_id)])
+    } else if (campaign_type == "mammifères" & table == "media") {
+      # Inject medias in coleo before injecting into media table
+      
+      ######################
+      ######################
+      # Inject medias into coleo
+      # get uuid back
+      ######################
+      ######################
+
+    } else {
+      # regular table injections
+      df_id <- coleo_inject_table(df_id, failures, table)
     }
   }
-
   return(failures)
+}
+
+# Helper function to return stadardized injection reponse messages
+injection_reponse_message <- function(table, response, failures) {
+  resp <- table(response$success)
+  # Output
+  cat(paste0("\nInjection of ",table, " table lead to ", ifelse(is.na(resp['TRUE']), 0, resp['TRUE']), " successes, and ", ifelse(is.na(resp['FALSE']), 0, resp['FALSE']), " failures.\n"))
+
+  if(!is.na(resp['FALSE'])) {
+    cat("These lines failed to inject: ", dput(which(response$success == FALSE)), "\n")
+    ## It is expected that not all ref_species are injected
+    ## - Each taxon is only injected once
+    if(table != "ref_species") failures <- TRUE
+    }
+  return(failures)
+}
+
+
+#' Inject tables into coleo
+#'
+#' Takes a valid dataframe and performs autonomously the injection of data into appropriate table
+#'
+#' @param df_id a dataframe with *_id column(s)
+#' @param failures Boolean. Failures within the injection process
+#' @param table a coleo table name
+#'
+#' @return a dataframe with lure ids
+#'
+coleo_inject_table <- function(df_id, failures, table) {
+  #--------------------------------------------------------------------------
+  # 1. Prep request
+  #--------------------------------------------------------------------------
+  requests <- df_id |>
+      rcoleo::coleo_injection_prep(db_table = table)
+
+  #--------------------------------------------------------------------------
+  # 2. Requests executions
+  #--------------------------------------------------------------------------
+  response <- coleo_injection_execute(requests) # Real thing
+  # Rename device_id in mammifères campaigns
+  # - Prevents landmarks injection of lures to inject device_id
+  if(campaign_type == "mammifères" & table == "devices") names(df_id)[names(df_id) == "device_id"] <- "device_id_camera"
+
+  #--------------------------------------------------------------------------
+  # 3. Print output
+  #--------------------------------------------------------------------------
+  # Output
+  failures <- injection_reponse_message(table, response, failures)
+
+  #--------------------------------------------------------------------------
+  # 4. Get id
+  # - Failure will cause an error
+  # - Only get id for successful injections
+  #--------------------------------------------------------------------------
+  if(any(response$success)) {
+    response_t <- response[response$success == TRUE,]
+    response_f <- response[response$success == FALSE,]
+    df_id <- response_t |>
+      coleo_injection_final()
+    response_f[setdiff(names(df_id), names(response_f))] <- NA
+    rbind(df_id, response_f[,names(df_id)])
+  }
+  return(df_id)
+}
+
+
+#' Inject lures table of mammifère campaigns into coleo
+#'
+#' Takes a valid dataframe and performs autonomously the injection of lures table
+#'
+#' @param df_id a dataframe with campaign_id column
+#' @param failures Boolean. Failures within the injection process
+#'
+#' @return a dataframe with lure ids
+#'
+coleo_inject_mam_lures <- function(df_id, failures) {
+  #--------------------------------------------------------------------------
+  # 1. Format data
+  #--------------------------------------------------------------------------
+  luresCols <- names(df_id)[grepl("lures", names(df_id))]
+  ## There might be multiple lures (1 to 5)
+  lures_col_groups <- split(luresCols, sub('.*(?=.$)', "", luresCols, perl = TRUE))
+  ## df to long format
+  df_long <- data.frame("campaign_id" = as.numeric(), "installed_at" = as.character(), "lure" = as.character())
+  for(group in lures_col_groups) {
+      df_long <- mapply(c, df_long, df_id[,c("campaign_id", group)]) |> as.data.frame()
+  }
+  df_long <- df_long[complete.cases(df_long[,-1]),]
+  #--------------------------------------------------------------------------
+  # 2. Prep requests
+  #--------------------------------------------------------------------------
+  df_prep <- df_long |>
+        dplyr::rowwise() |>
+        dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "lures")))
+  #--------------------------------------------------------------------------
+  # 3. Injection
+  #--------------------------------------------------------------------------
+  response <- coleo_injection_execute(df_prep) # Real thing
+  # Output
+  failures <- injection_reponse_message("lures", response, failures)
+  #--------------------------------------------------------------------------
+  # 4. Finalizing lures table injection
+  #--------------------------------------------------------------------------
+  if(any(response$success)) {
+    response_t <- response[response$success == TRUE,]
+    response_f <- response[response$success == FALSE,]
+    lures_id <- response_t |>
+      coleo_injection_final()
+    response_f[setdiff(names(lures_id), names(response_f))] <- NA
+    rbind(lures_id, response_f[,names(lures_id)])
+  }
+
+  # Reassign lure_id to df_id
+  # - lure_ids are saved in separate columns for each lure
+  # - using the format lure_id_1, lure_id_2, etc
+  for(lure_row in seq_along(lures_id$campaign_id)) {
+      camp = lures_id[lure_row, "campaign_id"] |> unlist()
+      date = lures_id[lure_row, "installed_at"] |> unlist()
+      ## Which row
+      df_row <- which(camp == df_id$campaign_id)
+      ## Which col
+      instal_cols <- df_id[,grepl("lures_installed_at_", names(df_id))]
+      instal_dates <- t(instal_cols[duplicated(instal_cols),])
+      df_col <- which(date == instal_dates)
+      ## Save lure_id for right lure
+      lure_no <- sub('.*(?=.$)', "", names(instal_cols)[df_col], perl = TRUE)
+      df_id[df_row, paste0("lure_id_", lure_no)] <- lures_id$lure_id[lure_row]
+  }
+  return(list("df_id" = df_id, "failures" = failures))
+}
+
+
+#' Inject landmarks table of mammifère campaigns into coleo
+#'
+#' Takes a valid dataframe and performs autonomously the injection of landmarks table
+#'
+#' @param df_id a dataframe with campaign_id column
+#' @param failures Boolean. Failures within the injection process
+#'
+#' @return a dataframe with landmarks ids
+#'
+coleo_inject_mam_landmarks <- function(df_id, failures) {
+  #--------------------------------------------------------------------------
+  # 1. Format data
+  #--------------------------------------------------------------------------
+  landCols <- names(df_id)[grepl("landmarks", names(df_id))]
+  # There might be multiple landmarks for the camera and for each lure
+  land_groups <- split(landCols, sub('^.*_([a-zA-Z]+$)', "\\1", landCols, perl = TRUE))
+  #--------------------------------------------------------------------------
+  # 2. Inject camera landmark
+  #--------------------------------------------------------------------------
+  # Remove _camera from colnames
+  df_camera <- df_id
+  names(df_camera)[grep("_camera", names(df_camera))] <- sub('_camera', "\\1", names(df_camera)[grep("_camera", names(df_camera))], perl = TRUE)
+  # Prep requests
+  requests <- df_camera |>
+    rcoleo::coleo_injection_prep(db_table = "landmarks")
+  # Injection
+  response <- coleo_injection_execute(requests) # Real thing
+  # Output
+  failures <- injection_reponse_message("landmark_camera", response, failures)
+  # Finalizing lures table injection
+  if(any(response$success)) {
+    response_t <- response[response$success == TRUE,]
+    response_f <- response[response$success == FALSE,]
+    df_id <- response_t |>
+      coleo_injection_final()
+    response_f[setdiff(names(df_id), names(response_f))] <- NA
+    rbind(df_id, response_f[,names(df_id)])
+  }
+  names(df_id)[names(df_id) == "landmark_id"] <- "landmark_id_camera"
+  #--------------------------------------------------------------------------
+  # 3. Inject one landmark for each lure_id
+  #--------------------------------------------------------------------------
+  # 1. get lure groups
+  lures_ids <- names(df_id)[grepl("lure_id", names(df_id))]
+  lures <- split(lures_ids, sub('.*(?=.$)', "", lures_ids, perl = TRUE))
+  # 2. loop through groups
+  for(lureGroup in lures) {
+    ## 2.1. rename landmarks columns and lure_id for the group
+    ## this will allow coleo_prep_data to know exactly which columns to use for injection
+    df_lure <- df_id
+    names(df_lure)[grep("_appat", names(df_lure))] <- sub('_appat', "\\1", names(df_lure)[grep("_appat", names(df_lure))], perl = TRUE)
+    names(df_lure)[names(df_lure) == lureGroup] <- "lure_id"
+    ## 2.2. Prep requests
+    requests <- df_lure |>
+        rcoleo::coleo_injection_prep(db_table = "landmarks")
+    ## 2.2. Inject
+    response <- coleo_injection_execute(requests) # Real thing
+    ### Output
+    land_col_name <- paste0("landmark_id_appat_", sub('.*(?=.$)', "", lureGroup, perl = TRUE))
+    failures <- injection_reponse_message(land_col_name, response, failures)
+    ## 2.3. Save landmarks_id in df_id and rename it
+    if(any(response$success)) {
+      response_t <- response[response$success == TRUE,]
+      response_f <- response[response$success == FALSE,]
+      df_appat_final <- response_t |>
+        coleo_injection_final()
+      response_f[setdiff(names(df_appat_final), names(response_f))] <- NA
+      rbind(df_appat_final, response_f[,names(df_appat_final)])
+    }
+    df_id$landmark_id <- df_appat_final$landmark_id
+    names(df_id)[names(df_id) == "landmark_id"] <- land_col_name
+  }
+  return(list("df_id" = df_id, "failures" = failures))
 }
