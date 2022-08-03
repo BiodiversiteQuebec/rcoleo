@@ -128,12 +128,6 @@ coleo_return_cols <- function(campaign_type, required.columns = FALSE) {
   # Remove "created_at" et "updated_at"
   row_to_remove <- which(grepl("created_at", df$noms_de_champs, fixed = TRUE) | df$noms_de_champs == "updated_at")
   df <- df[-row_to_remove,]
-  # Retirer la colonne "uuid" si nécessaire
-  # - Elle est générée automatiquement dans la table media
-  if("uuid" %in% df$noms_de_champs) {
-    uuid_to_remove <- which("uuid" == df$noms_de_champs)
-    df <- df[-uuid_to_remove,]
-  }
   #-------------------------------------------------------------------------------
   # Définir les noms de colonnes à utiliser
   #-------------------------------------------------------------------------------
