@@ -4,10 +4,12 @@
 \alias{coleo_inject_table}
 \title{Inject tables into coleo}
 \usage{
-coleo_inject_table(df_id, failures, table)
+coleo_inject_table(df_id, campaign_type, failures, table)
 }
 \arguments{
 \item{df_id}{a dataframe with *_id column(s)}
+
+\item{campaign_type}{Type of campaign the data is from}
 
 \item{failures}{Boolean. Failures within the injection process}
 

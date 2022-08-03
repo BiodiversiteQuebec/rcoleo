@@ -281,11 +281,11 @@ coleo_inject <- function(df) {
       failures <- inject_ls[["failures"]]
 
       ### 2. Then inject media table
-      df_id <- coleo_inject_table(df_id, failures, table)
+      df_id <- coleo_inject_table(df_id, campaign_type, failures, table)
 
     } else {
       ## regular table injections
-      df_id <- coleo_inject_table(df_id, failures, table)
+      df_id <- coleo_inject_table(df_id, campaign_type, failures, table)
     }
   }
   return(failures)
@@ -312,12 +312,13 @@ injection_reponse_message <- function(table, response, failures) {
 #' Takes a valid dataframe and performs autonomously the injection of data into appropriate table
 #'
 #' @param df_id a dataframe with *_id column(s)
+#' @param campaign_type Type of campaign the data is from
 #' @param failures Boolean. Failures within the injection process
 #' @param table a coleo table name
 #'
 #' @return a dataframe with lure ids
 #'
-coleo_inject_table <- function(df_id, failures, table) {
+coleo_inject_table <- function(df_id, campaign_type, failures, table) {
   #--------------------------------------------------------------------------
   # 1. Prep request
   #--------------------------------------------------------------------------
