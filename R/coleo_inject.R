@@ -271,9 +271,6 @@ coleo_inject <- function(df, media_path = NULL) {
       df_id <- inject_ls[["df_id"]]
       failures <- inject_ls[["failures"]]
 
-    } else if (campaign_type == "mammifères" & table == "media") {
-      # Inject medias in coleo before injecting into media table
-
     } else if (table == "media") {
       ## The special case of media files
       ### 0. Check that path to media files is provided
@@ -416,23 +413,6 @@ coleo_inject_media <- function(df_id, failures, server_dir = "observation", file
     df_id <- df_id |>
       dplyr::select(-inject_request, -result, -error, -success)
   }
-
-  #--------------------------------------------------------------------------
-  # 3. Get uuid back
-  #--------------------------------------------------------------------------
-
-  # TODO
-  # - USING THE IDS, GET UUID BACK
-  # - STORE UUID IN NEW COLUMN
-  # - NEW / MODIFIED COLEO_INJECTION_FINALIZE() FCT
-  #   dplyr::mutate(uuid := dplyr::if_else(is.null(error),
-  #   true = coleo_extract_id(result),
-  #   false = NA_integer_
-  # ))
-
-
-  return(list("df_id" = df_id, "failures" = failures))
-}
 
 
 #' Inject lures table of mammifère campaigns into coleo
