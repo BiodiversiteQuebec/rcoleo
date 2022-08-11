@@ -16,11 +16,45 @@ coleo_validate <- function(data) {
   #------------------------------------------------------------------------
   # Check that there is a campaign type column and that it contains a unique value
   #------------------------------------------------------------------------
-  if(!assertthat::has_name(data, "campaigns_type")) stop("V\U00E9rifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond à campaigns_type \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n\n")
+  if(!assertthat::has_name(data, "campaigns_type")) warning("V\U00E9rifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond à campaigns_type \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n\n")
 
   campaign_type <- unique(data$campaigns_type)
   campaigns <- coleo_return_valid_campaigns()
-  if(!(length(campaign_type) == 1 && campaign_type %in% campaigns)) stop("V\U00E9rifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n\n")
+  if(!(length(campaign_type) == 1 && campaign_type %in% campaigns)) warning("V\U00E9rifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n\n")
+
+
+  #------------------------------------------------------------------------
+  # Df columns, true column names, class and accepted values
+  #------------------------------------------------------------------------
+  # Helper fct that converts col names to corresponding table_field col names
+  # - data_names: column names of the dataFile
+  # - col_names: column names for the campaign type
+  to_true_names <- function(data_names, col_names) {
+    for(nm in seq_along(data_names)) {
+      if(!data_names[nm] %in% col_names) {
+        # Extra columns must remain
+        if (grepl("_extra", true_col_nm)) next
+        ## Some columns may have modified names
+        ## eg. lures_lure_1
+        mod_col_nm <- sapply(col_names,
+          function(x) grepl(x, data_names[nm])
+        )
+        if (any(mod_col_nm)) {
+          true_col_nm <- names(which(mod_col_nm))
+          ## Select the longuest name - In case there is multiple matching
+          true_col_nm <- true_col_nm[which.max(nchar(true_col_nm))]
+          ## Change col name
+          data_names[nm] <- true_col_nm
+        }
+      }
+    }
+    return(data_names)
+  }
+
+  tbl <- coleo_return_cols(campaign_type)
+  columns <- tbl$noms_de_colonnes
+  dat_names <- names(data)
+  true_nms <- to_true_names(dat_names, columns)
 
 
   #------------------------------------------------------------------------
@@ -28,21 +62,23 @@ coleo_validate <- function(data) {
   #------------------------------------------------------------------------
   # compare required column names to present columns ----------------------
   req_columns <- coleo_return_required_cols(campaign_type)$noms_de_colonnes
-  req_col_diff <- setdiff(req_columns, names(data))
+  req_col_diff <- setdiff(req_columns, true_nms)
   # Return warning if there's a mismatch ----------------------------------
-  if(length(req_col_diff) != 0) warning("--------------------------------------------------\nV\U00E9rifiez que les bons noms de colonnes sont utilis\U00E9s et que toutes les colonnes requises sont pr\U00E9sentes. Les colonnes requises sont : \n", paste0(req_columns, collapse = ", "), "\n\nLes colonnes absentes sont : \n", paste0(req_col_diff, collapse = ", "), "\n\n")
+  if(length(req_col_diff) != 0) warning("--------------------------------------------------\nV\U00E9rifiez que les bons noms de colonnes sont utilis\U00E9s et que toutes les colonnes requises sont pr\U00E9sentes.\n", "\n\nLes colonnes absentes sont : \n", paste0(req_col_diff, collapse = ", "), "\n\n")
 
 
   #------------------------------------------------------------------------
   # Check that all input columns are valid column names
   #------------------------------------------------------------------------
-  columns <- coleo_return_cols(campaign_type)$noms_de_colonnes
-  possible_col_diff <- setdiff(names(data), columns)
+  # Accept colnames that contains extra specifiers in it ------------------
+  # - eg. lures_lure_1 = lures_lure ---------------------------------------
+  # Test for invalid column names
+  possible_col_diff <- setdiff(true_nms, columns)
   # Accept colnames that contains "extra" in it - extra columns -----------
   which_extra <- grepl("extra", possible_col_diff)
   possible_col_diff <- possible_col_diff[!which_extra]
 
-  if(length(possible_col_diff) != 0) warning("--------------------------------------------------\nV\U00E9rifiez que les bons noms de colonnes sont utilis\U00E9s et que les colonnes superflues sont", paste0(" retir\U00E9", "es"), ". Les colonnes valides peuvent \U00E2tre : \n", paste0(columns, collapse = ", "), "\n\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n\n")
+  if(length(possible_col_diff) != 0) warning("--------------------------------------------------\nV\U00E9rifiez que les bons noms de colonnes sont utilis\U00E9s et que les colonnes superflues sont", paste0(" retir\U00E9", "es"), ".\n", "\n\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n\n")
 
 
   #------------------------------------------------------------------------
@@ -57,18 +93,20 @@ coleo_validate <- function(data) {
 
   #------------------------------------------------------------------------
   # Check that input column types are valid
+  # - Test true_nms as it captures the true column name and its associated class
   #------------------------------------------------------------------------
-  dat_names <- names(data)
-
   # Check that all values within each column is of the right class --------
-  valid_cols <- dat_names[dat_names %in% columns]
-  tbl <- coleo_return_cols(campaign_type)
-  class_of_col <- sapply(valid_cols, function(x) {
+  # - Extra columns remain as characters
+  cols_to_valid <- dat_names[true_nms %in% columns]
+  cols_to_valid <- cols_to_valid[!grepl("_extra", cols_to_valid)]
+
+  class_of_col <- sapply(cols_to_valid, function(x) {
     class_of_col_values <- sapply(data[,x], function(col_class) {
-      expected_class <- tbl$classe[[which(tbl$noms_de_colonnes == x)]]
+      true_col_nm <- true_nms[which(dat_names == x)]
+      expected_class <- tbl$classe[[which(tbl$noms_de_colonnes == true_col_nm)]]
       # If an integer, check that it is a full number
       if (expected_class == "integer") {
-        col_class %% 1 == 0
+        ifelse(is.numeric(col_class), col_class %% 1 == 0, FALSE) 
       } else if (expected_class == "list") {
         ## Check if column is a list
         if (inherits(data[,x][[1]], "list")) { # Workaround issues for items within lists being characters - Only asses class at the column scale
@@ -79,7 +117,7 @@ coleo_validate <- function(data) {
           if (is_there_comas) {
             FALSE
           } else {
-            class(data[,x][[1]]) <- "character"
+            class(data[,x][[1]]) == "character"
           }
         }
       } else {
@@ -136,13 +174,14 @@ coleo_validate <- function(data) {
   # Check that the range of values contained within input columns are valid
   #------------------------------------------------------------------------
   tbl_with_legal_values <- subset(tbl, !is.na(valeurs_acceptees))
-  cols_to_check <- intersect(dat_names, tbl_with_legal_values$noms_de_colonnes)
+  cols_to_check <- intersect(true_nms, tbl_with_legal_values$noms_de_colonnes)
 
   valid_col_values <- sapply(cols_to_check, function(x) {
-    legal_vals <- tbl$valeurs_acceptees[which(tbl$noms_de_colonnes==x)][[1]]
+    legal_vals <- tbl$valeurs_acceptees[which(tbl$noms_de_colonnes == x)][[1]]
+    i <- which(true_nms == x)
     ## Also accept NAs
     legal_vals <- c(legal_vals, NA)
-    all(sapply(unique(data[,x]), function(x) x %in% legal_vals))
+    all(sapply(unique(data[,i]), function(x) x %in% legal_vals))
   })
 
   invalid_cols <- which(tbl$noms_de_colonnes %in% names(valid_col_values)[!valid_col_values])
