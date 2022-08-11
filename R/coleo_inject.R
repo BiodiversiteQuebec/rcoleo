@@ -413,6 +413,8 @@ coleo_inject_media <- function(df_id, failures, server_dir = "observation", file
     df_id <- df_id |>
       dplyr::select(-inject_request, -result, -error, -success)
   }
+  return(list("df_id" = df_id, "failures" = failures))
+}
 
 
 #' Inject lures table of mammifère campaigns into coleo
