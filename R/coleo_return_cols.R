@@ -125,6 +125,9 @@ coleo_return_cols <- function(campaign_type, required.columns = FALSE) {
   # Remove id. To be added when prepping data for injection
   id_to_remove <- which(grepl("_id", df$noms_de_champs, fixed = TRUE) | df$noms_de_champs == "id")
   df <- df[-id_to_remove,]
+  # Remove uuid. To be added when prepping data for injection
+  id_to_remove <- which(grepl("uuid", df$noms_de_champs, fixed = TRUE) | df$noms_de_champs == "uuid")
+  df <- df[-id_to_remove,]
   # Remove "created_at" et "updated_at"
   row_to_remove <- which(grepl("created_at", df$noms_de_champs, fixed = TRUE) | df$noms_de_champs == "updated_at")
   df <- df[-row_to_remove,]
