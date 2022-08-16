@@ -186,7 +186,7 @@ coleo_injection_final <- function(df){
                                        true = coleo_extract_id(result),
                                        false = NA_integer_)
     ) |>
-    dplyr::mutate(!!name_err := error)
+    dplyr::mutate(!!name_err := list(error))
 
   if(!newname %in% c("observation", "lure")) {
     df_out <- df_id |>
@@ -239,7 +239,7 @@ coleo_inject <- function(df, media_path = NULL) {
   campaigns_requests <- df |>
       rcoleo::coleo_injection_prep(db_table = "campaigns")
   # Requests executions
-  campaigns_response <- coleo_injection_execute(campaigns_requests) # Real thing
+  campaigns_response <- rcoleo::coleo_injection_execute(campaigns_requests) # Real thing
   resp <- table(campaigns_response$success)
 
   # Output
@@ -252,7 +252,7 @@ coleo_inject <- function(df, media_path = NULL) {
 
   # Get campaigns id
   df_id <- campaigns_response[campaigns_response$success == TRUE,] |>
-      coleo_injection_final()
+      rcoleo::coleo_injection_final()
 
   #--------------------------------------------------------------------------
   # 3. Inject other tables
