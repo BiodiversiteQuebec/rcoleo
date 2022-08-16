@@ -86,7 +86,7 @@ coleo_return_cols <- function(campaign_type, required.columns = FALSE) {
   # ARRAY -> list
   change_to_list <- which(df$classe == "ARRAY")
   df$classe[change_to_list] <- "list"
-  
+
   # Environments_ wind and environments_sky are integers
   sky_and_wind <- which(df$noms_de_champs == "sky" | df$noms_de_champs == "wind")
   df$classe[sky_and_wind] <- "integer"
@@ -123,14 +123,14 @@ coleo_return_cols <- function(campaign_type, required.columns = FALSE) {
   # Enlever les colonnes qui sont générées automatiquement lors de l'injection
   #-------------------------------------------------------------------------------
   # Remove id. To be added when prepping data for injection
-  id_to_remove <- which(grepl("_id", df$noms_de_champs, fixed = TRUE) | df$noms_de_champs == "id")
-  df <- df[-id_to_remove,]
+  no_id <- which(!grepl("_id", df$noms_de_champs, fixed = TRUE) & df$noms_de_champs != "id")
+  df <- df[no_id,]
   # Remove uuid. To be added when prepping data for injection
-  id_to_remove <- which(grepl("uuid", df$noms_de_champs, fixed = TRUE) | df$noms_de_champs == "uuid")
-  df <- df[-id_to_remove,]
+  no_uuid <- which(!grepl("uuid", df$noms_de_champs, fixed = TRUE) & df$noms_de_champs != "uuid")
+  df <- df[no_uuid,]
   # Remove "created_at" et "updated_at"
-  row_to_remove <- which(grepl("created_at", df$noms_de_champs, fixed = TRUE) | df$noms_de_champs == "updated_at")
-  df <- df[-row_to_remove,]
+  row_to_keep <- which(!grepl("created_at", df$noms_de_champs, fixed = TRUE) & df$noms_de_champs != "updated_at")
+  df <- df[row_to_keep,]
   #-------------------------------------------------------------------------------
   # Définir les noms de colonnes à utiliser
   #-------------------------------------------------------------------------------
