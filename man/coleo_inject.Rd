@@ -4,10 +4,12 @@
 \alias{coleo_inject}
 \title{Inject data into coleo}
 \usage{
-coleo_inject(df)
+coleo_inject(df, media_path = NULL)
 }
 \arguments{
 \item{df}{a valid dataframe}
+
+\item{media_path}{local path to media files. Required when media files are to be injected, NULL otherwise}
 }
 \value{
 A message specifying the dataframe lines that were injected and that
