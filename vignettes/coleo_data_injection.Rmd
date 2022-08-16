@@ -164,26 +164,23 @@ imaginary_sites <- tibble::tribble(
 
 We begin by preparing the dataset for injection. 
 
-First, we format the data for injection:
+First, we format the data for injection and prepare the injection request:
 
 ```{r}
 imaginary_sites_for_injection <- imaginary_sites |>
-  coleo_prep_input_data(db_table = "sites")
+  coleo_injection_prep(db_table = "sites")
 
 imaginary_sites_for_injection
-```
-
-the function `coleo_prep_input_data` has automaticaly obtained cell ID and removed the cell_code, renamed the columns, reformatted the spatial information, and nested any unnecessary columns as "data".
-
-Now we prepare the injection request, inspect them, and inject them:
-
-```{r}
-imaginary_requests <- imaginary_sites_for_injection |> 
-  mutate(inject_request = list(coleo_inject_general_df(cur_data_all(), endpoint = "sites")))
 
 # visually inspect the injection
 httr2::req_dry_run(imaginary_requests$inject_request[[1]])
+```
 
+the function `coleo_injection_prep` has automaticaly obtained cell ID and removed the cell_code, renamed the columns, reformatted the spatial information, and nested any unnecessary columns as "data".
+
+Now we inject them:
+
+```{r}
 # run and save all the injections
 imaginary_injected <- coleo_injection_execute(imaginary_requests)
 
