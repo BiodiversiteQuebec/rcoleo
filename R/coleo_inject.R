@@ -177,6 +177,7 @@ coleo_injection_final <- function(df){
     sub(pattern = "s$", replacement = "")
 
   name_id <- paste0(newname, "_id")
+  name_err <- paste0(newname, "_error")
 
 
   # ALMOST offensively fashionable way to dynamically name a column
@@ -184,7 +185,8 @@ coleo_injection_final <- function(df){
     dplyr::mutate(!!name_id := dplyr::if_else(is.null(error),
                                        true = coleo_extract_id(result),
                                        false = NA_integer_)
-    )
+    ) |>
+    dplyr::mutate(!!name_err := error)
 
   if(!newname %in% c("observation", "lure")) {
     df_out <- df_id |>
@@ -199,7 +201,6 @@ coleo_injection_final <- function(df){
       dplyr::ungroup() |>
       dplyr::group_by(observation_id) |>
       dplyr::relocate(dplyr::ends_with("id")) |>
-      # dplyr::select(-dplyr::ends_with("id"), -inject_request, -result, -error, -success) |>
       dplyr::select(-inject_request, -result, -error, -success) |>
       dplyr::ungroup()
   } else {
@@ -274,7 +275,7 @@ coleo_inject <- function(df, media_path = NULL) {
     } else if (table == "media") {
       ## The special case of media files
       ### 0. Check that path to media files is provided
-      if (is.null(media_path)) stop("The local path to media files is missing. Media files ant table could not be injected")
+      if (is.null(media_path)) stop("The local path to media files is missing. Media files and table could not be injected")
       ### 1. Inject media files into coleo
       inject_ls <- coleo_inject_media(df_id, failures, server_dir = 'observation', media_path)
       df_id <- inject_ls[["df_id"]]
@@ -285,7 +286,7 @@ coleo_inject <- function(df, media_path = NULL) {
       df_id <- coleo_inject_table(df_id, campaign_type, failures, table)
     }
   }
-  return(failures)
+  return(list(data = df_id, failures = failures))
 }
 
 # Helper function to return stadardized injection reponse messages
