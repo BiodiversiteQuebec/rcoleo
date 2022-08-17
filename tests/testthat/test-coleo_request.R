@@ -35,6 +35,7 @@ with_mock_dir("coleo_request_real", {
 
 with_mock_dir("coleo_request_real", {
     real_cell <- coleo_request_general(cell_code = "139_87", endpoint = "cells")
+    real_cell_df <- coleo_request_general(cell_code = "139_87", endpoint = "cells", response_as_df = TRUE)
 
     resp_body <- httr2::resp_body_json(real_cell)[[1]]
 
@@ -44,6 +45,8 @@ with_mock_dir("coleo_request_real", {
 
       # can pluck one id successfully from site request
       expect_equal(coleo_extract_id(real_cell), 161)
+
+      expect_type(real_cell_df, "list")
 
     })
 

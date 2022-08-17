@@ -2,12 +2,15 @@
 #' General request for the coleo database
 #'
 #' @param ... query parameters for the coleo database (in the format `name = value`)
+#' Possible parameters are 'count', and 'offset'.
 #' @param endpoint name of API endpoint where this request should go
 #' @param perform Should the request be performed? defaults to TRUE.
+#' @param response_as_df Should the response be returned as a dataframe? defaults to FALSE.
+#' @param limit Line number per pages. Parameter value fixed by coleo API.
 #'
-#' @return httr2 response object if perform = TRUE, a request object if perform = FALSE.
+#' @return httr2 response object if perform = TRUE and a tibble if response_as_df = TRUE, a request object if perform = FALSE.
 #' @export
-coleo_request_general <- function(..., endpoint, perform = TRUE){
+coleo_request_general <- function(..., endpoint, perform = TRUE, response_as_df = FALSE, limit = 100){
 
   assertthat::assert_that(endpoint %in% names(endpoints()))
 
@@ -17,8 +20,12 @@ coleo_request_general <- function(..., endpoint, perform = TRUE){
     httr2::req_url_path_append(endpoint) |>
     httr2::req_url_query(!!!request_info)
 
-  if(isTRUE(perform)){
-    httr2::req_perform(written_req)
+  if(perform) {
+    out <- httr2::req_perform(written_req)
+
+    if (response_as_df) out <- coleo_resp_df(out, written_req, limit)
+
+    return(out)
   } else {
     return(written_req)
   }
@@ -63,6 +70,70 @@ coleo_request_by_code <- function(human_code, table, perform = TRUE){
   } else {
     return(written_req)
   }
+}
+
+#' Returns a request to a tibble
+#'
+#' If a response contains multiple pages, the function gets them all
+#' and joins them in a single dataframe.
+#'
+#' @param resp httr2 response from coleo.
+#' @param written_req request passed to coleo's api.
+#' @param perform Should the request be performed? defaults to TRUE.
+#'
+#' @return if perform = TRUE, the answer is returned. if perform = FALSE, an httr2 query is returned.
+#' @export
+coleo_resp_df <- function(resp, written_req, limit){
+  # is there pages?
+  header_names <- names(resp$headers)
+
+  if ("Content-Range" %in% header_names) {
+
+    # Prep output object
+    responses <- list()
+    errors <- NULL
+
+    # Get # pages
+    tmp <- unlist(strsplit(resp$headers$"Content-Range", split = "\\D"))
+    rg <- as.numeric(tmp[grepl("\\d", tmp)])
+    pages <- rg[3L] %/% limit
+
+    # Loop through pages
+    for (page in 0:pages) {
+      page_req <- written_req |>
+        httr2::req_url_query(page = page)
+
+      ## Get page response
+      page_resp <- httr2::req_perform(page_req)
+
+      ## Save response
+      if (httr2::resp_is_error(page_resp)) {
+        ## If error
+        responses[[page + 1]] <- list(body = NULL, response = page_resp)
+        errors <- append(errors, page + 1)
+      } else {
+        ## Save response as a tibble
+        resp_as_df <- page_resp |>
+          httr2::resp_body_json(simplifyVector = TRUE) |>
+          tibble::as_tibble()
+        responses[[page + 1]] <- list(body = resp_as_df, response = page_resp)
+      }
+    }
+
+    # If error, print problematic pages
+    if (!is.null(errors))
+    warning("Failed request(s) for page(s): ", paste0(errors, ", "))
+
+    # 
+    out <- purrr::transpose(responses)
+    out <- purrr::map_df(out$body, dplyr::bind_rows)
+  } else {
+    # No 'Content-Range'
+    out <- httr2::resp_body_json(resp, simplifyVector = TRUE) |>
+      tibble::as_tibble()
+  }
+
+  return(out)
 }
 
 
