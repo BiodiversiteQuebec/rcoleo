@@ -1,0 +1,44 @@
+[
+    {
+        "column_name": "id",
+        "data_type": "integer",
+        "udt_name": "int4",
+        "is_nullable": "NO"
+    },
+    {
+        "column_name": "taxa_name",
+        "data_type": "character varying",
+        "udt_name": "varchar",
+        "is_nullable": "NO"
+    },
+    {
+        "column_name": "variable",
+        "data_type": "character varying",
+        "udt_name": "varchar",
+        "is_nullable": "NO"
+    },
+    {
+        "column_name": "value",
+        "data_type": "double precision",
+        "udt_name": "float8",
+        "is_nullable": "YES"
+    },
+    {
+        "column_name": "observation_id",
+        "data_type": "integer",
+        "udt_name": "int4",
+        "is_nullable": "YES"
+    },
+    {
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO"
+    },
+    {
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO"
+    }
+]
