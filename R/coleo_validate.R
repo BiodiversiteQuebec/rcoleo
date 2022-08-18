@@ -15,12 +15,14 @@ coleo_validate <- function(data) {
 
   #------------------------------------------------------------------------
   # Check that there is a campaign type column and that it contains a unique value
-  #------------------------------------------------------------------------
-  if(!assertthat::has_name(data, "campaigns_type")) warning("V\U00E9rifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond à campaigns_type \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n\n")
+  #------------------------------------------------------------------------  
+  # Pursue only if there is a campaign type column
+  if(!assertthat::has_name(data, "campaigns_type")) stop("V\U00E9rifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond à campaigns_type \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n\n")
 
+  # Pursue only if there is a campaign type value
   campaign_type <- unique(data$campaigns_type)
   campaigns <- coleo_return_valid_campaigns()
-  if(!(length(campaign_type) == 1 && campaign_type %in% campaigns)) warning("V\U00E9rifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n\n")
+  if(!(length(campaign_type) == 1 && campaign_type %in% campaigns)) stop("V\U00E9rifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n\n")
 
 
   #------------------------------------------------------------------------
@@ -31,7 +33,7 @@ coleo_validate <- function(data) {
   # - col_names: column names for the campaign type
   to_true_names <- function(data_names, col_names) {
     for(nm in seq_along(data_names)) {
-      if(!data_names[nm] %in% col_names) {
+      if(!data_names[nm] %in% data_names[nm]) {
         # Extra columns must remain
         if (grepl("_extra", true_col_nm)) next
         ## Some columns may have modified names
@@ -135,8 +137,8 @@ coleo_validate <- function(data) {
   #------------------------------------------------------------------------
   # Check that all sites exists in coleo
   #------------------------------------------------------------------------
-  existing_sites <- get_gen(endpoint = "/sites", verbose = FALSE)$body |>
-      dplyr::bind_rows()
+  existing_sites <- coleo_request_general(endpoint = "sites", response_as_df = TRUE)
+  
   are_sites_exists <- all(unique(data$sites_site_code) %in% existing_sites$site_code)
   # Missing sites ---------------------------------------------------------
   sites_x <- which(!unique(data$sites_site_code) %in% existing_sites$site_code)

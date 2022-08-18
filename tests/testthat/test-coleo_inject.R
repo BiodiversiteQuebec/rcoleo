@@ -181,7 +181,7 @@ with_mock_dir("injection_prep works", {
      "campaign_id", "trap_id", "landmark_id", "sample_id", "observation_date",
      "observation_is_valid", "ref_taxa_rank", "ref_taxa_tsn", "ref_taxa_name",
      "observation_taxa_name", "observation_variable", "observation_value",
-     "observation_notes"
+     "observation_notes", "sample_error"
    ))
 
    })
@@ -209,7 +209,7 @@ with_mock_dir("injection of all tables works", {
   ), row.names = 1:2, class = "data.frame")
 
   # Perform injection
-  out_inject <- coleo_inject(dat)
+  out_inject <- coleo_inject(data)
 
   # Expect two objects being returned
   test_that("we get a list of length two", {
@@ -221,7 +221,7 @@ with_mock_dir("injection of all tables works", {
   
   # Expect injection of all tables
   test_that("all tables injected", {
-    expect_named(out_inject$data, c("observation_id", "obs_specie_id", "taxa_id", "campaign_id", "device_id", "landmark_id", "effort_id", "site_id", "is_valid","sites_site_code", "ref_species_name", "ref_species_category", "date_obs", "time_obs", "observation_error"))
+    expect_named(out_inject$data, c('observation_id', 'obs_specie_id', 'taxa_id', 'campaign_id', 'device_id', 'landmark_id', 'effort_id', 'site_id', 'is_valid', 'sites_site_code', 'date_obs', 'time_obs', 'campaign_error', 'effort_error', 'device_error', 'landmark_error', 'observation_error', 'taxa_error', 'obs_specie_error'))
   })
 })
 
@@ -230,19 +230,15 @@ with_mock_dir("injection of one table", {
   df_out <- coleo_inject_table(data, "acoustique", failures = FALSE, "campaigns")
 
 
-  test_that("return a data.frame", expect_s3_class(df_out, class = "data.frame"))
+  test_that("return a data.frame", {expect_s3_class(df_out, class = "data.frame")})
 
-  test_that("id column is added", expect_named(df_out, c(
-    "site_id", "campaign_id", "sites_site_code", "landmarks_lat",
-    "landmarks_lon", "devices_mic_ultra_code", "obs_species_taxa_name",
-    "ref_species_name", "ref_species_category", "observations_is_valid",
-    "observations_date_obs", "obs_species_variable", "observations_time_obs",
-    "efforts_time_start", "efforts_time_finish", "efforts_recording_minutes"
-  )))
+  test_that("id column is added", {
+    expect_named(df_out, c('site_id', 'campaign_id', 'sites_site_code', 'landmarks_lat', 'landmarks_lon', 'devices_mic_ultra_code', 'obs_species_taxa_name', 'ref_species_name', 'ref_species_category', 'observations_is_valid', 'observations_date_obs', 'obs_species_variable', 'observations_time_obs', 'efforts_time_start', 'efforts_time_finish', 'efforts_recording_minutes', 'campaign_error'))}
+  )
 })
 
 # Test coleo_inject_mam_lures
-with_mock_dir("injection of mamifères lures", {
+with_mock_dir("injection of mammiferes lures", {
 
   # Mock data
   data_mam <- structure(list(
@@ -327,31 +323,10 @@ with_mock_dir("injection of mamifères lures", {
   # - a data.frame is a list
   test_that("the list contains a data.frame", expect_type(inject_ls[['df_id']], "list"))
 
-  # Check that the data.frame contains lure_ids
-  test_that("the data.frame contains lure_ids",
+  # Check that the data.frame contains lure_ids and lure_errors
+  test_that("the data.frame contains lure_ids and lure_errors",
     expect_named(inject_ls[["df_id"]],
-      c("site_id", "campaign_id", "campaigns_type", "sites_site_code",
-        "campaigns_opened_at", "campaigns_closed_at", "campaigns_technicians",
-        "campaigns_notes", "efforts_recording_minutes", "efforts_photo_count",
-        "efforts_time_start", "efforts_time_finish", "efforts_notes",
-        "devices_sd_card_codes", "devices_cam_code", "devices_cam_h_cm",
-        "landmarks_lat_camera", "landmarks_lon_camera", "landmarks_tree_code_camera",
-        "landmarks_taxa_name_camera", "landmarks_dbh_camera", "landmarks_azimut_camera",
-        "landmarks_notes_camera", "landmarks_type_camera", "lures_installed_at_1",
-        "lures_lure_1", "lures_installed_at_2", "lures_lure_2", "lures_installed_at_3",
-        "lures_lure_3", "lures_installed_at_4", "lures_lure_4", "lures_installed_at_5",
-        "lures_lure_5", "landmarks_lat_appat", "landmarks_lon_appat",
-        "landmarks_tree_code_appat", "landmarks_taxa_name_appat", "landmarks_dbh_appat",
-        "landmarks_azimut_appat", "landmarks_distance_appat", "landmarks_distance_unit_appat",
-        "landmarks_type_appat", "landmarks_notes_appat", "observations_date_obs", 
-        "observations_time_obs", "observations_is_valid", "observations_note",
-        "observations_extra_variable_1", "observations_extra_value_1",
-        "observations_extra_type_1", "observations_extra_description_1",
-        "obs_species_taxa_name", "ref_species_name", "obs_species_variable",
-        "obs_species_value", "ref_species_category", "media_type", "media_og_format",
-        "media_og_extention", "media_name", "lure_id_1", "lure_id_2",
-        "lure_id_3"
-      )
+      c('site_id', 'campaign_id', 'campaigns_type', 'sites_site_code', 'campaigns_opened_at', 'campaigns_closed_at', 'campaigns_technicians', 'campaigns_notes', 'efforts_recording_minutes', 'efforts_photo_count', 'efforts_time_start', 'efforts_time_finish', 'efforts_notes', 'devices_sd_card_codes', 'devices_cam_code', 'devices_cam_h_cm', 'landmarks_lat_camera', 'landmarks_lon_camera', 'landmarks_tree_code_camera', 'landmarks_taxa_name_camera', 'landmarks_dbh_camera', 'landmarks_azimut_camera', 'landmarks_notes_camera', 'landmarks_type_camera', 'lures_installed_at_1', 'lures_lure_1', 'lures_installed_at_2', 'lures_lure_2', 'lures_installed_at_3', 'lures_lure_3', 'lures_installed_at_4', 'lures_lure_4', 'lures_installed_at_5', 'lures_lure_5', 'landmarks_lat_appat', 'landmarks_lon_appat', 'landmarks_tree_code_appat', 'landmarks_taxa_name_appat', 'landmarks_dbh_appat', 'landmarks_azimut_appat', 'landmarks_distance_appat', 'landmarks_distance_unit_appat', 'landmarks_type_appat', 'landmarks_notes_appat', 'observations_date_obs', 'observations_time_obs', 'observations_is_valid', 'observations_note', 'observations_extra_variable_1', 'observations_extra_value_1', 'observations_extra_type_1', 'observations_extra_description_1', 'obs_species_taxa_name', 'ref_species_name', 'obs_species_variable', 'obs_species_value', 'ref_species_category', 'media_type', 'media_og_format', 'media_og_extention', 'media_name', 'lure_id_1', 'lure_error_1', 'lure_id_2', 'lure_error_2', 'lure_id_3', 'lure_error_3')
     )
   )
 })
@@ -369,29 +344,10 @@ with_mock_dir("injection of mamifères landmarks", {
   # - a data.frame is a list
   test_that("the landmark list contains a data.frame", expect_type(inject_land_ls[['df_id']], "list"))
 
-  # Check that the data.frame contains lure_ids
-  test_that("the data.frame contains lure_ids",
+  # Check that the data.frame contains lure_ids and lure_errors
+  test_that("the data.frame contains lure_ids and lure_errors",
     expect_named(inject_land_ls[["df_id"]],
-      c("campaign_id", "landmark_id_camera", "site_id", "campaigns_type",
-        "sites_site_code", "campaigns_opened_at", "campaigns_closed_at",
-        "campaigns_technicians", "campaigns_notes", "efforts_recording_minutes",
-        "efforts_photo_count", "efforts_time_start", "efforts_time_finish",
-        "efforts_notes", "devices_sd_card_codes", "devices_cam_code",
-        "devices_cam_h_cm", "lures_installed_at_1", "lures_lure_1", "lures_installed_at_2",
-        "lures_lure_2", "lures_installed_at_3", "lures_lure_3", "lures_installed_at_4",
-        "lures_lure_4", "lures_installed_at_5", "lures_lure_5", "landmarks_lat_appat",
-        "landmarks_lon_appat", "landmarks_tree_code_appat", "landmarks_taxa_name_appat",
-        "landmarks_dbh_appat", "landmarks_azimut_appat", "landmarks_distance_appat",
-        "landmarks_distance_unit_appat", "landmarks_type_appat", "landmarks_notes_appat",
-        "observations_date_obs", "observations_time_obs", "observations_is_valid",
-        "observations_note", "observations_extra_variable_1", "observations_extra_value_1",
-        "observations_extra_type_1", "observations_extra_description_1",
-        "obs_species_taxa_name", "ref_species_name", "obs_species_variable",
-        "obs_species_value", "ref_species_category", "media_type", "media_og_format",
-        "media_og_extention", "media_name", "lure_id_1", "lure_id_2",
-        "lure_id_3", "landmark_id_appat_1", "landmark_id_appat_2", "landmark_id_appat_3"
-      )
+      c('campaign_id', 'landmark_id_camera', 'site_id', 'campaigns_type', 'sites_site_code', 'campaigns_opened_at', 'campaigns_closed_at', 'campaigns_technicians', 'campaigns_notes', 'efforts_recording_minutes', 'efforts_photo_count', 'efforts_time_start', 'efforts_time_finish', 'efforts_notes', 'devices_sd_card_codes', 'devices_cam_code', 'devices_cam_h_cm', 'lures_installed_at_1', 'lures_lure_1', 'lures_installed_at_2', 'lures_lure_2', 'lures_installed_at_3', 'lures_lure_3', 'lures_installed_at_4', 'lures_lure_4', 'lures_installed_at_5', 'lures_lure_5', 'landmarks_lat_appat', 'landmarks_lon_appat', 'landmarks_tree_code_appat', 'landmarks_taxa_name_appat', 'landmarks_dbh_appat', 'landmarks_azimut_appat', 'landmarks_distance_appat', 'landmarks_distance_unit_appat', 'landmarks_type_appat', 'landmarks_notes_appat', 'observations_date_obs', 'observations_time_obs', 'observations_is_valid', 'observations_note', 'observations_extra_variable_1', 'observations_extra_value_1', 'observations_extra_type_1', 'observations_extra_description_1', 'obs_species_taxa_name', 'ref_species_name', 'obs_species_variable', 'obs_species_value', 'ref_species_category', 'media_type', 'media_og_format', 'media_og_extention', 'media_name', 'lure_id_1', 'lure_error_1', 'lure_id_2', 'lure_error_2', 'lure_id_3', 'lure_error_3', 'landmark_error_camera', 'landmark_id_appat_1', 'landmark_id_appat_2', 'landmark_id_appat_3')
     )
   )
-
 })
