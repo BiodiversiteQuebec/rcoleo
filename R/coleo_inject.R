@@ -468,14 +468,8 @@ coleo_inject_mam_lures <- function(df_id, failures) {
   #--------------------------------------------------------------------------
   # 4. Finalizing lures table injection
   #--------------------------------------------------------------------------
-  if(any(response$success)) {
-    response_t <- response[response$success == TRUE,]
-    response_f <- response[response$success == FALSE,]
-    lures_id <- response_t |>
-      coleo_injection_final()
-    response_f[setdiff(names(lures_id), names(response_f))] <- NA
-    rbind(lures_id, response_f[,names(lures_id)])
-  }
+  lures_id <- response |>
+    coleo_injection_final()
 
   # Reassign lure_id to df_id
   # - lure_ids are saved in separate columns for each lure
@@ -492,6 +486,8 @@ coleo_inject_mam_lures <- function(df_id, failures) {
       ## Save lure_id for right lure
       lure_no <- sub('.*(?=.$)', "", names(instal_cols)[df_col], perl = TRUE)
       df_id[df_row, paste0("lure_id_", lure_no)] <- lures_id$lure_id[lure_row]
+      ## Save lure_error for right lure
+      df_id[df_row, paste0("lure_error_", lure_no)] <- list(lures_id$lure_error[lure_row])
   }
   return(list("df_id" = df_id, "failures" = failures))
 }
@@ -527,15 +523,11 @@ coleo_inject_mam_landmarks <- function(df_id, failures) {
   # Output
   failures <- injection_reponse_message("landmark_camera", response, failures)
   # Finalizing lures table injection
-  if(any(response$success)) {
-    response_t <- response[response$success == TRUE,]
-    response_f <- response[response$success == FALSE,]
-    df_id <- response_t |>
-      coleo_injection_final()
-    response_f[setdiff(names(df_id), names(response_f))] <- NA
-    rbind(df_id, response_f[,names(df_id)])
-  }
+  df_id <- response |>
+    coleo_injection_final()
+
   names(df_id)[names(df_id) == "landmark_id"] <- "landmark_id_camera"
+  names(df_id)[names(df_id) == "landmark_error"] <- "landmark_error_camera"
   #--------------------------------------------------------------------------
   # 3. Inject one landmark for each lure_id
   #--------------------------------------------------------------------------
@@ -555,19 +547,16 @@ coleo_inject_mam_landmarks <- function(df_id, failures) {
     ## 2.2. Inject
     response <- coleo_injection_execute(requests) # Real thing
     ### Output
-    land_col_name <- paste0("landmark_id_appat_", sub('.*(?=.$)', "", lureGroup, perl = TRUE))
-    failures <- injection_reponse_message(land_col_name, response, failures)
+    land_id_name <- paste0("landmark_id_appat_", sub('.*(?=.$)', "", lureGroup, perl = TRUE))
+    land_error_name <- paste0("landmark_error_appat_", sub('.*(?=.$)', "", lureGroup, perl = TRUE))
+    failures <- injection_reponse_message(land_id_name, response, failures)
     ## 2.3. Save landmarks_id in df_id and rename it
-    if(any(response$success)) {
-      response_t <- response[response$success == TRUE,]
-      response_f <- response[response$success == FALSE,]
-      df_appat_final <- response_t |>
-        coleo_injection_final()
-      response_f[setdiff(names(df_appat_final), names(response_f))] <- NA
-      rbind(df_appat_final, response_f[,names(df_appat_final)])
-    }
+    df_appat_final <- response |>
+      coleo_injection_final()
     df_id$landmark_id <- df_appat_final$landmark_id
-    names(df_id)[names(df_id) == "landmark_id"] <- land_col_name
+    
+    names(df_id)[names(df_id) == "landmark_id"] <- land_id_name
+    names(df_id)[names(df_id) == "landmark_error"] <- land_error_name
   }
   return(list("df_id" = df_id, "failures" = failures))
 }
