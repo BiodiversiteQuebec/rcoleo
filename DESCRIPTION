@@ -35,6 +35,7 @@ Suggests:
     rmarkdown,
     RPostgreSQL,
     testthat,
+    httptest2,
     withr
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
