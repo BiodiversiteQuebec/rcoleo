@@ -182,16 +182,16 @@ coleo_injection_final <- function(df){
 
   # ALMOST offensively fashionable way to dynamically name a column
   df_id <- df |>
-    dplyr::mutate(!!name_id := dplyr::if_else(is.null(error),
-                                       true = coleo_extract_id(result),
-                                       false = NA_integer_)
+    dplyr::mutate(!!name_id := ifelse(is.null(.data$error),
+                                       coleo_extract_id(result),
+                                       NA_integer_)
     ) |>
     dplyr::mutate(!!name_err := list(error))
 
   if(!newname %in% c("observation", "lure")) {
     df_out <- df_id |>
       dplyr::ungroup() |>
-      dplyr::select(dplyr::ends_with("id"), data) |>
+      dplyr::select(dplyr::ends_with("id"), data, !!name_err) |>
       tidyr::unnest(cols = c(data))
   } else if(newname == "observation") {
     # once the observation table is injected, we only need observation_id. Here
@@ -232,7 +232,7 @@ coleo_inject <- function(df, media_path = NULL) {
   tables <- rcoleo::coleo_return_required_tables(campaign_type)
 
   #--------------------------------------------------------------------------
-  # 2. inject campaigns table
+  # 2. Inject campaigns table
   #--------------------------------------------------------------------------
   failures <- FALSE
   # Prep request
@@ -286,6 +286,16 @@ coleo_inject <- function(df, media_path = NULL) {
       df_id <- coleo_inject_table(df_id, campaign_type, failures, table)
     }
   }
+
+  #--------------------------------------------------------------------------
+  # 4. join df_id with df to get the final dataframe
+  #--------------------------------------------------------------------------
+  # join df_id with df to get the final dataframe
+  df_out <- df_id |>
+    dplyr::left_join(df) |>
+    dplyr::relocate(dplyr::ends_with("error")) |>
+    dplyr::relocate(dplyr::ends_with("id"))
+
   return(list(data = df_id, failures = failures))
 }
 
@@ -348,9 +358,12 @@ coleo_inject_table <- function(df_id, campaign_type, failures, table) {
     df_id <- response_t |>
       coleo_injection_final()
     response_f[setdiff(names(df_id), names(response_f))] <- NA
-    rbind(df_id, response_f[,names(df_id)])
+    df_out <- rbind(df_id, response_f[,names(df_id)])
+  } else {
+    df_out <- response |>
+      coleo_injection_final()
   }
-  return(df_id)
+  return(df_out)
 }
 
 
