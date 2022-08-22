@@ -147,30 +147,32 @@ coleo_validate <- function(data) {
 
 
   #------------------------------------------------------------------------
-  # Check that all campaigns without observations have all fields of 
-  # taxonomic level equal to or inferior to the observation are NA in 
+  # Check that all campaigns without observations have all fields of
+  # taxonomic level equal to or inferior to the observation are NA in
   # "empty" campaigns
+  # - Test only for campaigns with obs_species
   #------------------------------------------------------------------------
-  # Identify columns that need and need not to be NA if campaigns are empty
-  no_na_tbls <- c("cells", "sites", "campaigns", "efforts", "environments", "devices", "lures", "traps", "landmarks", "samples", "thermographs")
-  which_no_na_tbls <- sapply(no_na_tbls, function(x) grepl(x, dat_names) |> which()) |> unlist() |> unique()
-  na_cols <- dat_names[-which_no_na_tbls]
-  # Loop through rows to validate that observations related fields are NA if no observations
-  row_not_empty <- c()
-  no_obs <- 0
-  for (row in 1:nrow(data)) {
-    is_obs_na <- data$obs_species_taxa_name[row] |> is.na()
-    ## If no observation, then all fields of taxonomic level equal or lower to the observation need to be NA
-    if(is_obs_na) {
-      no_obs <- no_obs + 1
-      is_row_na <- data[row,na_cols] |> is.na() |> all()
-      # Save results --------------------------------------------------------
-      if(!is_row_na) row_not_empty <- c(row_not_empty, row)
+  if ("obs_species_taxa_name" %in% dat_names) {
+    # Identify columns that need and need not to be NA if campaigns are empty
+    no_na_tbls <- c("cells", "sites", "campaigns", "efforts", "environments", "devices", "lures", "traps", "landmarks", "samples", "thermographs")
+    which_no_na_tbls <- sapply(no_na_tbls, function(x) grepl(x, dat_names) |> which()) |> unlist() |> unique()
+    na_cols <- dat_names[-which_no_na_tbls]
+    # Loop through rows to validate that observations related fields are NA if no observations
+    row_not_empty <- c()
+    no_obs <- 0
+    for (row in 1:nrow(data)) {
+      is_obs_na <- data$obs_species_taxa_name[row] |> is.na()
+      ## If no observation, then all fields of taxonomic level equal or lower to the observation need to be NA
+      if(is_obs_na) {
+        no_obs <- no_obs + 1
+        is_row_na <- data[row,na_cols] |> is.na() |> all()
+        # Save results --------------------------------------------------------
+        if(!is_row_na) row_not_empty <- c(row_not_empty, row)
+      }
     }
+
+    if(!is.null(row_not_empty)) warning(paste0("--------------------------------------------------\nV\U00E9rifiez les lignes sans observation. Les champs qui d\U00E9crivent le jeu de données, la localisation de l\'\U00E9chantillonnage et les détails sur la campagne d'\U00E9chantillonnage doivent être remplis, mais tous les autres champs qui décrivent l\'observation doivent être laissés vide.\n\n"))
   }
-
-  if(!is.null(row_not_empty)) warning(paste0("--------------------------------------------------\nV\U00E9rifiez les lignes sans observation. Les champs qui d\U00E9crivent le jeu de données, la localisation de l\'\U00E9chantillonnage et les détails sur la campagne d'\U00E9chantillonnage doivent être remplis, mais tous les autres champs qui décrivent l\'observation doivent être laissés vide.\n\n"))
-
 
   #------------------------------------------------------------------------
   # Check that the range of values contained within input columns are valid
