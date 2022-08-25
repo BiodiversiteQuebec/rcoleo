@@ -47,6 +47,7 @@ coleo_read_csv <- function(fileName) {
         if(colClass == "list") {
             dataFile[,col] <- list(stringr::str_split(dataFile[,col], ", |,"))
         } else {
+            if (colClass == "numeric") dataFile[,col] <- gsub(",", ".", dataFile[,col])
             asClass <- paste0('as.', colClass)
             dataFile[,col] <- .Primitive(asClass)(dataFile[,col], drop = FALSE)
         }
