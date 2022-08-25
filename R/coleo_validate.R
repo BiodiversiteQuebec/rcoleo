@@ -174,6 +174,34 @@ coleo_validate <- function(data) {
     if(!is.null(row_not_empty)) warning(paste0("--------------------------------------------------\nV\U00E9rifiez les lignes sans observation. Les champs qui d\U00E9crivent le jeu de données, la localisation de l\'\U00E9chantillonnage et les détails sur la campagne d'\U00E9chantillonnage doivent être remplis, mais tous les autres champs qui décrivent l\'observation doivent être laissés vide.\n\n"))
   }
 
+
+  #------------------------------------------------------------------------
+  # Check that (and only) ADNe campaigns observations made at the station level
+  # have landmarks
+  #------------------------------------------------------------------------
+  if ("observations_extra_value_1" %in% dat_names) {
+    station_rows <- which(data$observations_extra_value_1 == "station")
+
+    # Check that all lake observations do not have landmarks
+    if (length(station_rows) < nrow(data)) {
+      is_true <- all(is.na(data[!station_rows, c("landmarks_type", "landmarks_lat", "landmarks_lon")]))
+
+      if(!is_true) warning(paste0("--------------------------------------------------\nV\U00E9rifiez les observations faites à l'échelle du lac. Les colonnes landmarks_type, landmarks_lat et landmarks_lon doivent être laissées vide pour ces lignes\n\n"))
+    }
+
+    # Check that all station observations have landmarks
+    if(length(station_rows) > 0) {
+      is_true <- all(!is.na(data[station_rows, c("landmarks_type", "landmarks_lat", "landmarks_lon")]))
+      
+      if(!is_true) warning(paste0("--------------------------------------------------\nV\U00E9rifiez les observations qui se rattachent aux stations. Les colonnes landmarks_type, landmarks_lat et landmarks_lon doivent être remplies pour ces lignes\n\n"))
+    }
+  }
+
+  #------------------------------------------------------------------------
+  # Check that ADNe campaigns at the lake scale have corrected sequence count
+  #------------------------------------------------------------------------
+
+
   #------------------------------------------------------------------------
   # Check that the range of values contained within input columns are valid
   #------------------------------------------------------------------------
@@ -312,9 +340,9 @@ coleo_validate <- function(data) {
     }) |>
       range()
 
-    message(paste0("==================================================\nValidation finale ! \n
-    i) V\U00E9rifiez les lignes qui représentent des campagnes vides. Il y a ", no_obs, " lignes sans observations.\n
-    ii) V\U00E9rifiez que l'intervalle des dates", paste0(" inject\U00E9", "es "), "correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", "), " se trouvent dans l'intervalle de", paste0(" l'ann\U00E9", "e "), range_year[1], " \U00E0 ", range_year[2], " du mois ", range_month[1], " \U00E0 ", range_month[2], " et du jour ", range_day[1], "  \U00E0 ", range_day[2], ".\n
-    iii) Si les", paste0(" donn\U00E9", "es"), " sont bonnes et qu'aucun autre message n'apparait, vous pouvez", paste0(" proc\U00E9", "der"), " à l'injection des", paste0(" donn\U00E9", "es.")))
+    message(paste0("==================================================\nValidation finale ! \n",
+    if ("obs_species_taxa_name" %in% dat_names) paste0("- V\U00E9rifiez les lignes qui représentent des campagnes vides. Il y a ", no_obs, " lignes sans observations.\n"),
+    "- V\U00E9rifiez que l'intervalle des dates", paste0(" inject\U00E9", "es "), "correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", "), " se trouvent dans l'intervalle de", paste0(" l'ann\U00E9", "e "), range_year[1], " \U00E0 ", range_year[2], " du mois ", range_month[1], " \U00E0 ", range_month[2], " et du jour ", range_day[1], "  \U00E0 ", range_day[2], ".\n
+    - Si les", paste0(" donn\U00E9", "es"), " sont bonnes et qu'aucun autre message n'apparait, vous pouvez", paste0(" proc\U00E9", "der"), " à l'injection des", paste0(" donn\U00E9", "es.")))
   }
 }
