@@ -281,8 +281,16 @@ coleo_inject <- function(df, media_path = NULL) {
       df_id <- inject_ls[["df_id"]]
       failures <- inject_ls[["failures"]]
 
+    } else if (campaign_type == "ADNe" & table == "landmarks") {
+      ## Obervations at the lake scale for "ADNe" campaigns do not have landmarks
+      ## Landmarks are injected even if there is no data with NA lat lon
+      ## It is necessary to skip their injection
+      inject_ls <- coleo_inject_adne_landmarks(df_id, failures)
+      df_id <- inject_ls[["df_id"]]
+      failures <- inject_ls[["failures"]]
+
     } else {
-      ## regular table injections
+      ## Regular table injections
       df_id <- coleo_inject_table(df_id, campaign_type, failures, table)
     }
   }
@@ -558,5 +566,35 @@ coleo_inject_mam_landmarks <- function(df_id, failures) {
     names(df_id)[names(df_id) == "landmark_id"] <- land_id_name
     names(df_id)[names(df_id) == "landmark_error"] <- land_error_name
   }
+  return(list("df_id" = df_id, "failures" = failures))
+}
+
+
+#' Inject obs_edna table of ADNe campaigns into coleo
+#'
+#' Takes a valid dataframe and performs autonomously the injection of obs_edna table
+#'
+#' @param df_id a dataframe with campaign_id column
+#' @param failures Boolean. Failures within the injection process
+#'
+#' @return a dataframe with landmarks ids
+#'
+coleo_inject_adne_landmarks <- function(df_id, failures) {
+  # Obervations at the lake scale for "ADNe" campaigns do not have landmarks
+  # Landmarks are injected even if there is no data with NA lat lon
+  # It is necessary to skip their injection
+  which_lac <- df_id$observations_extra_value_1 == "lac"
+  no_lake_id <- df_id[!which_lac,] |>
+    coleo_inject_table(campaign_type = campaign_type, failures = failures, table = "landmarks")
+
+  # Reassemble the dataframes
+  with_lac <- df_id[which_lac,]
+  with_lac[setdiff(names(no_lake_id), names(with_lac))] <- NA_character_
+  df_id <- rbind(no_lake_id, with_lac[names(no_lake_id)])
+
+  # Is there failures ?
+  if (any(is.na(no_lake_id$landmark_id))) failures <- TRUE
+
+  # Return the results
   return(list("df_id" = df_id, "failures" = failures))
 }
