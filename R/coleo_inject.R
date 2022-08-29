@@ -188,10 +188,19 @@ coleo_injection_final <- function(df){
     ) |>
     dplyr::mutate(!!name_err := list(error))
 
+  # Add table name to column names except for result and data columns
+  which_to_change <- !grepl("_id|success|error|data", names(df_id))
+  names_to_change <- names(df_id)[which_to_change]
+  ## Add "newname_" before column name
+  names_changed <- paste0(newname, "_", names_to_change)
+  ## Rename columns
+  names(df_id)[which_to_change] <- names_changed
+
   if(!newname %in% c("observation", "lure")) {
     df_out <- df_id |>
       dplyr::ungroup() |>
-      dplyr::select(dplyr::ends_with("id"), data, !!name_err) |>
+      # dplyr::select(dplyr::ends_with("id"), data, !!name_err) |>
+      dplyr::select(-success, -error) |>
       tidyr::unnest(cols = c(data))
   } else if(newname == "observation") {
     # once the observation table is injected, we only need observation_id. Here
