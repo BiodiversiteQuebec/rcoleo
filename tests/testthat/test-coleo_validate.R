@@ -63,6 +63,19 @@ test_that("coleo_validate", {
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez les lignes sans observation.*")
 
+  ## Test that all (and only) ADNe campaigns observations made at the ## station level have landmarks
+  dat_test <- dat
+  dat_test[, c("samples_sample_code", "obs_species_variable", "obs_species_value")] <- NULL
+  dat_test$campaigns_type <- "ADNe"
+  dat_test$obs_edna_taxa_name <- "Insecta"
+  dat_test$obs_species_taxa_name <- NULL
+  dat_test$observations_extra_value_1 <- "lac"
+  dat_test$landmarks_type <- NA_character_
+  dat_test$landmarks_lat = dat_test$landmarks_lon <- 43
+  
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "Vérifiez les observations faites à l'échelle du lac.*")
+
   ## Test that variable field of obs_species table is valid (obs_species_variable column)
   dat_test <- dat
   dat_test$obs_species_variable <- "abundance"
