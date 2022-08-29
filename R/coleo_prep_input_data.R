@@ -55,7 +55,6 @@ coleo_prep_input_data <- function(df, db_table) {
       dplyr::nest_by(dplyr::across(dplyr::any_of(nesting_names)))
     # test with nest_by
   } else {
-    message("L'imbrication n'est pas necessaire pour cette table")
     df_info_only <- dplyr::rowwise(df)
   }
 
