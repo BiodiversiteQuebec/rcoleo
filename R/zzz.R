@@ -34,6 +34,7 @@ endpoints <- function(){
     obs_species = "/obs_species",
     obs_soil_decomposition = "/obs_soil_decomposition",
     efforts = "/efforts",
+    obs_edna = "/obs_edna",
     summary = "/campaigns_summary",
     species_list = "/species_list",
     sites_species = "/sites_species",
