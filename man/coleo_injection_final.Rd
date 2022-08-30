@@ -10,12 +10,11 @@ coleo_injection_final(df)
 \item{df}{dataframe produced by \code{coleo_injection_execute}}
 }
 \value{
-a data.frame. All the injected columns are gone, and it has no groups
+a data.frame. Without groups
 or nested data. the ID of the records just injected is stored in a column
 with the correct name
 }
 \description{
 After successful injection, process the dataframe: extract the new ID from
-the injected records, store it in a new column, and drop all the injected
-columns
+the injected records, and store it in a new column
 }

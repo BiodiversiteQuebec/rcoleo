@@ -4,7 +4,7 @@
 \alias{coleo_inject_adne_landmarks}
 \title{Inject obs_edna table of ADNe campaigns into coleo}
 \usage{
-coleo_inject_adne_landmarks(df_id, failures)
+coleo_inject_adne_landmarks(df_id, campaign_type, failures)
 }
 \arguments{
 \item{df_id}{a dataframe with campaign_id column}

@@ -159,28 +159,30 @@ coleo_injection_prep <- function(df, db_table){
 #' Finalize coleo injection
 #'
 #' After successful injection, process the dataframe: extract the new ID from
-#' the injected records, store it in a new column, and drop all the injected
-#' columns
+#' the injected records, and store it in a new column
 #'
 #' @param df dataframe produced by \code{coleo_injection_execute}
 #'
-#' @return a data.frame. All the injected columns are gone, and it has no groups
+#' @return a data.frame. Without groups
 #'   or nested data. the ID of the records just injected is stored in a column
 #'   with the correct name
 #' @export
 coleo_injection_final <- function(df){
-  # get the name of the type of table just injected and make a name_id out of it.
-  newname <- df$inject_request[[1]] |>
+  #--------------------------------------------------------------------------
+  # 1. Get the name of the type of table just injected and make a name_id out of it
+  #--------------------------------------------------------------------------
+  tbl_name <- df$inject_request[[1]] |>
     httr2::req_dry_run(quiet = TRUE) |>
     purrr::pluck("path") |>
-    basename() |>
-    sub(pattern = "s$", replacement = "")
+    basename()
+  newname <- sub(tbl_name, pattern = "s$", replacement = "")
 
   name_id <- paste0(newname, "_id")
   name_err <- paste0(newname, "_error")
 
-
-  # ALMOST offensively fashionable way to dynamically name a column
+  #--------------------------------------------------------------------------
+  # 2. Store id and error to new columns
+  #--------------------------------------------------------------------------
   df_id <- df |>
     dplyr::mutate(!!name_id := ifelse(is.null(.data$error),
                                        coleo_extract_id(result),
@@ -188,29 +190,35 @@ coleo_injection_final <- function(df){
     ) |>
     dplyr::mutate(!!name_err := list(error))
 
-  # Add table name to column names except for result and data columns
-  which_to_change <- !grepl("_id|success|error|data", names(df_id))
-  names_to_change <- names(df_id)[which_to_change]
-  ## Add "newname_" before column name
-  names_changed <- paste0(newname, "_", names_to_change)
-  ## Rename columns
-  names(df_id)[which_to_change] <- names_changed
+  #--------------------------------------------------------------------------
+  # 3. Rename table columns to keep
+  #--------------------------------------------------------------------------
+  # Select column names to keep
+  old_names <- coleo_get_column_names(tbl_name)$column_name
+  old_names <- old_names[!grepl("_id", old_names)]
+  which_old <- names(df_id) %in% old_names
+  # Make new column names
+  new_names <- paste0(tbl_name, "_", names(df_id)[which_old])
+  # Change column names to new names
+  names(df_id)[which_old] <- new_names
 
+  #--------------------------------------------------------------------------
+  # 4. Remove the columns we don't want to keep and unnest the data
+  # - lures are to be formated later, the table is returned as is
+  #--------------------------------------------------------------------------
   if(!newname %in% c("observation", "lure")) {
     df_out <- df_id |>
       dplyr::ungroup() |>
-      # dplyr::select(dplyr::ends_with("id"), data, !!name_err) |>
-      dplyr::select(-success, -error) |>
-      tidyr::unnest(cols = c(data))
+      dplyr::select(-success, -inject_request, -error, -result) |>
+      tidyr::unnest(cols = c(data)) |>
+      dplyr::relocate(dplyr::ends_with("id"))
   } else if(newname == "observation") {
-    # once the observation table is injected, we only need observation_id. Here
-    # is a cheesy dplyr way to do it -- you can't drop a col if it is a grouping
-    # column ;)
+    # There is no "data" column in observation table
     df_out <- df_id |>
       dplyr::ungroup() |>
       dplyr::group_by(observation_id) |>
       dplyr::relocate(dplyr::ends_with("id")) |>
-      dplyr::select(-inject_request, -result, -error, -success) |>
+      dplyr::select(-inject_request, -error, -success, -result) |>
       dplyr::ungroup()
   } else {
     # lures table are processed back to wide format later
@@ -260,8 +268,7 @@ coleo_inject <- function(df, media_path = NULL) {
     }
 
   # Get campaigns id
-  df_id <- campaigns_response[campaigns_response$success == TRUE,] |>
-      rcoleo::coleo_injection_final()
+  df_id <- rcoleo::coleo_injection_final(campaigns_response)
 
   #--------------------------------------------------------------------------
   # 3. Inject other tables
@@ -294,7 +301,7 @@ coleo_inject <- function(df, media_path = NULL) {
       ## Obervations at the lake scale for "ADNe" campaigns do not have landmarks
       ## Landmarks are injected even if there is no data with NA lat lon
       ## It is necessary to skip their injection
-      inject_ls <- coleo_inject_adne_landmarks(df_id, failures)
+      inject_ls <- coleo_inject_adne_landmarks(df_id, campaign_type, failures)
       df_id <- inject_ls[["df_id"]]
       failures <- inject_ls[["failures"]]
 
@@ -303,15 +310,6 @@ coleo_inject <- function(df, media_path = NULL) {
       df_id <- coleo_inject_table(df_id, campaign_type, failures, table)
     }
   }
-
-  #--------------------------------------------------------------------------
-  # 4. join df_id with df to get the final dataframe
-  #--------------------------------------------------------------------------
-  # join df_id with df to get the final dataframe
-  df_out <- df_id |>
-    dplyr::left_join(df) |>
-    dplyr::relocate(dplyr::ends_with("error")) |>
-    dplyr::relocate(dplyr::ends_with("id"))
 
   return(list(data = df_id, failures = failures))
 }
@@ -369,17 +367,9 @@ coleo_inject_table <- function(df_id, campaign_type, failures, table) {
   # - Failure will cause an error
   # - Only get id for successful injections
   #--------------------------------------------------------------------------
-  if(any(response$success)) {
-    response_t <- response[response$success == TRUE,]
-    response_f <- response[response$success == FALSE,]
-    df_id <- response_t |>
-      coleo_injection_final()
-    response_f[setdiff(names(df_id), names(response_f))] <- NA
-    df_out <- rbind(df_id, response_f[,names(df_id)])
-  } else {
-    df_out <- response |>
-      coleo_injection_final()
-  }
+  df_out <- response |>
+    coleo_injection_final()
+
   return(df_out)
 }
 
@@ -434,16 +424,8 @@ coleo_inject_media <- function(df_id, failures, server_dir = "observation", file
   #--------------------------------------------------------------------------
   # 3. Get id back
   #--------------------------------------------------------------------------
-  if (any(response$success)) {
-    response_t <- response[response$success == TRUE, ]
-    response_f <- response[response$success == FALSE, ]
-    df_id <- df |>
-      coleo_injection_final()
-    response_f[setdiff(names(df_id), names(response_f))] <- NA
-    rbind(df_id, response_f[, names(df_id)])
-    df_id <- df_id |>
-      dplyr::select(-inject_request, -result, -error, -success)
-  }
+  df_id <- df |>
+    coleo_injection_final()
   return(list("df_id" = df_id, "failures" = failures))
 }
 
@@ -503,8 +485,8 @@ coleo_inject_mam_lures <- function(df_id, failures) {
       ## Save lure_id for right lure
       lure_no <- sub('.*(?=.$)', "", names(instal_cols)[df_col], perl = TRUE)
       df_id[df_row, paste0("lure_id_", lure_no)] <- lures_id$lure_id[lure_row]
-      ## Save lure_error for right lure
-      df_id[df_row, paste0("lure_error_", lure_no)] <- list(lures_id$lure_error[lure_row])
+      ## Save lure_result
+      df_id[df_row, paste0("lure_result_", lure_no)] <- list(lures_id$lure_result[lure_row])
   }
   return(list("df_id" = df_id, "failures" = failures))
 }
@@ -571,7 +553,7 @@ coleo_inject_mam_landmarks <- function(df_id, failures) {
     df_appat_final <- response |>
       coleo_injection_final()
     df_id$landmark_id <- df_appat_final$landmark_id
-    
+
     names(df_id)[names(df_id) == "landmark_id"] <- land_id_name
     names(df_id)[names(df_id) == "landmark_error"] <- land_error_name
   }
@@ -588,7 +570,7 @@ coleo_inject_mam_landmarks <- function(df_id, failures) {
 #'
 #' @return a dataframe with landmarks ids
 #'
-coleo_inject_adne_landmarks <- function(df_id, failures) {
+coleo_inject_adne_landmarks <- function(df_id, campaign_type, failures) {
   # Obervations at the lake scale for "ADNe" campaigns do not have landmarks
   # Landmarks are injected even if there is no data with NA lat lon
   # It is necessary to skip their injection
