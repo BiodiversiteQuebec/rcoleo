@@ -4,17 +4,28 @@
 \alias{coleo_request_general}
 \title{General request for the coleo database}
 \usage{
-coleo_request_general(..., endpoint, perform = TRUE)
+coleo_request_general(
+  ...,
+  endpoint,
+  perform = TRUE,
+  response_as_df = FALSE,
+  limit = 100
+)
 }
 \arguments{
-\item{...}{query parameters for the coleo database (in the format \code{name = value})}
+\item{...}{query parameters for the coleo database (in the format \code{name = value})
+Possible parameters are 'count', and 'offset'.}
 
 \item{endpoint}{name of API endpoint where this request should go}
 
 \item{perform}{Should the request be performed? defaults to TRUE.}
+
+\item{response_as_df}{Should the response be returned as a dataframe? defaults to FALSE.}
+
+\item{limit}{Line number per pages. Parameter value fixed by coleo API.}
 }
 \value{
-httr2 response object if perform = TRUE, a request object if perform = FALSE.
+httr2 response object if perform = TRUE and a tibble if response_as_df = TRUE, a request object if perform = FALSE.
 }
 \description{
 General request for the coleo database
