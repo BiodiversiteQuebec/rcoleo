@@ -279,6 +279,17 @@ coleo_inject <- function(df, media_path = NULL) {
   #--------------------------------------------------------------------------
   for (table in tables[-1]) {
 
+    # Injection of taxa_name in ref_species table
+    if (table %in% c("landmarks", "obs_species", "obs_edna")) {
+      if (campaign_type != "mammifères" & table != "landmarks") {
+        # Skip if landmarks table in a mammifère campaign.
+        # The landmarks need first to be extracted
+        # - The operation is done in coleo_inject_mam_landmarks()
+        taxa_col <- df_id[,paste0(table, "_taxa_name")]
+        coleo_inject_ref_species(taxa_col)
+      }
+    }
+
     # Case-specific injections
     if (campaign_type == "mammifères" & table == "lures") {
       ## Lures table for "mammifères" campaigns
@@ -525,7 +536,13 @@ coleo_inject_mam_landmarks <- function(df_id, failures) {
   # There might be multiple landmarks for the camera and for each lure
   land_groups <- split(landCols, sub('^.*_([a-zA-Z]+$)', "\\1", landCols, perl = TRUE))
   #--------------------------------------------------------------------------
-  # 2. Inject camera landmark
+  # 2. Inject taxa names in ref_species table for camera landmark
+  #--------------------------------------------------------------------------
+  if ("landmarks_taxa_name_camera" %in% names(df_id)) {
+    coleo_inject_ref_species(df_id[,"landmarks_taxa_name_camera"])
+  }
+  #--------------------------------------------------------------------------
+  # 3. Inject camera landmark
   #--------------------------------------------------------------------------
   # Remove _camera from colnames
   df_camera <- df_id
@@ -548,7 +565,7 @@ coleo_inject_mam_landmarks <- function(df_id, failures) {
   names(df_id)[names(df_id) == "landmark_id"] <- "landmark_camera_id"
   names(df_id)[names(df_id) == "landmark_error"] <- "landmark_camera_error"
   #--------------------------------------------------------------------------
-  # 3. Inject one landmark for each lure_id
+  # 4. Inject one landmark for each lure_id
   #--------------------------------------------------------------------------
   # 1. get lure groups
   lures_ids <- names(df_id)[grepl("lure_._id", names(df_id))]
@@ -560,16 +577,20 @@ coleo_inject_mam_landmarks <- function(df_id, failures) {
     df_lure <- df_id
     names(df_lure)[grep("_appat", names(df_lure))] <- sub('_appat', "\\1", names(df_lure)[grep("_appat", names(df_lure))], perl = TRUE)
     names(df_lure)[names(df_lure) == lureGroup] <- "lure_id"
-    ## 2.2. Prep requests
+    ## 2.2. Inject taxa_names in ref_species table for lure landmark
+    if ("landmarks_taxa_name" %in% names(df_lure)) {
+      coleo_inject_ref_species(df_lure[,"landmarks_taxa_name"])
+    }
+    ## 2.3. Prep requests
     requests <- df_lure |>
         rcoleo::coleo_injection_prep(db_table = "landmarks")
-    ## 2.2. Inject
+    ## 2.4. Inject
     response <- coleo_injection_execute(requests) # Real thing
-    ### Output
+    ## 2.4.1. Output
     land_id_name <- paste0("landmark_appat_", gsub('.*_([0-9]+)_.*', '\\1', lureGroup), "_id")
     land_error_name <- paste0("landmark_appat_", gsub('.*_([0-9]+)_.*', '\\1', lureGroup), "_error")
     failures <- injection_reponse_message(land_id_name, response, failures)
-    ## 2.3. Save landmarks_id in df_id and rename it
+    ## 2.5. Save landmarks_id in df_id and rename it
     df_appat_final <- response |>
       coleo_injection_final()
     df_id$landmark_id <- df_appat_final$landmark_id
@@ -620,4 +641,28 @@ coleo_inject_adne_landmarks <- function(df_id, campaign_type, failures) {
 
   # Return the results
   return(list("df_id" = df_id, "failures" = failures))
+}
+
+
+#' Inject taxa_names in ref_species table of coleo
+#'
+#' Takes a vector of taxa_names and autonomously attempts to
+#' inject them in ref_species table.
+#' 
+#' This function is silent and won't print any messages
+#' as all taxa_names will be POSTed to the server, but all
+#' taxons already present will return an error message.
+#'
+#' @param taxa_col a dataframe with one column of taxa_names
+#'
+coleo_inject_ref_species <- function(taxa_col) {
+  # Remove duplicated names
+  taxa_col <- taxa_col[!duplicated(taxa_col)]
+  colnames(taxa_col) <- "ref_species_name"
+
+  if (length(taxa_col) > 0) {
+    taxa_col |>
+      rcoleo::coleo_injection_prep(db_table = "ref_species") |>
+      rcoleo::coleo_injection_execute()
+  }
 }
