@@ -255,7 +255,6 @@ coleo_inject <- function(df, media_path = NULL) {
   #--------------------------------------------------------------------------
   # 2. Inject campaigns table
   #--------------------------------------------------------------------------
-  failures <- FALSE
   # Prep request
   campaigns_requests <- df |>
       rcoleo::coleo_injection_prep(db_table = "campaigns")
@@ -268,7 +267,6 @@ coleo_inject <- function(df, media_path = NULL) {
 
   if(!is.na(resp['FALSE'])) {
     cat("Only data for successfully injected campaigns are injected in the next tables. These following lines failed to inject: ", paste0(which(campaigns_response$success == FALSE), collapse = ", "), "\n")
-    failures <- TRUE
     }
 
   # Get campaigns id
@@ -293,44 +291,36 @@ coleo_inject <- function(df, media_path = NULL) {
     # Case-specific injections
     if (campaign_type == "mammifères" & table == "lures") {
       ## Lures table for "mammifères" campaigns
-      inject_ls <- coleo_inject_mam_lures(df_id, failures)
-      df_id <- inject_ls[["df_id"]]
-      failures <- inject_ls[["failures"]]
+      df_id <- coleo_inject_mam_lures(df_id)
 
     } else if (campaign_type == "mammifères" & table == "landmarks") {
       ## Landmarks table for "mammifères" campaigns
-      inject_ls <- coleo_inject_mam_landmarks(df_id, failures)
-      df_id <- inject_ls[["df_id"]]
-      failures <- inject_ls[["failures"]]
+      df_id <- coleo_inject_mam_landmarks(df_id)
 
     } else if (table == "media") {
       ## The special case of media files
       ### 0. Check that path to media files is provided
       if (is.null(media_path)) stop("The local path to media files is missing. Media files and table could not be injected")
       ### 1. Inject media files into coleo
-      inject_ls <- coleo_inject_media(df_id, failures, server_dir = 'observation', media_path)
-      df_id <- inject_ls[["df_id"]]
-      failures <- inject_ls[["failures"]]
+      df_id <- coleo_inject_media(df_id, server_dir = 'observation', media_path)
 
     } else if (campaign_type == "ADNe" & table == "landmarks") {
       ## Obervations at the lake scale for "ADNe" campaigns do not have landmarks
       ## Landmarks are injected even if there is no data with NA lat lon
       ## It is necessary to skip their injection
-      inject_ls <- coleo_inject_adne_landmarks(df_id, campaign_type, failures)
-      df_id <- inject_ls[["df_id"]]
-      failures <- inject_ls[["failures"]]
+      df_id <- coleo_inject_adne_landmarks(df_id, campaign_type)
 
     } else {
       ## Regular table injections
-      df_id <- coleo_inject_table(df_id, campaign_type, failures, table)
+      df_id <- coleo_inject_table(df_id, campaign_type, table)
     }
   }
 
-  return(list(data = df_id, failures = failures))
+  return(df_id)
 }
 
 # Helper function to return stadardized injection reponse messages
-injection_reponse_message <- function(table, response, failures) {
+injection_reponse_message <- function(table, response) {
   resp <- table(response$success)
   # Output
   cat(paste0("\nInjection of ",table, " table led to ", ifelse(is.na(resp['TRUE']), 0, resp['TRUE']), " successes, and ", ifelse(is.na(resp['FALSE']), 0, resp['FALSE']), " failures.\n"))
@@ -339,9 +329,7 @@ injection_reponse_message <- function(table, response, failures) {
     cat("These lines failed to inject: ", dput(which(response$success == FALSE)), "\n")
     ## It is expected that not all ref_species are injected
     ## - Each taxon is only injected once
-    if(table != "ref_species") failures <- TRUE
     }
-  return(failures)
 }
 
 
@@ -351,12 +339,11 @@ injection_reponse_message <- function(table, response, failures) {
 #'
 #' @param df_id a dataframe with *_id column(s)
 #' @param campaign_type Type of campaign the data is from
-#' @param failures Boolean. Failures within the injection process
 #' @param table a coleo table name
 #'
 #' @return a dataframe with lure ids
 #'
-coleo_inject_table <- function(df_id, campaign_type, failures, table) {
+coleo_inject_table <- function(df_id, campaign_type, table) {
   #--------------------------------------------------------------------------
   # 1. Prep request
   #--------------------------------------------------------------------------
@@ -375,7 +362,7 @@ coleo_inject_table <- function(df_id, campaign_type, failures, table) {
   # 3. Print output
   #--------------------------------------------------------------------------
   # Output
-  failures <- injection_reponse_message(table, response, failures)
+  injection_reponse_message(table, response)
 
   #--------------------------------------------------------------------------
   # 4. Get id
@@ -394,12 +381,11 @@ coleo_inject_table <- function(df_id, campaign_type, failures, table) {
 #' @param df_id A dataframe with *_id column(s)
 #' @param dir The name of the directory you are injecting (campaign, observation, site).
 #' @param file_path The local path to the media file to inject.
-#' @param failures Boolean. Failures within the injection process.
 #'
 #' @return an httr2 request, ready to be performed.
 #'
 #' @export
-coleo_inject_media <- function(df_id, failures, server_dir = "observation", file_dir) {
+coleo_inject_media <- function(df_id, server_dir = "observation", file_dir) {
   #--------------------------------------------------------------------------
   # 1. Prep request
   #--------------------------------------------------------------------------
@@ -434,7 +420,7 @@ coleo_inject_media <- function(df_id, failures, server_dir = "observation", file
   # 3. Print output
   #--------------------------------------------------------------------------
   # Output
-  failures <- injection_reponse_message("media files and media", response, failures)
+  injection_reponse_message("media files and media", response)
 
   #--------------------------------------------------------------------------
   # 4. Get id back
@@ -443,7 +429,7 @@ coleo_inject_media <- function(df_id, failures, server_dir = "observation", file
   df_id <- response |>
     coleo_injection_final()
 
-  return(list("df_id" = df_id, "failures" = failures))
+  return(df_id)
 }
 
 
@@ -452,11 +438,10 @@ coleo_inject_media <- function(df_id, failures, server_dir = "observation", file
 #' Takes a valid dataframe and performs autonomously the injection of lures table
 #'
 #' @param df_id a dataframe with campaign_id column
-#' @param failures Boolean. Failures within the injection process
 #'
 #' @return a dataframe with lure ids
 #'
-coleo_inject_mam_lures <- function(df_id, failures) {
+coleo_inject_mam_lures <- function(df_id) {
   #--------------------------------------------------------------------------
   # 1. Format data
   #--------------------------------------------------------------------------
@@ -482,7 +467,7 @@ coleo_inject_mam_lures <- function(df_id, failures) {
   #--------------------------------------------------------------------------
   response <- coleo_injection_execute(df_prep) # Real thing
   # Output
-  failures <- injection_reponse_message("lures", response, failures)
+  injection_reponse_message("lures", response)
   #--------------------------------------------------------------------------
   # 4. Finalizing lures table injection
   #--------------------------------------------------------------------------
@@ -515,7 +500,7 @@ coleo_inject_mam_lures <- function(df_id, failures) {
       dplyr::relocate(dplyr::ends_with("_error")) |>
       dplyr::relocate(dplyr::ends_with("_id"))
 
-  return(list("df_id" = df_id, "failures" = failures))
+  return(df_id)
 }
 
 
@@ -524,11 +509,10 @@ coleo_inject_mam_lures <- function(df_id, failures) {
 #' Takes a valid dataframe and performs autonomously the injection of landmarks table
 #'
 #' @param df_id a dataframe with campaign_id column
-#' @param failures Boolean. Failures within the injection process
 #'
 #' @return a dataframe with landmarks ids
 #'
-coleo_inject_mam_landmarks <- function(df_id, failures) {
+coleo_inject_mam_landmarks <- function(df_id) {
   #--------------------------------------------------------------------------
   # 1. Format data
   #--------------------------------------------------------------------------
@@ -553,7 +537,7 @@ coleo_inject_mam_landmarks <- function(df_id, failures) {
   # Injection
   response <- coleo_injection_execute(requests) # Real thing
   # Output
-  failures <- injection_reponse_message("landmark_camera", response, failures)
+  injection_reponse_message("landmark_camera", response)
   # Finalizing lures table injection
   df_id <- response |>
     coleo_injection_final()
@@ -589,7 +573,7 @@ coleo_inject_mam_landmarks <- function(df_id, failures) {
     ## 2.4.1. Output
     land_id_name <- paste0("landmark_appat_", gsub('.*_([0-9]+)_.*', '\\1', lureGroup), "_id")
     land_error_name <- paste0("landmark_appat_", gsub('.*_([0-9]+)_.*', '\\1', lureGroup), "_error")
-    failures <- injection_reponse_message(land_id_name, response, failures)
+    injection_reponse_message(land_id_name, response)
     ## 2.5. Save landmarks_id in df_id and rename it
     df_appat_final <- response |>
       coleo_injection_final()
@@ -605,7 +589,7 @@ coleo_inject_mam_landmarks <- function(df_id, failures) {
       dplyr::relocate(dplyr::ends_with("_error")) |>
       dplyr::relocate(dplyr::ends_with("_id"))
 
-  return(list("df_id" = df_id, "failures" = failures))
+  return(df_id)
 }
 
 
@@ -614,25 +598,21 @@ coleo_inject_mam_landmarks <- function(df_id, failures) {
 #' Takes a valid dataframe and performs autonomously the injection of obs_edna table
 #'
 #' @param df_id a dataframe with campaign_id column
-#' @param failures Boolean. Failures within the injection process
 #'
 #' @return a dataframe with landmarks ids
 #'
-coleo_inject_adne_landmarks <- function(df_id, campaign_type, failures) {
+coleo_inject_adne_landmarks <- function(df_id, campaign_type) {
   # Obervations at the lake scale for "ADNe" campaigns do not have landmarks
   # Landmarks are injected even if there is no data with NA lat lon
   # It is necessary to skip their injection
   which_lac <- df_id$observations_extra_value_1 == "lac"
   no_lake_id <- df_id[!which_lac,] |>
-    coleo_inject_table(campaign_type = campaign_type, failures = failures, table = "landmarks")
+    coleo_inject_table(campaign_type = campaign_type, table = "landmarks")
 
   # Reassemble the dataframes
   with_lac <- df_id[which_lac,]
   with_lac[setdiff(names(no_lake_id), names(with_lac))] <- NA_character_
   df_id <- rbind(no_lake_id, with_lac[names(no_lake_id)])
-
-  # Is there failures ?
-  if (any(is.na(no_lake_id$landmark_id))) failures <- TRUE
 
   # Order columns
   df_id <- df_id[,order(colnames(df_id))] |>
@@ -640,7 +620,7 @@ coleo_inject_adne_landmarks <- function(df_id, campaign_type, failures) {
       dplyr::relocate(dplyr::ends_with("_id"))
 
   # Return the results
-  return(list("df_id" = df_id, "failures" = failures))
+  return(df_id)
 }
 
 
