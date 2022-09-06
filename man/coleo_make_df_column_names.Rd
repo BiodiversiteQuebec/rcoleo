@@ -2,7 +2,7 @@
 % Please edit documentation in R/coleo_make.R
 \name{coleo_make_df_column_names}
 \alias{coleo_make_df_column_names}
-\title{Fonction pour standardiser la production les noms de colonnes des jeux de données à importer}
+\title{Fonction pour standardiser la production des noms de colonnes des jeux de données à importer.}
 \usage{
 coleo_make_df_column_names(db_table, db_colname)
 }
@@ -15,5 +15,5 @@ coleo_make_df_column_names(db_table, db_colname)
 
 }
 \description{
-Fonction pour standardiser la production les noms de colonnes des jeux de données à importer
+Les noms de colonne sont en 'snake_case' pour en faciliter la tranformation par le système interne.
 }

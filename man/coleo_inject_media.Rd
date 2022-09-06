@@ -4,12 +4,10 @@
 \alias{coleo_inject_media}
 \title{Injection of media files into the Coleo server}
 \usage{
-coleo_inject_media(df_id, failures, server_dir = "observation", file_dir)
+coleo_inject_media(df_id, server_dir = "observation", file_dir)
 }
 \arguments{
 \item{df_id}{A dataframe with *_id column(s)}
-
-\item{failures}{Boolean. Failures within the injection process.}
 
 \item{dir}{The name of the directory you are injecting (campaign, observation, site).}
 

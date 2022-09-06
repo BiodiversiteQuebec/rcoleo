@@ -4,12 +4,10 @@
 \alias{coleo_inject_mam_lures}
 \title{Inject lures table of mammifère campaigns into coleo}
 \usage{
-coleo_inject_mam_lures(df_id, failures)
+coleo_inject_mam_lures(df_id)
 }
 \arguments{
 \item{df_id}{a dataframe with campaign_id column}
-
-\item{failures}{Boolean. Failures within the injection process}
 }
 \value{
 a dataframe with lure ids
