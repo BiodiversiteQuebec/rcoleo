@@ -1,3 +1,25 @@
+#' Reads a data file and format columns to coleo requirements
+#'
+#' @param filePath Local path to a data file.
+#'
+#' @return a data.frame with formated columns
+#'
+#' @export
+#'
+coleo_read_data <- function(filePath) {
+  # Catch the file extension
+  ex <- strsplit(basename(filePath), split="\\.")[[1]][2]
+
+  # Read the data
+  if (ex == "csv") dataFile <- coleo_read_csv(filePath)
+  else if (ex %in% c("xls", "xlsx")) dataFile <- coleo_read_template(filePath)
+  
+  # Test that the extension is acceptable
+  if (!ex %in% c("csv", "xls", "xlsx")) warning("Seuls les documents csv et les templates coleo sont pris en charge au moment. Veuillez soumettre les données dans un document csv ou dans le template coleo.")
+  else return(dataFile)
+}
+
+
 #' Read csv data and format columns to coleo requirements
 #'
 #' @param fileName Local path to csv file.
