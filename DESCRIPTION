@@ -36,7 +36,8 @@ Suggests:
     RPostgreSQL,
     testthat,
     httptest2,
-    withr
+    withr,
+    xlsx
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr

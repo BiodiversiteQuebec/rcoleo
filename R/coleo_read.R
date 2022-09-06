@@ -27,3 +27,29 @@ coleo_read_csv <- function(fileName) {
 
     return(dataFile)
 }
+
+
+#' Read data directly from a coleo template and format columns to coleo requirements
+#'
+#' @param templatePath Local path to template file.
+#'
+#' @return a data.frame with formated columns
+#'
+#' @export
+#'
+coleo_read_template <- function(templatePath) {
+    #--------------------------------------------------------------------------
+    # 1. Get data
+    #--------------------------------------------------------------------------
+    dataFile <- xlsx::read.xlsx(templatePath,
+      "6. Template de téléversement")[,-1]
+
+
+    #--------------------------------------------------------------------------
+    # 2. Format dataset
+    #--------------------------------------------------------------------------
+    dataFile <- coleo_format(dataFile)
+
+
+    return(dataFile)
+}
