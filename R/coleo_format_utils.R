@@ -1,3 +1,55 @@
+#' Formatage automatisé des colonnes d'un jeu de données à injecter dans coleo
+#'
+#'
+#' @param dataFrame un jeu de données
+#'
+#' @export
+#' 
+coleo_format <- function(dataFrame) {
+  # DataFrame infos
+  campaign_type <- unique(dataFrame$campaigns_type)
+  data_cols <- rcoleo::coleo_return_cols(campaign_type)
+
+  # Format columns
+  for(col in seq_along(names(dataFrame))) {
+    true_col_nm <- names(dataFrame)[col]
+
+    if(!true_col_nm %in% data_cols$noms_de_colonnes) {
+      # Extra columns must remain as characters
+      if (grepl("_extra", true_col_nm)) next
+      ## Some columns may have modified names
+      ## eg. lures_lure_1
+      mod_col_nm <- sapply(data_cols$noms_de_colonnes,
+        function(x) grepl(x, true_col_nm)
+      )
+      if (any(mod_col_nm)) {
+        true_col_nm <- names(which(mod_col_nm))
+        ## Select the longuest name - In case there is multiple matching
+        true_col_nm <- true_col_nm[which.max(nchar(true_col_nm))]
+      } else next
+    }
+
+    colClass <- data_cols[data_cols$noms_de_colonnes == true_col_nm, "classe"]
+
+    ## Special cases
+    if (colClass == "list") {
+      ### Elements within a list are separated by comas
+      dataFrame[,col] <- list(stringr::str_split(dataFrame[,col], ", |,"))
+    } else {
+      ### Decimals are separated by a point
+      if (colClass == "numeric") dataFrame[,col] <- gsub(",", ".", dataFrame[,col])
+      
+      ### Format columns
+      asClass <- paste0('as.', colClass)
+      dataFrame[,col] <- .Primitive(asClass)(dataFrame[,col], drop = FALSE)
+    }
+  }
+
+  return(dataFrame)
+}
+
+
+
 #' Format les donnees avec leurs cordonnées spatiaux
 #'
 #' the location of data needs to be correctly formatted for injection into coleo
