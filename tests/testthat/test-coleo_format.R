@@ -11,13 +11,13 @@ test_that("coleo_format returns a data.frame with the columns in the right class
     dataFormated <- coleo_format(dataFrame)
 
     # Test that coleo_format returns a data.frame
-    testthat::expect_s3_class(data, "data.frame")
+    testthat::expect_s3_class(dataFormated, "data.frame")
 
     # Test that coleo_format reads formats the columns
     ## - Character columns remains as characters
-    testthat::expect_type(data$campaigns_type, "character")
+    testthat::expect_type(dataFormated$campaigns_type, "character")
     ## - Numeric columns are converted to numeric
-    testthat::expect_type(data$efforts_photo_count, "integer")
+    testthat::expect_type(dataFormated$efforts_photo_count, "integer")
     ## - List columns are converted to list
-    testthat::expect_type(data$campaigns_technicians, "list")
+    testthat::expect_type(dataFormated$campaigns_technicians, "list")
 })

@@ -4,16 +4,14 @@
 dat <- data.frame(stringsAsFactors = FALSE,
                   sites_site_code = c("139_87_F01", "139_87_F01","139_87_F01","139_87_F01","139_87_F01", "139_87_F01"),
                   campaigns_type = c("insectes_sol", "insectes_sol","insectes_sol","insectes_sol","insectes_sol","insectes_sol"),
+                  landmarks_type = NA_character_,
                   samples_sample_code = c("2018-0108","2018-0108", "2018-0108","2018-0108","2018-0108","2018-0108"),
                   observations_date_obs = c(NA, "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24"),
                   campaigns_opened_at = c("2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24"),
                   observations_is_valid = c(NA, TRUE, TRUE, TRUE, TRUE, TRUE),
                   obs_species_taxa_name = c(NA, "Camponotus pennsylvanicus","Ceraticelus laetabilis","Insecta","Insecta","Trochosa terricola"),
                   obs_species_variable = c(NA, "abondance","abondance","abondance","abondance","abondance"),
-                  obs_species_value = c(NA, 2, 2, 1, 4, 1),
-                  ref_species_rank = c(NA,"espèce","espèce","espèce","espèce","espèce"),
-                  ref_species_name = c(NA, "Agroeca ornata | Camponotus pennsylvanicus","Ceraticelus laetabilis","Insecta","Insecta","Trochosa terricola"),
-                  ref_species_tsn = c(NA, 1:5))
+                  obs_species_value = c(NA, 2, 2, 1, 4, 1))
 
 
 # Tests
@@ -72,7 +70,7 @@ test_that("coleo_validate", {
   dat_test$observations_extra_value_1 <- "lac"
   dat_test$landmarks_type <- NA_character_
   dat_test$landmarks_lat = dat_test$landmarks_lon <- 43
-  
+
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez les observations faites à l'échelle du lac.*")
 
@@ -84,7 +82,7 @@ test_that("coleo_validate", {
 
   ## Test that the range of values contained within input columns are valid
   dat_test <- dat
-  dat_test$ref_species_rank <- "inconnu"
+  dat_test$landmarks_type <- "inconnu"
 
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez les valeurs contenues dans les colonnes.*")

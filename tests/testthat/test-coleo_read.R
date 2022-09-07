@@ -27,7 +27,7 @@ test_that("coleo_read_data returns a data.frame from a file local path", {
     testthat::expect_s3_class(dataXl, "data.frame")
 
     # Remove dummy csv file
-    remove(fileName)
+    remove(list = c("fileNameCsv", "fileNameXl"))
 })
 
 

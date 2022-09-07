@@ -283,7 +283,8 @@ coleo_inject <- function(df, media_path = NULL) {
         # Skip if landmarks table in a mammifère campaign.
         # The landmarks need first to be extracted
         # - The operation is done in coleo_inject_mam_landmarks()
-        taxa_col <- df_id[,paste0(table, "_taxa_name")]
+        taxa_col <- df_id[,paste0(table, "_taxa_name")] |>
+          as.data.frame()
         coleo_inject_ref_species(taxa_col)
       }
     }
@@ -484,15 +485,30 @@ coleo_inject_mam_lures <- function(df_id) {
       df_row <- which(camp == df_id$campaign_id)
       ## Which col
       instal_cols <- df_id[,grepl("lures_installed_at_", names(df_id))]
-      instal_dates <- t(instal_cols)
+      instal_dates <- t(instal_cols[!duplicated(instal_cols),])
       df_col <- which(date == instal_dates)
       ## Save lure_id for right lure
       lure_no <- sub('.*(?=.$)', "", names(instal_cols)[df_col], perl = TRUE)
-      df_id[df_row, ncol(df_id) + 1] <- lures_id$lure_id[lure_row]
-      names(df_id)[ncol(df_id)] <- paste0("lure_", lure_no, "_id")
+      id_col_name <- paste0("lure_", lure_no, "_id")
+      if (id_col_name %in% colnames(df_id)) {
+        # If column already exists, add to it
+        df_id[df_row, id_col_name] <- lures_id$lure_id[lure_row]
+      } else {
+        # If column doesn't exist, create it
+        df_id[df_row, ncol(df_id) + 1] <- lures_id$lure_id[lure_row]
+        names(df_id)[ncol(df_id)] <- id_col_name
+      }
+      
       ## Save lure_result
-      df_id[df_row, ncol(df_id) + 1] <- list(lures_id$lure_error[lure_row])
-      names(df_id)[ncol(df_id)] <- paste0("lure_", lure_no, "_error")
+      err_col_name <- paste0("lure_", lure_no, "_error")
+      if (err_col_name %in% colnames(df_id)) {
+        # If column already exists, add to it
+        df_id[df_row, err_col_name] <- list(lures_id$lure_error[lure_row])
+      } else {
+        # If column doesn't exist, create it
+        df_id[df_row, ncol(df_id) + 1] <- list(lures_id$lure_error[lure_row])
+        names(df_id)[ncol(df_id)] <- err_col_name
+      }
   }
 
   # Order columns
@@ -637,7 +653,9 @@ coleo_inject_adne_landmarks <- function(df_id, campaign_type) {
 #'
 coleo_inject_ref_species <- function(taxa_col) {
   # Remove duplicated names
-  taxa_col <- taxa_col[!duplicated(taxa_col)]
+  taxa_col <- as.data.frame(taxa_col)
+  taxa_col <- taxa_col[!duplicated(taxa_col),] |>
+    as.data.frame()
   colnames(taxa_col) <- "ref_species_name"
 
   if (length(taxa_col) > 0) {

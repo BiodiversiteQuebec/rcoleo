@@ -180,16 +180,19 @@ coleo_validate <- function(data) {
   # have landmarks
   #------------------------------------------------------------------------
   if ("observations_extra_value_1" %in% dat_names) {
-    station_rows <- which(data$observations_extra_value_1 == "station")
 
     # Check that all lake observations do not have landmarks
-    if (length(station_rows) < nrow(data)) {
-      is_true <- all(is.na(data[!station_rows, c("landmarks_type", "landmarks_lat", "landmarks_lon")]))
+    lac_rows <- which(data$observations_extra_value_1 == "lac")
+
+    if (length(lac_rows) > 0) {
+      is_true <- all(is.na(data[lac_rows, c("landmarks_type", "landmarks_lat", "landmarks_lon")]))
 
       if(!is_true) warning(paste0("--------------------------------------------------\nV\U00E9rifiez les observations faites à l'échelle du lac. Les colonnes landmarks_type, landmarks_lat et landmarks_lon doivent être laissées vide pour ces lignes\n\n"))
     }
 
     # Check that all station observations have landmarks
+    station_rows <- which(data$observations_extra_value_1 == "station")
+    
     if(length(station_rows) > 0) {
       is_true <- all(!is.na(data[station_rows, c("landmarks_type", "landmarks_lat", "landmarks_lon")]))
       

@@ -7,7 +7,7 @@ test_that("coleo_return_* functions return object of the right type", {
   expect_vector(coleo_return_valid_site_types())
 
   # coleo_return_required_cols
-  expect_vector(coleo_return_required_tables("acoustique"))
+  expect_vector(coleo_return_required_tables("ADNe"))
 
   # Test coleo_return_required_name_table
   expect_vector(coleo_return_required_name_table("sites"))

@@ -1,7 +1,7 @@
 test_that("coleo_return_cols and coleo_return_required_cols make a table", {
 
   # coleo_return_cols
-  nm_tbl <- coleo_return_cols("acoustique")
+  nm_tbl <- coleo_return_cols("ADNe")
 
   expect_s3_class(nm_tbl, "data.frame")
 
@@ -11,7 +11,7 @@ test_that("coleo_return_cols and coleo_return_required_cols make a table", {
                ))
 
   # coleo_return_required_cols
-  nm_req_tbl <- coleo_return_required_cols("acoustique")
+  nm_req_tbl <- coleo_return_required_cols("ADNe")
 
   expect_s3_class(nm_req_tbl, "data.frame")
 
@@ -24,7 +24,7 @@ test_that("coleo_return_cols and coleo_return_required_cols make a table", {
 
 test_that("coleo_return_cols(required.columns=TRUE) and coleo_return_required_cols return the same output", {
 
-  cols <- coleo_return_cols("acoustique", required.columns=TRUE)
-  req_cols <- coleo_return_required_cols("acoustique")
+  cols <- coleo_return_cols("ADNe", required.columns=TRUE)
+  req_cols <- coleo_return_required_cols("ADNe")
   expect_equal(cols, req_cols)
 })
