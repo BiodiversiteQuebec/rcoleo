@@ -10,7 +10,7 @@ coleo_read_data(filePath)
 \item{filePath}{Local path to a data file.}
 }
 \value{
-a data.frame with formated columns
+data.frame with formated columns
 }
 \description{
 Reads a data file and format columns to coleo requirements

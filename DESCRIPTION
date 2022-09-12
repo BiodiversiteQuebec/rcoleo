@@ -28,7 +28,8 @@ Imports:
     geojsonio,
     rlang,
     httr2,
-    tidyr
+    tidyr,
+    readxl
 Suggests: 
     knitr,
     pkgdown,

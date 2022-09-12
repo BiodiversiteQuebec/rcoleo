@@ -2,7 +2,7 @@
 #'
 #' @param filePath Local path to a data file.
 #'
-#' @return a data.frame with formated columns
+#' @return data.frame with formated columns
 #'
 #' @export
 #'
@@ -63,8 +63,8 @@ coleo_read_template <- function(templatePath) {
     #--------------------------------------------------------------------------
     # 1. Get data
     #--------------------------------------------------------------------------
-    dataFile <- xlsx::read.xlsx(templatePath,
-      "6. Template de téléversement")[,-1]
+    dataFile <- readxl::read_excel(templatePath, sheet = "6. Template de téléversement", col_types = "text") |>
+      as.data.frame()
 
 
     #--------------------------------------------------------------------------
