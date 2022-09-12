@@ -15,7 +15,7 @@ coleo_validate <- function(data) {
 
   #------------------------------------------------------------------------
   # Check that there is a campaign type column and that it contains a unique value
-  #------------------------------------------------------------------------  
+  #------------------------------------------------------------------------
   # Pursue only if there is a campaign type column
   if(!assertthat::has_name(data, "campaigns_type")) stop("V\U00E9rifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond à campaigns_type \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n\n")
 
@@ -33,9 +33,9 @@ coleo_validate <- function(data) {
   # - col_names: column names for the campaign type
   to_true_names <- function(data_names, col_names) {
     for(nm in seq_along(data_names)) {
-      if(!data_names[nm] %in% data_names[nm]) {
+      if(!data_names[nm] %in% col_names) {
         # Extra columns must remain
-        if (grepl("_extra", true_col_nm)) next
+        if (grepl("_extra", data_names[nm])) next
         ## Some columns may have modified names
         ## eg. lures_lure_1
         mod_col_nm <- sapply(col_names,
@@ -62,7 +62,7 @@ coleo_validate <- function(data) {
   #------------------------------------------------------------------------
   # Check that the imported data has all of the required columns
   #------------------------------------------------------------------------
-  # compare required column names to present columns ----------------------
+  # Compare required column names to present columns ----------------------
   req_columns <- coleo_return_required_cols(campaign_type)$noms_de_colonnes
   req_col_diff <- setdiff(req_columns, true_nms)
   # Return warning if there's a mismatch ----------------------------------
@@ -79,6 +79,8 @@ coleo_validate <- function(data) {
   # Accept colnames that contains "extra" in it - extra columns -----------
   which_extra <- grepl("extra", possible_col_diff)
   possible_col_diff <- possible_col_diff[!which_extra]
+  # Accept media_name column ----------------------------------------------
+  possible_col_diff <- which(possible_col_diff != "media_name")
 
   if(length(possible_col_diff) != 0) warning("--------------------------------------------------\nV\U00E9rifiez que les bons noms de colonnes sont utilis\U00E9s et que les colonnes superflues sont", paste0(" retir\U00E9", "es"), ".\n", "\n\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n\n")
 
