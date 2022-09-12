@@ -19,7 +19,7 @@ test_that("coleo_read_data returns a data.frame from a file local path", {
         sheetName = "6. Template de téléversement")
 
     # Test that the file is read without error
-    testthat::expect_silent(coleo_read_data(fileNameCsv), NA)
+    testthat::expect_error(coleo_read_data(fileNameCsv), NA)
     testthat::expect_error(coleo_read_data(fileNameXl), NA)
 
     # Test that coleo_read_data reads the csv and xlsx files and returns a data.frame
@@ -73,7 +73,7 @@ test_that("coleo_read_template returns a data.frame from a file local path", {
         sheetName = "6. Template de téléversement")
 
     # Test that the file is read without error
-    testthat::expect_silent(coleo_read_template(fileName), NA)
+    testthat::expect_error(coleo_read_template(fileName), NA)
 
     # Test that coleo_read_csv reads the csv file and returns a data.frame
     testthat::expect_s3_class(data, "data.frame")
