@@ -65,6 +65,8 @@ coleo_read_template <- function(templatePath) {
     #--------------------------------------------------------------------------
     dataFile <- readxl::read_excel(templatePath, sheet = "6. Template de téléversement", col_types = "text") |>
       as.data.frame()
+    # Remove added column
+    if ('...1' %in% colnames(dataFile)) dataFile <- dataFile[,-1]
 
 
     #--------------------------------------------------------------------------
