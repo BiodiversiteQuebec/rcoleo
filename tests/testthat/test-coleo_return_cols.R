@@ -12,23 +12,9 @@ test_that("coleo_return_cols and coleo_return_required_cols make a table", {
                  valeurs_acceptees = "list"
                ))
 
-  # coleo_return_required_cols
-  expect_error(coleo_return_required_cols("foo"))
+  # required cols
+  req_nm_tbl <- coleo_return_cols("ADNe", required.columns = TRUE)
 
-  nm_req_tbl <- coleo_return_required_cols("ADNe")
-
-  expect_s3_class(nm_req_tbl, "data.frame")
-
-  expect_equal(sapply(nm_req_tbl, class),
-               c(noms_de_colonnes = "character", colonne_requise = "character", classe = "character",
-                 valeurs_acceptees = "list"
-               ))
-})
-
-
-test_that("coleo_return_cols(required.columns=TRUE) and coleo_return_required_cols return the same output", {
-
-  cols <- coleo_return_cols("ADNe", required.columns=TRUE)
-  req_cols <- coleo_return_required_cols("ADNe")
-  expect_equal(cols, req_cols)
+  testthat::expect_equal(unique(req_nm_tbl$colonne_requise), "TRUE")
+  testthat::expect_equal(req_nm_tbl$noms_de_colonnes, c("campaigns_type", "campaigns_opened_at", "landmarks_type", "observations_date_obs", "observations_is_valid", "obs_edna_taxa_name", "sites_site_code"))
 })

@@ -143,14 +143,3 @@ coleo_return_cols <- function(campaign_type, required.columns = FALSE) {
 
   return(tibble::as_tibble(df))
 }
-
-
-#' Trouver les colonnes requises, leur classe et les valeurs admissibles pour un type de campagne donné
-#'
-#'
-#' @param campaign_type un type de campagne
-#' @export
-#'
-coleo_return_required_cols <- function(campaign_type) {
-  coleo_return_cols(campaign_type, required.columns = TRUE)
-}
