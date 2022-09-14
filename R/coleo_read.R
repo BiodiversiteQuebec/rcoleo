@@ -39,6 +39,9 @@ coleo_read_csv <- function(fileName) {
     if (inherits(dataFile, "try-error")) {
       dataFile <- readCsv2(fileName)
     } else if (ncol(dataFile) == 1) dataFile <- readCsv2(fileName)
+    # Remove added column
+    if ('...1' %in% colnames(dataFile)) dataFile <- dataFile[,-1]
+    if ('X' %in% colnames(dataFile)) dataFile <- subset(dataFile, select = -X)
 
 
     #--------------------------------------------------------------------------
@@ -67,6 +70,7 @@ coleo_read_template <- function(templatePath) {
       as.data.frame()
     # Remove added column
     if ('...1' %in% colnames(dataFile)) dataFile <- dataFile[,-1]
+    if ('X' %in% colnames(dataFile)) dataFile <- dataFile[,-"X"]
 
 
     #--------------------------------------------------------------------------
