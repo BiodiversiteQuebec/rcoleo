@@ -63,7 +63,7 @@ coleo_validate <- function(data) {
   # Check that the imported data has all of the required columns
   #------------------------------------------------------------------------
   # Compare required column names to present columns ----------------------
-  req_columns <- coleo_return_required_cols(campaign_type)$noms_de_colonnes
+  req_columns <- coleo_return_cols(campaign_type, required.columns = TRUE)$noms_de_colonnes
   req_col_diff <- setdiff(req_columns, true_nms)
   # Return warning if there's a mismatch ----------------------------------
   if(length(req_col_diff) != 0) warning("--------------------------------------------------\nV\U00E9rifiez que les bons noms de colonnes sont utilis\U00E9s et que toutes les colonnes requises sont pr\U00E9sentes.\n", "\n\nLes colonnes absentes sont : \n", paste0(req_col_diff, collapse = ", "), "\n\n")
