@@ -2,20 +2,22 @@
 % Please edit documentation in R/coleo_inject.R
 \name{coleo_inject}
 \alias{coleo_inject}
-\title{Inject data into coleo}
+\title{Injecte un jeu de données dans Coleo.}
 \usage{
 coleo_inject(df, media_path = NULL)
 }
 \arguments{
-\item{df}{a valid dataframe}
+\item{df}{Un data.frame validé par \code{coleo_validate}}
 
-\item{media_path}{local path to media files. Required when media files are to be injected, NULL otherwise}
+\item{media_path}{NULL par défault. Requis lorsqu'il y a des fichiers médias
+à injecter. Doit être le chemin local vers les fichiers médias à injecter.}
 }
 \value{
-A message specifying the dataframe lines that were injected and that
-failed to be injected, and the resulting dataframes from
-coleo_injection_perform()
+Un message de succès ou d'échec de l'injection des lignes du
+data.frame par table et le data.frame retourné par \code{coleo_injection_perform}.
 }
 \description{
-Takes a valid dataframe and performs autonomously the injection of all tables
+Principale fonction d'injection de données dans Coleo. Cette fonction
+accepte un data.frame validé par \code{coleo_validate} et performe
+automatiquement l'injection de toutes les tables dans Coleo.
 }

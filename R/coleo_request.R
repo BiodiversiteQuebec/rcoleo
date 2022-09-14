@@ -1,16 +1,23 @@
+###########################################################################
+# functions in this script make GET requests for specific information from
+# the database
 
-#' General request for the coleo database
+# coleo_request_general runs any query on any table
+# coleo_request_code only works for cells and sites
+###########################################################################
+
+#' Requête générale sur coleo de type 'GET'
 #'
-#' @param ... query parameters for the coleo database (in the format `name = value`)
-#' Possible parameters are 'count', and 'offset'.
-#' @param endpoint name of API endpoint where this request should go
-#' @param perform Should the request be performed? defaults to TRUE.
-#' @param response_as_df Should the response be returned as a dataframe? defaults to FALSE.
-#' @param limit Line number per pages. Parameter value fixed by coleo API.
+#' Des paramètres rendu disponibles via l'API peuvent être 'count', ou 'offset'.
+#' @param endpoint Nom du endpoint de l'API de coleo sur lequel la requête doit être effectuée
+#' @param perform TRUE par default. Retourne un objet httr2 request et pas de requête effectuée si FALSE.
+#' @param response_as_df FALSE par défaut. Retroune un data.frame si TRUE.
+#' @param limit Nombre de lignes par page. Valeur fixée par l'api de coleo
+#' @param ... Paramètres de requête pour la base de données coleo (dans leformat 'nom = valeur')
 #'
-#' @return httr2 response object if perform = TRUE and a tibble if response_as_df = TRUE, a request object if perform = FALSE.
+#' @return Object httr2 response si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
 #' @export
-coleo_request_general <- function(..., endpoint, perform = TRUE, response_as_df = FALSE, limit = 100){
+coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FALSE, limit = 100,...){
 
   assertthat::assert_that(endpoint %in% names(endpoints()))
 
@@ -31,25 +38,22 @@ coleo_request_general <- function(..., endpoint, perform = TRUE, response_as_df 
   }
 }
 
-# functions in this script make GET requests for specific information from the database
-
-# coleo_request_general runs any query on any table
-# coleo_request_code only works for cells and sites
-# the other two are specific and should probably be deleted.
 
 
-#' Request a database record by code
+
+#' Requête sur coléo par code
 #'
-#' many of the database records have unique human-readable codes. Site codes
-#' look like "CCC_CC_LCC" (C = chiffre, L=lettre) and cell codes look like
-#' "CCC_CC". this function takes one of these "human codes" and returns the
-#' information on that record.
+#' Plusieurs entrées de la base de données sont des codes qui sont lisibles par
+#' les humains. Les codes de site suivent le format "CCC_CC_LCC"
+#' (C = chiffre, L=lettre) et les codes de cellules suivent le format "CCC_CC".
+#' Cette fonction reçoit un de ces codes et retourne les informations de cette
+#' entrée.
 #'
-#' @param human_code human-readable database code
-#' @param table the database table to look for. Right now this is either "cells" or "sites"
-#' @param perform Should the request be performed? defaults to TRUE.
+#' @param human_code Code de site ou de cellule.
+#' @param table Table de la base de données à accéder. Seuls "cells" et "sites" sont supportés pour l'instant.
+#' @param perform TRUE par default. Ne performe pas la requête et retourne l'object httr2 request si FALSE.
 #'
-#' @return if perform = TRUE, the answer is returned. if perform = FALSE, an httr2 query is returned.
+#' @return si perform = TRUE, la réponse est retournée. Si perform = FALSE, la requête httr2 est retournée.
 #' @export
 coleo_request_by_code <- function(human_code, table, perform = TRUE){
   # endpoint or whatever
@@ -72,16 +76,16 @@ coleo_request_by_code <- function(human_code, table, perform = TRUE){
   }
 }
 
-#' Returns a request to a tibble
+#' Converti un objet httr2 response en un tibble.
 #'
-#' If a response contains multiple pages, the function gets them all
-#' and joins them in a single dataframe.
+#' Si la réponse contient plusieurs pages, la fonction accède à chacune et les
+#' joints en un seul data.frame
 #'
-#' @param resp httr2 response from coleo.
-#' @param written_req request passed to coleo's api.
-#' @param perform Should the request be performed? defaults to TRUE.
+#' @param resp objet httr2 response de coleo.
+#' @param written_req Requête passée à l'API de coleo.
+#' @param perform TRUE par défault. Ne performe pas la requête si FALSE.
 #'
-#' @return if perform = TRUE, the answer is returned. if perform = FALSE, an httr2 query is returned.
+#' @return si perform = TRUE, la réponse est retournée. Si perform = FALSE, la requête httr2 est retournée.
 #' @export
 coleo_resp_df <- function(resp, written_req, limit){
   # is there pages?
@@ -138,14 +142,15 @@ coleo_resp_df <- function(resp, written_req, limit){
 
 
 #' Extract an id from an API response
+#' Extraction de l'id d'une réponse de l'API de coleo
 #'
-#' this is a convenience function for processing the response from the COLEOs
-#' api. It should work for both new records (the response from POST requests)
-#' and existing ones (GET requests).
+#' Fonction de commodité pour processer les réponses de l'API de coleo.
+#' Fonctionnelle pour les nouvelles entrées (réponses de requêtes POST) et
+#' pour celles qui existent déjà (requêtes GET).
 #'
-#' @param answer_resp an HTTP response from the coleo API
+#' @param answer_resp Réponse httr2 de l'API de coleo.
 #'
-#' @return the ID as an integer or \code{NA_integer_}
+#' @return Le id sous format d'integer ou \code{NA_integer_}
 #' @export
 coleo_extract_id <- function(answer_resp){
   ans_id <- answer_resp |>

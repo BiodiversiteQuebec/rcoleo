@@ -2,7 +2,7 @@
 % Please edit documentation in R/coleo_return.R
 \name{coleo_return_required_tables}
 \alias{coleo_return_required_tables}
-\title{Trouver les tables requises pour un type de capamgne donné}
+\title{Trouver les tables requises pour un type de campagne donné}
 \usage{
 coleo_return_required_tables(camp_type)
 }
@@ -13,5 +13,5 @@ coleo_return_required_tables(camp_type)
 
 }
 \description{
-Trouver les tables requises pour un type de capamgne donné
+Trouver les tables requises pour un type de campagne donné
 }

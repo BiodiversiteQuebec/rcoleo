@@ -2,31 +2,30 @@
 % Please edit documentation in R/coleo_request.R
 \name{coleo_request_general}
 \alias{coleo_request_general}
-\title{General request for the coleo database}
+\title{Requête générale sur coleo de type 'GET'}
 \usage{
 coleo_request_general(
-  ...,
   endpoint,
   perform = TRUE,
   response_as_df = FALSE,
-  limit = 100
+  limit = 100,
+  ...
 )
 }
 \arguments{
-\item{...}{query parameters for the coleo database (in the format \code{name = value})
-Possible parameters are 'count', and 'offset'.}
+\item{endpoint}{Nom du endpoint de l'API de coleo sur lequel la requête doit être effectuée}
 
-\item{endpoint}{name of API endpoint where this request should go}
+\item{perform}{TRUE par default. Retourne un objet httr2 request et pas de requête effectuée si FALSE.}
 
-\item{perform}{Should the request be performed? defaults to TRUE.}
+\item{response_as_df}{FALSE par défaut. Retroune un data.frame si TRUE.}
 
-\item{response_as_df}{Should the response be returned as a dataframe? defaults to FALSE.}
+\item{limit}{Nombre de lignes par page. Valeur fixée par l'api de coleo}
 
-\item{limit}{Line number per pages. Parameter value fixed by coleo API.}
+\item{...}{Paramètres de requête pour la base de données coleo (dans leformat 'nom = valeur')}
 }
 \value{
-httr2 response object if perform = TRUE and a tibble if response_as_df = TRUE, a request object if perform = FALSE.
+Object httr2 response si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
 }
 \description{
-General request for the coleo database
+Des paramètres rendu disponibles via l'API peuvent être 'count', ou 'offset'.
 }

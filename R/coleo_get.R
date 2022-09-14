@@ -21,7 +21,7 @@ coleo_get_enum_values <- function(enum_col_name){
 
 #' Retourne la table attributes ou les valeurs d'un champ si spécifié
 #'
-#' @param column un champ de la table attributes
+#' @param column Un champ de la table attributes
 #'
 #' @return un data frame de la table attributes ou des valeurs contenues dans un champ
 coleo_get_attributes_table <- function(column = NULL) {

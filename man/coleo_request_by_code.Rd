@@ -2,23 +2,24 @@
 % Please edit documentation in R/coleo_request.R
 \name{coleo_request_by_code}
 \alias{coleo_request_by_code}
-\title{Request a database record by code}
+\title{Requête sur coléo par code}
 \usage{
 coleo_request_by_code(human_code, table, perform = TRUE)
 }
 \arguments{
-\item{human_code}{human-readable database code}
+\item{human_code}{Code de site ou de cellule.}
 
-\item{table}{the database table to look for. Right now this is either "cells" or "sites"}
+\item{table}{Table de la base de données à accéder. Seuls "cells" et "sites" sont supportés pour l'instant.}
 
-\item{perform}{Should the request be performed? defaults to TRUE.}
+\item{perform}{TRUE par default. Ne performe pas la requête et retourne l'object httr2 request si FALSE.}
 }
 \value{
-if perform = TRUE, the answer is returned. if perform = FALSE, an httr2 query is returned.
+si perform = TRUE, la réponse est retournée. Si perform = FALSE, la requête httr2 est retournée.
 }
 \description{
-many of the database records have unique human-readable codes. Site codes
-look like "CCC_CC_LCC" (C = chiffre, L=lettre) and cell codes look like
-"CCC_CC". this function takes one of these "human codes" and returns the
-information on that record.
+Plusieurs entrées de la base de données sont des codes qui sont lisibles par
+les humains. Les codes de site suivent le format "CCC_CC_LCC"
+(C = chiffre, L=lettre) et les codes de cellules suivent le format "CCC_CC".
+Cette fonction reçoit un de ces codes et retourne les informations de cette
+entrée.
 }

@@ -2,19 +2,27 @@
 % Please edit documentation in R/coleo_inject.R
 \name{coleo_injection_final}
 \alias{coleo_injection_final}
-\title{Finalize coleo injection}
+\title{Finalise l'injection dans Coleo.}
 \usage{
 coleo_injection_final(df)
 }
 \arguments{
-\item{df}{dataframe produced by \code{coleo_injection_execute}}
+\item{df}{Une data.frame produit par \code{coleo_injection_execute}}
 }
 \value{
-a data.frame. Without groups
-or nested data. the ID of the records just injected is stored in a column
-with the correct name
+Un data.frame. Sans les groupes et les données nestées.
 }
 \description{
-After successful injection, process the dataframe: extract the new ID from
-the injected records, and store it in a new column
+Cette fonction extrait les nouveaux ID et les messages d'erreur des réponses
+des injections de coleo. Les ID et erreurs sont sauvés dans une colonne nommée selon la
+convention 'table_champ' dans le jeu de données d'origine.
+}
+\details{
+Son utilisation suit celle de \code{\link[rcoleo]{coleo_injection_execute}}
+dans le processus d'injection.
+
+La fonction est utilisée dans \code{\link[rcoleo]{coleo_inject_table}},
+\code{\link[rcoleo]{coleo_inject_media}},
+\code{\link[rcoleo]{coleo_inject_mam_lures}} et
+\code{\link[rcoleo]{coleo_inject_mam_landmarks}}
 }

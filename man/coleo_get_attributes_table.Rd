@@ -7,7 +7,7 @@
 coleo_get_attributes_table(column = NULL)
 }
 \arguments{
-\item{column}{un champ de la table attributes}
+\item{column}{Un champ de la table attributes}
 }
 \value{
 un data frame de la table attributes ou des valeurs contenues dans un champ

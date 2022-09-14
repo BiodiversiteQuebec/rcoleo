@@ -2,19 +2,26 @@
 % Please edit documentation in R/coleo_inject.R
 \name{coleo_injection_prep}
 \alias{coleo_injection_prep}
-\title{Prepare dataset for injection}
+\title{Prépare un jeu de données pour l'injection dans Coleo.}
 \usage{
 coleo_injection_prep(df, db_table)
 }
 \arguments{
-\item{df}{dataframe containing injection material.}
+\item{df}{Un data.frame formaté par \code{\link[rcoleo]{coleo_prep_input_data}}.}
 
-\item{db_table}{the database table into which the data will be injected}
+\item{db_table}{La table de la base de données coleo dans laquelle les données doivent être injectées.}
 }
 \value{
-the same dataframe, but with a new column for injection request. Note
-that the dataframe will be \code{rowwise} after this function
+Le même data.frame, avec une colonne supplémentaire qui contient la requête httr2. NOTE - le data.frame est retourné \code{rowwise} pour faciliter l'injection.
 }
 \description{
-Take a dataset and prepare the data for injection into a
+Accepte un jeu de données et retourne un jeu de données avec une colonne
+'inject_request' qui contient les requêtes httr2. Sont utilisation précède celle de
+\code{\link[rcoleo]{coleo_injection_execute}} et repose sur celle de
+\code{\link[rcoleo]{coleo_prep_input_data}}.
+}
+\details{
+Fonction utilisée dans \code{\link[rcoleo]{coleo_inject_table}},
+\code{\link[rcoleo]{coleo_inject_mam_landmarks}} et
+\code{\link[rcoleo]{coleo_inject_ref_species}}.
 }

@@ -2,21 +2,21 @@
 % Please edit documentation in R/coleo_request.R
 \name{coleo_resp_df}
 \alias{coleo_resp_df}
-\title{Returns a request to a tibble}
+\title{Converti un objet httr2 response en un tibble.}
 \usage{
 coleo_resp_df(resp, written_req, limit)
 }
 \arguments{
-\item{resp}{httr2 response from coleo.}
+\item{resp}{objet httr2 response de coleo.}
 
-\item{written_req}{request passed to coleo's api.}
+\item{written_req}{Requête passée à l'API de coleo.}
 
-\item{perform}{Should the request be performed? defaults to TRUE.}
+\item{perform}{TRUE par défault. Ne performe pas la requête si FALSE.}
 }
 \value{
-if perform = TRUE, the answer is returned. if perform = FALSE, an httr2 query is returned.
+si perform = TRUE, la réponse est retournée. Si perform = FALSE, la requête httr2 est retournée.
 }
 \description{
-If a response contains multiple pages, the function gets them all
-and joins them in a single dataframe.
+Si la réponse contient plusieurs pages, la fonction accède à chacune et les
+joints en un seul data.frame
 }

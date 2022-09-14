@@ -2,20 +2,29 @@
 % Please edit documentation in R/coleo_inject.R
 \name{coleo_inject_media}
 \alias{coleo_inject_media}
-\title{Injection of media files into the Coleo server}
+\title{Injection des fichiers média dans le serveur de Coleo.}
 \usage{
 coleo_inject_media(df_id, server_dir = "observation", file_dir)
 }
 \arguments{
-\item{df_id}{A dataframe with *_id column(s)}
+\item{df_id}{Un data,frame contenant les colonnes *_id nécessaires.}
 
-\item{dir}{The name of the directory you are injecting (campaign, observation, site).}
+\item{server_dir}{Le nom du dossier dans lequel les fichiers médias seront
+injectés (campaign, observation, site).}
 
-\item{file_path}{The local path to the media file to inject.}
+\item{file_dir}{Le chemin local vers le dossier contenant les fichiers médias à injecter.}
 }
 \value{
-an httr2 request, ready to be performed.
+Le même data.frame, avec les id des lignes injectées dans la table media.
 }
 \description{
-Injection of media files into the Coleo server
+L'injection des fichiers médias se fait hors de la base de données coleo, mais sur le serveur. dépendamment du type de fichiers médias, l'injection se fait dans un dossier spécifique : soit dans le dossier \code{observation} soit dans le dossier \code{campaign}, ou soit sans le dossier \code{site}.
+}
+\details{
+L'injection des fichiers médias sur le serveur de coleo engendre
+automatiquement l'injection des données dans la table \code{media} de coleo. Il n'est donc pas requis d'injecter la table \code{media} manuellement.
+
+Il faut spécifier le id correspondant au dossier \code{site} dans lequel les fichiers médias seront injectés. Par enxemple, une injection dans le fichier campaigns doit spécifier le id de la campagne, tandis qu'une injection dans le dossier observation doit spécifier le id de l'observation. Le id permet la sauvegarde du fichier média dans un sous-dossier spécifique.
+
+La fonction est utilisée par \code{coleo_inject}.
 }

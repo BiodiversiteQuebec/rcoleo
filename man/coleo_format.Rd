@@ -10,5 +10,6 @@ coleo_format(dataFrame)
 \item{dataFrame}{un jeu de données}
 }
 \description{
-Formatage automatisé des colonnes d'un jeu de données à injecter dans coleo
+Cette fonction formate les colonnes à la bonne classe. Elle est appelée par
+les fonctions \code{coleo_read_template} et \code{coleo_read_csv}.
 }

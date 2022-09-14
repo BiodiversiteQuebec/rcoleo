@@ -2,18 +2,22 @@
 % Please edit documentation in R/coleo_format_utils.R
 \name{coleo_format_extra_col}
 \alias{coleo_format_extra_col}
-\title{Preparer la colonne extra pour injection}
+\title{Prepare la colonne extra pour injection.}
 \usage{
 coleo_format_extra_col(df, db_table)
 }
 \arguments{
-\item{df}{le dataframe à preparer}
+\item{df}{le dataframe à preparer.}
 
-\item{db_table}{la table ciblée dans la base de données}
+\item{db_table}{la table ciblée dans la base de données.}
 }
 \value{
 un tbl
 }
 \description{
-Preparer la colonne extra pour injection
+Les colonnes extra doivent être formatées en json pour être
+injectées dans coleo.
+}
+\details{
+Cette fonction est appelée par \code{coleo_prep_input_data}.
 }

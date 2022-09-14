@@ -2,18 +2,19 @@
 % Please edit documentation in R/coleo_request.R
 \name{coleo_extract_id}
 \alias{coleo_extract_id}
-\title{Extract an id from an API response}
+\title{Extract an id from an API response
+Extraction de l'id d'une réponse de l'API de coleo}
 \usage{
 coleo_extract_id(answer_resp)
 }
 \arguments{
-\item{answer_resp}{an HTTP response from the coleo API}
+\item{answer_resp}{Réponse httr2 de l'API de coleo.}
 }
 \value{
-the ID as an integer or \code{NA_integer_}
+Le id sous format d'integer ou \code{NA_integer_}
 }
 \description{
-this is a convenience function for processing the response from the COLEOs
-api. It should work for both new records (the response from POST requests)
-and existing ones (GET requests).
+Fonction de commodité pour processer les réponses de l'API de coleo.
+Fonctionnelle pour les nouvelles entrées (réponses de requêtes POST) et
+pour celles qui existent déjà (requêtes GET).
 }

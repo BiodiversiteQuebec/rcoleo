@@ -2,20 +2,29 @@
 % Please edit documentation in R/coleo_inject.R
 \name{coleo_inject_table}
 \alias{coleo_inject_table}
-\title{Inject tables into coleo}
+\title{Injection des données dans une table de Coleo.}
 \usage{
 coleo_inject_table(df_id, campaign_type, table)
 }
 \arguments{
-\item{df_id}{a dataframe with *_id column(s)}
+\item{df_id}{Un data.frame validé par \code{coleo_validate} et contenant
+les id des lignes injectées dans la table campaigns.}
 
-\item{campaign_type}{Type of campaign the data is from}
+\item{campaign_type}{Type de campagne auquel appartient le jeu de données.}
 
-\item{table}{a coleo table name}
+\item{table}{Une table de coleo où inecter les données.}
 }
 \value{
-a dataframe with lure ids
+Le même data.frame, avec les id des lignes injectées dans la table
+et une colonne pour les erreurs.
 }
 \description{
-Takes a valid dataframe and performs autonomously the injection of data into appropriate table
+Accepte un data.frame validé par \code{coleo_validate} et performe
+l'injection dans la table de coleo spécifiée.
+}
+\details{
+Cette fonction est appelée par \code{coleo_inject} et fait appel aux
+fonctions de préparation, d'exécution et de finalisation de l'inejction :
+\code{coleo_injection_prep}, \code{coleo_injection_execute} et
+\code{coleo_injection_final}.
 }

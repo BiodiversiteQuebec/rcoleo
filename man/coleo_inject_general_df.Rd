@@ -2,22 +2,29 @@
 % Please edit documentation in R/coleo_inject.R
 \name{coleo_inject_general_df}
 \alias{coleo_inject_general_df}
-\title{Inject one dataframe row}
+\title{Préparation de la requête httr2 pour l'injection d'une ligne d'un jeu de
+données.}
 \usage{
 coleo_inject_general_df(df_one_row, endpoint)
 }
 \arguments{
-\item{df_one_row}{one row of the dataframe. This can be passed in with
+\item{df_one_row}{Une ligne d'un jeu de données. Peut être passée via
 \code{\link[dplyr]{cur_data_all}}}
 
-\item{endpoint}{endpoint for coleo DB. Should name the table where you want
-to inject this.}
+\item{endpoint}{endpoint sur l'API de coleo. Correspond à la table où
+l'injection est à faire.}
 }
 \value{
-A single HTTP POST request. this is NOT run. You have to run it
-manually. First, you should inspect the contents with
-\code{\link[httr2]{req_dry_run}}
+Une requête unique de type "HTTP POST request". La requête n'est pas
+exécutée. Elle doit être envoyée à l'API Coleo via
+\code{\link[httr2]{req_perform}}. Peut être testée en premier via
+\code{\link[httr2]{req_perform_dry_run}}.
 }
 \description{
-A "tidy" workflow keeps all the data together in one list
+Fonction utilisée dans \code{\link[rcoleo]{coleo_injection_prep}} et
+\code{\link[rcoleo]{coleo_inject_mam_lures}} pour la préparation de la
+colonne inject_request.
+}
+\details{
+Un processus "tidy" qui maintient la cohérence des données.
 }

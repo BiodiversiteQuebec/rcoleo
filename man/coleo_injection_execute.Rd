@@ -2,20 +2,27 @@
 % Please edit documentation in R/coleo_inject.R
 \name{coleo_injection_execute}
 \alias{coleo_injection_execute}
-\title{Inject data into coleo}
+\title{Injection de données dans Coleo.}
 \usage{
 coleo_injection_execute(df)
 }
 \arguments{
-\item{df}{a dataframe with one (and only one) column containing http requests
-to inject data}
+\item{df}{Un data.frame avec une seule colonne qui contient la requête httr2.}
 }
 \value{
-the same dataframe, with three new columns: the http response, the
-error message (if any) and a column \code{success} which is TRUE if that
-row was successfully injected
+Le même data.frame, avec une colonne supplémentaire qui contient
+l'objet httr2 response, le message d'erreur, si nécessaire, et le code de
+statut. Le statut (status) est TRUE si l'injection de la ligne est réussie.
 }
 \description{
-Takes a dataframe with a column of httr2 POST requests and actually performs
-them
+Accepte un jeu de données qui contient une colonne de requêtes POST httr2 et
+les exécute. Sont utilisation suit celle de
+\code{\link[rcoleo]{coleo_injection_prep}} et précède celle de
+\code{\link[rcoleo]{coleo_injection_final}} dans le processus d'injection.
+}
+\details{
+Fonction utilisée dans \code{\link[rcoleo]{coleo_inject_table}},
+\code{\link[rcoleo]{coleo_inject_media}}, \code{\link[rcoleo]{coleo_inject_mam_lures}},
+\code{\link[rcoleo]{coleo_inject_mam_landmarks}} et
+\code{\link[rcoleo]{coleo_inject_ref_species}}.
 }

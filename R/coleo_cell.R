@@ -2,15 +2,15 @@
 # being injected. These functions make those checks. coleo_cell_df will also
 # return a data.frame for a specific cell
 
-#' Convert cell from sf to list
+#' Converti les cellules du format sf (objet sf) en un un objet list.
 #'
-#' We need to inject a nested list structure into the database. When we read
-#' data into R, we often do so with sf::read_sf(). This function converts the
-#' latter to the former using geojsonio
+#' Les cellules doivent être injectées en tant que listes imbriquées. La
+#' lecture des sites en R se fait généralement en utilisant sf::read_sf().
+#' Cette fonction converti l'objet sf en une liste imbriquée via geojsonio.
 #'
-#' @param cell_geom an sf object which describes one cell
+#' @param cell_geom La géométrie d'une cellule en tant qu'objet sf de type 'polygon'.
 #'
-#' @return a nested list with the coordinates of the polygon
+#' @return Une liste imbriquée contenant les coordonnées du polygone.
 #' @export
 coleo_cell_geom_fmt <- function(cell_geom){
   # take a single sf class polygon and return the nested list suitable for injection

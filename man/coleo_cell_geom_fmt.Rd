@@ -2,18 +2,18 @@
 % Please edit documentation in R/coleo_cell.R
 \name{coleo_cell_geom_fmt}
 \alias{coleo_cell_geom_fmt}
-\title{Convert cell from sf to list}
+\title{Converti les cellules du format sf (objet sf) en un un objet list.}
 \usage{
 coleo_cell_geom_fmt(cell_geom)
 }
 \arguments{
-\item{cell_geom}{an sf object which describes one cell}
+\item{cell_geom}{La géométrie d'une cellule en tant qu'objet sf de type 'polygon'.}
 }
 \value{
-a nested list with the coordinates of the polygon
+Une liste imbriquée contenant les coordonnées du polygone.
 }
 \description{
-We need to inject a nested list structure into the database. When we read
-data into R, we often do so with sf::read_sf(). This function converts the
-latter to the former using geojsonio
+Les cellules doivent être injectées en tant que listes imbriquées. La
+lecture des sites en R se fait généralement en utilisant sf::read_sf().
+Cette fonction converti l'objet sf en une liste imbriquée via geojsonio.
 }

@@ -2,16 +2,20 @@
 % Please edit documentation in R/coleo_inject.R
 \name{coleo_inject_mam_lures}
 \alias{coleo_inject_mam_lures}
-\title{Inject lures table of mammifère campaigns into coleo}
+\title{Injection des pièges d'une campagne mammifères dans la table lures de coleo.}
 \usage{
 coleo_inject_mam_lures(df_id)
 }
 \arguments{
-\item{df_id}{a dataframe with campaign_id column}
+\item{df_id}{Un data.frame contenant une colonne campaign_id.}
 }
 \value{
-a dataframe with lure ids
+Une data.frame avec une colonne lure_X_id et une colonne pour les lure_X_error.
 }
 \description{
-Takes a valid dataframe and performs autonomously the injection of lures table
+Accepte un data.frame validé par \code{coleo_validate} et performe
+l'injection de la table lures.
+}
+\details{
+La fonction est utilisée par \code{coleo_inject}.
 }

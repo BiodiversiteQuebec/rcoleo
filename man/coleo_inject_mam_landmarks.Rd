@@ -2,16 +2,26 @@
 % Please edit documentation in R/coleo_inject.R
 \name{coleo_inject_mam_landmarks}
 \alias{coleo_inject_mam_landmarks}
-\title{Inject landmarks table of mammifère campaigns into coleo}
+\title{Injection des repères d'une campagne mammifères dans la table
+landmarks de coleo.}
 \usage{
 coleo_inject_mam_landmarks(df_id)
 }
 \arguments{
-\item{df_id}{a dataframe with campaign_id column}
+\item{df_id}{Un data.frame contenant une colonne campaign_id.}
 }
 \value{
-a dataframe with landmarks ids
+Une data.frame avec une colonne landmark_X_id et une colonne pour
+les landmark_X_error.
 }
 \description{
-Takes a valid dataframe and performs autonomously the injection of landmarks table
+L'injection des repères pour les campagnes mammifères est différente
+puiqu'il y a des repères pour la caméra et pour les pièges. Nous procédons
+donc à l'injection successif de tous les repères.
+}
+\details{
+Accepte un data.frame validé par \code{coleo_validate} et performe
+l'injection de la table landmarks.
+
+La fonction est utilisée par \code{coleo_inject}.
 }

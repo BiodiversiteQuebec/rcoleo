@@ -77,7 +77,7 @@ coleo_return_valid_site_types <- function(){
 }
 
 
-#' Trouver les tables requises pour un type de capamgne donné
+#' Trouver les tables requises pour un type de campagne donné
 #'
 #'
 #' @param camp_type un type de campagne valide.

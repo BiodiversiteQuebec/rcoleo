@@ -2,19 +2,18 @@
 % Please edit documentation in R/coleo_inject.R
 \name{coleo_inject_general}
 \alias{coleo_inject_general}
-\title{General injection into the Coleo database}
+\title{Fonction générale pour l'injection dans la base de données Coleo via l'API.}
 \usage{
 coleo_inject_general(..., endpoint)
 }
 \arguments{
-\item{...}{the data to be injected. May contain NA or NULL values; these will
-be dropped before injection.}
+\item{...}{Données à injecter. Peut contenir des valeurs NA ou NULL; elles seront retirées avant l'injection.}
 
-\item{endpoint}{The name of the endpoint you are injecting.}
+\item{endpoint}{Nom du endpoint de l'API où injecter.}
 }
 \value{
-an httr2 request, ready to be performed
+Un objet httr2 request, prêt à être envoyé à l'API Coleo.
 }
 \description{
-General injection into the Coleo database
+Fonction générale pour l'injection dans la base de données Coleo via l'API.
 }

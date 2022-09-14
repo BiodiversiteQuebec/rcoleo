@@ -2,16 +2,24 @@
 % Please edit documentation in R/coleo_inject.R
 \name{coleo_inject_adne_landmarks}
 \alias{coleo_inject_adne_landmarks}
-\title{Inject obs_edna table of ADNe campaigns into coleo}
+\title{Injection des repères d'une campagne ADNe dans la table
+landmarks de coleo.}
 \usage{
 coleo_inject_adne_landmarks(df_id, campaign_type)
 }
 \arguments{
-\item{df_id}{a dataframe with campaign_id column}
+\item{df_id}{Un data.frame contenant une colonne campaign_id.}
 }
 \value{
-a dataframe with landmarks ids
+Une data.frame avec une colonne landmark_X_id et une colonne pour
+les landmark_X_error.
 }
 \description{
-Takes a valid dataframe and performs autonomously the injection of obs_edna table
+L'injection des repères ADNe est différente des autres de par la structure du jeu de données (tel que formaté par le template). Les observation à l'échelle du lac n'ont pas de repères alors que celles à l'échelle de la station ont des repères.
+}
+\details{
+Accepte un data.frame validé par \code{coleo_validate} et performe
+l'injection de la table landmarks.
+
+La fonction est utilisée par \code{coleo_inject}.
 }

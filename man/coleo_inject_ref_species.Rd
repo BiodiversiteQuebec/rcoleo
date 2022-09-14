@@ -2,19 +2,22 @@
 % Please edit documentation in R/coleo_inject.R
 \name{coleo_inject_ref_species}
 \alias{coleo_inject_ref_species}
-\title{Inject taxa_names in ref_species table of coleo}
+\title{Injection des colonnes taxa_names dans la table ref_species de coleo.}
 \usage{
 coleo_inject_ref_species(taxa_col)
 }
 \arguments{
-\item{taxa_col}{a dataframe with one column of taxa_names}
+\item{taxa_col}{Un vecteur de taxa_names à injecter.}
 }
 \description{
-Takes a vector of taxa_names and autonomously attempts to
-inject them in ref_species table.
+Accepte un vecteur de noms de taxons et performe l'injection de la table
+ref_species.
 }
 \details{
-This function is silent and won't print any messages
-as all taxa_names will be POSTed to the server, but all
-taxons already present will return an error message.
+Cette fonction est silencieuse et ne retourne aucun message. Tous les taxons
+seront injectés dans la table ref_species, mais ceux déjà présent
+retourneront une erreur.
+
+Cette fonction est utilisée par \code{coleo_inject} et
+\code{coleo_inject_mam_landmarks}.
 }
