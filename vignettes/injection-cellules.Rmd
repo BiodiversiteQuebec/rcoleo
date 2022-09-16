@@ -1,7 +1,7 @@
 ---
 # title: "Injection de nouvelles cellules dans Coléo"
-# author: "Claire"
-# date: "10 novembre 2020"
+# author: ""
+# date: "16 septembre 2022"
 output: html_document
 ---
 
@@ -48,75 +48,125 @@ Cette étape n'est faite qu'une fois et permet l'enregistrement de votre jeton d
 
 ## 5. Injection des cellules dans Coléo
 
-* **5.1** Cette étape appelle les packages installés afin qu'ils puissent être utilisés
 
-```r
-library(rcoleo)
+This vignette shows the process of injecting one complete dataset into the COLEO database.
+The example shown here follows the injection procedure for Insectes du Sol, but the process should be the same for any campaign type.
+
+
+All datasets require both the *cell* and the *site* to be uploaded first.
+For completeness, this vignette starts with showing this process before moving to more specific parts of the injection.
+
+
+
+We start with an example of data from an imaginary cell:
+
+```{r dput_cell, include=FALSE}
+cell_data <- structure(list(cell_code = "111_777", name = "Middle Earth", 
+    geom = structure(list(structure(list(structure(c(-68.784529, 
+    -68.92058, -69.051611, -68.915541, -68.784529, 48.112211, 
+    48.02487, 48.11558, 48.203192, 48.112211), .Dim = c(5L, 2L
+    ))), class = c("XY", "POLYGON", "sfg"))), class = c("sfc_POLYGON", 
+    "sfc"), precision = 0, bbox = structure(c(xmin = -69.051611, 
+    ymin = 48.02487, xmax = -68.784529, ymax = 48.203192), class = "bbox"), crs = structure(list(
+        input = "NAD83", wkt = "GEOGCRS[\"NAD83\",\n    DATUM[\"North American Datum 1983\",\n        ELLIPSOID[\"GRS 1980\",6378137,298.257222101,\n            LENGTHUNIT[\"metre\",1]]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"latitude\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"longitude\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    ID[\"EPSG\",4269]]"), class = "crs"), n_empty = 0L)), row.names = c(NA, 
+-1L), groups = structure(list(.rows = structure(list(1L), ptype = integer(0), class = c("vctrs_list_of", 
+"vctrs_vctr", "list"))), row.names = c(NA, -1L), class = c("tbl_df", 
+"tbl", "data.frame")), class = c("rowwise_df", "tbl_df", "tbl", 
+"data.frame"))
+```
+
+```{r, message = FALSE, warning=FALSE}
+library(sf)
 library(dplyr)
+library(rcoleo)
 ```
 
-```
-## Warning: package 'dplyr' was built under R version 4.0.2
-```
-* **5.2** L'étape suivante permet de créer un vecteur avec le code des cellules à ajouter à Coléo
 
-Vous avez deux possibilités pour compléter cette étape:
 
-* Entrer manuellement le code des cellules dans un objet R.
-
-```r
-# Codes des nouvelles cellules à insérer
-cell_code <- c("124_93", "73_137")
+```{r}
+cell_data
 ```
 
-* Utiliser l'objet créer lors de l'utilisation de la fonction `COLEO_comp()` si vous êtes dans le cadre d'une insertion de nouvelles campagnes.
+Note that the column `geom` is a `POLYGON` type of object. We need to work with the literal spatial polygons that describe the shape of the cells. To get these, we need to read in the shapefiles directly, for example using `sf::read_sf("CelluleTerrain2016_2021_juin2021/CellulesTerrain2016_2021_juin2021.shp")`
 
-```r
-cell_code <- cell_manquante # Codes des nouvelles cellules à insérer
+### 5.1 reformatting Cell data
+
+Once we have this information, we need to reformat it to prepare for injection. We can use a function from `rcoleo` to facilitate this step
+
+```{r cell_fmt_geom, message=FALSE}
+cell_data_reformat <- cell_data |> 
+  rowwise() |> 
+  mutate(geom = list(rcoleo::coleo_cell_geom_fmt(geom)))
+
+str(cell_data_reformat)
 ```
 
-* **5.3** Cette étape permet d'enregistrer un objet dans R avec les informations de toutes les cellules existantes
+This step transforms the `geom` column from a spatial object into a nested list. This is what we will inject into the COLEO database.
 
-```r
-shp_cells <- rgdal::readOGR(dsn="./shp",
-                            layer="Cellule_terrain_2016-2020") # Ici le fichier shapefile est placé dans un dossier shp et on appelle tous les fichiers nommés "Cellule_terrain_2016_2020"
+Another important point is the use of `rowwise()` in the code above. This is a convenient way to work with dataframes going one row at a time. Here, each row contains one cell for injection. You can read more about it [here](https://dplyr.tidyverse.org/articles/rowwise.html). 
+
+### 5.1 Create the API request
+
+Before we inject our data, we will make our requests and inspect them to make sure they work.
+
+```{r}
+cell_data_req <- cell_data_reformat |> 
+  dplyr::mutate(inject_request = list(
+    coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells")
+  ))
 ```
 
-* **5.4** Cette étape permet d'extraire les informations nécessaires concernant les nouvelles cellules et de formater ces informations de sorte à pouvoir les insérer dans Coléo. 
+This step makes our request. Important things to note:
 
-```r
-# Création d'une liste vide pour l'objet final
-shp_cells_list <- list()
+* we need to specify the endpoint where we will inject the data. Here it is `"cells"`
+* we use `dplyr::cur_data_all()` to access every column of the current row of the dataset
+* we use all the data in the current row. NOTE that if there is a column called "data", then `coleo_inject_general_df()` will drop it. 
+* This is the step where you need to have your access key saved for Rcoleo. see the rcoleo site to set that up!
+* we use `list()` to wrap the result of `coleo_inject_general_df()` because we want to store the prepared column in our dataframe, inside a list.
 
-for (i in 1:length(cell_code)){
-  
-# Obtention des information pour un cellule
-  shp <- shp_cells[shp_cells$IJ == cell_code[i] ,] 
-  
-# Création d'une liste avec les informations nécessaires pour chaque cellule
-  cells_ls <- list()
-  cells_ls$cell_code <- cell_code[i] # Code de la cellule
-  cells_ls$name <- unique(shp_cells[shp_cells$IJ == cell_code[i] & !is.na(shp_cells$Nom),]@data$Nom) # Nom de la cellule
-  
-  if(identical(cells_ls$name, character(0))){
-    cells_ls$name <- NULL
-  } # Information absente si pas de nom pour la cellule
-  
-# Création de l'objet spatial pour les coordonnées de la cellule
-  shp_sp <- as(shp, "SpatialPolygons")
-  cells_ls$geom <- geojsonio::geojson_list(shp)$features[[1]]$geometry # Caractéristiques de l'objet spatial
-  cells_ls$geom$crs <- list(type="name",properties=list(name="EPSG:4326")) # Information sur le systême de coordonnées de référence (CRS)
+Let's look at this request column:
 
-# Alimentation de l'objet final avec un niveau pour chaque cellule
-  shp_cells_list[[i]] <- cells_ls 
-}
+```{r, results='hold'}
+print(cell_data_req$inject_request[[1]])
 ```
 
-* **5.5** Nous pouvons maintenant insérer les nouvelles cellules dans la base de données Coléo.
+We can access the actual body of the request with:
 
-```r
-# Envoyer la nouvelle cellule vers Coléo
-resp_cells <- post_cells(shp_cells_list)
+```{r}
+httr2::req_dry_run(cell_data_req$inject_request[[1]])
 ```
 
-Bravo ! Vous venez d'injecter vos nouvelles cellules dans la base de données Coléo.
+This is our last chance to make SURE we are injecting the right thing. The code at the bottom is JSON and is what will be injected into the database.
+
+### 5.3 Injecting a cell
+
+When we are sure that we've got the right data, we can proceed to injection:
+
+```{r}
+cell_data_inject_result <- coleo_injection_execute(cell_data_req)
+
+cell_data_inject_result
+cell_data_inject_result$result
+```
+
+the function `coleo_injection_execute` has done two things:
+
+* performed the request using `httr2::req_perform`. This actually injects the data
+* wrapped the result in a `list()` and saved the results in a new data.frame
+
+This second step is important -- it lets us preserve the response from the server. This response contains useful information. For example, we can extract the ID of the cell we just injected:
+
+```{r}
+cell_data_inject_result |> 
+  mutate(id = coleo_extract_id(result))
+```
+
+This is possible because when we inject data, the API sends back a response that contains the new ID that was made for the new observation.
+
+**NOTE** the above step could also be completed manually:
+
+```{r, eval=FALSE}
+cell_data_req |> 
+  dplyr::mutate(inject_result = list(httr2::req_perform(inject_request)))
+```
+

@@ -3,16 +3,16 @@
 library(knitr)
 
 # Téléchargement
-knit("vignettes/telecharge-sites.Rmd.orig", "vignettes/telecharge-sites.Rmd") # needs httr-oauth
+knit("vignettes/telecharge-donnes.Rmd.orig", "vignettes/telecharge-donnees.Rmd") # needs httr-oauth
 
 
 # Injections TABLES
-knit("vignettes/injection-taxa.Rmd.orig", "vignettes/injection-taxa.Rmd") # needs httr-oauth
+knit("vignettes/injection-donnees.Rmd.orig", "vignettes/injection-donnees.Rmd") # needs httr-oauth
 
 
 # Injections CAMPAGNES
 
-knit("vignettes/CAMPAGNE_insects_sol_injection.Rmd.orig", "vignettes/CAMPAGNE_insects_sol_injection.Rmd")
+# knit("vignettes/CAMPAGNE_insects_sol_injection.Rmd.orig", "vignettes/CAMPAGNE_insects_sol_injection.Rmd")
 
 # keeping Tutorial-injections.Rmd.orig as .orig, not because it needs
 # authorization or something similare, but because I'm not sure if we are

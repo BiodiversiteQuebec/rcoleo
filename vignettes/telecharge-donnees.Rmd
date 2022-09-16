@@ -1,0 +1,31 @@
+---
+title: "Telecharger des données de coleo"
+output: html_document
+---
+
+Il est possible de télécharger les données de coleo directement depuis R. Pour cela, il faut utiliser la fonction `coleo_request_general`. Les tables desquelles les données peuvent être téléchargées sont données par la commande `endpoints`
+
+```{r}
+endpoints()
+```
+
+Pour télécharger les données, il faut utiliser la commande `coleo_request_general` et de spécifier le endpoint de la table à télécharger. Par exemple, pour télécharger les données de la table `cells`, il faut utiliser l'endpoint `cells`. Si aucun paramètre suuplémentaire n'est passé à la commande, toutes les entrées de la table sont retournées. ATTENTION !!! Cela peut représenter beaucoup de données.
+
+Voici un exemple de téléchargement de l'ensemble des données de la table `cells` :
+
+```{r}
+
+cells = coleo_request_general("cells", response_as_df = TRUE)
+
+knitr::kable(cells)
+```
+
+On peut rafiner notre recherche en spécifiant des paramètres pour préciser les données à télécharger.
+
+Voici un exemple de téléchargement des données de la table `cells` avec le paramètre `cell_code` qui permet de spécifier le code de la cellule à télécharger :
+
+```{r}
+cell_105_101 = coleo_request_general("cells", response_as_df = TRUE, cell_code = "105_101")
+
+knitr::kable(cell_105_101)
+```
