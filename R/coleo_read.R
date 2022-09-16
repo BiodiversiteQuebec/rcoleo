@@ -6,7 +6,7 @@
 #'
 #' @export
 #'
-coleo_read_data <- function(filePath) {
+coleo_read <- function(filePath) {
   # Catch the file extension
   ex <- strsplit(basename(filePath), split="\\.")[[1]][2]
 
