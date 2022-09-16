@@ -1,8 +1,10 @@
-#' Reads a data file and format columns to coleo requirements
+#' Importe les données à injecter depuis un template coleo ou un document csv.
+#' 
+#' Importe les données et formate la classe des colonnes pour injection dans la base de données coleo.
 #'
-#' @param filePath Local path to a data file.
+#' @param filePath Chemin local vers le document de données.
 #'
-#' @return data.frame with formated columns
+#' @return Un data.frame avec les colonnes formatées pour l'injection à coleo.
 #'
 #' @export
 #'
@@ -20,11 +22,12 @@ coleo_read <- function(filePath) {
 }
 
 
-#' Read csv data and format columns to coleo requirements
+#' Importe les données à injecter depuis un document csv et formate les
+#' colonnes pour injection dans la base de données coleo.
 #'
-#' @param fileName Local path to csv file.
+#' @param fileName Chemin local vers le document csv.
 #'
-#' @return a data.frame with formated columns
+#' @return Un data.frame avec les colonnes formatées pour l'injection à coleo.
 #'
 #' @export
 #'
@@ -54,11 +57,12 @@ coleo_read_csv <- function(fileName) {
 }
 
 
-#' Read data directly from a coleo template and format columns to coleo requirements
+#' Importe les données à injecter depuis un template coleo et formate les
+#' colonnes pour injection dans la base de données coleo.
 #'
-#' @param templatePath Local path to template file.
+#' @param templatePath Chemin local vers le document csv.
 #'
-#' @return a data.frame with formated columns
+#' @return Un data.frame avec les colonnes formatées pour l'injection à coleo.
 #'
 #' @export
 #'
