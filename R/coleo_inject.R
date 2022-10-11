@@ -239,19 +239,17 @@ coleo_injection_final <- function(df){
   # 4. Remove the columns we don't want to keep and unnest the data
   # - lures are to be formated later, the table is returned as is
   #--------------------------------------------------------------------------
-  if(!newname %in% c("observation", "media", "lure")) {
+  if(newname != "lure") {
     df_out <- df_id[,order(colnames(df_id))] |>
       dplyr::ungroup() |>
-      dplyr::select(-success, -inject_request, -error, -result) |>
-      tidyr::unnest(cols = c(data)) |>
+      dplyr::select(-success, -inject_request, -error, -result)
+    if("data" %in% colnames(df_out)) {
+      df_out <- df_out |>
+        tidyr::unnest(cols = c(data))
+    }
+    df_out <- df_out |>
       dplyr::relocate(dplyr::ends_with("_error")) |>
       dplyr::relocate(dplyr::ends_with("_id"))
-  } else if(newname %in% c("observation", "media")) {
-    # There is no "data" column in observation or media tables
-    df_out <- df_id[,order(colnames(df_id))] |>
-      dplyr::relocate(dplyr::ends_with("_error")) |>
-      dplyr::relocate(dplyr::ends_with("_id")) |>
-      dplyr::select(-inject_request, -error, -success, -result)
   } else {
     # lures table are processed back to wide format later
     # in coleo_inject_mam_lures()
@@ -278,6 +276,29 @@ coleo_injection_final <- function(df){
 #' @export
 
 coleo_inject <- function(df, media_path = NULL) {
+  #--------------------------------------------------------------------------
+  # 0. Injection process for cells and sites
+  #--------------------------------------------------------------------------
+  # Cells
+  # - Only cells have a geom column
+  if ("geom" %in% colnames(df)) {
+    if ("sfc_POLYGON" %in% class(df$geom)) {
+      df <- df |>
+        rowwise() |>
+        mutate(geom = list(rcoleo::coleo_cell_geom_fmt(geom)))
+        dplyr::mutate(geom = sf::st_as_text(.data$geom))
+    }
+    df_id <- coleo_inject_cells(df)
+
+    return(df_id)
+  }
+
+  # Sites
+  if("sites_type" %in% colnames(df)) {
+    df_id <- coleo_inject_table(df, NA, "sites")
+    return(df_id)
+  }
+
   #--------------------------------------------------------------------------
   # 1. Extract tables to be injected
   #--------------------------------------------------------------------------
@@ -394,6 +415,48 @@ coleo_inject_table <- function(df_id, campaign_type, table) {
   # Output
   injection_reponse_message(table, response)
 
+  #--------------------------------------------------------------------------
+  # 4. Get id
+  # - Failure will cause an error
+  # - Only get id for successful injections
+  #--------------------------------------------------------------------------
+  df_out <- response |>
+    coleo_injection_final()
+
+  return(df_out)
+}
+
+
+#' Injection des cellules dans Coleo.
+#'
+#' Accepte un data.frame validé par \code{coleo_validate} et performe
+#' l'injection dans la table cells.
+#'
+#' Cette fonction fait appel aux fonctions de préparation, d'exécution et de
+#' finalisation de l'injection : \code{coleo_inject_general_df},
+#' \code{coleo_injection_execute} et \code{coleo_injection_final}.
+#'
+#' @param df Un data.frame contenant une colonne `geom` de type polygon, cell_code et name.
+#'
+#' @export
+coleo_inject_cells <- function(df) {
+  #--------------------------------------------------------------------------
+  # 1. Prep request
+  #--------------------------------------------------------------------------
+  requests <- df |>
+    dplyr::rowwise() |>
+    dplyr::mutate(inject_request = list(
+      coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells")
+    ))
+  #--------------------------------------------------------------------------
+  # 2. Requests executions
+  #--------------------------------------------------------------------------
+  response <- coleo_injection_execute(requests) # Real thing
+  #--------------------------------------------------------------------------
+  # 3. Print output
+  #--------------------------------------------------------------------------
+  # Output
+  injection_reponse_message("cells", response)
   #--------------------------------------------------------------------------
   # 4. Get id
   # - Failure will cause an error

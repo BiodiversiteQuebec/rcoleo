@@ -50,101 +50,46 @@ cell_data <- structure(list(cell_code = "111_777", name = "Middle Earth",
 "vctrs_vctr", "list"))), row.names = c(NA, -1L), class = c("tbl_df", 
 "tbl", "data.frame")), class = c("rowwise_df", "tbl_df", "tbl", 
 "data.frame"))
+
+fake_cell_shp <- structure(list(cell_code = "100_111", name = "Middle Earth", 
+    geom = structure(list(structure(list(structure(c(-68.784529, 
+    -68.92058, -69.051611, -68.915541, -68.784529, 48.112211, 
+    48.02487, 48.11558, 48.203192, 48.112211), .Dim = c(5L, 2L
+    ))), class = c("XY", "POLYGON", "sfg"))), class = c("sfc_POLYGON", 
+    "sfc"), precision = 0, bbox = structure(c(xmin = -69.051611, 
+    ymin = 48.02487, xmax = -68.784529, ymax = 48.203192), class = "bbox"), crs = structure(list(
+        input = "NAD83", wkt = "GEOGCRS[\"NAD83\",\n    DATUM[\"North American Datum 1983\",\n        ELLIPSOID[\"GRS 1980\",6378137,298.257222101,\n            LENGTHUNIT[\"metre\",1]]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"latitude\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"longitude\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    ID[\"EPSG\",4269]]"), class = "crs"), n_empty = 0L)), row.names = c(NA, 
+-1L), sf_column = "geom", agr = structure(c(cell_code = NA_integer_, 
+name = NA_integer_), .Label = c("constant", "aggregate", "identity"
+), class = "factor"), class = c("sf", "tbl_df", "tbl", "data.frame"
+))
+
+# Save the data into a fake shapefile
+fileName <- paste0(tempdir(), "cell.shp")
+sf::st_write(fake_cell_shp, dsn = fileName, driver = "ESRI Shapefile")
 ```
 
-```{r, message = FALSE, warning=FALSE}
-library(sf)
-library(dplyr)
-library(rcoleo)
-```
-
-
+### 1.1. Read a shapefile
 
 ```{r}
+cell_data <- coleo_read(fileName)
+
 cell_data
 ```
 
 Note that the column `geom` is a `POLYGON` type of object. We need to work with the literal spatial polygons that describe the shape of the cells. To get these, we need to read in the shapefiles directly, for example using `sf::read_sf("CelluleTerrain2016_2021_juin2021/CellulesTerrain2016_2021_juin2021.shp")`
 
-### 1.1. reformatting Cell data
-
-Once we have this information, we need to reformat it to prepare for injection. We can use a function from `rcoleo` to facilitate this step
-
-```{r cell_fmt_geom, message=FALSE}
-cell_data_reformat <- cell_data |> 
-  rowwise() |> 
-  mutate(geom = list(rcoleo::coleo_cell_geom_fmt(geom)))
-
-str(cell_data_reformat)
-```
-
-This step transforms the `geom` column from a spatial object into a nested list. This is what we will inject into the COLEO database.
-
-Another important point is the use of `rowwise()` in the code above. This is a convenient way to work with dataframes going one row at a time. Here, each row contains one cell for injection. You can read more about it [here](https://dplyr.tidyverse.org/articles/rowwise.html). 
-
-### 1.2. Create the API request
-
-Before we inject our data, we will make our requests and inspect them to make sure they work.
+### 1.2. Validate the data
 
 ```{r}
-cell_data_req <- cell_data_reformat |> 
-  dplyr::mutate(inject_request = list(
-    coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells")
-  ))
 ```
-
-This step makes our request. Important things to note:
-
-* we need to specify the endpoint where we will inject the data. Here it is `"cells"`
-* we use `dplyr::cur_data_all()` to access every column of the current row of the dataset
-* we use all the data in the current row. NOTE that if there is a column called "data", then `coleo_inject_general_df()` will drop it. 
-* This is the step where you need to have your access key saved for Rcoleo. see the rcoleo site to set that up!
-* we use `list()` to wrap the result of `coleo_inject_general_df()` because we want to store the prepared column in our dataframe, inside a list.
-
-Let's look at this request column:
-
-```{r, results='hold'}
-print(cell_data_req$inject_request[[1]])
-```
-
-We can access the actual body of the request with:
-
-```{r}
-httr2::req_dry_run(cell_data_req$inject_request[[1]])
-```
-
-This is our last chance to make SURE we are injecting the right thing. The code at the bottom is JSON and is what will be injected into the database.
 
 ### 1.3. Injecting a cell
 
-When we are sure that we've got the right data, we can proceed to injection:
-
 ```{r}
-cell_data_inject_result <- coleo_injection_execute(cell_data_req)
+cell_injected <- coleo_inject(cell_data)
 
-cell_data_inject_result
-cell_data_inject_result$result
-```
-
-the function `coleo_injection_execute` has done two things:
-
-* performed the request using `httr2::req_perform`. This actually injects the data
-* wrapped the result in a `list()` and saved the results in a new data.frame
-
-This second step is important -- it lets us preserve the response from the server. This response contains useful information. For example, we can extract the ID of the cell we just injected:
-
-```{r}
-cell_data_inject_result |> 
-  mutate(id = coleo_extract_id(result))
-```
-
-This is possible because when we inject data, the API sends back a response that contains the new ID that was made for the new observation.
-
-**NOTE** the above step could also be completed manually:
-
-```{r, eval=FALSE}
-cell_data_req |> 
-  dplyr::mutate(inject_result = list(httr2::req_perform(inject_request)))
+cell_injected
 ```
 
 
@@ -154,37 +99,42 @@ We begin with a demonstration site:
 
 ```{r}
 imaginary_sites <- tibble::tribble(
-  ~cell_code,    ~site_code,    ~site_name,  ~site_type, ~site_lat,  ~site_lon, ~site_date_opened,
+  ~cells_cell_code,    ~sites_site_code,    ~sites_site_name,  ~sites_type, ~sites_lat,  ~sites_lon, ~sites_opened_at,
    "111_777",   "111_777_N09", "Mordor",     "tourbière", 48.133559,     -68.42,      "2020-01-01",
    "111_777",   "111_777_E03", "Lorien",     "forestier", 41.133559,     -67.33,      "2020-01-01"
   ) |> 
-  rowwise()
+  dplyr::rowwise()
 
+# Save the data into a fake template
+fileName <- paste0(tempdir(), "sites_template.xlsx")
+xlsx::write.xlsx(
+    as.data.frame(imaginary_sites),
+    fileName,
+    sheetName = "6. Template de téléversement")
 ```
 
-We begin by preparing the dataset for injection. 
+### 2.1. Read the template
 
-First, we format the data for injection and prepare the injection request:
+We begin by reading the dataset for injection. 
 
 ```{r}
-imaginary_sites_for_injection <- imaginary_sites |>
-  coleo_injection_prep(db_table = "sites")
+sites_data <- coleo_read(fileName)
 
-imaginary_sites_for_injection
-
-# visually inspect the injection
-httr2::req_dry_run(imaginary_requests$inject_request[[1]])
+sites_data
 ```
 
-the function `coleo_injection_prep` has automaticaly obtained cell ID and removed the cell_code, renamed the columns, reformatted the spatial information, and nested any unnecessary columns as "data".
 
-Now we inject them:
+### 2.2. Validate the data
 
 ```{r}
-# run and save all the injections
-imaginary_injected <- coleo_injection_execute(imaginary_requests)
+```
 
-imaginary_injected
+### 2.3. Injecting a site
+
+```{r}
+sites_injected <- coleo_inject(sites_data)
+
+sites_injected
 ```
 
 These two sites were injected successfully!
@@ -212,10 +162,10 @@ knitr::kable(imaginary_insects)
 
 # Save the data into a fake coleo template
 fileName <- paste0(tempdir(), "coleo_imaginary_insects_template.xlsx")
-    xlsx::write.xlsx(
-        as.data.frame(imaginary_insects),
-        fileName,
-        sheetName = "6. Template de téléversement")
+xlsx::write.xlsx(
+    as.data.frame(imaginary_insects),
+    fileName,
+    sheetName = "6. Template de téléversement")
 ```
 
 
@@ -228,9 +178,9 @@ Important things to notice about the data are:
 
 ### 3.1. Lecture du jeu de données
 
-On utilise la commande `coleo_read` pour lire les données du template excel. On peut aussi utiliser la commande `coleo_read_data` pour lire les données d'un fichier csv.
+On utilise la commande `coleo_read` pour lire les données du template excel ou d'un document csv.
 
-La commande `coleo_read_data` formate les données du template en un dataframe qui peut être injecté dans la base de données.
+La commande `coleo_read` formate les données du template en un dataframe qui peut être injecté dans la base de données.
 
 
 ```{r}
