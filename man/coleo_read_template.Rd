@@ -2,16 +2,16 @@
 % Please edit documentation in R/coleo_read.R
 \name{coleo_read_template}
 \alias{coleo_read_template}
-\title{Read data directly from a coleo template and format columns to coleo requirements}
+\title{Importe les données à injecter depuis un template coleo}
 \usage{
 coleo_read_template(templatePath)
 }
 \arguments{
-\item{templatePath}{Local path to template file.}
+\item{templatePath}{Chemin local vers le document csv.}
 }
 \value{
-a data.frame with formated columns
+Un data.frame avec les colonnes formatées pour l'injection à coleo.
 }
 \description{
-Read data directly from a coleo template and format columns to coleo requirements
+Importe les données à injecter depuis un template coleo
 }

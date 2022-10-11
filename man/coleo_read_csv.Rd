@@ -2,16 +2,16 @@
 % Please edit documentation in R/coleo_read.R
 \name{coleo_read_csv}
 \alias{coleo_read_csv}
-\title{Read csv data and format columns to coleo requirements}
+\title{Importe les données à injecter depuis un document csv.}
 \usage{
 coleo_read_csv(fileName)
 }
 \arguments{
-\item{fileName}{Local path to csv file.}
+\item{fileName}{Chemin local vers le document csv.}
 }
 \value{
-a data.frame with formated columns
+Un data.frame avec les colonnes formatées pour l'injection à coleo.
 }
 \description{
-Read csv data and format columns to coleo requirements
+Importe les données à injecter depuis un document csv.
 }
