@@ -229,14 +229,14 @@ coleo_validate <- function(data) {
   if(!all(valid_col_values)) warning("--------------------------------------------------\nV\U00E9rifiez les valeurs contenues dans les colonnes. Ces colonnes contiennent des valeurs invalides : \n", paste0(col_names, collapse = ", "), "\n\nLes valeurs possibles pour ces colonnes sont : \n", paste0(col_names, ": ", cols_valid_values, collapse = "\n"), "\n\n")
 
   #------------------------------------------------------------------------
-  # Check that no non ASCII characters are present in the input data
+  # Test for non-breaking spaces
   #------------------------------------------------------------------------
-  nonASCII <- apply(data, 1, function(x) {
-    x <- unlist(x)
-    grep("I_WAS_NOT_ASCII", iconv(x, Encoding(x), "ASCII", sub="I_WAS_NOT_ASCII"))
-  })
+  notSpace <- apply(data, 1, function(x) {
+      grep("\u00A0", x) # non-breaking space
+    }) |>
+    as.logical()
 
-  if(any(nonASCII)) warning("--------------------------------------------------\nV\U00E9rifiez la présence de caract\U00E8res non ASCII aux lignes",nonASCII, ". Veuillez remplacer les caract\U00E8res non ASCII par des caract\U00E8res ASCII.\n\n")
+  if(any(notSpace)) warning("--------------------------------------------------\nV\U00E9rifiez la présence d'espaces insécables aux lignes : ", paste0(which(notSpace), collapse = ", "), ", et remplacez les par des espaces standards\n\n")
 
   #------------------------------------------------------------------------
   # Check that complexes of species are correctly formated

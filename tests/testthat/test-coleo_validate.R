@@ -87,6 +87,13 @@ test_that("coleo_validate", {
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez les valeurs contenues dans les colonnes.*")
 
+  ## Test that non-breaking spaces are detected
+  dat_test <- dat
+  dat_test$obs_species_taxa_name[[2]] <- "Camponotus\u00A0pennsylvanicus"
+
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "Vérifiez la présence d'espaces insécables*")
+
   ## Check that complexes of species are correctly formated
   dat_test <- dat
   dat_test$obs_species_taxa_name[2] <- "Agroeca ornata |Camponotus pennsylvanicus"
