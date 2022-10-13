@@ -1,0 +1,224 @@
+---
+title: "Injection des données vers coleo"
+author: "Victor Cameron", "Andrew MacDonald"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r, include=FALSE}
+library(rcoleo)
+library(httptest2)
+start_vignette("coleo_data_injection")
+knitr::opts_chunk$set(error = TRUE, out.width = 80)
+```
+
+This vignette shows the process of injecting one complete dataset into the COLEO database.
+The example shown here follows the injection procedure for Insectes du Sol, but the process should be the same for any campaign type.
+
+
+All datasets require both the *cell* and the *site* to be uploaded first.
+For completeness, this vignette starts with showing this process before moving to more specific parts of the injection.
+
+
+<!-- TODO allow Cells and Sites to collapse in this vignette because we should not need them MOST of the time -->
+
+
+## 1. Cells
+
+We start with an example of data from an imaginary cell:
+
+```{r dput_cell, echo=FALSE}
+fake_cell_shp <- structure(list(cell_code = "100_111", name = "Middle Earth", 
+    geom = structure(list(structure(list(structure(c(-68.784529, 
+    -68.92058, -69.051611, -68.915541, -68.784529, 48.112211, 
+    48.02487, 48.11558, 48.203192, 48.112211), .Dim = c(5L, 2L
+    ))), class = c("XY", "POLYGON", "sfg"))), class = c("sfc_POLYGON", 
+    "sfc"), precision = 0, bbox = structure(c(xmin = -69.051611, 
+    ymin = 48.02487, xmax = -68.784529, ymax = 48.203192), class = "bbox"), crs = structure(list(
+        input = "NAD83", wkt = "GEOGCRS[\"NAD83\",\n    DATUM[\"North American Datum 1983\",\n        ELLIPSOID[\"GRS 1980\",6378137,298.257222101,\n            LENGTHUNIT[\"metre\",1]]],\n    PRIMEM[\"Greenwich\",0,\n        ANGLEUNIT[\"degree\",0.0174532925199433]],\n    CS[ellipsoidal,2],\n        AXIS[\"latitude\",north,\n            ORDER[1],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n        AXIS[\"longitude\",east,\n            ORDER[2],\n            ANGLEUNIT[\"degree\",0.0174532925199433]],\n    ID[\"EPSG\",4269]]"), class = "crs"), n_empty = 0L)), row.names = c(NA, 
+-1L), sf_column = "geom", agr = structure(c(cell_code = NA_integer_, 
+name = NA_integer_), .Label = c("constant", "aggregate", "identity"
+), class = "factor"), class = c("sf", "tbl_df", "tbl", "data.frame"
+))
+
+fake_cell_shp
+
+# Save the data into a fake shapefile
+fileName <- paste0(tempdir(), "cell.shp")
+sf::st_write(fake_cell_shp, dsn = fileName, driver = "ESRI Shapefile", delete_dsn = TRUE)
+```
+
+### 1.1. Read a shapefile
+
+```{r}
+cell_data <- coleo_read(fileName)
+
+cell_data
+```
+
+Note that the column `geom` is a `POLYGON` type of object. We need to work with the literal spatial polygons that describe the shape of the cells.
+
+### 1.2. Validate the data
+
+```{r}
+```
+
+### 1.3. Injecting a cell
+
+```{r}
+cell_injected <- coleo_inject(cell_data)
+
+cell_injected
+```
+
+
+## 2. Sites
+
+We begin with a demonstration site:
+
+```{r}
+imaginary_sites <- tibble::tribble(
+  ~cells_cell_code,    ~sites_site_code,    ~sites_site_name,  ~sites_type, ~sites_lat,  ~sites_lon, ~sites_opened_at,
+   "111_777",   "111_777_N09", "Mordor",     "tourbière", 48.133559,     -68.42,      "2020-01-01",
+   "111_777",   "111_777_E03", "Lorien",     "forestier", 41.133559,     -67.33,      "2020-01-01"
+  ) |> 
+  dplyr::rowwise()
+
+# Save the data into a fake template
+fileName <- paste0(tempdir(), "sites_template.xlsx")
+xlsx::write.xlsx(
+    as.data.frame(imaginary_sites),
+    fileName,
+    sheetName = "6. Template de téléversement")
+```
+
+### 2.1. Read the template
+
+We begin by reading the dataset for injection. 
+
+```{r,  message = FALSE}
+sites_data <- coleo_read(fileName)
+
+sites_data
+```
+
+
+### 2.2. Validate the data
+
+```{r}
+```
+
+### 2.3. Injecting a site
+
+```{r}
+sites_injected <- coleo_inject(sites_data)
+
+sites_injected
+```
+
+These two sites were injected successfully!
+
+## 3. Injections de données (campagnes) vers la base de données coleo
+
+This vignette will show how to inject fake soil insect data, which will allow us to show the injection process:
+
+
+We start with some fake campaign information that we save into a coleo template. La particularité des templates coleo est que les données sont sauvées dans un feuille du document excel nommé "6. Template de téléversement".
+
+```{r}
+# Fake data
+imaginary_insects <- tibble::tribble(
+     ~sites_site_code, ~campaigns_type, ~campaigns_opened_at, ~campaigns_closed_at, ~observations_date_obs, ~observations_is_valid, ~traps_trap_code, ~landmarks_lat, ~landmarks_lon, ~samples_sample_code, ~campaigns_technicians, ~ref_species_rank, ~ref_species_tsn, ~ref_species_name, ~obs_species_taxa_name, ~obs_species_variable, ~obs_species_value,   ~observations_notes,
+  "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",  "sous-classe",      9999,       "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,        "fascinating",
+  "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",      9998,       "Fake_beetleB",         "Fake_beetleB",           "abondance",                  6,                   NA,
+  "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,     "A-N1",  50.56699, -74.44866,  "2020-0097",       "Legolas, Gimli",       "espèce",      9997,       "Fake_beetleC",         "Fake_beetleC",           "abondance",                 10,          "incomplet",
+  "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "classe",      9999,       "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,                   NA,
+  "111_777_E03", "insectes_sol",          "2020-06-30",          "2020-07-21",      "2020-07-21",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0105",       "Legolas, Gimli",  "sous-classe",      9998,       "Fake_beetleB",         "Fake_beetleB",           "abondance",                  3, "not sure about one",
+  "111_777_E03", "insectes_sol",          "2020-06-08",          "2020-06-30",      "2020-06-30",                  TRUE,    "B-NE1",  50.56698,  -74.4487,  "2020-0098",       "Legolas, Gimli",       "classe",    117273,       "Danaus plexippus",     "Danaus plexippus",       "abondance",                  1,                   NA
+  )
+
+knitr::kable(imaginary_insects)
+
+# Save the data into a fake coleo template
+fileName <- paste0(tempdir(), "coleo_imaginary_insects_template.xlsx")
+xlsx::write.xlsx(
+    as.data.frame(imaginary_insects),
+    fileName,
+    sheetName = "6. Template de téléversement")
+```
+
+
+Important things to notice about the data are:
+
+* the only site-level information is the `sites_site_code`
+* all the columns have prefixes (e.g. "*campaigns_*type" or "*landmarks_*lat). This is to differentiate columns which might have the same name but which are destined for different database tables. These will be automatically renamed during data preparation
+* the format of dates is correct: AAAA-MM-JJ
+* all columns have the correct values.
+
+### 3.1. Lecture du jeu de données
+
+On utilise la commande `coleo_read` pour lire les données du template excel ou d'un document csv.
+
+La commande `coleo_read` formate les données du template en un dataframe qui peut être injecté dans la base de données.
+
+
+```{r}
+data <- coleo_read(fileName)
+
+knitr::kable(data)
+```
+
+
+### 3.2. Validation du jeu de données
+
+On utilise la commande `coleo_validate` pour valider les données. Cette commande vérifie que les données sont dans le bon format et qu'elles sont complètes. Elle retourne un message d'erreur si les données ne sont pas valides.
+
+Cette étape représente la majorité du travail d'injection des données.
+
+```{r}
+data_validated <- coleo_validate(data)
+```
+
+
+### 3.3. Injection des données (téléversement)
+
+On utilise la commande `coleo_inject` pour injecter les données dans la base de données. Cette commande retourne un message d'erreur si les données ne sont pas valides.
+
+Des messages sont produits pour indiquer les données qui ont été injectées avec succès et celles qui ont échouées. Les données qui ont échouées peuvent être retrouvées dans l'objet `data_injected` puisqu'elles ont une valeur `NULL` dans la colonne `*_id` qui leur est associée.
+
+On peut consulter les message d'erreur puisqu'ils sont sauvés dans la colonne `*_error` de l'objet `data_injected`.
+
+En cas d'erreur, se référer à la personne ressource.
+
+```{r}
+data_injected <- coelo_inject(data_validated)
+
+knitr::kable(data_injected)
+```
+
+
+C'EST TOUT ! 
+
+On peut maintenant consulter les données dans la base de données coleo.
+
+## NOTE to vignette developers
+
+This vignette uses some pre-recorded API responses to demonstrate the workflow. These are all stored in a directory in the `vignettes/` folder. see `vignette("vignettes", "httptest2")`.
+
+HOWEVER you may get unexpected errors. This is caused by character encoding of French accents: the JSON saved may have a "?" character in place of an accented letter. Remember to check! 
+
+```{r, include=FALSE}
+end_vignette()
+```
+

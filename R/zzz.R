@@ -1,4 +1,5 @@
 # Config de base
+# Config de base
 server <- function(){
   s <- Sys.getenv("COLEOAPI_SERVER")
   if (s==''){
@@ -7,11 +8,12 @@ server <- function(){
     }else{
       s <- "https://coleo.biodiversite-quebec.ca"
     }
-  }
-  return(s)
-}
-#server <- function() "http://localhost:8080" # dev purpose
-base <- function() "/api/v1"
+   }
+   return(s)
+ }
+
+ #server <- function() "http://localhost:8080" # dev purpose
+ base <- function() "/api/v1"
 
 bearer <- function() {
   # ifelse(file.exists(".httr-oauth"), as.character(readRDS(".httr-oauth")), NA)
@@ -44,28 +46,30 @@ endpoints <- function(){
     obs_species = "/obs_species",
     obs_soil_decomposition = "/obs_soil_decomposition",
     efforts = "/efforts",
+    obs_edna = "/obs_edna",
     summary = "/campaigns_summary",
     species_list = "/species_list",
     sites_species = "/sites_species",
     richness = "/richness",
-    richness_mean = "/richness/mean"
+    richness_mean = "/richness/mean",
+    table_columns = "/table_columns",
+    enum_options = "/enum_options"
   )
 }
 # # short excerpt to update the list of campaign types if/when more get added!!
 # ss <- download_sites_sf()
-# purrr::keep(ss$campaigns, ~ nrow(.)>0) %>%
-#   purrr::map("type") %>%
-#   purrr::map(unique) %>%
-#   purrr::flatten_chr() %>% unique %>% dput
+# purrr::keep(ss$campaigns, ~ nrow(.)>0) |>
+#   purrr::map("type") |>
+#   purrr::map(unique) |>
+#   purrr::flatten_chr() |> unique |> dput
 campaign_types <- function(){
-  c('v\u00e9g\u00e9tation', 'v\u00e9g\u00e9tation_transect', 'sol',
-    'acoustique', 'ph\u00e9nologie', 'mammif\u00e8res', 'papilionid\u00e9s',
-    'odonates', 'insectes_sol', 'ADNe', 'zooplancton', 'sol', 'd\u00e9composition_sol',
-    'temp\u00e9rature_eau', 'temp\u00e9rature_sol', 'marais_profondeur_temp\u00e9rature')
+  camp_types_resp <- coleo_request_general(enum = "enum_campaigns_type", endpoint = "enum_options")
+  unlist(httr2::resp_body_json(camp_types_resp), use.names = FALSE)
 }
 
 site_types <- function(){
-  c("lac", "rivi\u00e8re", "forestier", "marais", "marais c\u00f4tier", "toundrique", "tourbi\u00e8re")
+  camp_types_resp <- coleo_request_general(enum = "enum_sites_type", endpoint = "enum_options")
+  unlist(httr2::resp_body_json(camp_types_resp), use.names = FALSE)
 }
 
 

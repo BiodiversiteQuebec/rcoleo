@@ -1,40 +1,44 @@
 Package: rcoleo
 Title: rcoleo
-Version: 1.0.7
+Version: 2.0.0
 Authors@R: c(
     person("Steve", "Vissault", email = "steve.vissault@usherbrooke.ca",role = c("aut", "cre"), comment = c(ORCID = "0000-0002-0866-4376")),
     person("Andrew", "MacDonald", email = "a.a.m.macdonald@gmail.com", role = "aut"),
     person("Claire", "Juhasz", role = "aut"),
-    person("Guillaume", "Larocque", role = "aut"))
+    person("Guillaume", "Larocque", role = "aut"),
+    person("Victor", "Cameron", role = "aut"))
 Description: rcoleo un paquet R permettant le retrait des données collectées dans le cadre du programme de suivi de la biodiversité. Ce paquet R s'appuie sur l'API de Coléo [](), un système d'information sur la biodiversité du Québec.
-Depends: R (>= 3.4.2)
+Depends: R (>= 4.1.1)
 URL: https://github.com/ReseauBiodiversiteQuebec/rcoleo
 BugReports: https://github.com/ReseauBiodiversiteQuebec/rcoleo/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports:
+Imports: 
     httr,
     jsonlite,
     stringr,
-    dplyr,
+    dplyr (>= 1.0.7),
     plyr,
     tibble,
     purrr,
-    here,
     memoise,
     assertthat,
     sf,
-    magrittr,
     geojsonio,
-    rlang
+    rlang,
+    httr2,
+    tidyr,
+    readxl
 Suggests: 
     knitr,
+    pkgdown,
     rmarkdown,
     RPostgreSQL,
-    pkgdown,
     testthat,
-    withr
-RoxygenNote: 7.1.1
+    httptest2,
+    withr,
+    xlsx
+RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr

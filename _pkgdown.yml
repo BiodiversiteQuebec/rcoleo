@@ -24,59 +24,15 @@ navbar:
     reference:
     - title: 'All functions'
       contents:
-        - '`as.data.frame.coleoGetResp`'
-        - '`cl_to_sf`'
-        - '`diagnostic`'
-        - '`get_campaigns`'
-        - '`get_cells`'
-        - '`get_devices`'
-        - '`get_gen`'
-        - '`get_landmarks`'
-        - '`get_lures`'
-        - '`get_medias`'
-        - '`get_obs`'
-        - '`get_samples`'
-        - '`get_sites`'
-        - '`get_species`'
-        - '`get_traps`'
-        - '`is.coleoGetResp`'
-        - '`is.coleoPostResp`'
-        - '`list_medias`'
-        - '`post_attributes`'
-        - '`post_campaigns`'
-        - '`post_cells`'
-        - '`post_devices`'
-        - '`post_gen`'
-        - '`post_landmarks`'
-        - '`post_lures`'
-        - '`post_obs`'
-        - '`post_samples`'
-        - '`post_sites`'
-        - '`post_traps`'
-        - '`sf_cells`'
-        - '`sf_landmarks`'
-        - '`sf_sites`'
+        - '`coleo_injection`'
+        - '`coleo_request_general`'
     github:
       icon: fab fa-github fa-lg
       href: https://github.com/ReseauBiodiversiteQuebec/rcoleo
     articles:
       text: Articles
       menu:
-      - text: Téléchargement des sites
-        href: articles/telecharge-sites.html
-      - text: Injection des cellules
-        href: articles/injection-cellules.html
-      - text: Injection des noms d'espèce
-        href: articles/injection-taxa.html
-      - text: Injection des sites
-        href: articles/injection-sites.html
-      - text: Injection des campagnes ZOOPLANCTON
-        href: articles/CAMPAGNE_zooplancton_injection.html
-      - text: Injection des campagnes PAPILONIDÉS
-        href: articles/CAMPAGNE_papillon_injection.html
-      - text: Injection des campagnes ODONATES
-        href: articles/CAMPAGNE_odonate_injection.html
-      - text: Injection des campagnes INSECTES SOL
-        href: articles/CAMPAGNE_insects_sol_injection.html
-      - text: Injection ODONATES et PAPILIONIDÉS AGOL-COLEO
-        href: articles/AGOL-COLEO_odonate_papillon_injection.html
+      - text: Téléchargement de données
+        href: articles/telecharge-donnees.html
+      - text: Injection de données
+        href: articles/injection-donnees.html

@@ -1,0 +1,110 @@
+[
+    {
+        "id": 94,
+        "cell_id": 161,
+        "off_station_code_id": "139_87_F01",
+        "site_code": "139_87_F01",
+        "site_name": null,
+        "type": "forestier",
+        "opened_at": "2018-04-24",
+        "geom": {
+            "type": "Point",
+            "coordinates": [
+                -73.78261,
+                45.03285
+            ]
+        },
+        "notes": null,
+        "created_at": "2019-07-11T14:11:13.607Z",
+        "updated_at": "2019-07-11T14:11:13.607Z",
+        "cellId": 161,
+        "campaigns": [
+            {
+                "id": 647,
+                "site_id": 94,
+                "type": "acoustique",
+                "technicians": [
+                    "Joelle Spooner"
+                ],
+                "opened_at": "2018-04-24",
+                "closed_at": "2018-07-17",
+                "notes": null,
+                "created_at": "2021-03-09T21:28:06.330Z",
+                "updated_at": "2021-03-09T21:28:06.330Z",
+                "siteId": 94
+            },
+            {
+                "id": 791,
+                "site_id": 94,
+                "type": "decomposition_sol",
+                "technicians": [
+                    null
+                ],
+                "opened_at": "2018-06-20",
+                "closed_at": "2018-09-18",
+                "notes": null,
+                "created_at": "2021-11-05T19:44:31.836Z",
+                "updated_at": "2021-11-05T19:44:31.836Z",
+                "siteId": 94
+            }
+        ],
+        "cell": {
+            "id": 161,
+            "name": "Le Haut-Saint-Laurent (C)",
+            "cell_code": "139_87",
+            "geom": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -73.7756,
+                            45.003
+                        ],
+                        [
+                            -73.7836,
+                            45.003
+                        ],
+                        [
+                            -73.7929,
+                            45.0028
+                        ],
+                        [
+                            -73.8018,
+                            45.0027
+                        ],
+                        [
+                            -73.8047,
+                            45.0027
+                        ],
+                        [
+                            -73.8235,
+                            45.0024
+                        ],
+                        [
+                            -73.8414,
+                            45.0021
+                        ],
+                        [
+                            -73.85,
+                            45.0019
+                        ],
+                        [
+                            -73.8537,
+                            45.0018
+                        ],
+                        [
+                            -73.819,
+                            45.0299
+                        ],
+                        [
+                            -73.7756,
+                            45.003
+                        ]
+                    ]
+                ]
+            },
+            "created_at": "2018-11-07T18:49:21.316Z",
+            "updated_at": "2018-11-07T18:49:21.316Z"
+        }
+    }
+]
