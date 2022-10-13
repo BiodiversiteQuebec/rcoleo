@@ -19,7 +19,6 @@ test_that("coleo_read_data returns a data.frame from a file local path", {
         sheetName = "6. Template de téléversement")
     # Save dummy shp file
     fileNameShp <- paste0(tempdir(), "test.shp")
-    file.remove(fileNameShp)
     sf::st_write(
         data.frame(
             cell_code = "111_111",
@@ -27,7 +26,8 @@ test_that("coleo_read_data returns a data.frame from a file local path", {
             geom = sf::st_sfc(sf::st_point(c(-68.784529, 48.112211)))
         ),
         dsn = fileNameShp,
-        driver = "ESRI Shapefile"
+        driver = "ESRI Shapefile",
+        delete_dsn = TRUE
     )
 
     # Test that the file is read without error
@@ -105,7 +105,6 @@ test_that("coleo_read_template returns a data.frame from a file local path", {
 test_that("coleo_read_template returns a data.frame from a file local path", {
     # Save dummy xlsx file
     fileName <- paste0(tempdir(), "test2.shp")
-    file.remove(fileName)
     sf::st_write(
         data.frame(
             cell_code = "111_111",
@@ -113,7 +112,8 @@ test_that("coleo_read_template returns a data.frame from a file local path", {
             geom = sf::st_sfc(sf::st_point(c(-68.784529, 48.112211)))
         ),
         dsn = fileName,
-        driver = "ESRI Shapefile"
+        driver = "ESRI Shapefile",
+        delete_dsn = TRUE
     )
 
     # Test that the file is read without error

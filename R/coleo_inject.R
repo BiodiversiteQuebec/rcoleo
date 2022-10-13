@@ -278,15 +278,16 @@ coleo_injection_final <- function(df){
 coleo_inject <- function(df, media_path = NULL) {
   #--------------------------------------------------------------------------
   # 0. Injection process for cells and sites
+  # - data <- coleo_read_shape(fileName)
   #--------------------------------------------------------------------------
   # Cells
   # - Only cells have a geom column
   if ("geom" %in% colnames(df)) {
     if ("sfc_POLYGON" %in% class(df$geom)) {
       df <- df |>
-        rowwise() |>
-        mutate(geom = list(rcoleo::coleo_cell_geom_fmt(geom)))
-        dplyr::mutate(geom = sf::st_as_text(.data$geom))
+        dplyr::rowwise() |>
+        dplyr::mutate(geom = list(rcoleo::coleo_cell_geom_fmt(geom))) |>
+        tibble::as_tibble()
     }
     df_id <- coleo_inject_cells(df)
 
