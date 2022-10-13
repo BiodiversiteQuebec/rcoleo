@@ -3,7 +3,7 @@
 library(knitr)
 
 # Téléchargement
-knit("vignettes/telecharge-donnes.Rmd.orig", "vignettes/telecharge-donnees.Rmd") # needs httr-oauth
+knit("vignettes/telecharge-donnees.Rmd.orig", "vignettes/telecharge-donnees.Rmd") # needs httr-oauth
 
 
 # Injections TABLES

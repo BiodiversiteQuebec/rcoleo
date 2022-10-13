@@ -36,7 +36,3 @@ navbar:
         href: articles/telecharge-donnees.html
       - text: Injection de données
         href: articles/injection-donnees.html
-      - text: Injection des cellules
-        href: articles/injection-cellules.html
-      - text: Injection des sites
-        href: articles/injection-sites.html
