@@ -18,8 +18,20 @@ server <- function(){
 bearer <- function() {
   # ifelse(file.exists(".httr-oauth"), as.character(readRDS(".httr-oauth")), NA)
   token <- Sys.getenv("RCOLEO_TOKEN")
-  if (token == "" & !file.exists(".httr-oauth")) stop("Aucune autorisation d\u00e9tect\u00e9e")
+  if (token == "" & !file.exists(".httr-oauth2")) stop("Aucune autorisation d\u00e9tect\u00e9e")
   if (token == "") out <-  as.character(readRDS(".httr-oauth")) else out <- token
+  return(out)
+}
+
+
+#server <- function() "http://localhost:8080" # dev purpose
+base2 <- function() "/newapi/v1"
+
+bearer2 <- function() {
+  # ifelse(file.exists(".httr-oauth"), as.character(readRDS(".httr-oauth")), NA)
+  token <- Sys.getenv("RCOLEO2_TOKEN")
+  if (token == "" & !file.exists(".httr-oauth2")) stop("Aucune autorisation d\u00e9tect\u00e9e")
+  if (token == "") out <-  as.character(readRDS(".httr-oauth2")) else out <- token
   return(out)
 }
 
@@ -51,7 +63,7 @@ endpoints <- function(){
     species_list = "/species_list",
     sites_species = "/sites_species",
     richness = "/richness",
-    richness_mean = "/richness/mean",
+    'richness/mean' = "/richness/mean",
     table_columns = "/table_columns",
     enum_options = "/enum_options",
     sites_with_campaigns = "/sites_with_campaigns",
