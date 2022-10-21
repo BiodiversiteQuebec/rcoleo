@@ -20,8 +20,6 @@
 #' @export
 coleo2_request_general <- function(endpoint, perform = TRUE, response_as_df = FALSE, limit = 100, schema='api',...){
 
-  assertthat::assert_that(endpoint %in% names(endpoints()))
-
     request_info <- list(...)
 
   written_req <- coleo2_begin_req(schema) |>
