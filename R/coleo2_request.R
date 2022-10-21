@@ -121,7 +121,7 @@ coleo2_extract_id <- function(answer_resp){
 
 # create a generic request
 coleo2_begin_req <- function(schema){
-  paste0(rcoleo:::server2(), rcoleo:::base2()) |>
+  paste0(rcoleo:::server(), rcoleo:::base2()) |>
     httr2::request() |>
     httr2::req_headers("Accept" = "application/json",
                        `Content-Type` = "application/json",
