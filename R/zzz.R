@@ -47,13 +47,17 @@ endpoints <- function(){
     obs_soil_decomposition = "/obs_soil_decomposition",
     efforts = "/efforts",
     obs_edna = "/obs_edna",
-    summary = "/campaigns_summary",
+    campaigns_summary = "/campaigns_summary",
     species_list = "/species_list",
     sites_species = "/sites_species",
     richness = "/richness",
     richness_mean = "/richness/mean",
     table_columns = "/table_columns",
-    enum_options = "/enum_options"
+    enum_options = "/enum_options",
+    sites_with_campaigns = "/sites_with_campaigns",
+    sites_campaigns_summary = "/sites_campaigns_summary",
+    campaign_observations = "/campaign_observations",
+    species_abundance_count = "/species_abundance_count",
   )
 }
 # # short excerpt to update the list of campaign types if/when more get added!!
