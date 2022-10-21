@@ -57,7 +57,7 @@ endpoints <- function(){
     sites_with_campaigns = "/sites_with_campaigns",
     sites_campaigns_summary = "/sites_campaigns_summary",
     campaign_observations = "/campaign_observations",
-    species_abundance_count = "/species_abundance_count",
+    species_abundance_count = "/species_abundance_count"
   )
 }
 # # short excerpt to update the list of campaign types if/when more get added!!
