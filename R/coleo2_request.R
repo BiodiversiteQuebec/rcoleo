@@ -18,7 +18,7 @@
 #'
 #' @return Object httr2 response si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
 #' @export
-coleo2_request_general <- function(endpoint, perform = TRUE, response_as_df = FALSE, limit = 100, schema='api'...){
+coleo2_request_general <- function(endpoint, perform = TRUE, response_as_df = FALSE, limit = 100, schema='api',...){
 
   assertthat::assert_that(endpoint %in% names(endpoints()))
 
