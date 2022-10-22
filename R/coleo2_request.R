@@ -131,18 +131,3 @@ coleo2_begin_req <- function(schema){
                        "useragent" = "rcoleo") |>
     httr2::req_error(body = coleo_error_message)
 }
-
-
-
-
- tt='http://coleo-api.vhost33'  |>
-    httr2::request() |>
-    httr2::req_headers("Accept" = "application/json",
-                       `Content-Type` = "application/json",
-                        "Content-Profile"= schema,
-                       "Accept-Profile"= schema,
-                       "Authorization" = paste("Bearer", rcoleo:::bearer2()),
-                       "useragent" = "rcoleo") |>
-    httr2::req_error(body = coleo_error_message)
-
-    written_req <- coleo2_begin_req(schema) |> httr2::req_url_path_append('taxa_richness') |> httr2::req_url_query()
