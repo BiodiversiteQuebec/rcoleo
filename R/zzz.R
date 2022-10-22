@@ -36,7 +36,13 @@ server2 <- function(){
  }
 
 #server <- function() "http://localhost:8080" # dev purpose
-base2 <- function() "/newapi/v1"
+base2 <- function() {
+  path <- Sys.getenv("COLEOAPI2_PATH")
+  if (path==''){
+    path="/newapi/v1"
+  }
+  return(path)
+}
 
 bearer2 <- function() {
   # ifelse(file.exists(".httr-oauth"), as.character(readRDS(".httr-oauth")), NA)
