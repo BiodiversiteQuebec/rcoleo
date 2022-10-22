@@ -121,7 +121,7 @@ coleo2_extract_id <- function(answer_resp){
 
 # create a generic request
 coleo2_begin_req <- function(schema){
-  paste0(rcoleo:::server(), rcoleo:::base2()) |>
+  paste0(rcoleo:::server2(), rcoleo:::base2()) |>
     httr2::request() |>
     httr2::req_headers("Accept" = "application/json",
                        `Content-Type` = "application/json",
@@ -132,3 +132,17 @@ coleo2_begin_req <- function(schema){
     httr2::req_error(body = coleo_error_message)
 }
 
+
+
+
+ tt='http://coleo-api.vhost33'  |>
+    httr2::request() |>
+    httr2::req_headers("Accept" = "application/json",
+                       `Content-Type` = "application/json",
+                        "Content-Profile"= schema,
+                       "Accept-Profile"= schema,
+                       "Authorization" = paste("Bearer", rcoleo:::bearer2()),
+                       "useragent" = "rcoleo") |>
+    httr2::req_error(body = coleo_error_message)
+
+    written_req <- coleo2_begin_req(schema) |> httr2::req_url_path_append('taxa_richness') |> httr2::req_url_query()

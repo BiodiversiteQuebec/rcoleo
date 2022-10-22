@@ -23,6 +23,17 @@ bearer <- function() {
   return(out)
 }
 
+server2 <- function(){
+  s <- Sys.getenv("COLEOAPI2_SERVER")
+  if (s==''){
+    if(file.exists(".local-server2")){
+      s <- as.character(readRDS(".local-server2"))
+    }else{
+      s <- "https://coleo.biodiversite-quebec.ca"
+    }
+   }
+   return(s)
+ }
 
 #server <- function() "http://localhost:8080" # dev purpose
 base2 <- function() "/newapi/v1"
