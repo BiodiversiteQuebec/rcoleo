@@ -30,7 +30,6 @@ base2 <- function() "/newapi/v1"
 bearer2 <- function() {
   # ifelse(file.exists(".httr-oauth"), as.character(readRDS(".httr-oauth")), NA)
   token <- Sys.getenv("RCOLEO2_TOKEN")
-  print(token)
   if (token == "" & !file.exists(".httr-oauth2")) stop("Aucune autorisation d\u00e9tect\u00e9e")
   if (token == "") out <-  as.character(readRDS(".httr-oauth2")) else out <- token
   return(out)
