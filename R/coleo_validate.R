@@ -154,11 +154,16 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   # Check that all media_name files exists in the provided directory
   #------------------------------------------------------------------------
-if ("media_name" %in% dat_names) {
-  sapply(data$media_name, function(file) {
-    file.exists(paste0(media_path, "/", file))
-  })
-}
+  if ("media_name" %in% dat_names) {
+    # Validate directory existence
+    if (!dir.exists(file.path(media_path))) warning("--------------------------------------------------\nV\U00E9rifiez le dU00E9pot des m\U00E9dias. ",  dput(media_path), " ", dput(media_path)," n'est pas un dépot valide.\n\n")
+    
+    media_exists <- sapply(data$media_name, function(file) {
+      file.exists(paste0(media_path, file))
+    })
+
+    if(any(!media_exists)) warning("--------------------------------------------------\nV\U00E9rifiez les noms de mU00E9dias aux lignes ",  paste(which(!media_exists), collapse = ", "), " de la colonne media_name. Cette colonne contient des noms qui ne correspondent à aucun document dans le d\U00E9pot ", dput(media_path),".\n\n")
+  }
 
 
   #------------------------------------------------------------------------
