@@ -5,7 +5,7 @@
 #' @return
 #' @export
 #'
-coleo_validate <- function(data) {
+coleo_validate <- function(data, media_path = NULL) {
 
   #------------------------------------------------------------------------
   # Increase default warning message length
@@ -146,6 +146,42 @@ coleo_validate <- function(data) {
   sites_x <- which(!unique(data$sites_site_code) %in% existing_sites$site_code)
 
   if(!are_sites_exists) warning("--------------------------------------------------\nV\U00E9rifiez les sites ", dput(unique(data$sites_site_code)[sites_x]), " de la colonne sites_site_code ou injectez ces sites dans la table sites de coleo. Cette colonne contient des sites qui n'existent pas dans coleo.\n\n")
+
+
+  #------------------------------------------------------------------------
+  # Check that all media_name files exists in the provided directory
+  #------------------------------------------------------------------------
+if ("media_name" %in% dat_names) {
+  sapply(data$media_name, function(file) {
+    file.exists(paste0(media_path, "/", file))
+  })
+}
+
+
+  #------------------------------------------------------------------------
+  # Check that azimut columns have values within 0 and 360
+  #------------------------------------------------------------------------
+  azimut_names <- grepl("azimut", dat_names)
+  if (any(azimut_names)) {
+    azimut_range <- unlist(data[,azimut_names]) |> range(na.rm = TRUE)
+
+    if (azimut_range[2] > 360 | azimut_range[1] < 0) warning(paste0("--------------------------------------------------\nV\U00E9rifiez les valeurs d'azimut. Les valeurs doivent être entre 0 et 360.\n\n"))
+  }
+
+
+  #------------------------------------------------------------------------
+  # Check that subsequent lures installs have different dates
+  #------------------------------------------------------------------------
+  lure_names <- grepl("lures_installed_at", dat_names)
+  if (any(lure_names)) {
+    dates_overlap <- apply(data, 1, function(x) {
+      dat_lures <- x[lure_names]
+      dat_lures <- dat_lures[!is.na(dat_lures)]
+      length(unique(dat_lures)) != length(dat_lures)
+    })
+
+    if (any(dates_overlap)) warning(paste0("--------------------------------------------------\nV\U00E9rifiez les dates d'installation des app\U00E2ts aux lignes ", paste(which(dates_overlap), collapse = ", "), ". Plusieurs app\U00E2ts pour une même observation partagent la m\U00EArme date d'installation.\n\n"))
+  }
 
 
   #------------------------------------------------------------------------
