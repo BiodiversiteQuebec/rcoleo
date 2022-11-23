@@ -80,7 +80,7 @@ coleo_validate <- function(data, media_path = NULL) {
   which_extra <- grepl("extra", possible_col_diff)
   possible_col_diff <- possible_col_diff[!which_extra]
   # Accept media_name column ----------------------------------------------
-  possible_col_diff <- which(possible_col_diff != "media_name")
+  possible_col_diff <- possible_col_diff[which(possible_col_diff != "media_name")]
 
   if(length(possible_col_diff) != 0) warning("--------------------------------------------------\nV\U00E9rifiez que les bons noms de colonnes sont utilis\U00E9s et que les colonnes superflues sont", paste0(" retir\U00E9", "es"), ".\n", "\n\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n\n")
 
@@ -301,9 +301,21 @@ if ("media_name" %in% dat_names) {
     possible_vars <- c(possible_vars, NA) # Accept NAs in empty campaigns
     are_vars_valid <- all(var %in% possible_vars)
 
-    if(!are_vars_valid) warning("--------------------------------------------------\nV\U00E9rifiez les valeurs ", dput(var[!var %in% possible_vars]), " de la colonne obs_species_variable ou injectez ces valeurs dans la table attributes. Cette colonne contient une valeur qui n'est pas une valeur de la table attributes\n\n")
+    if(!are_vars_valid) warning("--------------------------------------------------\nV\U00E9rifiez les valeurs ", dput(var[!var %in% possible_vars]), " de la colonne obs_species_variable ou injectez ces valeurs dans la table attributes. Cette colonne contient une valeur qui n'est pas une valeur de la table attributes.\n\n")
   }
 
+
+  #------------------------------------------------------------------------
+  # Check that obs_species_value is 1 when obs_species_variable is "présence"
+  #------------------------------------------------------------------------
+  if("obs_species_variable" %in% dat_names) {
+    presence_rows <- which(data$obs_species_variable == "présence")
+    if(length(presence_rows) > 0) {
+      is_true <- all(data$obs_species_value[presence_rows] == 1)
+
+      if(!is_true) warning("--------------------------------------------------\nV\U00E9rifiez les valeurs de la colonne obs_species_value. Les lignes qui contiennent la valeur \"présence\" dans la colonne obs_species_variable doivent avoir la valeur 1 dans la colonne obs_species_value.\n\n")
+    }
+  }
 
   #------------------------------------------------------------------------
   # Check that the format of the input column containing time is valid
