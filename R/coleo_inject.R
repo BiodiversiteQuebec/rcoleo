@@ -306,6 +306,17 @@ coleo_inject <- function(df, media_path = NULL) {
   campaign_type <- unique(df$campaigns_type)
   tables <- rcoleo::coleo_return_required_tables(campaign_type)
 
+  # Remove observations_lookup table for vegetation campaigns that do not have efforts
+  # or landmarks
+  ## observations_efforts_lookup
+  if (campaign_type == "végétation_transect" & !any(grepl("efforts", names(df)))) {
+    tables <- tables[!tables %in% "observations_efforts_lookup"]
+  }
+  ## observations_landmarks_lookup
+  if (campaign_type == "végétation_transect" & !any(grepl("landmarks", names(df)))) {
+    tables <- tables[!tables %in% "observations_landmarks_lookup"]
+  }
+
   #--------------------------------------------------------------------------
   # 2. Inject campaigns table
   #--------------------------------------------------------------------------
