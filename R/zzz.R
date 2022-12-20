@@ -64,6 +64,8 @@ endpoints <- function(){
     campaigns = "/campaigns",
     media = "/media",
     observations = "/observations",
+    observations_efforts_lookup = "/observations_efforts_lookup",
+    observations_landmarks_lookup = "/observations_landmarks_lookup",
     taxa = "/taxa",
     landmarks = "/landmarks",
     environments = "/environment",
