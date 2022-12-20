@@ -203,6 +203,8 @@ coleo_injection_final <- function(df){
     httr2::req_dry_run(quiet = TRUE) |>
     purrr::pluck("path") |>
     basename()
+  # Lookup tables are special cases, because they do not have an id column
+  if (grepl("lookup", tbl_name)) return(df)
   # Media is a special case, because the POST is done on a server rather than on a table
   # - The injection in media table and obs_media are automated
   # - The table taxa has a different endpoint name (ref_species)
@@ -431,6 +433,7 @@ coleo_inject_table <- function(df_id, campaign_type, table) {
   # 4. Get id
   # - Failure will cause an error
   # - Only get id for successful injections
+  # - There is no id for lookup tables
   #--------------------------------------------------------------------------
   df_out <- response |>
     coleo_injection_final()
