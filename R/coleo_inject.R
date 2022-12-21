@@ -297,6 +297,10 @@ coleo_inject <- function(df, media_path = NULL) {
   # Sites
   if("sites_type" %in% colnames(df)) {
     df_id <- coleo_inject_table(df, NA, "sites")
+
+    # plumber-api trigger to update portal data
+    browseURL("https://coleo.biodiversite-quebec.ca/r-update-api/update/all")
+
     return(df_id)
   }
 
@@ -370,6 +374,9 @@ coleo_inject <- function(df, media_path = NULL) {
       df_id <- coleo_inject_table(df_id, campaign_type, table)
     }
   }
+
+  # plumber-api trigger to update portal data
+  browseURL("https://coleo.biodiversite-quebec.ca/r-update-api/update/no")
 
   return(df_id)
 }
