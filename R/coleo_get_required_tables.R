@@ -2,14 +2,14 @@
 # tips for working with this table
 # use datapasta::fiddle() to fix formatting after an update
 
-#' Table des tables requises par type de campagne
-#'
-#'
-#' @return a tbl_df showing which tables are required for which injection efforts.
+# Table des tables requises par type de campagne
+#
+#
+# @return a tbl_df showing which tables are required for which injection efforts.
 coleo_get_required_tables <- function(){
 
 tibble::tribble(
-                           ~table, ~'v\u00e9g\u00e9tation', ~'v\u00e9g\u00e9tation_transect', ~sol, ~'acoustique_chiropt\u00e8res', ~'acoustique_orthopt\u00e8res', ~acoustique_oiseaux, ~acoustique_anoures, ~'ph\u00e9nologie', ~'mammif\u00e8res', ~'papilionid\u00e9s', ~odonates, ~insectes_sol, ~ADNe, ~zooplancton, ~'temp\u00e9rature_eau', ~'temp\u00e9rature_sol', '~marais_profondeur_temp\u00e9rature', ~'d\u00e9composition_sol', ~benthos, ~physicochimie_terrain, ~physicochimie_labo,
+                           ~table, ~'v\u00e9g\u00e9tation', ~'v\u00e9g\u00e9tation_transect', ~sol, ~'acoustique_chiropt\u00e8res', ~'acoustique_orthopt\u00e8res', ~acoustique_oiseaux, ~acoustique_anoures, ~'ph\u00e9nologie', ~'mammif\u00e8res', ~'papilionid\u00e9s', ~odonates, ~insectes_sol, ~ADNe, ~zooplancton, ~'temp\u00e9rature_eau', ~'temp\u00e9rature_sol', ~'marais_profondeur_temp\u00e9rature', ~'d\u00e9composition_sol', ~benthos, ~physicochimie_terrain, ~physicochimie_labo,
                           "cells",                       0,                                0,    0,                              0,                              0,                   0,                   0,                  0,                  0,                    0,         0,             0,     0,            0,                       0,                       0,                                     0,                         0,        0,                      0,                   0,
                           "sites",                       0,                                0,    0,                              0,                              0,                   0,                   0,                  0,                  0,                    0,         0,             0,     0,            0,                       0,                       0,                                     0,                         0,        0,                      0,                   0,
                       "campaigns",                       1,                                1,    1,                              1,                              1,                   1,                   1,                  0,                  1,                    1,         1,             1,     1,            1,                       0,                       0,                                     0,                         1,        1,                      1,                   1,
@@ -33,4 +33,5 @@ tibble::tribble(
           "obs_temperature_depth",                       0,                                0,    0,                              0,                              0,                   0,                   0,                  0,                  0,                    0,         0,             0,     0,            0,                       0,                       0,                                     0,                         0,        0,                      0,                   0,
                           "media",                       0,                                0,    0,                              0,                              0,                   0,                   0,                  0,                  1,                    0,         0,             0,     0,            0,                       0,                       0,                                     0,                         0,        0,                      0,                   0
   )
+
 }
