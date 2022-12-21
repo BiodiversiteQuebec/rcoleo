@@ -272,7 +272,7 @@ coleo_injection_final <- function(df) {
 #'
 #' @return Un message de succès ou d'échec de l'injection des lignes du
 #' data.frame par table et le data.frame retourné par
-#' \code{\link[rcoleo]{coleo_injection_perform}}.
+#' \code{\link[rcoleo]{coleo_injection_execute}}.
 
 #' @export
 

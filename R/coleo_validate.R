@@ -1,6 +1,6 @@
 #' Valide la forme du jeu de données à injecter
 #'
-#' @param data jeu de données \u00e0 valider
+#' @param data jeu de données à valider
 #'
 #' @return Un message sur la validité du jeu de données.
 #'

@@ -82,11 +82,10 @@ coleo2_request_by_code <- function(human_code, table, perform = TRUE){
 #'
 #' @param resp objet httr2 response de coleo.
 #' @param written_req Requête passée à l'API de coleo.
-#' @param perform TRUE par défault. Ne performe pas la requête si FALSE.
 #'
 #' @return si perform = TRUE, la réponse est retournée. Si perform = FALSE, la requête httr2 est retournée.
 #' @export
-coleo2_resp_df <- function(resp, written_req, limit){
+coleo2_resp_df <- function(resp, written_req){
   # is there pages?
   header_names <- names(resp$headers)
     # No 'Content-Range'
