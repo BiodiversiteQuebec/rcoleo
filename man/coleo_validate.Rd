@@ -7,7 +7,7 @@
 coleo_validate(data, media_path = NULL)
 }
 \arguments{
-\item{data}{jeu de données \u00e0 valider}
+\item{data}{jeu de données à valider}
 }
 \value{
 Un message sur la validité du jeu de données.

@@ -4,14 +4,12 @@
 \alias{coleo2_resp_df}
 \title{Converti un objet httr2 response en un tibble.}
 \usage{
-coleo2_resp_df(resp, written_req, limit)
+coleo2_resp_df(resp, written_req)
 }
 \arguments{
 \item{resp}{objet httr2 response de coleo.}
 
 \item{written_req}{Requête passée à l'API de coleo.}
-
-\item{perform}{TRUE par défault. Ne performe pas la requête si FALSE.}
 }
 \value{
 si perform = TRUE, la réponse est retournée. Si perform = FALSE, la requête httr2 est retournée.

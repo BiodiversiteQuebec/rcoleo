@@ -15,7 +15,7 @@ coleo_inject(df, media_path = NULL)
 \value{
 Un message de succès ou d'échec de l'injection des lignes du
 data.frame par table et le data.frame retourné par
-\code{\link[rcoleo]{coleo_injection_perform}}.
+\code{\link[rcoleo]{coleo_injection_execute}}.
 }
 \description{
 Principale fonction d'injection de données dans Coleo. Cette fonction
