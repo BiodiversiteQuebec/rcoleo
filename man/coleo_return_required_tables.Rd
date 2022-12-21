@@ -10,7 +10,7 @@ coleo_return_required_tables(camp_type)
 \item{camp_type}{un type de campagne valide.}
 }
 \value{
-
+Un vecteur contenant les noms des tables requises pour le type de campagne donné.
 }
 \description{
 Trouver les tables requises pour un type de campagne donné

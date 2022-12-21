@@ -30,7 +30,7 @@ coleo_read <- function(filePath) {
   # - Except for shapefiles
   #-----------------------------------------------------------------------------
   # Test that the extension is acceptable
-  if (!ex %in% c("csv", "xls", "xlsx")) warning("Seuls les documents csv, shp et les templates coleo sont pris en charge au moment. Veuillez soumettre les données dans un document csv ou dans le template coleo.")
+  if (!ex %in% c("csv", "xls", "xlsx")) warning("Seuls les documents csv, shp et les templates coleo sont pris en charge au moment. Veuillez soumettre les donn\u00e9es dans un document csv ou dans le template coleo.")
   else if ("campaigns_type" %in% names(dataFile)) {
     # Format dataset
     dataFile <- coleo_format(dataFile)
@@ -83,7 +83,7 @@ coleo_read_csv <- function(fileName) {
 #'
 coleo_read_template <- function(templatePath) {
     # 1. Get data
-    dataFile <- readxl::read_excel(templatePath, sheet = "6. Template de téléversement", col_types = "text") |>
+    dataFile <- readxl::read_excel(templatePath, sheet = "6. Template de t\u00e9l\u00e9versement", col_types = "text") |>
       as.data.frame()
     # Remove added column
     if ('...1' %in% colnames(dataFile)) dataFile <- dataFile[,-1]

@@ -10,6 +10,6 @@ coleo_format(dataFrame)
 \item{dataFrame}{un jeu de données}
 }
 \description{
-Cette fonction formate les colonnes à la bonne classe. Elle est appelée par
-les fonctions \code{coleo_read_template} et \code{coleo_read_csv}.
+Cette fonction formate les colonnes àla bonne classe. Elle est appelée par
+les fonctions \code{\link[rcoleo]{coleo_read_template}} et \code{\link[rcoleo]{coleo_read_csv}}.
 }

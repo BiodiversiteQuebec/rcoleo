@@ -26,5 +26,5 @@ automatiquement l'injection des données dans la table \code{media} de coleo. Il
 
 Il faut spécifier le id correspondant au dossier \code{site} dans lequel les fichiers médias seront injectés. Par enxemple, une injection dans le fichier campaigns doit spécifier le id de la campagne, tandis qu'une injection dans le dossier observation doit spécifier le id de l'observation. Le id permet la sauvegarde du fichier média dans un sous-dossier spécifique.
 
-La fonction est utilisée par \code{coleo_inject}.
+La fonction est utilisée par \code{\link[rcoleo]{coleo_inject}}.
 }

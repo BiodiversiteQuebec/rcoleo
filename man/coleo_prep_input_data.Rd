@@ -18,8 +18,10 @@ un tbl, nested
 Est utilisé par \code{\link[rcoleo]{coleo_injection_prep}} pour formater
 les données à injecter et les données à transformer (géométries,
 colonnes extra). Imbrique et isole des colonnes à injecter, place les autres
-dans une colonna 'data'.
+dans une colonne 'data'.
 }
 \details{
-Cette colonne fait appel aux fonctions de \code{\link[rcoleo]{coleo_format_utils}}.
+Cette colonne fait appel aux fonctions de formatage
+\code{\link[rcoleo]{coleo_format_extra_col}} et
+\code{\link[rcoleo]{format_spatial}}.
 }

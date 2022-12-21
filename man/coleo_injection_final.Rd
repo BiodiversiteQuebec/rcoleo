@@ -10,7 +10,7 @@ coleo_injection_final(df)
 \item{df}{Une data.frame produit par \code{coleo_injection_execute}}
 }
 \value{
-Un data.frame. Sans les groupes et les données nestées.
+Un data.frame. Sans les groupes et les données imbriquées.
 }
 \description{
 Cette fonction extrait les nouveaux ID et les messages d'erreur des réponses

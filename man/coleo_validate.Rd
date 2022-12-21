@@ -4,13 +4,13 @@
 \alias{coleo_validate}
 \title{Valide la forme du jeu de données à injecter}
 \usage{
-coleo_validate(data)
+coleo_validate(data, media_path = NULL)
 }
 \arguments{
-\item{data}{jeu de données à valider}
+\item{data}{jeu de données \u00e0 valider}
 }
 \value{
-
+Un message sur la validité du jeu de données.
 }
 \description{
 Valide la forme du jeu de données à injecter

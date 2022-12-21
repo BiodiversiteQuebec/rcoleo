@@ -82,7 +82,8 @@ coleo_return_valid_site_types <- function(){
 #'
 #' @param camp_type un type de campagne valide.
 #'
-#' @return
+#' @return Un vecteur contenant les noms des tables requises pour le type de campagne donné.
+#'
 #' @export
 coleo_return_required_tables <- function(camp_type) {
 

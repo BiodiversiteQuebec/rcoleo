@@ -1,8 +1,9 @@
 #' Valide la forme du jeu de données à injecter
 #'
-#' @param data jeu de données à valider
+#' @param data jeu de données \u00e0 valider
 #'
-#' @return
+#' @return Un message sur la validité du jeu de données.
+#'
 #' @export
 #'
 coleo_validate <- function(data, media_path = NULL) {
@@ -17,12 +18,12 @@ coleo_validate <- function(data, media_path = NULL) {
   # Check that there is a campaign type column and that it contains a unique value
   #------------------------------------------------------------------------
   # Pursue only if there is a campaign type column
-  if(!assertthat::has_name(data, "campaigns_type")) stop("V\U00E9rifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond à campaigns_type \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n\n")
+  if(!assertthat::has_name(data, "campaigns_type")) stop("V\u00E9rifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond \u00e0 campaigns_type \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
 
   # Pursue only if there is a campaign type value
   campaign_type <- unique(data$campaigns_type)
   campaigns <- coleo_return_valid_campaigns()
-  if(!(length(campaign_type) == 1 && campaign_type %in% campaigns)) stop("V\U00E9rifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est nécessaire pour les prochaines étapes de validation.\n\n")
+  if(!(length(campaign_type) == 1 && campaign_type %in% campaigns)) stop("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
 
 
   #------------------------------------------------------------------------
@@ -66,7 +67,7 @@ coleo_validate <- function(data, media_path = NULL) {
   req_columns <- coleo_return_cols(campaign_type, required.columns = TRUE)$noms_de_colonnes
   req_col_diff <- setdiff(req_columns, true_nms)
   # Return warning if there's a mismatch ----------------------------------
-  if(length(req_col_diff) != 0) warning("--------------------------------------------------\nV\U00E9rifiez que les bons noms de colonnes sont utilis\U00E9s et que toutes les colonnes requises sont pr\U00E9sentes.\n", "\n\nLes colonnes absentes sont : \n", paste0(req_col_diff, collapse = ", "), "\n\n")
+  if(length(req_col_diff) != 0) warning("--------------------------------------------------\nV\u00E9rifiez que les bons noms de colonnes sont utilis\u00E9s et que toutes les colonnes requises sont pr\u00E9sentes.\n", "\n\nLes colonnes absentes sont : \n", paste0(req_col_diff, collapse = ", "), "\n\n")
 
 
   #------------------------------------------------------------------------
@@ -82,7 +83,7 @@ coleo_validate <- function(data, media_path = NULL) {
   # Accept media_name column ----------------------------------------------
   possible_col_diff <- possible_col_diff[which(possible_col_diff != "media_name")]
 
-  if(length(possible_col_diff) != 0) warning("--------------------------------------------------\nV\U00E9rifiez que les bons noms de colonnes sont utilis\U00E9s et que les colonnes superflues sont", paste0(" retir\U00E9", "es"), ".\n", "\n\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n\n")
+  if(length(possible_col_diff) != 0) warning("--------------------------------------------------\nV\u00E9rifiez que les bons noms de colonnes sont utilis\u00E9s et que les colonnes superflues sont", paste0(" retir\u00E9", "es"), ".\n", "\n\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n\n")
 
 
   #------------------------------------------------------------------------
@@ -91,7 +92,7 @@ coleo_validate <- function(data, media_path = NULL) {
   is_char_na <- any(data == "NA", na.rm = TRUE) |> suppressWarnings()
   if(is_char_na) {
     data[data == "NA"] <- NA
-    warning("--------------------------------------------------\nV\U00E9rifiez les champs sans valeurs. Ils devraient \U00E2tre NA, mais certains contiennent la valeur de 'NA' en charactères.\n\n")
+    warning("--------------------------------------------------\nV\u00E9rifiez les champs sans valeurs. Ils devraient \u00E2tre NA, mais certains contiennent la valeur de 'NA' en charact\u00e8res.\n\n")
   }
   
 
@@ -133,7 +134,7 @@ coleo_validate <- function(data, media_path = NULL) {
 
   # Are all input columns of the right class? -----------------------------
   erroneous_cols <- dat_names[!class_of_col]
-  if(!all(class_of_col)) warning("--------------------------------------------------\nV\U00E9rifiez la classe des colonnes. Ces colonnes sont probl\U00E9matiques : \n", paste0(erroneous_cols, collapse = ", "), "\n\n")
+  if(!all(class_of_col)) warning("--------------------------------------------------\nV\u00E9rifiez la classe des colonnes. Ces colonnes sont probl\u00E9matiques : \n", paste0(erroneous_cols, collapse = ", "), "\n\n")
 
 
   #------------------------------------------------------------------------
@@ -145,7 +146,7 @@ coleo_validate <- function(data, media_path = NULL) {
   # Missing sites ---------------------------------------------------------
   sites_x <- which(!unique(data$sites_site_code) %in% existing_sites$site_code)
 
-  if(!are_sites_exists) warning("--------------------------------------------------\nV\U00E9rifiez les sites ", dput(unique(data$sites_site_code)[sites_x]), " de la colonne sites_site_code ou injectez ces sites dans la table sites de coleo. Cette colonne contient des sites qui n'existent pas dans coleo.\n\n")
+  if(!are_sites_exists) warning("--------------------------------------------------\nV\u00E9rifiez les sites ", dput(unique(data$sites_site_code)[sites_x]), " de la colonne sites_site_code ou injectez ces sites dans la table sites de coleo. Cette colonne contient des sites qui n'existent pas dans coleo.\n\n")
 
 
   #------------------------------------------------------------------------
@@ -165,7 +166,7 @@ if ("media_name" %in% dat_names) {
   if (any(azimut_names)) {
     azimut_range <- unlist(data[,azimut_names]) |> range(na.rm = TRUE)
 
-    if (azimut_range[2] > 360 | azimut_range[1] < 0) warning(paste0("--------------------------------------------------\nV\U00E9rifiez les valeurs d'azimut. Les valeurs doivent être entre 0 et 360.\n\n"))
+    if (azimut_range[2] > 360 | azimut_range[1] < 0) warning(paste0("--------------------------------------------------\nV\u00E9rifiez les valeurs d'azimut. Les valeurs doivent être entre 0 et 360.\n\n"))
   }
 
 
@@ -180,7 +181,7 @@ if ("media_name" %in% dat_names) {
       length(unique(dat_lures)) != length(dat_lures)
     })
 
-    if (any(dates_overlap)) warning(paste0("--------------------------------------------------\nV\U00E9rifiez les dates d'installation des app\U00E2ts aux lignes ", paste(which(dates_overlap), collapse = ", "), ". Plusieurs app\U00E2ts pour une même observation partagent la m\U00EArme date d'installation.\n\n"))
+    if (any(dates_overlap)) warning(paste0("--------------------------------------------------\nV\u00E9rifiez les dates d'installation des app\u00E2ts aux lignes ", paste(which(dates_overlap), collapse = ", "), ". Plusieurs app\u00E2ts pour une même observation partagent la m\u00EArme date d'installation.\n\n"))
   }
 
 
@@ -209,7 +210,7 @@ if ("media_name" %in% dat_names) {
       }
     }
 
-    if(!is.null(row_not_empty)) warning(paste0("--------------------------------------------------\nV\U00E9rifiez les lignes sans observation. Les champs qui d\U00E9crivent le jeu de données, la localisation de l\'\U00E9chantillonnage et les détails sur la campagne d'\U00E9chantillonnage doivent être remplis, mais tous les autres champs qui décrivent l\'observation doivent être laissés vide.\n\n"))
+    if(!is.null(row_not_empty)) warning(paste0("--------------------------------------------------\nV\u00E9rifiez les lignes sans observation. Les champs qui d\u00E9crivent le jeu de donn\u00E9es, la localisation de l\'\u00E9chantillonnage et les d\u00E9tails sur la campagne d'\u00E9chantillonnage doivent être remplis, mais tous les autres champs qui d\u00E9crivent l\'observation doivent être laiss\u00E9s vide.\n\n"))
   }
 
 
@@ -225,7 +226,7 @@ if ("media_name" %in% dat_names) {
     if (length(lac_rows) > 0) {
       is_true <- all(is.na(data[lac_rows, c("landmarks_type", "landmarks_lat", "landmarks_lon")]))
 
-      if(!is_true) warning(paste0("--------------------------------------------------\nV\U00E9rifiez les observations faites à l'échelle du lac. Les colonnes landmarks_type, landmarks_lat et landmarks_lon doivent être laissées vide pour ces lignes\n\n"))
+      if(!is_true) warning(paste0("--------------------------------------------------\nV\u00E9rifiez les observations faites \u00e0 l'\u{00E9}chelle du lac. Les colonnes landmarks_type, landmarks_lat et landmarks_lon doivent être laiss\u00E9es vide pour ces lignes\n\n"))
     }
 
     # Check that all station observations have landmarks
@@ -234,7 +235,7 @@ if ("media_name" %in% dat_names) {
     if(length(station_rows) > 0) {
       is_true <- all(!is.na(data[station_rows, c("landmarks_type", "landmarks_lat", "landmarks_lon")]))
       
-      if(!is_true) warning(paste0("--------------------------------------------------\nV\U00E9rifiez les observations qui se rattachent aux stations. Les colonnes landmarks_type, landmarks_lat et landmarks_lon doivent être remplies pour ces lignes\n\n"))
+      if(!is_true) warning(paste0("--------------------------------------------------\nV\u00E9rifiez les observations qui se rattachent aux stations. Les colonnes landmarks_type, landmarks_lat et landmarks_lon doivent être remplies pour ces lignes\n\n"))
     }
   }
 
@@ -262,7 +263,7 @@ if ("media_name" %in% dat_names) {
   names(cols_valid_values) <- tbl$noms_de_colonnes[invalid_cols]
   col_names <- tbl$noms_de_colonnes[invalid_cols]
 
-  if(!all(valid_col_values)) warning("--------------------------------------------------\nV\U00E9rifiez les valeurs contenues dans les colonnes. Ces colonnes contiennent des valeurs invalides : \n", paste0(col_names, collapse = ", "), "\n\nLes valeurs possibles pour ces colonnes sont : \n", paste0(col_names, ": ", cols_valid_values, collapse = "\n"), "\n\n")
+  if(!all(valid_col_values)) warning("--------------------------------------------------\nV\u00E9rifiez les valeurs contenues dans les colonnes. Ces colonnes contiennent des valeurs invalides : \n", paste0(col_names, collapse = ", "), "\n\nLes valeurs possibles pour ces colonnes sont : \n", paste0(col_names, ": ", cols_valid_values, collapse = "\n"), "\n\n")
 
   #------------------------------------------------------------------------
   # Test for non-breaking spaces
@@ -272,7 +273,7 @@ if ("media_name" %in% dat_names) {
     }) |>
     as.logical()
 
-  if(any(notSpace)) warning("--------------------------------------------------\nV\U00E9rifiez la présence d'espaces insécables aux lignes : ", paste0(which(notSpace), collapse = ", "), ", et remplacez les par des espaces standards\n\n")
+  if(any(notSpace)) warning("--------------------------------------------------\nV\u00E9rifiez la pr\u00E9sence d'espaces ins\u{00E9}cables aux lignes : ", paste0(which(notSpace), collapse = ", "), ", et remplacez les par des espaces standards\n\n")
 
   #------------------------------------------------------------------------
   # Check that complexes of species are correctly formated
@@ -287,7 +288,7 @@ if ("media_name" %in% dat_names) {
       identical(cplx, cplx_formated)
     })
 
-    if(!all(cplx_valid)) warning("--------------------------------------------------\nV\U00E9rifiez le format des complexes d'espèces : certain complexes sont incorrectement formatés. Les taxons composants le complexe doivent être séparés par une barre verticale flanquée d'un espace de chaque côté \" | \". Exemple : \"Acer saccharum | Acer negundo\"\n\n")
+    if(!all(cplx_valid)) warning("--------------------------------------------------\nV\u00E9rifiez le format des complexes d'esp\u00e8ces : certain complexes sont incorrectement format\u00E9s. Les taxons composants le complexe doivent être s\u00E9par\u00E9s par une barre verticale flanqu\u00E9e d'un espace de chaque côt\u00E9 \" | \". Exemple : \"Acer saccharum | Acer negundo\"\n\n")
 
   }
 
@@ -301,19 +302,19 @@ if ("media_name" %in% dat_names) {
     possible_vars <- c(possible_vars, NA) # Accept NAs in empty campaigns
     are_vars_valid <- all(var %in% possible_vars)
 
-    if(!are_vars_valid) warning("--------------------------------------------------\nV\U00E9rifiez les valeurs ", dput(var[!var %in% possible_vars]), " de la colonne obs_species_variable ou injectez ces valeurs dans la table attributes. Cette colonne contient une valeur qui n'est pas une valeur de la table attributes.\n\n")
+    if(!are_vars_valid) warning("--------------------------------------------------\nV\u00E9rifiez les valeurs ", dput(var[!var %in% possible_vars]), " de la colonne obs_species_variable ou injectez ces valeurs dans la table attributes. Cette colonne contient une valeur qui n'est pas une valeur de la table attributes.\n\n")
   }
 
 
   #------------------------------------------------------------------------
-  # Check that obs_species_value is 1 when obs_species_variable is "présence"
+  # Check that obs_species_value is 1 when obs_species_variable is "pr\u00E9sence"
   #------------------------------------------------------------------------
   if("obs_species_variable" %in% dat_names) {
-    presence_rows <- which(data$obs_species_variable == "présence")
+    presence_rows <- which(data$obs_species_variable == "pr\u00E9sence")
     if(length(presence_rows) > 0) {
       is_true <- all(data$obs_species_value[presence_rows] == 1)
 
-      if(!is_true) warning("--------------------------------------------------\nV\U00E9rifiez les valeurs de la colonne obs_species_value. Les lignes qui contiennent la valeur \"présence\" dans la colonne obs_species_variable doivent avoir la valeur 1 dans la colonne obs_species_value.\n\n")
+      if(!is_true) warning("--------------------------------------------------\nV\u00E9rifiez les valeurs de la colonne obs_species_value. Les lignes qui contiennent la valeur \"pr\u00E9sence\" dans la colonne obs_species_variable doivent avoir la valeur 1 dans la colonne obs_species_value.\n\n")
     }
   }
 
@@ -346,7 +347,7 @@ if ("media_name" %in% dat_names) {
     is_time_format <- all(cols_format)
     is_time_na <- any(na_in_time)
 
-    if(!is_time_format | is_time_na) warning("--------------------------------------------------\nV\U00E9rifiez le format des valeurs d'heure. L'heure doit etre du format \"HH:MM:SS\".\n\n")
+    if(!is_time_format | is_time_na) warning("--------------------------------------------------\nV\u00E9rifiez le format des valeurs d'heure. L'heure doit etre du format \"HH:MM:SS\".\n\n")
   }
 
 
@@ -375,7 +376,7 @@ if ("media_name" %in% dat_names) {
     is_ndigits_valid <- all(cols_ndigits)
     is_na <- any(na_in_dates)
 
-    if(!is_ndigits_valid | is_na) warning("--------------------------------------------------\nV\U00E9rifiez le format des valeurs de dates. Les dates doivent \U00EAtre du format YYYY-MM-DD.\n\n")
+    if(!is_ndigits_valid | is_na) warning("--------------------------------------------------\nV\u00E9rifiez le format des valeurs de dates. Les dates doivent \u00EAtre du format YYYY-MM-DD.\n\n")
   }
 
   # Check that the values are within a decent range -----------------------
@@ -403,8 +404,34 @@ if ("media_name" %in% dat_names) {
       range()
 
     message(paste0("==================================================\nValidation finale ! \n",
-    if ("obs_species_taxa_name" %in% dat_names) paste0("- V\U00E9rifiez les lignes qui représentent des campagnes vides. Il y a ", no_obs, " lignes sans observations.\n"),
-    "- V\U00E9rifiez que l'intervalle des dates", paste0(" inject\U00E9", "es "), "correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", "), " se trouvent dans l'intervalle de", paste0(" l'ann\U00E9", "e "), range_year[1], " \U00E0 ", range_year[2], " du mois ", range_month[1], " \U00E0 ", range_month[2], " et du jour ", range_day[1], "  \U00E0 ", range_day[2], ".\n
-    - Si les", paste0(" donn\U00E9", "es"), " sont bonnes et qu'aucun autre message n'apparait, vous pouvez", paste0(" proc\U00E9", "der"), " à l'injection des", paste0(" donn\U00E9", "es.")))
+    if ("obs_species_taxa_name" %in% dat_names) paste0("- V\u00E9rifiez les lignes qui repr\u00E9sentent des campagnes vides. Il y a ", no_obs, " lignes sans observations.\n"),
+    "- V\u00E9rifiez que l'intervalle des dates", paste0(" inject\u00E9", "es "), "correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", "), " se trouvent dans l'intervalle de", paste0(" l'ann\u00E9", "e "), range_year[1], " \u00E0 ", range_year[2], " du mois ", range_month[1], " \u00E0 ", range_month[2], " et du jour ", range_day[1], "  \u00E0 ", range_day[2], ".\n
+    - Si les", paste0(" donn\u00E9", "es"), " sont bonnes et qu'aucun autre message n'apparait, vous pouvez", paste0(" proc\u00E9", "der"), " \u00e0 l'injection des", paste0(" donn\u00E9", "es.")))
   }
+
+
+
+  #------------------------------------------------------------------------
+  # Campaign-specific validation
+  #------------------------------------------------------------------------
+  # if (campaign_type %in% c("v\u00E9g\u00E9tation", "v\u00E9g\u00E9tation_transect")) {
+  #   # Check that observations within 100m2 parcelles are only of the 'arbustive' strate
+  #   are_right_stratum <- data$observations_stratum[data$efforts_samp_surf == 100] == "arbustive"
+
+  #   if(!all(are_right_stratum)) warning("--------------------------------------------------\nV\u00E9rifiez les valeurs de strate pour les observations des placettes de 100m2. La seule valeur admissible est 'arbustive'.\n\n")
+
+
+  #   # Check that observations within 400m2 parcelles, that are not extra observations, are only of the 'arborescence' strate
+  #   # - All stratum can occur within extra observations
+  #   is_extra_obs <- "observations_extra_variable_1" %in% dat_names
+  #   if(is_extra_obs) {
+  #     are_right_stratum_400 <- data$observations_stratum[data$efforts_samp_surf == 400 & is.na(data$observations_extra_variable_1) & !is.na(data$obs_species_taxa_name)] == "arborescente"
+  #   } else {
+  #     are_right_stratum_400 <- data$observations_stratum[data$efforts_samp_surf == 400 & !is.na(data$obs_species_taxa_name)] == "arborescente"
+  #   }
+    
+  #   if(exists("are_right_stratum_400")) {
+  #     if(!all(are_right_stratum_400, na.rm = TRUE)) warning("--------------------------------------------------\nV\u00E9rifiez les valeurs de strate pour les observations des placettes de 400m2. La seule valeur admissible est 'arborescente', exception faite des observations suppl\u00E9mentaire qui sont identifi\u00E9es dans la colonne 'observations_extra_variable_1'.\n\n")
+  #   }
+  # }
 }

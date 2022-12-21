@@ -18,7 +18,7 @@ l'injection est à faire.}
 Une requête unique de type "HTTP POST request". La requête n'est pas
 exécutée. Elle doit être envoyée à l'API Coleo via
 \code{\link[httr2]{req_perform}}. Peut être testée en premier via
-\code{\link[httr2]{req_perform_dry_run}}.
+\code{\link[httr2]{req_dry_run}}.
 }
 \description{
 Fonction utilisée dans \code{\link[rcoleo]{coleo_injection_prep}} et

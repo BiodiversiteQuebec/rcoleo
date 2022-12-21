@@ -1,8 +1,8 @@
 
-#' Fonction générale pour l'injection dans la base de données Coleo via l'API.
+#' Fonction génàrale pour l'injection dans la base de donnàes Coleo via l'API.
 #'
 #' @param endpoint Nom du endpoint de l'API où injecter.
-#' @param ... Données à injecter. Peut contenir des valeurs NA ou NULL; elles seront retirées avant l'injection.
+#' @param ... Donnàes à injecter. Peut contenir des valeurs NA ou NULL; elles seront retiràes avant l'injection.
 #'
 #' @return Un objet httr2 request, prêt à être envoyé à l'API Coleo.
 #' @export
@@ -46,7 +46,7 @@ coleo_inject_general <- function(..., endpoint){
 #' @return Une requête unique de type "HTTP POST request". La requête n'est pas
 #' exécutée. Elle doit être envoyée à l'API Coleo via
 #' \code{\link[httr2]{req_perform}}. Peut être testée en premier via
-#' \code{\link[httr2]{req_perform_dry_run}}.
+#' \code{\link[httr2]{req_dry_run}}.
 #'
 #' @export
 coleo_inject_general_df <- function(df_one_row, endpoint) {
@@ -68,7 +68,7 @@ coleo_inject_general_df <- function(df_one_row, endpoint) {
     }
 
   df_one_row_ls$data <- NULL
-  endpt <- rcoleo:::endpoints()[[endpoint]]
+  endpt <- endpoints()[[endpoint]]
 
 
   # drop all NULL or NA columns
@@ -84,7 +84,7 @@ coleo_inject_general_df <- function(df_one_row, endpoint) {
 #' Injection de données dans Coleo.
 #'
 #' Accepte un jeu de données qui contient une colonne de requêtes POST httr2 et
-#' les exécute. Sont utilisation suit celle de
+#' les ex.cute. Sont utilisation suit celle de
 #' \code{\link[rcoleo]{coleo_injection_prep}} et précède celle de
 #' \code{\link[rcoleo]{coleo_injection_final}} dans le processus d'injection.
 #' 
@@ -191,8 +191,8 @@ coleo_injection_prep <- function(df, db_table){
 #'
 #' @param df Une data.frame produit par \code{coleo_injection_execute}
 #'
-#' @return Un data.frame. Sans les groupes et les données nestées.
-#' 
+#' @return Un data.frame. Sans les groupes et les données imbriquées.
+#'
 #' @export
 
 coleo_injection_final <- function(df) {
@@ -263,15 +263,16 @@ coleo_injection_final <- function(df) {
 #' Injecte un jeu de données dans Coleo.
 #'
 #' Principale fonction d'injection de données dans Coleo. Cette fonction
-#' accepte un data.frame validé par \code{coleo_validate} et performe
-#' automatiquement l'injection de toutes les tables dans Coleo.
+#' accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et
+#' performe automatiquement l'injection de toutes les tables dans Coleo.
 #'
-#' @param df Un data.frame validé par \code{coleo_validate}
+#' @param df Un data.frame validé par \code{\link[rcoleo]{coleo_validate}}
 #' @param media_path NULL par défault. Requis lorsqu'il y a des fichiers médias
 #' à injecter. Doit être le chemin local vers les fichiers médias à injecter.
 #'
 #' @return Un message de succès ou d'échec de l'injection des lignes du
-#' data.frame par table et le data.frame retourné par \code{coleo_injection_perform}.
+#' data.frame par table et le data.frame retourné par
+#' \code{\link[rcoleo]{coleo_injection_perform}}.
 
 #' @export
 
@@ -286,7 +287,7 @@ coleo_inject <- function(df, media_path = NULL) {
     if ("sfc_POLYGON" %in% class(df$geom)) {
       df <- df |>
         dplyr::rowwise() |>
-        dplyr::mutate(geom = list(rcoleo::coleo_cell_geom_fmt(geom))) |>
+        dplyr::mutate(geom = list(coleo_cell_geom_fmt(geom))) |>
         tibble::as_tibble()
     }
     df_id <- coleo_inject_cells(df)
@@ -308,16 +309,16 @@ coleo_inject <- function(df, media_path = NULL) {
   # 1. Extract tables to be injected
   #--------------------------------------------------------------------------
   campaign_type <- unique(df$campaigns_type)
-  tables <- rcoleo::coleo_return_required_tables(campaign_type)
+  tables <- coleo_return_required_tables(campaign_type)
 
   # Remove observations_lookup table for vegetation campaigns that do not have efforts
   # or landmarks
   ## observations_efforts_lookup
-  if (campaign_type == "végétation_transect" & !any(grepl("efforts", names(df)))) {
+  if (campaign_type == "v\u00e9g\u00e9tation_transect" & !any(grepl("efforts", names(df)))) {
     tables <- tables[!tables %in% "observations_efforts_lookup"]
   }
   ## observations_landmarks_lookup
-  if (campaign_type == "végétation_transect" & !any(grepl("landmarks", names(df)))) {
+  if (campaign_type == "v\u00e9g\u00e9tation_transect" & !any(grepl("landmarks", names(df)))) {
     tables <- tables[!tables %in% "observations_landmarks_lookup"]
   }
 
@@ -337,7 +338,7 @@ coleo_inject <- function(df, media_path = NULL) {
 
     # Injection of taxa_name in ref_species table
     if (table %in% c("landmarks", "obs_species", "obs_edna")) {
-      if (campaign_type != "mammifères" & table != "landmarks") {
+      if (campaign_type != "mammif\u00e8res" & table != "landmarks") {
         # Skip if landmarks table in a mammifère campaign.
         # The landmarks need first to be extracted
         # - The operation is done in coleo_inject_mam_landmarks()
@@ -348,11 +349,11 @@ coleo_inject <- function(df, media_path = NULL) {
     }
 
     # Case-specific injections
-    if (campaign_type == "mammifères" & table == "lures") {
+    if (campaign_type == "mammif\u00e8res" & table == "lures") {
       ## Lures table for "mammifères" campaigns
       df_id <- coleo_inject_mam_lures(df_id)
 
-    } else if (campaign_type == "mammifères" & table == "landmarks") {
+    } else if (campaign_type == "mammif\u00e8res" & table == "landmarks") {
       ## Landmarks table for "mammifères" campaigns
       df_id <- coleo_inject_mam_landmarks(df_id)
 
@@ -397,16 +398,17 @@ injection_reponse_message <- function(table, response) {
 
 #' Injection des données dans une table de Coleo.
 #'
-#' Accepte un data.frame validé par \code{coleo_validate} et performe
-#' l'injection dans la table de coleo spécifiée.
-#' 
-#' Cette fonction est appelée par \code{coleo_inject} et fait appel aux
-#' fonctions de préparation, d'exécution et de finalisation de l'inejction :
-#' \code{coleo_injection_prep}, \code{coleo_injection_execute} et
-#' \code{coleo_injection_final}.
+#' Accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et
+#' performe l'injection dans la table de coleo spécifiée.
 #'
-#' @param df_id Un data.frame validé par \code{coleo_validate} et contenant
-#' les id des lignes injectées dans la table campaigns.
+#' Cette fonction est appelée par \code{\link[rcoleo]{coleo_inject}} et fait
+#' appel aux fonctions de préparation, d'exécution et de finalisation de
+#' l'inejction : \code{\link[rcoleo]{coleo_injection_prep}},
+#' \code{\link[rcoleo]{coleo_injection_execute}} et
+#' \code{\link[rcoleo]{coleo_injection_final}}.
+#'
+#' @param df_id Un data.frame validé par \code{\link[rcoleo]{coleo_validate}}
+#' et contenant les id des lignes injectées dans la table campaigns.
 #' @param campaign_type Type de campagne auquel appartient le jeu de données.
 #' @param table Une table de coleo où inecter les données.
 #'
@@ -418,7 +420,7 @@ coleo_inject_table <- function(df_id, campaign_type, table) {
   # 1. Prep request
   #--------------------------------------------------------------------------
   requests <- df_id |>
-      rcoleo::coleo_injection_prep(db_table = table)
+      coleo_injection_prep(db_table = table)
 
   #--------------------------------------------------------------------------
   # 2. Requests executions
@@ -426,7 +428,7 @@ coleo_inject_table <- function(df_id, campaign_type, table) {
   response <- coleo_injection_execute(requests) # Real thing
   # Rename device_id in mammifères campaigns
   # - Prevents landmarks injection of lures to inject device_id
-  if(campaign_type == "mammifères" & table == "devices") names(df_id)[names(df_id) == "device_id"] <- "device_id_camera"
+  if(campaign_type == "mammif\u00e8res" & table == "devices") names(df_id)[names(df_id) == "device_id"] <- "device_id_camera"
 
   #--------------------------------------------------------------------------
   # 3. Print output
@@ -449,12 +451,13 @@ coleo_inject_table <- function(df_id, campaign_type, table) {
 
 #' Injection des cellules dans Coleo.
 #'
-#' Accepte un data.frame validé par \code{coleo_validate} et performe
-#' l'injection dans la table cells.
+#' Accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et
+#' performe l'injection dans la table cells.
 #'
 #' Cette fonction fait appel aux fonctions de préparation, d'exécution et de
-#' finalisation de l'injection : \code{coleo_inject_general_df},
-#' \code{coleo_injection_execute} et \code{coleo_injection_final}.
+#' finalisation de l'injection : \code{\link[rcoleo]{coleo_inject_general_df}},
+#' \code{\link[rcoleo]{coleo_injection_execute}} et
+#' \code{\link[rcoleo]{coleo_injection_final}}.
 #'
 #' @param df Un data.frame contenant une colonne `geom` de type polygon, cell_code et name.
 #'
@@ -490,15 +493,15 @@ coleo_inject_cells <- function(df) {
 
 
 #' Injection des fichiers média dans le serveur de Coleo.
-#' 
+#'
 #' L'injection des fichiers médias se fait hors de la base de données coleo, mais sur le serveur. dépendamment du type de fichiers médias, l'injection se fait dans un dossier spécifique : soit dans le dossier \code{observation} soit dans le dossier \code{campaign}, ou soit sans le dossier \code{site}.
-#' 
+#'
 #' L'injection des fichiers médias sur le serveur de coleo engendre
 #' automatiquement l'injection des données dans la table \code{media} de coleo. Il n'est donc pas requis d'injecter la table \code{media} manuellement.
-#' 
+#'
 #' Il faut spécifier le id correspondant au dossier \code{site} dans lequel les fichiers médias seront injectés. Par enxemple, une injection dans le fichier campaigns doit spécifier le id de la campagne, tandis qu'une injection dans le dossier observation doit spécifier le id de l'observation. Le id permet la sauvegarde du fichier média dans un sous-dossier spécifique.
-#' 
-#' La fonction est utilisée par \code{coleo_inject}.
+#'
+#' La fonction est utilisée par \code{\link[rcoleo]{coleo_inject}}.
 #'
 #' @param df_id Un data,frame contenant les colonnes *_id nécessaires.
 #' @param server_dir Le nom du dossier dans lequel les fichiers médias seront
@@ -556,12 +559,12 @@ coleo_inject_media <- function(df_id, server_dir = "observation", file_dir) {
 }
 
 
-#' Injection des pièges d'une campagne mammifères dans la table lures de coleo.
+#' Injection des pièes d'une campagne mammifères dans la table lures de coleo.
 #'
-#' Accepte un data.frame validé par \code{coleo_validate} et performe
+#' Accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et performe
 #' l'injection de la table lures.
 #' 
-#' La fonction est utilisée par \code{coleo_inject}.
+#' La fonction est utilisée par \code{\link[rcoleo]{coleo_inject}}.
 #'
 #' @param df_id Un data.frame contenant une colonne campaign_id.
 #'
@@ -647,15 +650,15 @@ coleo_inject_mam_lures <- function(df_id) {
 
 #' Injection des repères d'une campagne mammifères dans la table
 #' landmarks de coleo.
-#' 
+#'
 #' L'injection des repères pour les campagnes mammifères est différente
 #' puiqu'il y a des repères pour la caméra et pour les pièges. Nous procédons
 #' donc à l'injection successif de tous les repères.
 #'
-#' Accepte un data.frame validé par \code{coleo_validate} et performe
-#' l'injection de la table landmarks.
+#' Accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et
+#' performe l'injection de la table landmarks.
 #' 
-#' La fonction est utilisée par \code{coleo_inject}.
+#' La fonction est utilisée par \code{\link[rcoleo]{coleo_inject}}.
 #'
 #' @param df_id Un data.frame contenant une colonne campaign_id.
 #'
@@ -683,7 +686,7 @@ coleo_inject_mam_landmarks <- function(df_id) {
   names(df_camera)[grep("_camera", names(df_camera))] <- sub('_camera', "\\1", names(df_camera)[grep("_camera", names(df_camera))], perl = TRUE)
   # Prep requests
   requests <- df_camera |>
-    rcoleo::coleo_injection_prep(db_table = "landmarks")
+    coleo_injection_prep(db_table = "landmarks")
   # Injection
   response <- coleo_injection_execute(requests) # Real thing
   # Output
@@ -717,7 +720,7 @@ coleo_inject_mam_landmarks <- function(df_id) {
     }
     ## 2.3. Prep requests
     requests <- df_lure |>
-        rcoleo::coleo_injection_prep(db_table = "landmarks")
+        coleo_injection_prep(db_table = "landmarks")
     ## 2.4. Inject
     response <- coleo_injection_execute(requests) # Real thing
     ## 2.4.1. Output
@@ -745,15 +748,16 @@ coleo_inject_mam_landmarks <- function(df_id) {
 
 #' Injection des repères d'une campagne ADNe dans la table
 #' landmarks de coleo.
-#' 
-#' L'injection des repères ADNe est différente des autres de par la structure du jeu de données (tel que formaté par le template). Les observation à l'échelle du lac n'ont pas de repères alors que celles à l'échelle de la station ont des repères.
 #'
-#' Accepte un data.frame validé par \code{coleo_validate} et performe
+#' L'injection des repèes ADNe est différente des autres de par la structure du jeu de données (tel que formaté par le template). Les observation à l'échelle du lac n'ont pas de repères alors que celles à l'échelle de la station ont des repères.
+#'
+#' Accepte un data.frame validè par \code{\link[rcoleo]{coleo_validate}} et performe
 #' l'injection de la table landmarks.
-#' 
-#' La fonction est utilisée par \code{coleo_inject}.
+#'
+#' La fonction est utilisée par \code{\link[rcoleo]{coleo_inject}}.
 #'
 #' @param df_id Un data.frame contenant une colonne campaign_id.
+#' @param campaign_type Type de la campagne. Doit être "ADNe".
 #'
 #' @return Une data.frame avec une colonne landmark_X_id et une colonne pour
 #' les landmark_X_error.
@@ -787,11 +791,11 @@ coleo_inject_adne_landmarks <- function(df_id, campaign_type) {
 #' ref_species.
 #'
 #' Cette fonction est silencieuse et ne retourne aucun message. Tous les taxons
-#' seront injectés dans la table ref_species, mais ceux déjà présent
+#' seront injecté dans la table ref_species, mais ceux déjà présent
 #' retourneront une erreur.
 #'
-#' Cette fonction est utilisée par \code{coleo_inject} et
-#' \code{coleo_inject_mam_landmarks}.
+#' Cette fonction est utilisée par \code{\link[rcoleo]{coleo_inject}} et
+#' \code{\link[rcoleo]{coleo_inject_mam_landmarks}}.
 #'
 #' @param taxa_col Un vecteur de taxa_names à injecter.
 #'
@@ -804,7 +808,7 @@ coleo_inject_ref_species <- function(taxa_col) {
 
   if (length(taxa_col) > 0) {
     taxa_col |>
-      rcoleo::coleo_injection_prep(db_table = "ref_species") |>
-      rcoleo::coleo_injection_execute()
+      coleo_injection_prep(db_table = "ref_species") |>
+      coleo_injection_execute()
   }
 }

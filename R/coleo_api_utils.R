@@ -14,11 +14,11 @@ coleo_error_message <- function(resp){
 
 # create a generic request
 coleo_begin_req <- function(){
-  paste0(rcoleo:::server(), rcoleo:::base()) |>
+  paste0(server(), base()) |>
     httr2::request() |>
     httr2::req_headers("Accept" = "application/json",
                        `Content-Type` = "application/json",
-                       "Authorization" = paste("Bearer", rcoleo:::bearer()),
+                       "Authorization" = paste("Bearer", bearer()),
                        "useragent" = "rcoleo") |>
     httr2::req_error(body = coleo_error_message)
 }

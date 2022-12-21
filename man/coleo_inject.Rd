@@ -7,17 +7,18 @@
 coleo_inject(df, media_path = NULL)
 }
 \arguments{
-\item{df}{Un data.frame validé par \code{coleo_validate}}
+\item{df}{Un data.frame validé par \code{\link[rcoleo]{coleo_validate}}}
 
 \item{media_path}{NULL par défault. Requis lorsqu'il y a des fichiers médias
 à injecter. Doit être le chemin local vers les fichiers médias à injecter.}
 }
 \value{
 Un message de succès ou d'échec de l'injection des lignes du
-data.frame par table et le data.frame retourné par \code{coleo_injection_perform}.
+data.frame par table et le data.frame retourné par
+\code{\link[rcoleo]{coleo_injection_perform}}.
 }
 \description{
 Principale fonction d'injection de données dans Coleo. Cette fonction
-accepte un data.frame validé par \code{coleo_validate} et performe
-automatiquement l'injection de toutes les tables dans Coleo.
+accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et
+performe automatiquement l'injection de toutes les tables dans Coleo.
 }

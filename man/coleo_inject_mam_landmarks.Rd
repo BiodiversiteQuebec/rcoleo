@@ -20,8 +20,8 @@ puiqu'il y a des repères pour la caméra et pour les pièges. Nous procédons
 donc à l'injection successif de tous les repères.
 }
 \details{
-Accepte un data.frame validé par \code{coleo_validate} et performe
-l'injection de la table landmarks.
+Accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et
+performe l'injection de la table landmarks.
 
-La fonction est utilisée par \code{coleo_inject}.
+La fonction est utilisée par \code{\link[rcoleo]{coleo_inject}}.
 }

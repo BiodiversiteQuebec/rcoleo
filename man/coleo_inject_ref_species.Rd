@@ -15,9 +15,9 @@ ref_species.
 }
 \details{
 Cette fonction est silencieuse et ne retourne aucun message. Tous les taxons
-seront injectés dans la table ref_species, mais ceux déjà présent
+seront injecté dans la table ref_species, mais ceux déjà présent
 retourneront une erreur.
 
-Cette fonction est utilisée par \code{coleo_inject} et
-\code{coleo_inject_mam_landmarks}.
+Cette fonction est utilisée par \code{\link[rcoleo]{coleo_inject}} et
+\code{\link[rcoleo]{coleo_inject_mam_landmarks}}.
 }

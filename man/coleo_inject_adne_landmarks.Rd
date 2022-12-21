@@ -9,17 +9,19 @@ coleo_inject_adne_landmarks(df_id, campaign_type)
 }
 \arguments{
 \item{df_id}{Un data.frame contenant une colonne campaign_id.}
+
+\item{campaign_type}{Type de la campagne. Doit être "ADNe".}
 }
 \value{
 Une data.frame avec une colonne landmark_X_id et une colonne pour
 les landmark_X_error.
 }
 \description{
-L'injection des repères ADNe est différente des autres de par la structure du jeu de données (tel que formaté par le template). Les observation à l'échelle du lac n'ont pas de repères alors que celles à l'échelle de la station ont des repères.
+L'injection des repèes ADNe est différente des autres de par la structure du jeu de données (tel que formaté par le template). Les observation à l'échelle du lac n'ont pas de repères alors que celles à l'échelle de la station ont des repères.
 }
 \details{
-Accepte un data.frame validé par \code{coleo_validate} et performe
+Accepte un data.frame validè par \code{\link[rcoleo]{coleo_validate}} et performe
 l'injection de la table landmarks.
 
-La fonction est utilisée par \code{coleo_inject}.
+La fonction est utilisée par \code{\link[rcoleo]{coleo_inject}}.
 }
