@@ -146,7 +146,7 @@ coleo_validate <- function(data, media_path = NULL) {
   # Missing sites ---------------------------------------------------------
   sites_x <- which(!unique(data$sites_site_code) %in% existing_sites$site_code)
 
-  if(!are_sites_exists) warning("--------------------------------------------------\nV\u00E9rifiez les sites ", dput(unique(data$sites_site_code)[sites_x]), " de la colonne sites_site_code ou injectez ces sites dans la table sites de coleo. Cette colonne contient des sites qui n'existent pas dans coleo.\n\n")
+  if(!are_sites_exists) warning("--------------------------------------------------\nV\u00E9rifiez les sites ", paste0(unique(data$sites_site_code)[sites_x], collapse = ", "), " de la colonne sites_site_code ou injectez ces sites dans la table sites de coleo. Cette colonne contient des sites qui n'existent pas dans coleo.\n\n")
 
 
   #------------------------------------------------------------------------
