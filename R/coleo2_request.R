@@ -12,13 +12,12 @@
 #' @param endpoint Nom du endpoint de l'API de coleo sur lequel la requête doit être effectuée
 #' @param perform TRUE par default. Retourne un objet httr2 request et pas de requête effectuée si FALSE.
 #' @param response_as_df FALSE par défaut. Retroune un data.frame si TRUE.
-#' @param limit Nombre de lignes par page. Valeur fixée par l'api de coleo
 #' @param schema Schema qui contient les fonctions ou tables de l'appel
 #' @param ... Paramètres de requête pour la base de données coleo (dans leformat 'nom = valeur')
 #'
 #' @return Object httr2 response si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
 #' @export
-coleo2_request_general <- function(endpoint, perform = TRUE, response_as_df = FALSE, limit = 100, schema='api',...){
+coleo2_request_general <- function(endpoint, perform = TRUE, response_as_df = FALSE, schema='api',...){
 
     request_info <- list(...)
 
@@ -29,7 +28,7 @@ coleo2_request_general <- function(endpoint, perform = TRUE, response_as_df = FA
   if(perform) {
     out <- httr2::req_perform(written_req)
 
-    if (response_as_df) out <- coleo2_resp_df(out, written_req, limit)
+    if (response_as_df) out <- coleo2_resp_df(out, written_req)
 
     return(out)
   } else {
