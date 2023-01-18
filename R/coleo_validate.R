@@ -140,7 +140,7 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   # Check that all sites exists in coleo
   #------------------------------------------------------------------------
-  existing_sites <- coleo_request_general(endpoint = "sites", response_as_df = TRUE)
+  existing_sites <- coleo2_request_general(endpoint = "sites", response_as_df = TRUE, schema = 'public')
   
   are_sites_exists <- all(unique(data$sites_site_code) %in% existing_sites$site_code)
   # Missing sites ---------------------------------------------------------

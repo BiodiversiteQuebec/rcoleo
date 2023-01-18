@@ -23,7 +23,7 @@ coleo_prep_input_data <- function(df, db_table) {
   if (db_table == "sites") {
     df <- df |>
       dplyr::nest_by(cells_cell_code) |>
-      dplyr::mutate(coleo_id = list(coleo_request_by_code(human_code = cells_cell_code, table = "cells")),
+      dplyr::mutate(coleo_id = list(coleo2_request_by_code(human_code = cells_cell_code, table = "cells")),
             cell_id = coleo_extract_id(coleo_id)) |>
       dplyr::select(-cells_cell_code, -coleo_id) |>
       dplyr::relocate(cell_id) |>
@@ -36,7 +36,7 @@ coleo_prep_input_data <- function(df, db_table) {
     ## Add site_id to campaigns table
     df <- df |>
       dplyr::nest_by(sites_site_code) |>
-      dplyr::mutate(coleo_id = list(coleo_request_by_code(human_code = sites_site_code, table = "sites")),
+      dplyr::mutate(coleo_id = list(coleo2_request_by_code(human_code = sites_site_code, table = "sites")),
             site_id = coleo_extract_id(coleo_id)) |>
       dplyr::select(-sites_site_code, -coleo_id) |>
       dplyr::relocate(site_id) |>

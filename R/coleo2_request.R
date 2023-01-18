@@ -56,6 +56,7 @@ coleo2_request_general <- function(endpoint, perform = TRUE, response_as_df = FA
 coleo2_request_by_code <- function(human_code, table, perform = TRUE){
   # endpoint or whatever
   requested_code <- list(human_code)
+  requested_code <- paste0("eq.", requested_code[[1]])
 
   # could add a column here if a human-useable unique ID is used in any other table
   names(requested_code) <- switch(table,
@@ -63,7 +64,7 @@ coleo2_request_by_code <- function(human_code, table, perform = TRUE){
                                   sites = "site_code",
                                   stop("idk what to do with that"))
 
-  written_req <- coleo_begin_req() |>
+  written_req <- coleo2_begin_req('public') |>
     httr2::req_url_path_append(table) |>
     httr2::req_url_query(!!!requested_code)
 

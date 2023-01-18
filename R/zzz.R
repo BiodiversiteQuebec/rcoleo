@@ -98,13 +98,15 @@ endpoints <- function(){
 #   purrr::map(unique) |>
 #   purrr::flatten_chr() |> unique |> dput
 campaign_types <- function(){
-  camp_types_resp <- coleo_request_general(enum = "enum_campaigns_type", endpoint = "enum_options")
-  unlist(httr2::resp_body_json(camp_types_resp), use.names = FALSE)
+  coleo2_request_general("rpc/get_enum_values", response_as_df = TRUE,
+    'enum_type' = "enum_campaigns_type") |>
+  unlist(use.names = FALSE)
 }
 
 site_types <- function(){
-  camp_types_resp <- coleo_request_general(enum = "enum_sites_type", endpoint = "enum_options")
-  unlist(httr2::resp_body_json(camp_types_resp), use.names = FALSE)
+  coleo2_request_general("rpc/get_enum_values", response_as_df = TRUE,
+    'enum_type' = "enum_sites_type") |>
+  unlist(use.names = FALSE)
 }
 
 
