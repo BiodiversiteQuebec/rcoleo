@@ -334,6 +334,11 @@ if ("media_name" %in% dat_names) {
   if (length(cols_time) > 0) {
 
     # Check time format (HH:MM:SS) ----------------------------------------
+    # Na_cols
+    no_na_tbls <- c("cells", "sites", "campaigns", "efforts", "environments", "devices", "lures", "traps", "landmarks", "samples", "thermographs")
+    which_no_na_tbls <- sapply(no_na_tbls, function(x) grepl(x, dat_names) |> which()) |> unlist() |> unique()
+    na_cols <- dat_names[-which_no_na_tbls]
+    #
     na_in_time <- c(FALSE)
     cols_format <- sapply(cols_time, function(x) {
       split <- strsplit(unlist(data[,x]), ":", fixed = TRUE)

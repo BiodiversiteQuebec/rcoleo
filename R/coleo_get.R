@@ -6,15 +6,13 @@
 ## convenience functions for extracting the columns of a table, and the types of a column
 
 coleo_get_column_names <- function(tbl){
-  resp_cols <- coleo2_request_general('rpc/table_columns', response_as_df = TRUE,'table_name' = tbl)
-  return(cols_df)
+  coleo2_request_general('rpc/table_columns', response_as_df = TRUE,'table_name' = tbl)
 }
 
 
 coleo_get_enum_values <- function(enum_col_name){
-  resp_enum <- coleo2_request_general('rpc/get_enum_values', 'enum_type' = enum_col_name) |>
+  coleo2_request_general('rpc/get_enum_values', 'enum_type' = enum_col_name) |>
     httr2::resp_body_json() |> purrr::flatten() |> purrr::flatten_chr()
-  return(resp_chr)
 }
 
 

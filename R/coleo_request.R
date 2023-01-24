@@ -13,9 +13,17 @@
 #' @param perform TRUE par default. Retourne un objet httr2 request et pas de requête effectuée si FALSE.
 #' @param response_as_df FALSE par défaut. Retroune un data.frame si TRUE.
 #' @param limit Nombre de lignes par page. Valeur fixée par l'api de coleo
-#' @param ... Paramètres de requête pour la base de données coleo (dans leformat 'nom = valeur')
+#' @param ... Paramètres de requête pour la base de données coleo (dans le format 'nom' = 'valeur')
 #'
 #' @return Object httr2 response si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
+#' 
+#' @examples
+#' # Les requêtes sur des fonctions sont faites à rpc/FctName
+#' species_data <- coleo2_request_general('rpc/taxa_richness',response_as_df = TRUE,'site_id_filter'=10, 'group_by_column'='campaign_type')
+#' 
+#' # Les requêtes sur des tables sont faites à TableName
+#' sites <- coleo2_request_general('sites',response_as_df = TRUE,'schema'='public')
+
 #' @export
 coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FALSE, limit = 100,...){
 
