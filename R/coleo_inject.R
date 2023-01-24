@@ -1,12 +1,135 @@
+#' Injecte un jeu de données dans Coleo.
+#'
+#' Principale fonction d'injection de données dans Coleo. Cette fonction
+#' accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et
+#' performe automatiquement l'injection de toutes les tables dans Coleo.
+#'
+#' @param df Un data.frame validé par \code{\link[rcoleo]{coleo_validate}}
+#' @param media_path NULL par défault. Requis lorsqu'il y a des fichiers médias
+#' à injecter. Doit être le chemin local vers les fichiers médias à injecter.
+#'
+#' @return Un message de succès ou d'échec de l'injection des lignes du
+#' data.frame par table et le data.frame retourné par
+#' \code{\link[rcoleo]{coleo_injection_execute}}.
 
-#' Fonction génàrale pour l'injection dans la base de donnàes Coleo via l'API.
+#' @export
+
+coleo_inject <- function(df, media_path = NULL) {
+  #--------------------------------------------------------------------------
+  # 0. Injection process for cells and sites
+  # - data <- coleo_read_shape(fileName)
+  #--------------------------------------------------------------------------
+  # Cells
+  # - Only cells have a geom column
+  if ("geom" %in% colnames(df)) {
+    if ("sfc_POLYGON" %in% class(df$geom)) {
+      df <- df |>
+        dplyr::rowwise() |>
+        dplyr::mutate(geom = list(coleo_cell_geom_fmt(geom))) |>
+        tibble::as_tibble()
+    }
+    df_id <- coleo_inject_cells(df)
+
+    return(df_id)
+  }
+
+  # Sites
+  if("sites_type" %in% colnames(df)) {
+    df_id <- coleo_inject_table(df, NA, "sites")
+
+    # plumber-api trigger to update portal data
+    browseURL("https://coleo.biodiversite-quebec.ca/r-update-api/update/all")
+
+    return(df_id)
+  }
+
+  #--------------------------------------------------------------------------
+  # 1. Extract tables to be injected
+  #--------------------------------------------------------------------------
+  campaign_type <- unique(df$campaigns_type)
+  tables <- coleo_return_required_tables(campaign_type)
+
+  # Remove observations_lookup table for vegetation campaigns that do not have efforts
+  # or landmarks
+  ## observations_efforts_lookup
+  if (campaign_type == "v\u00e9g\u00e9tation_transect" & !any(grepl("efforts", names(df)))) {
+    tables <- tables[!tables %in% "observations_efforts_lookup"]
+  }
+  ## observations_landmarks_lookup
+  if (campaign_type == "v\u00e9g\u00e9tation_transect" & !any(grepl("landmarks", names(df)))) {
+    tables <- tables[!tables %in% "observations_landmarks_lookup"]
+  }
+
+  #--------------------------------------------------------------------------
+  # 2. Inject campaigns table
+  #--------------------------------------------------------------------------
+  df_id <- coleo_inject_table(df, campaign_type, "campaigns")
+
+  if(!any(sapply(df_id$campaign_error, is.null))) {
+    cat("Only data for successfully injected campaigns are injected in the next tables. These following lines failed to inject: ", paste0(which(!sapply(df_id$campaign_error, is.null)), collapse = ", "), "\n")
+    }
+
+  #--------------------------------------------------------------------------
+  # 3. Inject other tables
+  #--------------------------------------------------------------------------
+  for (table in tables[-1]) {
+
+    # Injection of taxa_name in ref_species table
+    if (table %in% c("landmarks", "obs_species", "obs_edna")) {
+      if (campaign_type != "mammif\u00e8res" & table != "landmarks") {
+        # Skip if landmarks table in a mammifère campaign.
+        # The landmarks need first to be extracted
+        # - The operation is done in coleo_inject_mam_landmarks()
+        taxa_col <- df_id[,paste0(table, "_taxa_name")] |>
+          as.data.frame()
+        coleo_inject_ref_species(taxa_col)
+      }
+    }
+
+    # Case-specific injections
+    if (campaign_type == "mammif\u00e8res" & table == "lures") {
+      ## Lures table for "mammifères" campaigns
+      df_id <- coleo_inject_mam_lures(df_id)
+
+    } else if (campaign_type == "mammif\u00e8res" & table == "landmarks") {
+      ## Landmarks table for "mammifères" campaigns
+      df_id <- coleo_inject_mam_landmarks(df_id)
+
+    } else if (table == "media") {
+      ## The special case of media files
+      ### 0. Check that path to media files is provided
+      if (is.null(media_path)) stop("The local path to media files is missing. Media files and table could not be injected")
+      ### 1. Inject media files into coleo
+      df_id <- coleo_inject_media(df_id, server_dir = 'observation', media_path)
+
+    } else if (campaign_type == "ADNe" & table == "landmarks") {
+      ## Obervations at the lake scale for "ADNe" campaigns do not have landmarks
+      ## Landmarks are injected even if there is no data with NA lat lon
+      ## It is necessary to skip their injection
+      df_id <- coleo_inject_adne_landmarks(df_id, campaign_type)
+
+    } else {
+      ## Regular table injections
+      df_id <- coleo_inject_table(df_id, campaign_type, table)
+    }
+  }
+
+  # plumber-api trigger to update portal data
+  browseURL("https://coleo.biodiversite-quebec.ca/r-update-api/update/no")
+
+  return(df_id)
+}
+
+
+#' Fonction générale pour l'injection dans la base de données Coleo via l'API.
 #'
 #' @param endpoint Nom du endpoint de l'API où injecter.
-#' @param ... Donnàes à injecter. Peut contenir des valeurs NA ou NULL; elles seront retiràes avant l'injection.
+#' @param schema Schema qui contient les tables de l'appel.
+#' @param ... Données à injecter. Peut contenir des valeurs NA ou NULL; elles seront retirées avant l'injection.
 #'
 #' @return Un objet httr2 request, prêt à être envoyé à l'API Coleo.
 #' @export
-coleo_inject_general <- function(..., endpoint){
+coleo_inject_general <- function(endpoint, schema = 'public', ...){
 
   if(is.null(endpoint)) stop("Need to specify the endpoint")
 
@@ -18,15 +141,10 @@ coleo_inject_general <- function(..., endpoint){
     purrr::discard(.p = ~all(is.na(.x))) |>
     purrr::discard(.p = ~all(is.null(.x)))
 
-
-  endpt <- endpoints()[[endpoint]]
-
-  coleo_begin_req() |>
-    httr2::req_url_path_append(endpt) |>
+  coleo_begin_req(schema) |>
+    httr2::req_url_path_append(endpoint) |>
     httr2::req_body_json(data = request_info)
 }
-
-
 
 
 #' Préparation de la requête httr2 pour l'injection d'une ligne d'un jeu de
@@ -40,6 +158,7 @@ coleo_inject_general <- function(..., endpoint){
 #'
 #' @param df_one_row Une ligne d'un jeu de données. Peut être passée via
 #' \code{\link[dplyr]{cur_data_all}}
+#' @param schema Schema qui contient les tables de l'appel.
 #' @param endpoint endpoint sur l'API de coleo. Correspond à la table où
 #' l'injection est à faire.
 #'
@@ -49,7 +168,7 @@ coleo_inject_general <- function(..., endpoint){
 #' \code{\link[httr2]{req_dry_run}}.
 #'
 #' @export
-coleo_inject_general_df <- function(df_one_row, endpoint) {
+coleo_inject_general_df <- function(df_one_row, schema = 'public', endpoint) {
 
   df_one_row_ls <- as.list(df_one_row)
 
@@ -68,15 +187,13 @@ coleo_inject_general_df <- function(df_one_row, endpoint) {
     }
 
   df_one_row_ls$data <- NULL
-  endpt <- endpoints()[[endpoint]]
-
 
   # drop all NULL or NA columns
   df_one_row_ls[which(is.na(df_one_row_ls))] <- NULL
 
 
-  coleo_begin_req() |>
-    httr2::req_url_path_append(endpt) |>
+  coleo_begin_req(schema) |>
+    httr2::req_url_path_append(endpoint) |>
     httr2::req_body_json(data = df_one_row_ls)
 }
 
@@ -257,129 +374,6 @@ coleo_injection_final <- function(df) {
   }
 
   return(df_out)
-}
-
-
-#' Injecte un jeu de données dans Coleo.
-#'
-#' Principale fonction d'injection de données dans Coleo. Cette fonction
-#' accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et
-#' performe automatiquement l'injection de toutes les tables dans Coleo.
-#'
-#' @param df Un data.frame validé par \code{\link[rcoleo]{coleo_validate}}
-#' @param media_path NULL par défault. Requis lorsqu'il y a des fichiers médias
-#' à injecter. Doit être le chemin local vers les fichiers médias à injecter.
-#'
-#' @return Un message de succès ou d'échec de l'injection des lignes du
-#' data.frame par table et le data.frame retourné par
-#' \code{\link[rcoleo]{coleo_injection_execute}}.
-
-#' @export
-
-coleo_inject <- function(df, media_path = NULL) {
-  #--------------------------------------------------------------------------
-  # 0. Injection process for cells and sites
-  # - data <- coleo_read_shape(fileName)
-  #--------------------------------------------------------------------------
-  # Cells
-  # - Only cells have a geom column
-  if ("geom" %in% colnames(df)) {
-    if ("sfc_POLYGON" %in% class(df$geom)) {
-      df <- df |>
-        dplyr::rowwise() |>
-        dplyr::mutate(geom = list(coleo_cell_geom_fmt(geom))) |>
-        tibble::as_tibble()
-    }
-    df_id <- coleo_inject_cells(df)
-
-    return(df_id)
-  }
-
-  # Sites
-  if("sites_type" %in% colnames(df)) {
-    df_id <- coleo_inject_table(df, NA, "sites")
-
-    # plumber-api trigger to update portal data
-    browseURL("https://coleo.biodiversite-quebec.ca/r-update-api/update/all")
-
-    return(df_id)
-  }
-
-  #--------------------------------------------------------------------------
-  # 1. Extract tables to be injected
-  #--------------------------------------------------------------------------
-  campaign_type <- unique(df$campaigns_type)
-  tables <- coleo_return_required_tables(campaign_type)
-
-  # Remove observations_lookup table for vegetation campaigns that do not have efforts
-  # or landmarks
-  ## observations_efforts_lookup
-  if (campaign_type == "v\u00e9g\u00e9tation_transect" & !any(grepl("efforts", names(df)))) {
-    tables <- tables[!tables %in% "observations_efforts_lookup"]
-  }
-  ## observations_landmarks_lookup
-  if (campaign_type == "v\u00e9g\u00e9tation_transect" & !any(grepl("landmarks", names(df)))) {
-    tables <- tables[!tables %in% "observations_landmarks_lookup"]
-  }
-
-  #--------------------------------------------------------------------------
-  # 2. Inject campaigns table
-  #--------------------------------------------------------------------------
-  df_id <- coleo_inject_table(df, campaign_type, "campaigns")
-
-  if(!any(sapply(df_id$campaign_error, is.null))) {
-    cat("Only data for successfully injected campaigns are injected in the next tables. These following lines failed to inject: ", paste0(which(!sapply(df_id$campaign_error, is.null)), collapse = ", "), "\n")
-    }
-
-  #--------------------------------------------------------------------------
-  # 3. Inject other tables
-  #--------------------------------------------------------------------------
-  for (table in tables[-1]) {
-
-    # Injection of taxa_name in ref_species table
-    if (table %in% c("landmarks", "obs_species", "obs_edna")) {
-      if (campaign_type != "mammif\u00e8res" & table != "landmarks") {
-        # Skip if landmarks table in a mammifère campaign.
-        # The landmarks need first to be extracted
-        # - The operation is done in coleo_inject_mam_landmarks()
-        taxa_col <- df_id[,paste0(table, "_taxa_name")] |>
-          as.data.frame()
-        coleo_inject_ref_species(taxa_col)
-      }
-    }
-
-    # Case-specific injections
-    if (campaign_type == "mammif\u00e8res" & table == "lures") {
-      ## Lures table for "mammifères" campaigns
-      df_id <- coleo_inject_mam_lures(df_id)
-
-    } else if (campaign_type == "mammif\u00e8res" & table == "landmarks") {
-      ## Landmarks table for "mammifères" campaigns
-      df_id <- coleo_inject_mam_landmarks(df_id)
-
-    } else if (table == "media") {
-      ## The special case of media files
-      ### 0. Check that path to media files is provided
-      if (is.null(media_path)) stop("The local path to media files is missing. Media files and table could not be injected")
-      ### 1. Inject media files into coleo
-      df_id <- coleo_inject_media(df_id, server_dir = 'observation', media_path)
-
-    } else if (campaign_type == "ADNe" & table == "landmarks") {
-      ## Obervations at the lake scale for "ADNe" campaigns do not have landmarks
-      ## Landmarks are injected even if there is no data with NA lat lon
-      ## It is necessary to skip their injection
-      df_id <- coleo_inject_adne_landmarks(df_id, campaign_type)
-
-    } else {
-      ## Regular table injections
-      df_id <- coleo_inject_table(df_id, campaign_type, table)
-    }
-  }
-
-  # plumber-api trigger to update portal data
-  browseURL("https://coleo.biodiversite-quebec.ca/r-update-api/update/no")
-
-  return(df_id)
 }
 
 # Helper function to return stadardized injection reponse messages
