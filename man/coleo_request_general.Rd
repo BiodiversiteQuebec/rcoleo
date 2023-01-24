@@ -8,7 +8,7 @@ coleo_request_general(
   endpoint,
   perform = TRUE,
   response_as_df = FALSE,
-  limit = 100,
+  schema = "api",
   ...
 )
 }
@@ -19,7 +19,7 @@ coleo_request_general(
 
 \item{response_as_df}{FALSE par défaut. Retroune un data.frame si TRUE.}
 
-\item{limit}{Nombre de lignes par page. Valeur fixée par l'api de coleo}
+\item{schema}{Schema qui contient les fonctions ou tables de l'appel}
 
 \item{...}{Paramètres de requête pour la base de données coleo (dans leformat 'nom = valeur')}
 }

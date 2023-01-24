@@ -10,7 +10,7 @@ coleo_return_cols <- function(campaign_type, required.columns = FALSE) {
   #-------------------------------------------------------------------------------
   # Vérifier que campaign_type est un choix valide
   #-------------------------------------------------------------------------------
-  all_camp_types <- coleo2_request_general("rpc/get_enum_values",
+  all_camp_types <- coleo_request_general("rpc/get_enum_values",
     'enum_type' = "enum_campaigns_type", response_as_df = TRUE) |>
     unlist(use.names = FALSE)
   assertthat::assert_that(campaign_type %in% all_camp_types,
