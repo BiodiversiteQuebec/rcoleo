@@ -8,15 +8,26 @@
 
 #' Requête générale sur coleo de type 'GET'
 #'
-#' Des paramètres rendu disponibles via l'API peuvent être 'count', ou 'offset'.
-#' @param endpoint Nom du endpoint de l'API de coleo sur lequel la requête doit être effectuée
+#' Cette fonction permet de faire une requête sur l'API de coleo. Les requêtes de type GET se
+#' font sur le schéma api.
+#' 
+#' @param endpoint Nom du endpoint de l'API de coleo sur lequel la requête doit être effectuée. Si 
+#' la requête est faite sur une fonction, il est nécessaire d'ajouter 'rpc/' devant le nom de la fonction.
 #' @param perform TRUE par default. Retourne un objet httr2 request et pas de requête effectuée si FALSE.
 #' @param response_as_df FALSE par défaut. Retroune un data.frame si TRUE.
 #' @param schema Schema qui contient les fonctions ou tables de l'appel
-#' @param ... Paramètres de requête pour la base de données coleo (dans leformat 'nom = valeur')
+#' @param ... Paramètres de requête pour la base de données coleo (dans le format 'nom = valeur')
 #'
 #' @return Object httr2 response si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
 #' @export
+#' 
+#' @examples
+#' # Requête sur la table 'cells'
+#' coleo_request_general('cells', response_as_df = TRUE)
+#' 
+#' # Requête sur la fonction 'table_columns'
+#' coleo_request_general('rpc/table_columns', response_as_df = TRUE, 'table_name' = 'cells')
+#' 
 coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FALSE, schema = 'api', ...){
 
     request_info <- list(...)
