@@ -58,10 +58,10 @@ coleo_read <- function(filePath) {
 #'
 coleo_read_csv <- function(fileName) {
     # Get data
-    dataFile <- try(read.csv(fileName, colClasses = "character", na.strings = "", stringsAsFactors = FALSE), silent=TRUE)
+    dataFile <- try(read.csv(fileName, colClasses = "character", na.strings = "", stringsAsFactors = FALSE, fileEncoding = "UTF-8"), silent=TRUE)
 
     # Some csv files may have ";" separators instead of "," - thanks to french Excel...
-    readCsv2 <- function (fileName) read.csv2(fileName, colClasses = "character", na.strings = "", stringsAsFactors = FALSE)
+    readCsv2 <- function (fileName) read.csv2(fileName, colClasses = "character", na.strings = "", stringsAsFactors = FALSE, fileEncoding = "UTF-8")
     if (inherits(dataFile, "try-error")) {
       dataFile <- readCsv2(fileName)
     } else if (ncol(dataFile) == 1) dataFile <- readCsv2(fileName)
