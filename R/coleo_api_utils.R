@@ -24,7 +24,7 @@ base <- function() {
 
 bearer <- function() {
   # ifelse(file.exists(".httr-oauth"), as.character(readRDS(".httr-oauth")), NA)
-  token <- Sys.getenv("RCOLEO2_TOKEN")
+  token <- Sys.getenv("RCOLEO_TOKEN")
   if (token == "" & !file.exists(".httr-oauth2")) stop("Aucune autorisation d\u00e9tect\u00e9e")
   if (token == "") out <-  as.character(readRDS(".httr-oauth2")) else out <- token
   return(out)
