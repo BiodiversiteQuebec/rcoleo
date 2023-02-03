@@ -10,11 +10,12 @@ coleo_inject_cells(df)
 \item{df}{Un data.frame contenant une colonne \code{geom} de type polygon, cell_code et name.}
 }
 \description{
-Accepte un data.frame validé par \code{coleo_validate} et performe
-l'injection dans la table cells.
+Accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et
+performe l'injection dans la table cells.
 }
 \details{
 Cette fonction fait appel aux fonctions de préparation, d'exécution et de
-finalisation de l'injection : \code{coleo_inject_general_df},
-\code{coleo_injection_execute} et \code{coleo_injection_final}.
+finalisation de l'injection : \code{\link[rcoleo]{coleo_inject_general_df}},
+\code{\link[rcoleo]{coleo_injection_execute}} et
+\code{\link[rcoleo]{coleo_injection_final}}.
 }

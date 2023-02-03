@@ -2,7 +2,7 @@
 % Please edit documentation in R/coleo_inject.R
 \name{coleo_inject_mam_lures}
 \alias{coleo_inject_mam_lures}
-\title{Injection des pièges d'une campagne mammifères dans la table lures de coleo.}
+\title{Injection des pièes d'une campagne mammifères dans la table lures de coleo.}
 \usage{
 coleo_inject_mam_lures(df_id)
 }
@@ -13,9 +13,9 @@ coleo_inject_mam_lures(df_id)
 Une data.frame avec une colonne lure_X_id et une colonne pour les lure_X_error.
 }
 \description{
-Accepte un data.frame validé par \code{coleo_validate} et performe
+Accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et performe
 l'injection de la table lures.
 }
 \details{
-La fonction est utilisée par \code{coleo_inject}.
+La fonction est utilisée par \code{\link[rcoleo]{coleo_inject}}.
 }

@@ -12,7 +12,7 @@ coleo_make_df_column_names(db_table, db_colname)
 \item{db_colname}{les noms de champs de la table.}
 }
 \value{
-
+Un vecteur contenant les noms de colonnes tels qu'utilisés dans le gabarit d'injection.
 }
 \description{
 Les noms de colonne sont en 'snake_case' pour en faciliter la tranformation par le système interne.

@@ -82,11 +82,10 @@ coleo2_request_by_code <- function(human_code, table, perform = TRUE){
 #'
 #' @param resp objet httr2 response de coleo.
 #' @param written_req Requête passée à l'API de coleo.
-#' @param perform TRUE par défault. Ne performe pas la requête si FALSE.
 #'
 #' @return si perform = TRUE, la réponse est retournée. Si perform = FALSE, la requête httr2 est retournée.
 #' @export
-coleo2_resp_df <- function(resp, written_req, limit){
+coleo2_resp_df <- function(resp, written_req){
   # is there pages?
   header_names <- names(resp$headers)
     # No 'Content-Range'
@@ -121,13 +120,13 @@ coleo2_extract_id <- function(answer_resp){
 
 # create a generic request
 coleo2_begin_req <- function(schema){
-  paste0(rcoleo:::server2(), rcoleo:::base2()) |>
+  paste0(server2(), base2()) |>
     httr2::request() |>
     httr2::req_headers("Accept" = "application/json",
                        `Content-Type` = "application/json",
                         "Content-Profile"= schema,
                        "Accept-Profile"= schema,
-                       "Authorization" = paste("Bearer", rcoleo:::bearer2()),
+                       "Authorization" = paste("Bearer", bearer2()),
                        "useragent" = "rcoleo") |>
     httr2::req_error(body = coleo_error_message)
 }

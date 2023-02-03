@@ -7,12 +7,12 @@
 format_spatial(df_to_inject)
 }
 \arguments{
-\item{df_to_inject}{data.frame à injecter}
+\item{df_to_inject}{data.frame àinjecter}
 }
 \description{
 La localisation des données doivent être formatées correctement pour être
 injectées dans coleo.
 }
 \details{
-Cette fonction est appelée par \code{coleo_prep_input_data}.
+Cette fonction est appelée par \code{\link[rcoleo]{coleo_prep_input_data}}.
 }

@@ -82,15 +82,16 @@ coleo_return_valid_site_types <- function(){
 #'
 #' @param camp_type un type de campagne valide.
 #'
-#' @return
+#' @return Un vecteur contenant les noms des tables requises pour le type de campagne donné.
+#'
 #' @export
 coleo_return_required_tables <- function(camp_type) {
 
   full_tbl <- coleo_get_required_tables()
 
-  # test that camp_type is valid choice
+  # test that camp_type is present among coleo_get_required_tables.R
   assertthat::assert_that(camp_type %in% names(full_tbl)[-1],
-                          msg = "Not one of the database campaign type")
+                          msg = "Cette campagne ne fait pas partie des choix possibles de coleo_get_required_tables.R")
 
   tbls <- full_tbl[full_tbl[,camp_type]==1, "table"][[1]]
 
