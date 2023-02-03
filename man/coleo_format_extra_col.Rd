@@ -19,5 +19,5 @@ Les colonnes extra doivent être formatées en json pour être
 injectées dans coleo.
 }
 \details{
-Cette fonction est appelée par \code{\link[rcoleo]{coleo_prep_input_data}}.
+Cette fonction est appelée par \code{coleo_prep_input_data}.
 }
