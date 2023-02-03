@@ -24,6 +24,7 @@ Imports:
     assertthat,
     sf,
     geojsonio,
+    geojsonsf,
     rlang,
     httr2,
     tidyr,
