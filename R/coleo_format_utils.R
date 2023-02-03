@@ -1,7 +1,7 @@
 #' Formatage automatisé des colonnes d'un jeu de données à injecter dans coleo
 #'
-#' Cette fonction formate les colonnes àla bonne classe. Elle est appelée par
-#' les fonctions \code{\link[rcoleo]{coleo_read_template}} et \code{\link[rcoleo]{coleo_read_csv}}.
+#' Cette fonction formate les colonnes à la bonne classe. Elle est appelée par
+#' les fonctions \code{coleo_read_template} et \code{coleo_read_csv}.
 #'
 #' @param dataFrame un jeu de données
 #'
@@ -61,7 +61,7 @@ coleo_format <- function(dataFrame) {
 #'
 #' Cette fonction est appelée par \code{\link[rcoleo]{coleo_prep_input_data}}.
 #'
-#' @param df_to_inject data.frame àinjecter
+#' @param df_to_inject data.frame à injecter
 #'
 #' @importFrom rlang .data
 #' @export
@@ -94,7 +94,7 @@ format_spatial <- function(df_to_inject) {
 #' Les colonnes extra doivent être formatées en json pour être
 #' injectées dans coleo.
 #'
-#' Cette fonction est appelée par \code{\link[rcoleo]{coleo_prep_input_data}}.
+#' Cette fonction est appelée par \code{coleo_prep_input_data}.
 #'
 #' @param df le dataframe à preparer.
 #' @param db_table la table ciblée dans la base de données.

@@ -1,8 +1,8 @@
 
-#' Fonction génàrale pour l'injection dans la base de donnàes Coleo via l'API.
+#' Fonction générale pour l'injection dans la base de données Coleo via l'API.
 #'
 #' @param endpoint Nom du endpoint de l'API où injecter.
-#' @param ... Donnàes à injecter. Peut contenir des valeurs NA ou NULL; elles seront retiràes avant l'injection.
+#' @param ... Données à injecter. Peut contenir des valeurs NA ou NULL; elles seront retirées avant l'injection.
 #'
 #' @return Un objet httr2 request, prêt à être envoyé à l'API Coleo.
 #' @export
@@ -560,7 +560,7 @@ coleo_inject_media <- function(df_id, server_dir = "observation", file_dir) {
 }
 
 
-#' Injection des pièes d'une campagne mammifères dans la table lures de coleo.
+#' Injection des pièges d'une campagne mammifères dans la table lures de coleo.
 #'
 #' Accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et performe
 #' l'injection de la table lures.
@@ -793,7 +793,7 @@ coleo_inject_adne_landmarks <- function(df_id, campaign_type) {
 #' ref_species.
 #'
 #' Cette fonction est silencieuse et ne retourne aucun message. Tous les taxons
-#' seront injecté dans la table ref_species, mais ceux déjà présent
+#' seront injectés dans la table ref_species, mais ceux déjà présent
 #' retourneront une erreur.
 #'
 #' Cette fonction est utilisée par \code{\link[rcoleo]{coleo_inject}} et
