@@ -113,12 +113,13 @@ coleo_injection_execute <- function(df){
         purrr::safely(httr2::req_perform)(.data[[names(which_req)]])
       ))
 
-    df_result |>
+    df_out <- df_result |>
       dplyr::mutate(result = list(inject_result$result),
              error = list(inject_result$error),
              success = is.null(error)) |>
       dplyr::select(-inject_result)
 
+    return(df_out)
 }
 
 
@@ -567,6 +568,7 @@ coleo_inject_mam_lures <- function(df_id) {
   # 2. Prep requests
   #--------------------------------------------------------------------------
   df_prep <- df_long |>
+        dplyr::distinct() |>
         dplyr::rowwise() |>
         dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "lures")))
   #--------------------------------------------------------------------------
@@ -590,7 +592,7 @@ coleo_inject_mam_lures <- function(df_id) {
       ## Which row
       df_row <- which(camp == df_id$campaign_id)
       ## Which col
-      instal_cols <- df_id[,grepl("lures_installed_at_", names(df_id))]
+      instal_cols <- df_id[df_row,grepl("lures_installed_at_", names(df_id))]
       instal_dates <- t(instal_cols[!duplicated(instal_cols),])
       df_col <- which(date == instal_dates)
       ## Save lure_id for right lure
@@ -604,7 +606,7 @@ coleo_inject_mam_lures <- function(df_id) {
         df_id[df_row, ncol(df_id) + 1] <- lures_id$lure_id[lure_row]
         names(df_id)[ncol(df_id)] <- id_col_name
       }
-      
+
       ## Save lure_result
       err_col_name <- paste0("lure_", lure_no, "_error")
       if (err_col_name %in% colnames(df_id)) {
