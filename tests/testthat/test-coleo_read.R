@@ -104,7 +104,7 @@ test_that("coleo_read_template returns a data.frame from a file local path", {
 # Test that coleo_read_shape returns a data.frame from a shp file local path
 test_that("coleo_read_template returns a data.frame from a file local path", {
     # Save dummy xlsx file
-    fileName <- paste0(tempdir(), "test2.shp")
+    fileName <- paste0(tempdir(), "/test2.shp")
     sf::st_write(
         data.frame(
             cell_code = "111_111",
