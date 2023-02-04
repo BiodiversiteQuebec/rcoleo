@@ -199,11 +199,11 @@ coleo_validate <- function(data, media_path = NULL) {
   # "empty" campaigns
   # - Test only for campaigns with obs_species
   #------------------------------------------------------------------------
-  if ("obs_species_taxa_name" %in% dat_names) {
-    # Identify columns that need and need not to be NA if campaigns are empty
+  # Identify columns that need and need not to be NA if campaigns are empty
     no_na_tbls <- c("cells", "sites", "campaigns", "efforts", "environments", "devices", "lures", "traps", "landmarks", "samples", "thermographs")
     which_no_na_tbls <- sapply(no_na_tbls, function(x) grepl(x, dat_names) |> which()) |> unlist() |> unique()
     na_cols <- dat_names[-which_no_na_tbls]
+  if ("obs_species_taxa_name" %in% dat_names) {
     # Loop through rows to validate that observations related fields are NA if no observations
     row_not_empty <- c()
     no_obs <- 0
