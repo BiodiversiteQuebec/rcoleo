@@ -298,7 +298,7 @@ if ("media_name" %in% dat_names) {
   #------------------------------------------------------------------------
   if("obs_species_variable" %in% dat_names) {
     var <- unique(data$obs_species_variable)
-    possible_vars <- coleo_get_attributes_table(column = "variable")
+    possible_vars <- coleo_get_attributes_table(column = "variable") |> unlist()
     possible_vars <- c(possible_vars, NA) # Accept NAs in empty campaigns
     are_vars_valid <- all(var %in% possible_vars)
 
