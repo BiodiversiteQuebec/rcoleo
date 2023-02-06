@@ -56,6 +56,7 @@ coleo_begin_req <- function(schema){
                        `Content-Type` = "application/json",
                         "Content-Profile" = schema,
                        "Accept-Profile" = schema,
+                       "Prefer" = "return=representation",
                        "Authorization" = paste("Bearer", bearer()),
                        "useragent" = "rcoleo") |>
     httr2::req_error(body = coleo_error_message)

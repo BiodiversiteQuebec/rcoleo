@@ -22,10 +22,11 @@ coleo_inject <- function(df, media_path = NULL) {
   # Cells
   # - Only cells have a geom column
   if ("geom" %in% colnames(df)) {
-    if ("sfc_POLYGON" %in% class(df$geom)) {
+    if ("sfc_POLYGON" %in% class(df$geom) | "sfc_MULTIPOLYGON" %in% class(df$geom)) {
       df <- df |>
         dplyr::rowwise() |>
-        dplyr::mutate(geom = list(coleo_cell_geom_fmt(geom))) |>
+        ## Format cell geometry to geojson
+         dplyr::mutate(geom = list(geojsonsf::sf_geojson(sf::st_sf(geom)))) |>
         tibble::as_tibble()
     }
     df_id <- coleo_inject_cells(df)
