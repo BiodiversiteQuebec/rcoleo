@@ -3,17 +3,15 @@
 without_internet({
   test_that("coleo_request makes a good request", {
 
-    expect_GET(coleo_request_general(endpoint = "cells", perform = FALSE, response_as_df = FALSE, schema = "public", 'cell_code' = "eq.foo"),
+    expect_GET(coleo_request_general(endpoint = "cells", response_as_df = FALSE, schema = "public", 'cell_code' = "eq.foo"),
                url = "https://coleo.biodiversite-quebec.ca/newapi/v1/cells?cell_code=eq.foo")
-
   })
-
 })
 
 
 with_mock_dir("coleo_request", {
   test_that("no answer for a nonsense code", {
-    nonsense_request <- coleo_request_general(endpoint = "cells", response_as_df = FALSE, schema = "public", 'cell_code' = "eq.foo"))
+    nonsense_request <- coleo_request_general(endpoint = "cells", response_as_df = FALSE, schema = "public", 'cell_code' = "eq.foo")
 
     expect_equal(httr2::resp_body_json(nonsense_request), list())
   })
@@ -65,8 +63,8 @@ with_mock_dir("site id download and extraction", {
 
     resp_body <- httr2::resp_body_json(real_site)[[1]]
 
-    # should be 14 columns of info for this site
-    expect_equal(length(names(resp_body)), 14)
+    # should be 11 columns of info for this site
+    expect_equal(length(names(resp_body)), 11)
 
   })
 
@@ -79,20 +77,15 @@ with_mock_dir("site id download and extraction", {
 
 with_mock_dir("Site processing works correctly", {
 
-  resp <- coleo_request_general(endpoint = "sites", schema = "public", "site_code" = "eq.137_107_H02")
+  resp_df <- coleo_request_general(endpoint = "sites", response_as_df = TRUE, schema = "public", "site_code" = "eq.137_107_H02")
 
   test_that("resp is easily processed", {
-
-    resp_df <- coleo_process_site_resp(resp)
-
     # This processing step returns everything in one row
     expect_equal(nrow(resp_df), 1)
     # things should be unnested now; here is one example
     expect_equal(length(resp_df$id), 1)
-
-    resp_site_camp_df <- coleo_process_site_df(resp_df)
-
-    expect_type(resp_site_camp_df$campaign_type, "character")
+    # coluns should be of the right class
+    expect_type(resp_df$type, "character")
   })
 
 

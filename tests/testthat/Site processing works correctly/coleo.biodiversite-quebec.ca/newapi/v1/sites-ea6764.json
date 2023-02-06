@@ -1,0 +1,21 @@
+[
+    {
+        "id": 12,
+        "cell_id": 149,
+        "off_station_code_id": null,
+        "site_code": "137_107_H02",
+        "type": "marais",
+        "opened_at": "2017-06-22",
+        "geom": {
+            "type": "Point",
+            "coordinates": [
+                -71.6753,
+                46.8684
+            ]
+        },
+        "notes": null,
+        "created_at": "2018-11-07T13:50:02.498-05:00",
+        "updated_at": "2018-11-07T13:50:02.498-05:00",
+        "site_name": null
+    }
+]
