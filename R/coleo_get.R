@@ -6,16 +6,13 @@
 ## convenience functions for extracting the columns of a table, and the types of a column
 
 coleo_get_column_names <- function(tbl){
-  resp_cols <- coleo_request_general(table = tbl, endpoint = "table_columns")
-  cols_df <- purrr::map_dfr(httr2::resp_body_json(resp_cols), as.data.frame)
-  return(cols_df)
+  coleo_request_general('rpc/table_columns', response_as_df = TRUE,'table_name' = tbl)
 }
 
 
 coleo_get_enum_values <- function(enum_col_name){
-  resp_enum <- coleo_request_general(enum = enum_col_name, endpoint = "enum_options")
-  resp_chr <- httr2::resp_body_json(resp_enum) |> purrr::flatten() |> purrr::flatten_chr()
-  return(resp_chr)
+  coleo_request_general('rpc/get_enum_values', 'enum_type' = enum_col_name) |>
+    httr2::resp_body_json() |> purrr::flatten() |> purrr::flatten_chr()
 }
 
 
@@ -25,8 +22,7 @@ coleo_get_enum_values <- function(enum_col_name){
 #'
 #' @return un data frame de la table attributes ou des valeurs contenues dans un champ
 coleo_get_attributes_table <- function(column = NULL) {
-  attributes_df <- coleo_request_general(endpoint = "attributes") |>
-    httr2::resp_body_json(simplifyVector = TRUE)
+  attributes_df <- coleo_request_general('attributes', response_as_df = TRUE, 'schema'='public')
 
   if(!is.null(column)) {
     out <- attributes_df[,column]

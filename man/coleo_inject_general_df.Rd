@@ -5,11 +5,13 @@
 \title{Préparation de la requête httr2 pour l'injection d'une ligne d'un jeu de
 données.}
 \usage{
-coleo_inject_general_df(df_one_row, endpoint)
+coleo_inject_general_df(df_one_row, schema = "public", endpoint)
 }
 \arguments{
 \item{df_one_row}{Une ligne d'un jeu de données. Peut être passée via
 \code{\link[dplyr]{cur_data_all}}}
+
+\item{schema}{Schema qui contient les tables de l'appel.}
 
 \item{endpoint}{endpoint sur l'API de coleo. Correspond à la table où
 l'injection est à faire.}

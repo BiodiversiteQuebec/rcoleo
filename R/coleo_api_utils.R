@@ -1,5 +1,37 @@
 # functions to make the foundation api calls, process errors etc
 
+# Config de base
+server <- function(){
+  s <- Sys.getenv("COLEOAPI_SERVER")
+  if (s==''){
+    if(file.exists(".local-server")){
+      s <- as.character(readRDS(".local-server"))
+    }else{
+      s <- "https://coleo.biodiversite-quebec.ca"
+    }
+   }
+   return(s)
+ }
+
+#server <- function() "http://localhost:8080" # dev purpose
+base <- function() {
+  path <- Sys.getenv("COLEOAPI_PATH")
+  if (path==''){
+    path="/newapi/v1"
+  }
+  return(path)
+}
+
+bearer <- function() {
+  # ifelse(file.exists(".httr-oauth"), as.character(readRDS(".httr-oauth")), NA)
+  token <- Sys.getenv("RCOLEO_TOKEN")
+  if (token == "" & !file.exists(".httr-oauth2")) stop("Aucune autorisation d\u00e9tect\u00e9e")
+  if (token == "") out <-  as.character(readRDS(".httr-oauth2")) else out <- token
+  return(out)
+}
+
+
+# Return error message
 coleo_error_message <- function(resp){
   resp_json <- resp |>
     httr2::resp_body_json()
@@ -12,12 +44,19 @@ coleo_error_message <- function(resp){
                 error_message))
 }
 
-# create a generic request
-coleo_begin_req <- function(){
+#' Pépare une requête générique à l'API de coleo
+#'
+#' @param schema Schéma sur lequel faire la requête
+#'
+#' @return Un objet httr2 request
+coleo_begin_req <- function(schema){
   paste0(server(), base()) |>
     httr2::request() |>
     httr2::req_headers("Accept" = "application/json",
                        `Content-Type` = "application/json",
+                        "Content-Profile" = schema,
+                       "Accept-Profile" = schema,
+                       "Prefer" = "return=representation",
                        "Authorization" = paste("Bearer", bearer()),
                        "useragent" = "rcoleo") |>
     httr2::req_error(body = coleo_error_message)

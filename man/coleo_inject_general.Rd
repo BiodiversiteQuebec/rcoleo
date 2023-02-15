@@ -4,12 +4,14 @@
 \alias{coleo_inject_general}
 \title{Fonction générale pour l'injection dans la base de données Coleo via l'API.}
 \usage{
-coleo_inject_general(..., endpoint)
+coleo_inject_general(endpoint, schema = "public", ...)
 }
 \arguments{
-\item{...}{Données à injecter. Peut contenir des valeurs NA ou NULL; elles seront retirées avant l'injection.}
-
 \item{endpoint}{Nom du endpoint de l'API où injecter.}
+
+\item{schema}{Schema qui contient les tables de l'appel.}
+
+\item{...}{Données à injecter. Peut contenir des valeurs NA ou NULL; elles seront retirées avant l'injection.}
 }
 \value{
 Un objet httr2 request, prêt à être envoyé à l'API Coleo.

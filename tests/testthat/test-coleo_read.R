@@ -1,7 +1,7 @@
 # Test that coleo_read_data returns a data.frame from a file local path
 test_that("coleo_read_data returns a data.frame from a file local path", {
     # Save dummy csv file
-    fileNameCsv <- paste0(tempdir(), "test.csv")
+    fileNameCsv <- paste0(tempdir(), "/test.csv")
     write.csv(
         data.frame(campaigns_type = "mammifères",
             campaigns_technicians = "Alfred Bilot, Amande Laurier",
@@ -9,7 +9,7 @@ test_that("coleo_read_data returns a data.frame from a file local path", {
         ),
         fileNameCsv)
     # Save dummy xlsx file
-    fileNameXl <- paste0(tempdir(), "test.xlsx")
+    fileNameXl <- paste0(tempdir(), "/test.xlsx")
     xlsx::write.xlsx(
         data.frame(campaigns_type = "mammifères",
             campaigns_technicians = "Alfred Bilot, Amande Laurier",
@@ -18,7 +18,7 @@ test_that("coleo_read_data returns a data.frame from a file local path", {
         fileNameXl,
         sheetName = "6. Template de téléversement")
     # Save dummy shp file
-    fileNameShp <- paste0(tempdir(), "test.shp")
+    fileNameShp <- paste0(tempdir(), "/test.shp")
     sf::st_write(
         data.frame(
             cell_code = "111_111",
@@ -54,7 +54,7 @@ test_that("coleo_read_data returns a data.frame from a file local path", {
 # Test that coleo_read_csv returns a data.frame from a csv file local path
 test_that("coleo_read_csv returns a data.frame from a csv file local path", {
     # Save dummy csv file
-    fileName <- paste0(tempdir(), "test.csv")
+    fileName <- paste0(tempdir(), "/test.csv")
     write.csv(
         data.frame(campaigns_type = "mammifères",
             campaigns_technicians = "Alfred Bilot, Amande Laurier",
@@ -78,7 +78,7 @@ test_that("coleo_read_csv returns a data.frame from a csv file local path", {
 # Test that coleo_read_template returns a data.frame from a template file local path
 test_that("coleo_read_template returns a data.frame from a file local path", {
     # Save dummy xlsx file
-    fileName <- paste0(tempdir(), "test.xlsx")
+    fileName <- paste0(tempdir(), "/test.xlsx")
     xlsx::write.xlsx(
         data.frame(campaigns_type = "mammifères",
             campaigns_technicians = "Alfred Bilot, Amande Laurier",
@@ -104,7 +104,7 @@ test_that("coleo_read_template returns a data.frame from a file local path", {
 # Test that coleo_read_shape returns a data.frame from a shp file local path
 test_that("coleo_read_template returns a data.frame from a file local path", {
     # Save dummy xlsx file
-    fileName <- paste0(tempdir(), "test2.shp")
+    fileName <- paste0(tempdir(), "/test2.shp")
     sf::st_write(
         data.frame(
             cell_code = "111_111",

@@ -8,24 +8,34 @@ coleo_request_general(
   endpoint,
   perform = TRUE,
   response_as_df = FALSE,
-  limit = 100,
+  schema = "api",
   ...
 )
 }
 \arguments{
-\item{endpoint}{Nom du endpoint de l'API de coleo sur lequel la requête doit être effectuée}
+\item{endpoint}{Nom du endpoint de l'API de coleo sur lequel la requête doit être effectuée. Si
+la requête est faite sur une fonction, il est nécessaire d'ajouter 'rpc/' devant le nom de la fonction.}
 
 \item{perform}{TRUE par default. Retourne un objet httr2 request et pas de requête effectuée si FALSE.}
 
 \item{response_as_df}{FALSE par défaut. Retroune un data.frame si TRUE.}
 
-\item{limit}{Nombre de lignes par page. Valeur fixée par l'api de coleo}
+\item{schema}{Schema qui contient les fonctions ou tables de l'appel}
 
-\item{...}{Paramètres de requête pour la base de données coleo (dans leformat 'nom = valeur')}
+\item{...}{Paramètres de requête pour la base de données coleo (dans le format 'nom = valeur')}
 }
 \value{
 Object httr2 response si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
 }
 \description{
-Des paramètres rendu disponibles via l'API peuvent être 'count', ou 'offset'.
+Cette fonction permet de faire une requête sur l'API de coleo. Les requêtes de type GET se
+font sur le schéma api.
+}
+\examples{
+# Requête sur la table 'cells'
+coleo_request_general('cells', response_as_df = TRUE)
+
+# Requête sur la fonction 'table_columns'
+coleo_request_general('rpc/table_columns', response_as_df = TRUE, 'table_name' = 'cells')
+
 }

@@ -143,7 +143,7 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   # Check that all sites exists in coleo
   #------------------------------------------------------------------------
-  existing_sites <- coleo_request_general(endpoint = "sites", response_as_df = TRUE)
+  existing_sites <- coleo_request_general(endpoint = "sites", response_as_df = TRUE, schema = 'public')
   
   are_sites_exists <- all(unique(data$sites_site_code) %in% existing_sites$site_code)
   # Missing sites ---------------------------------------------------------
@@ -306,7 +306,7 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   if("obs_species_variable" %in% dat_names) {
     var <- unique(data$obs_species_variable)
-    possible_vars <- coleo_get_attributes_table(column = "variable")
+    possible_vars <- coleo_get_attributes_table(column = "variable") |> unlist()
     possible_vars <- c(possible_vars, NA) # Accept NAs in empty campaigns
     are_vars_valid <- all(var %in% possible_vars)
 
@@ -342,6 +342,11 @@ coleo_validate <- function(data, media_path = NULL) {
   if (length(cols_time) > 0) {
 
     # Check time format (HH:MM:SS) ----------------------------------------
+    # Na_cols
+    no_na_tbls <- c("cells", "sites", "campaigns", "efforts", "environments", "devices", "lures", "traps", "landmarks", "samples", "thermographs")
+    which_no_na_tbls <- sapply(no_na_tbls, function(x) grepl(x, dat_names) |> which()) |> unlist() |> unique()
+    na_cols <- dat_names[-which_no_na_tbls]
+    #
     na_in_time <- c(FALSE)
     cols_format <- sapply(cols_time, function(x) {
       split <- strsplit(unlist(data[,x]), ":", fixed = TRUE)
