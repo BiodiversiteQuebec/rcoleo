@@ -231,12 +231,13 @@ coleo_injection_execute <- function(df){
         purrr::safely(httr2::req_perform)(.data[[names(which_req)]])
       ))
 
-    df_result |>
+    df_out <- df_result |>
       dplyr::mutate(result = list(inject_result$result),
              error = list(inject_result$error),
              success = is.null(error)) |>
       dplyr::select(-inject_result)
 
+    return(df_out)
 }
 
 
@@ -376,6 +377,7 @@ coleo_injection_final <- function(df) {
 
   return(df_out)
 }
+
 
 # Helper function to return stadardized injection reponse messages
 injection_reponse_message <- function(table, response) {
@@ -554,7 +556,7 @@ coleo_inject_media <- function(df_id, server_dir = "observation", file_dir) {
 }
 
 
-#' Injection des pièes d'une campagne mammifères dans la table lures de coleo.
+#' Injection des pièges d'une campagne mammifères dans la table lures de coleo.
 #'
 #' Accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et performe
 #' l'injection de la table lures.
@@ -584,6 +586,7 @@ coleo_inject_mam_lures <- function(df_id) {
   # 2. Prep requests
   #--------------------------------------------------------------------------
   df_prep <- df_long |>
+        dplyr::distinct() |>
         dplyr::rowwise() |>
         dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "lures")))
   #--------------------------------------------------------------------------
@@ -607,7 +610,7 @@ coleo_inject_mam_lures <- function(df_id) {
       ## Which row
       df_row <- which(camp == df_id$campaign_id)
       ## Which col
-      instal_cols <- df_id[,grepl("lures_installed_at_", names(df_id))]
+      instal_cols <- df_id[df_row,grepl("lures_installed_at_", names(df_id))]
       instal_dates <- t(instal_cols[!duplicated(instal_cols),])
       df_col <- which(date == instal_dates)
       ## Save lure_id for right lure
@@ -621,7 +624,7 @@ coleo_inject_mam_lures <- function(df_id) {
         df_id[df_row, ncol(df_id) + 1] <- lures_id$lure_id[lure_row]
         names(df_id)[ncol(df_id)] <- id_col_name
       }
-      
+
       ## Save lure_result
       err_col_name <- paste0("lure_", lure_no, "_error")
       if (err_col_name %in% colnames(df_id)) {
@@ -786,7 +789,7 @@ coleo_inject_adne_landmarks <- function(df_id, campaign_type) {
 #' ref_species.
 #'
 #' Cette fonction est silencieuse et ne retourne aucun message. Tous les taxons
-#' seront injecté dans la table ref_species, mais ceux déjà présent
+#' seront injectés dans la table ref_species, mais ceux déjà présent
 #' retourneront une erreur.
 #'
 #' Cette fonction est utilisée par \code{\link[rcoleo]{coleo_inject}} et

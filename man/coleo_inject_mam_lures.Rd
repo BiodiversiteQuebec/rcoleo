@@ -2,7 +2,7 @@
 % Please edit documentation in R/coleo_inject.R
 \name{coleo_inject_mam_lures}
 \alias{coleo_inject_mam_lures}
-\title{Injection des pièes d'une campagne mammifères dans la table lures de coleo.}
+\title{Injection des pièges d'une campagne mammifères dans la table lures de coleo.}
 \usage{
 coleo_inject_mam_lures(df_id)
 }

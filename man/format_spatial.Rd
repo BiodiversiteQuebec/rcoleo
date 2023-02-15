@@ -7,7 +7,7 @@
 format_spatial(df_to_inject)
 }
 \arguments{
-\item{df_to_inject}{data.frame àinjecter}
+\item{df_to_inject}{data.frame à injecter}
 }
 \description{
 La localisation des données doivent être formatées correctement pour être

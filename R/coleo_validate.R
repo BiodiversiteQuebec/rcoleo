@@ -66,6 +66,9 @@ coleo_validate <- function(data, media_path = NULL) {
   # Compare required column names to present columns ----------------------
   req_columns <- coleo_return_cols(campaign_type, required.columns = TRUE)$noms_de_colonnes
   req_col_diff <- setdiff(req_columns, true_nms)
+  # Remove media table names from required columns
+  media_names <- grepl("media_", req_col_diff, fixed = TRUE)
+  if (any(media_names)) req_col_diff <- req_col_diff[!media_names]
   # Return warning if there's a mismatch ----------------------------------
   if(length(req_col_diff) != 0) warning("--------------------------------------------------\nV\u00E9rifiez que les bons noms de colonnes sont utilis\u00E9s et que toutes les colonnes requises sont pr\u00E9sentes.\n", "\n\nLes colonnes absentes sont : \n", paste0(req_col_diff, collapse = ", "), "\n\n")
 
@@ -152,11 +155,16 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   # Check that all media_name files exists in the provided directory
   #------------------------------------------------------------------------
-if ("media_name" %in% dat_names) {
-  sapply(data$media_name, function(file) {
-    file.exists(paste0(media_path, "/", file))
-  })
-}
+  if ("media_name" %in% dat_names) {
+    # Validate directory existence
+    if (!dir.exists(file.path(media_path))) warning("--------------------------------------------------\nV\U00E9rifiez le dU00E9pot des m\U00E9dias. ",  dput(media_path), " ", dput(media_path)," n'est pas un dépot valide.\n\n")
+    
+    media_exists <- sapply(data$media_name, function(file) {
+      file.exists(paste0(media_path, file))
+    })
+
+    if(any(!media_exists)) warning("--------------------------------------------------\nV\U00E9rifiez les noms de mU00E9dias aux lignes ",  paste(which(!media_exists), collapse = ", "), " de la colonne media_name. Cette colonne contient des noms qui ne correspondent à aucun document dans le d\U00E9pot ", dput(media_path),".\n\n")
+  }
 
 
   #------------------------------------------------------------------------
@@ -191,11 +199,11 @@ if ("media_name" %in% dat_names) {
   # "empty" campaigns
   # - Test only for campaigns with obs_species
   #------------------------------------------------------------------------
-  if ("obs_species_taxa_name" %in% dat_names) {
-    # Identify columns that need and need not to be NA if campaigns are empty
+  # Identify columns that need and need not to be NA if campaigns are empty
     no_na_tbls <- c("cells", "sites", "campaigns", "efforts", "environments", "devices", "lures", "traps", "landmarks", "samples", "thermographs")
     which_no_na_tbls <- sapply(no_na_tbls, function(x) grepl(x, dat_names) |> which()) |> unlist() |> unique()
     na_cols <- dat_names[-which_no_na_tbls]
+  if ("obs_species_taxa_name" %in% dat_names) {
     # Loop through rows to validate that observations related fields are NA if no observations
     row_not_empty <- c()
     no_obs <- 0
