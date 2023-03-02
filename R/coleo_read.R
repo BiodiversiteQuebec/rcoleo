@@ -58,7 +58,7 @@ coleo_read <- function(filePath) {
 #'
 coleo_read_csv <- function(fileName) {
     # Verify that the file is encoded in UTF-8
-    assertthat::assert_that(readr::guess_encoding(fileName)[[1]] == "UTF-8"),
+    assertthat::assert_that(readr::guess_encoding(fileName)[[1]] == "UTF-8",
                           msg = "Veuillez soumettre un fichier encod\u00e9 en UTF-8.")
 
     # Get data
