@@ -29,6 +29,7 @@ Imports:
     httr2,
     tidyr,
     readxl,
+    readr,
     curl,
     httpuv
 Suggests: 
