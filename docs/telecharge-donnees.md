@@ -1,7 +1,4 @@
----
-title: "Telecharger des données de coleo"
-output: html_document
----
+# Télécharger des données de Coleo"
 
 ```{r setup}
 library(rcoleo)

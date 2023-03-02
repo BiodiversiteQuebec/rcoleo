@@ -202,7 +202,7 @@ coleo_inject_general_df <- function(df_one_row, schema = 'public', endpoint) {
 #' Injection de données dans Coleo.
 #'
 #' Accepte un jeu de données qui contient une colonne de requêtes POST httr2 et
-#' les ex.cute. Sont utilisation suit celle de
+#' les exécute. Son utilisation suit celle de
 #' \code{\link[rcoleo]{coleo_injection_prep}} et précède celle de
 #' \code{\link[rcoleo]{coleo_injection_final}} dans le processus d'injection.
 #' 

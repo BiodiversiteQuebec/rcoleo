@@ -1,6 +1,7 @@
 #' Valide la forme du jeu de données à injecter
 #'
 #' @param data jeu de données à valider
+#' @param media_path chemin vers le dossier contenant les médias à injecter
 #'
 #' @return Un message sur la validité du jeu de données.
 #'
