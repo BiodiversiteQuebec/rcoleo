@@ -37,7 +37,7 @@ RCOLEO_TOKEN=7f8df438e1be96a18436e9dab5d97d68ed0e0441d9b68f59e0ce631b2919f3aa
 *Le jeton d'accès est un exemple ici et n'est aucunement valide.*
 
 
-## Injection de données dans Coléo
+## Injecter de données dans Coléo
 
 [Accédez au tutoriel d'injection.](docs/injection-donnees.md)
 
