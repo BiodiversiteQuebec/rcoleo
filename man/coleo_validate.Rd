@@ -8,6 +8,8 @@ coleo_validate(data, media_path = NULL)
 }
 \arguments{
 \item{data}{jeu de données à valider}
+
+\item{media_path}{chemin vers le dossier contenant les médias à injecter}
 }
 \value{
 Un message sur la validité du jeu de données.

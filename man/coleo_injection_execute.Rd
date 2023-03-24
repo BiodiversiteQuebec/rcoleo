@@ -16,7 +16,7 @@ statut. Le statut (status) est TRUE si l'injection de la ligne est réussie.
 }
 \description{
 Accepte un jeu de données qui contient une colonne de requêtes POST httr2 et
-les ex.cute. Sont utilisation suit celle de
+les exécute. Son utilisation suit celle de
 \code{\link[rcoleo]{coleo_injection_prep}} et précède celle de
 \code{\link[rcoleo]{coleo_injection_final}} dans le processus d'injection.
 }
