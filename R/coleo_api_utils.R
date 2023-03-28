@@ -7,20 +7,12 @@ server <- function(){
     if(file.exists(".local-server")){
       s <- as.character(readRDS(".local-server"))
     }else{
-      s <- "https://coleo.biodiversite-quebec.ca"
+      s <- "https://coleo.biodiversite-quebec.ca/newapi/v1"
     }
    }
    return(s)
  }
 
-#server <- function() "http://localhost:8080" # dev purpose
-base <- function() {
-  path <- Sys.getenv("COLEOAPI_PATH")
-  if (path==''){
-    path="/newapi/v1"
-  }
-  return(path)
-}
 
 bearer <- function() {
   # ifelse(file.exists(".httr-oauth"), as.character(readRDS(".httr-oauth")), NA)
@@ -49,8 +41,8 @@ coleo_error_message <- function(resp){
 #' @param schema Schéma sur lequel faire la requête
 #'
 #' @return Un objet httr2 request
-coleo_begin_req <- function(schema){
-  paste0(server(), base()) |>
+coleo_begin_req <- function(schema) {
+  server() |>
     httr2::request() |>
     httr2::req_headers("Accept" = "application/json",
                        `Content-Type` = "application/json",
