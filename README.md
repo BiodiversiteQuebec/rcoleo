@@ -45,11 +45,3 @@ RCOLEO_TOKEN=7f8df438e1be96a18436e9dab5d97d68ed0e0441d9b68f59e0ce631b2919f3aa
 ## Télécharger des données de Coléo
 
 [Accédez au tutoriel de téléchargement.](docs/telecharge-donnees.md)
-
-## Utiliser le paquet `rcoleo` d'un serveur `vhost33`
-
-Lorsque vous utilisez le paquet `rcoleo` d'un serveur `vhost33`, vous devez spécifier l'URL de l'API de Coléo à partir de la grappe `vhost33` en modifiant le fichier `~/.Renviron` comme suit:
-
-```r
-COLEOAPI_SERVER=http://coleo-api.vhost33:3005
-```
