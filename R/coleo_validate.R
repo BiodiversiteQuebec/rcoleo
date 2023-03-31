@@ -158,16 +158,71 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   if ("media_name" %in% dat_names) {
     # Validate directory existence
-    if (!dir.exists(file.path(media_path))) warning("--------------------------------------------------\nV\U00E9rifiez le dU00E9pot des m\U00E9dias. ",  dput(media_path), " ", dput(media_path)," n'est pas un dépot valide.\n\n")
+    if (!dir.exists(file.path(media_path))) warning("--------------------------------------------------\nV\U00E9rifiez le dU00E9pot des m\U00E9dias. ",  dput(media_path), " ", dput(media_path)," n'est pas un d\u00E9pot valide.\n\n")
     
     media_exists <- sapply(data$media_name, function(file) {
       file.exists(paste0(media_path, file))
     })
 
-    if(any(!media_exists)) warning("--------------------------------------------------\nV\U00E9rifiez les noms de mU00E9dias aux lignes ",  paste(which(!media_exists), collapse = ", "), " de la colonne media_name. Cette colonne contient des noms qui ne correspondent à aucun document dans le d\U00E9pot ", dput(media_path),".\n\n")
+    if(any(!media_exists)) warning("--------------------------------------------------\nV\U00E9rifiez les noms de m\U00E9dias aux lignes ",  paste(which(!media_exists), collapse = ", "), " de la colonne media_name. Cette colonne contient des noms qui ne correspondent à aucun document dans le d\U00E9pot ", dput(media_path),".\n\n")
   }
 
 
+  #------------------------------------------------------------------------
+  # Check that campaigns, efforts and landmarks are not duplicated by comments
+  #
+  # - A comment added to a campaigns using the campaigns_notes column may
+  #  cause the campaign to be duplicated if the comment is not the same
+  #  for every row of the campaign.
+  #------------------------------------------------------------------------
+  # Campaigns with notes --------------------------------------------------
+  if ("campaigns_notes" %in% dat_names) {
+    # Get all unique campaigns
+    camp_w_notes_cols <- c("sites_site_code", dat_names[grepl("campaigns_", dat_names)])
+    camp_cols <- camp_w_notes_cols["campaigns_notes" != camp_w_notes_cols]
+    camp_dupl <- identical(data[!duplicated(data[, camp_cols]), camp_cols], data[!duplicated(data[, camp_w_notes_cols]), camp_cols])
+    if (!camp_dupl) {
+      ## Get duplicated campaigns
+      camp_dat <- data[!duplicated(data[, camp_w_notes_cols]), camp_cols]
+      dupl_camp <- camp_dat$sites_site_code[duplicated(camp_dat)]
+      ## Warning message
+      warning("--------------------------------------------------\nV\u00E9rifiez les commentaires de campagnes (colonne campaigns_notes). Les commentaires de campagnes doivent \u00EAtre saisis pour toutes les lignes de cette campagne. Ces campagnes sont dupliqu\u00E9es :\n", paste(dupl_camp, collapse = ", "),".\n\n")
+    }
+  }
+
+  # Efforts with notes ----------------------------------------------------
+  if ("efforts_notes" %in% dat_names) {
+    # Get all unique campaigns
+    efforts_w_notes_cols <- dat_names[grepl("efforts_", dat_names) | grepl("campaigns_", dat_names) | grepl("sites_site_code", dat_names)]
+    efforts_cols <- efforts_w_notes_cols["efforts_notes" != efforts_w_notes_cols]
+    efforts_dupl <- identical(data[!duplicated(data[, efforts_cols]), efforts_cols], data[!duplicated(data[, efforts_w_notes_cols]), efforts_cols])
+
+    if (!efforts_dupl) {
+      ## Get duplicated efforts
+      efforts_dat <- data[!duplicated(data[, efforts_w_notes_cols]), efforts_cols]
+      dupl_efforts <- efforts_dat$sites_site_code[duplicated(efforts_dat)]
+      ## Warning message
+      warning("--------------------------------------------------\nV\u00E9rifiez les commentaires des efforts (colonne efforts_notes). Les commentaires des efforts doivent \u00EAtre saisis pour toutes les lignes de l'effort. Ces efforts sont dupliqu\u00E9s :\n", paste(dupl_efforts, collapse = ", "),".\n\n")
+    }
+  }
+
+  # landmarks with notes --------------------------------------------------
+  if ("landmarks_notes" %in% dat_names) {
+    # Get all unique campaigns
+    land_w_notes_cols <- dat_names[grepl("landmarks_", dat_names) | grepl("campaigns_", dat_names) | grepl("sites_site_code", dat_names)]
+    land_cols <- land_w_notes_cols["landmarks_notes" != land_w_notes_cols]
+    land_dupl <- identical(data[!duplicated(data[, land_cols]), land_cols], data[!duplicated(data[, land_w_notes_cols]), land_cols])
+
+    if (!land_dupl) {
+      ## Get duplicated landmarks
+      land_dat <- data[!duplicated(data[, land_w_notes_cols]), land_cols]
+      dupl_land <- land_dat$sites_site_code[duplicated(land_dat)]
+      ## Warning message
+      warning("--------------------------------------------------\nV\u00E9rifiez les commentaires des rep\u00E8res (colonne landmarks_notes). Les commentaires des rep\u00E8res doivent \u00EAtre saisis pour toutes les lignes du rep\u00E8re. Ces rep\u00E8res sont dupliqu\u00E9s :\n", paste(dupl_land, collapse = ", "),".\n\n")
+    }
+  }
+  
+  
   #------------------------------------------------------------------------
   # Check that azimut columns have values within 0 and 360
   #------------------------------------------------------------------------
@@ -175,7 +230,7 @@ coleo_validate <- function(data, media_path = NULL) {
   if (any(azimut_names)) {
     azimut_range <- unlist(data[,azimut_names]) |> range(na.rm = TRUE)
 
-    if (azimut_range[2] > 360 | azimut_range[1] < 0) warning(paste0("--------------------------------------------------\nV\u00E9rifiez les valeurs d'azimut. Les valeurs doivent être entre 0 et 360.\n\n"))
+    if (azimut_range[2] > 360 | azimut_range[1] < 0) warning(paste0("--------------------------------------------------\nV\u00E9rifiez les valeurs d'azimut. Les valeurs doivent \u00EAtre entre 0 et 360.\n\n"))
   }
 
 
@@ -190,7 +245,7 @@ coleo_validate <- function(data, media_path = NULL) {
       length(unique(dat_lures)) != length(dat_lures)
     })
 
-    if (any(dates_overlap)) warning(paste0("--------------------------------------------------\nV\u00E9rifiez les dates d'installation des app\u00E2ts aux lignes ", paste(which(dates_overlap), collapse = ", "), ". Plusieurs app\u00E2ts pour une même observation partagent la m\u00EArme date d'installation.\n\n"))
+    if (any(dates_overlap)) warning(paste0("--------------------------------------------------\nV\u00E9rifiez les dates d'installation des app\u00E2ts aux lignes ", paste(which(dates_overlap), collapse = ", "), ". Plusieurs app\u00E2ts pour une m\u00EAme observation partagent la m\u00EArme date d'installation.\n\n"))
   }
 
 
@@ -393,6 +448,14 @@ coleo_validate <- function(data, media_path = NULL) {
     if(!is_ndigits_valid | is_na) warning("--------------------------------------------------\nV\u00E9rifiez le format des valeurs de dates. Les dates doivent \u00EAtre du format YYYY-MM-DD.\n\n")
   }
 
+  
+  #------------------------------------------------------------------------
+  # Diagnistics
+  #
+  # - Check that dates are within a decent range
+  # - Check that hours are within a decent range
+  # - Check number of campaigns, empty campaigns, observations
+  #------------------------------------------------------------------------
   # Check that the values are within a decent range -----------------------
   if(length(cols_date) > 0) {
     # Year
@@ -417,10 +480,9 @@ coleo_validate <- function(data, media_path = NULL) {
     }) |>
       range()
 
-    message(paste0("==================================================\nValidation finale ! \n",
-    if ("obs_species_taxa_name" %in% dat_names) paste0("- V\u00E9rifiez les lignes qui repr\u00E9sentent des campagnes vides. Il y a ", no_obs, " lignes sans observations.\n"),
-    "- V\u00E9rifiez que l'intervalle des dates", paste0(" inject\u00E9", "es "), "correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", "), " se trouvent dans l'intervalle de", paste0(" l'ann\u00E9", "e "), range_year[1], " \u00E0 ", range_year[2], " du mois ", range_month[1], " \u00E0 ", range_month[2], " et du jour ", range_day[1], "  \u00E0 ", range_day[2], ".\n
-    - Si les", paste0(" donn\u00E9", "es"), " sont bonnes et qu'aucun autre message n'apparait, vous pouvez", paste0(" proc\u00E9", "der"), " \u00e0 l'injection des", paste0(" donn\u00E9", "es.")))
+    message(paste0("==================================================\n\nValidation finale ! \n",
+    if ("obs_species_taxa_name" %in% dat_names) paste0("\n- V\u00E9rifiez les lignes qui repr\u00E9sentent des campagnes vides. Il y a ", no_obs, " lignes sans observations.\n"),
+    "\n- V\u00E9rifiez que l'intervalle des dates", paste0(" inject\u00E9", "es "), "correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", "), " se trouvent dans l'intervalle de", paste0(" l'ann\u00E9", "e "), range_year[1], " \u00E0 ", range_year[2], " du mois ", range_month[1], " \u00E0 ", range_month[2], " et du jour ", range_day[1], "  \u00E0 ", range_day[2], ".\n\n- Si les", paste0(" donn\u00E9", "es"), " sont bonnes et qu'aucun autre message n'apparait, vous pouvez", paste0(" proc\u00E9", "der"), " \u00e0 l'injection des", paste0(" donn\u00E9", "es."), '\n\n==================================================\n\n'))
   }
 
 

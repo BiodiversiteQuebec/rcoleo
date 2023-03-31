@@ -61,6 +61,33 @@ test_that("coleo_validate", {
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez les lignes sans observation.*")
 
+  
+  ## Check that campaigns, efforts and landmarks are not duplicated by comments
+  ### Campaigns_notes
+  dat_test <- dat
+  dat_test$campaigns_notes <- NA
+  dat_test$campaigns_notes[2] <- 'Note'
+
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "V\u00E9rifiez les commentaires de campagnes*")
+  ### efforts_notes
+  dat_test <- dat
+  dat_test$campaigns_type <- "acoustique_chiroptères"
+  dat_test$samples_sample_code <- NULL
+  dat_test$efforts_time_start <- "08:00:00"
+  dat_test$efforts_notes <- NA
+  dat_test$efforts_notes[2] <- 'Note'
+
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "V\u00E9rifiez les commentaires des efforts*")
+  ### landmarks_notes
+  dat_test <- dat
+  dat_test$landmarks_notes <- NA
+  dat_test$landmarks_notes[2] <- 'Note'
+
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "V\u00E9rifiez les commentaires des rep\u00E8res*")
+
   ## Test that all (and only) ADNe campaigns observations made at the ## station level have landmarks
   dat_test <- dat
   dat_test[, c("samples_sample_code", "obs_species_variable", "obs_species_value")] <- NULL
