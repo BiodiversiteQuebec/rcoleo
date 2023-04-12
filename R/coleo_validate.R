@@ -481,11 +481,24 @@ coleo_validate <- function(data, media_path = NULL) {
       range()
 
     message(paste0("==================================================\n\nValidation finale ! \n",
-    if ("obs_species_taxa_name" %in% dat_names) paste0("\n- V\u00E9rifiez les lignes qui repr\u00E9sentent des campagnes vides. Il y a ", no_obs, " lignes sans observations.\n"),
-    "\n- V\u00E9rifiez que l'intervalle des dates", paste0(" inject\u00E9", "es "), "correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", "), " se trouvent dans l'intervalle de", paste0(" l'ann\u00E9", "e "), range_year[1], " \u00E0 ", range_year[2], " du mois ", range_month[1], " \u00E0 ", range_month[2], " et du jour ", range_day[1], "  \u00E0 ", range_day[2], ".\n\n- Si les", paste0(" donn\u00E9", "es"), " sont bonnes et qu'aucun autre message n'apparait, vous pouvez", paste0(" proc\u00E9", "der"), " \u00e0 l'injection des", paste0(" donn\u00E9", "es."), '\n\n==================================================\n\n'))
+    if ("obs_species_taxa_name" %in% dat_names) paste0("\n- V\u00E9rifiez les lignes qui repr\u00E9sentent des campagnes vides : il y a ", no_obs, " lignes sans observations. Celles-ci entraineront une erreur lors de l'injection.\n"),
+    "\n- V\u00E9rifiez que l'intervalle des dates", paste0(" inject\u00E9", "es "), "correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", "), " se trouvent dans l'intervalle de", paste0(" l'ann\u00E9", "e "), range_year[1], " \u00E0 ", range_year[2], " du mois ", range_month[1], " \u00E0 ", range_month[2], " et du jour ", range_day[1], "  \u00E0 ", range_day[2], ".\n\n- Si les", paste0(" donn\u00E9", "es"), " sont bonnes et qu'aucun autre message n'apparait, vous pouvez", paste0(" proc\u00E9", "der"), " \u00e0 l'injection des", paste0(" donn\u00E9", "es."), '\n\n'))
   }
 
+  # Check number of entries per table -------------------------------------
+  message("Résumé des injections par table :\n")
 
+  req_tbls <- coleo_return_required_tables(campaign_type)
+  req_tbls <- req_tbls[!grepl("lookup", req_tbls)]
+
+  for(table in req_tbls) {
+    tbl_cols <- dat_names[grepl(table, dat_names)]
+    nvals <- sum(!duplicated(data[,tbl_cols]))
+
+    message(paste0(table, " : ", nvals))
+  }
+
+  message("\n==================================================\n\n")
 
   #------------------------------------------------------------------------
   # Campaign-specific validation

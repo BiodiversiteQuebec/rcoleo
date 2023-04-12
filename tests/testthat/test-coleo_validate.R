@@ -149,6 +149,13 @@ test_that("coleo_validate", {
   testthat::expect_message(coleo_validate(dat_test),
                          regexp = "*Vérifiez que l'intervalle des dates injectées correspond aux attentes.*")
 
+  ## Test that number of entries per table is correct
+  dat_test <- dat
+
+  testthat::expect_message(coleo_validate(dat_test),
+                         regexp = "*Résumé des injections par table*")
+  testthat::expect_message(coleo_validate(dat_test), regexp = "*campaigns : 1*")
+
 })
 
 
