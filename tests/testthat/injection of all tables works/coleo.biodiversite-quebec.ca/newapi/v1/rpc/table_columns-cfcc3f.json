@@ -84,12 +84,6 @@
         "is_nullable": "YES"
     },
     {
-        "column_name": "thermograph_id",
-        "data_type": "integer",
-        "udt_name": "int4",
-        "is_nullable": "YES"
-    },
-    {
         "column_name": "extra",
         "data_type": "jsonb",
         "udt_name": "jsonb",
