@@ -23,10 +23,11 @@
 #' 
 #' @examples
 #' # Requête sur la table 'cells'
-#' coleo_request_general('cells', response_as_df = TRUE, schema = 'public')
+#' coleo_request_general('cells', perform = FALSE, response_as_df = TRUE, schema = 'public')
 #' 
 #' # Requête sur la fonction 'table_columns'
-#' coleo_request_general('rpc/table_columns', response_as_df = TRUE, 'table_name' = 'cells')
+#' coleo_request_general('rpc/table_columns', perform = FALSE, response_as_df = TRUE, 
+#' 'table_name' = 'cells')
 #' 
 coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FALSE, schema = 'api', ...){
 
