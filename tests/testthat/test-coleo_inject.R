@@ -1,4 +1,17 @@
-with_mock_dir("inject a test site", {
+with_mock_dir("inject a test cell", {
+
+  one_cell_list <- list(type = "Polygon",
+                        coordinates = list(
+                          list(c(-72.6689780388482, -37.8155440677891),
+                               c(-72.669795198413, -37.8164165487739))))
+
+  # Test full injection process using coleo_inject
+  test_that("injection returns the correct response", {
+    expect_s3_class(coleo_inject(tibble::tibble(cell_code = "FFF_YYY",
+                                              name ="Morgoth",
+                                              geom = list(one_cell_list))),
+                    "data.frame")
+  })
 
   one_cell_list <- list(type = "Polygon",
                         coordinates = list(
@@ -10,10 +23,11 @@ with_mock_dir("inject a test site", {
                                c(-79.5175785798052, 48.5615006339734),
                                c(-79.5175785437023, 48.5643904071127))))
 
+  # Test specific injection process using injection general
   demo_test <- coleo_inject_general(cell_code = "FFF_XXX",
                                     name ="Beleriad",
-                                    geom = one_cell_list,
-                                    endpoint = "cells")
+                                    endpoint = "cells",
+                                    geom = one_cell_list)
   # demo_test$body
   # httr2::req_dry_run(demo_test)
 

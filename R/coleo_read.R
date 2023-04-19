@@ -30,7 +30,7 @@ coleo_read <- function(filePath) {
   # - Except for shapefiles
   #-----------------------------------------------------------------------------
   # Test that the extension is acceptable
-  if (!ex %in% c("csv", "xls", "xlsx")) warning("Seuls les documents csv, shp et les templates coleo sont pris en charge au moment. Veuillez soumettre les donn\u00e9es dans un document csv ou dans le template coleo.")
+  if (!ex %in% c("csv", "xls", "xlsx")) stop("Seuls les documents csv, shp et les gabarits coleo sont pris en charge au moment. Veuillez soumettre les donn\u00e9es dans un format support\u00e9.")
   else if ("campaigns_type" %in% names(dataFile)) {
     # Format dataset
     dataFile <- coleo_format(dataFile)

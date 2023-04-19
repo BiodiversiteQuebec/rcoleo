@@ -1,3 +1,15 @@
+# Test that coleo_read returns error if wrong file extension
+test_that("coleo_read returns error if wrong file extension", {
+    fileNametxt <- paste0(tempdir(), "/test.txt")
+    write.table(
+        data.frame(campaigns_type = "mammifères",
+            campaigns_technicians = "Alfred Bilot, Amande Laurier",
+            efforts_photo_count = "1"
+        ),
+        fileNametxt)
+    testthat::expect_error(coleo_read(fileNametxt))
+})
+    
 # Test that coleo_read_data returns a data.frame from a file local path
 test_that("coleo_read_data returns a data.frame from a file local path", {
     # Save dummy csv file
@@ -61,12 +73,24 @@ test_that("coleo_read_csv returns a data.frame from a csv file local path", {
             efforts_photo_count = "1"
         ),
         fileName)
+    # Save dummy csv2 file
+    fileName2 <- paste0(tempdir(), "/test2.csv")
+    write.csv2(
+        data.frame(campaigns_type = "mammifères",
+            campaigns_technicians = "Alfred Bilot, Amande Laurier",
+            efforts_photo_count = "1"
+        ),
+        fileName2)
 
-    # Test that the file is read without error
+    # Test that the file is read without error 
+    ## (, separator)
     testthat::expect_error(data <- coleo_read_csv(fileName), NA)
+    ## (; separator)
+    testthat::expect_error(data2 <- coleo_read_csv(fileName2), NA)
 
     # Test that coleo_read_csv reads the csv file and returns a data.frame
     testthat::expect_s3_class(data, "data.frame")
+    testthat::expect_s3_class(data2, "data.frame")
 
     # The formating of columns is assumed by `coleo_format()`
 
@@ -126,4 +150,22 @@ test_that("coleo_read_template returns a data.frame from a file local path", {
 
     # Remove dummy template file
     remove(fileName)
+})
+
+# Test that coleo_read formats sites data from a csv file local path
+test_that("coleo_read formats sites data from a csv file local path", {
+    # Save dummy csv file
+    fileName <- paste0(tempdir(), "/test.csv")
+    write.csv(
+        data.frame(sites_lat = "128.5",
+            sites_lon = "48.5",
+            sites_code = "132_132_F01",
+            sites_type = "forestier"
+        ),
+        fileName)
+
+    # Test that the lat and lon are returned as numeric values
+    data <- coleo_read(fileName)
+    testthat::expect_type(data$sites_lat, "double")
+    testthat::expect_type(data$sites_lon, "double")
 })
