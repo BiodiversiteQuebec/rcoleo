@@ -36,7 +36,7 @@ coleo_inject <- function(df, media_path = NULL) {
 
   # Sites
   if("sites_type" %in% colnames(df)) {
-    df_id <- coleo_inject_table(df, NA, "sites")
+    df_id <- coleo_inject_table(df, "sites")
 
     # plumber-api trigger to update portal data
     browseURL("https://coleo.biodiversite-quebec.ca/r-update-api/update/all")
@@ -64,7 +64,7 @@ coleo_inject <- function(df, media_path = NULL) {
   #--------------------------------------------------------------------------
   # 2. Inject campaigns table
   #--------------------------------------------------------------------------
-  df_id <- coleo_inject_table(df, campaign_type, "campaigns")
+  df_id <- coleo_inject_table(df, "campaigns")
 
   if(!any(sapply(df_id$campaign_error, is.null))) {
     cat("Only data for successfully injected campaigns are injected in the next tables. These following lines failed to inject: ", paste0(which(!sapply(df_id$campaign_error, is.null)), collapse = ", "), "\n")
@@ -88,13 +88,15 @@ coleo_inject <- function(df, media_path = NULL) {
     }
 
     # Case-specific injections
-    if (campaign_type == "mammif\u00e8res" & table == "lures") {
-      ## Lures table for "mammifères" campaigns
-      df_id <- coleo_inject_mam_lures(df_id)
-
-    } else if (campaign_type == "mammif\u00e8res" & table == "landmarks") {
+    if (campaign_type == "mammif\u00e8res" & table == "landmarks") {
       ## Landmarks table for "mammifères" campaigns
+      ## - observations_landmarks_lookup table is injected in this step
       df_id <- coleo_inject_mam_landmarks(df_id)
+
+    } else if (table == "observations_landmarks_lookup") {
+      ## observations_landmarks_lookup table for "mammifères" campaigns
+      ## is injected in the previous step
+      next
 
     } else if (table == "media") {
       ## The special case of media files
@@ -111,7 +113,7 @@ coleo_inject <- function(df, media_path = NULL) {
 
     } else {
       ## Regular table injections
-      df_id <- coleo_inject_table(df_id, campaign_type, table)
+      df_id <- coleo_inject_table(df_id, table)
     }
   }
 
@@ -151,9 +153,8 @@ coleo_inject_general <- function(endpoint, schema = 'public', ...){
 #' Préparation de la requête httr2 pour l'injection d'une ligne d'un jeu de
 #' données.
 #'
-#' Fonction utilisée dans \code{\link[rcoleo]{coleo_injection_prep}} et
-#' \code{\link[rcoleo]{coleo_inject_mam_lures}} pour la préparation de la
-#' colonne inject_request.
+#' Fonction utilisée dans \code{\link[rcoleo]{coleo_injection_prep}}
+#' pour la préparation de la colonne inject_request.
 #' 
 #' Un processus "tidy" qui maintient la cohérence des données.
 #'
@@ -207,7 +208,7 @@ coleo_inject_general_df <- function(df_one_row, schema = 'public', endpoint) {
 #' \code{\link[rcoleo]{coleo_injection_final}} dans le processus d'injection.
 #' 
 #' Fonction utilisée dans \code{\link[rcoleo]{coleo_inject_table}},
-#' \code{\link[rcoleo]{coleo_inject_media}}, \code{\link[rcoleo]{coleo_inject_mam_lures}},
+#' \code{\link[rcoleo]{coleo_inject_media}},
 #' \code{\link[rcoleo]{coleo_inject_mam_landmarks}} et
 #' \code{\link[rcoleo]{coleo_inject_ref_species}}.
 #'
@@ -304,8 +305,7 @@ coleo_injection_prep <- function(df, db_table){
 #' dans le processus d'injection.
 #'
 #' La fonction est utilisée dans \code{\link[rcoleo]{coleo_inject_table}},
-#' \code{\link[rcoleo]{coleo_inject_media}},
-#' \code{\link[rcoleo]{coleo_inject_mam_lures}} et
+#' \code{\link[rcoleo]{coleo_inject_media}} et
 #' \code{\link[rcoleo]{coleo_inject_mam_landmarks}}
 #'
 #' @param df Une data.frame produit par \code{coleo_injection_execute}
@@ -356,24 +356,17 @@ coleo_injection_final <- function(df) {
 
   #--------------------------------------------------------------------------
   # 4. Remove the columns we don't want to keep and unnest the data
-  # - lures are to be formated later, the table is returned as is
   #--------------------------------------------------------------------------
-  if(newname != "lure") {
-    df_out <- df_id[,order(colnames(df_id))] |>
-      dplyr::ungroup() |>
-      dplyr::select(-success, -inject_request, -error, -result)
-    if("data" %in% colnames(df_out)) {
-      df_out <- df_out |>
-        tidyr::unnest(cols = c(data))
-    }
+  df_out <- df_id[,order(colnames(df_id))] |>
+    dplyr::ungroup() |>
+    dplyr::select(-success, -inject_request, -error, -result)
+  if("data" %in% colnames(df_out)) {
     df_out <- df_out |>
-      dplyr::relocate(dplyr::ends_with("_error")) |>
-      dplyr::relocate(dplyr::ends_with("_id"))
-  } else {
-    # lures table are processed back to wide format later
-    # in coleo_inject_mam_lures()
-    return(df_id)
+      tidyr::unnest(cols = c(data))
   }
+  df_out <- df_out |>
+    dplyr::relocate(dplyr::ends_with("_error")) |>
+    dplyr::relocate(dplyr::ends_with("_id"))
 
   return(df_out)
 }
@@ -406,13 +399,12 @@ injection_reponse_message <- function(table, response) {
 #'
 #' @param df_id Un data.frame validé par \code{\link[rcoleo]{coleo_validate}}
 #' et contenant les id des lignes injectées dans la table campaigns.
-#' @param campaign_type Type de campagne auquel appartient le jeu de données.
 #' @param table Une table de coleo où inecter les données.
 #'
 #' @return Le même data.frame, avec les id des lignes injectées dans la table
 #' et une colonne pour les erreurs.
 #'
-coleo_inject_table <- function(df_id, campaign_type, table) {
+coleo_inject_table <- function(df_id, table) {
   #--------------------------------------------------------------------------
   # 1. Prep request
   #--------------------------------------------------------------------------
@@ -423,9 +415,6 @@ coleo_inject_table <- function(df_id, campaign_type, table) {
   # 2. Requests executions
   #--------------------------------------------------------------------------
   response <- coleo_injection_execute(requests) # Real thing
-  # Rename device_id in mammifères campaigns
-  # - Prevents landmarks injection of lures to inject device_id
-  if(campaign_type == "mammif\u00e8res" & table == "devices") names(df_id)[names(df_id) == "device_id"] <- "device_id_camera"
 
   #--------------------------------------------------------------------------
   # 3. Print output
@@ -511,7 +500,7 @@ coleo_inject_cells <- function(df) {
 coleo_inject_media <- function(df_id, server_dir = "observation", file_dir) {
   #--------------------------------------------------------------------------
   # 1. Prep request
-  #--------------------------------------------------------------------------
+  #--------------------------lures------------------------------------------------
   url <- paste0(server(), "/upload/", server_dir, "/")
 
   medias_requests <- df_id |>
@@ -556,102 +545,13 @@ coleo_inject_media <- function(df_id, server_dir = "observation", file_dir) {
 }
 
 
-#' Injection des pièges d'une campagne mammifères dans la table lures de coleo.
-#'
-#' Accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et performe
-#' l'injection de la table lures.
-#' 
-#' La fonction est utilisée par \code{\link[rcoleo]{coleo_inject}}.
-#'
-#' @param df_id Un data.frame contenant une colonne campaign_id.
-#'
-#' @return Une data.frame avec une colonne lure_X_id et une colonne pour les lure_X_error.
-#'
-coleo_inject_mam_lures <- function(df_id) {
-  #--------------------------------------------------------------------------
-  # 1. Format data
-  #--------------------------------------------------------------------------
-  luresCols <- names(df_id)[grepl("lures", names(df_id))]
-  ## There might be multiple lures (1 to 5)
-  lures_col_groups <- split(luresCols, sub('.*(?=.$)', "", luresCols, perl = TRUE))
-  ## df to long format
-  df_long <- data.frame("campaign_id" = as.numeric(), "installed_at" = as.character(), "lure" = as.character())
-  for(group in lures_col_groups) {
-    df_group <- df_id[,c("campaign_id", group)]
-    names(df_group) <- names(df_long)
-    df_long <- rbind(df_long, df_group)
-  }
-  df_long <- df_long[complete.cases(df_long[,-1]),]
-  #--------------------------------------------------------------------------
-  # 2. Prep requests
-  #--------------------------------------------------------------------------
-  df_prep <- df_long |>
-        dplyr::distinct() |>
-        dplyr::rowwise() |>
-        dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "lures")))
-  #--------------------------------------------------------------------------
-  # 3. Injection
-  #--------------------------------------------------------------------------
-  response <- coleo_injection_execute(df_prep) # Real thing
-  # Output
-  injection_reponse_message("lures", response)
-  #--------------------------------------------------------------------------
-  # 4. Finalizing lures table injection
-  #--------------------------------------------------------------------------
-  lures_id <- response |>
-    coleo_injection_final()
-
-  # Reassign lure_id to df_id
-  # - lure_ids are saved in separate columns for each lure
-  # - using the format lure_id_1, lure_id_2, etc
-  for(lure_row in seq_along(lures_id$campaign_id)) {
-      camp = lures_id[lure_row, "campaign_id"] |> unlist()
-      date = lures_id[lure_row, "lures_installed_at"] |> unlist()
-      ## Which row
-      df_row <- which(camp == df_id$campaign_id)
-      ## Which col
-      instal_cols <- df_id[df_row,grepl("lures_installed_at_", names(df_id))]
-      instal_dates <- t(instal_cols[!duplicated(instal_cols),])
-      df_col <- which(date == instal_dates)
-      ## Save lure_id for right lure
-      lure_no <- sub('.*(?=.$)', "", names(instal_cols)[df_col], perl = TRUE)
-      id_col_name <- paste0("lure_", lure_no, "_id")
-      if (id_col_name %in% colnames(df_id)) {
-        # If column already exists, add to it
-        df_id[df_row, id_col_name] <- lures_id$lure_id[lure_row]
-      } else {
-        # If column doesn't exist, create it
-        df_id[df_row, ncol(df_id) + 1] <- lures_id$lure_id[lure_row]
-        names(df_id)[ncol(df_id)] <- id_col_name
-      }
-
-      ## Save lure_result
-      err_col_name <- paste0("lure_", lure_no, "_error")
-      if (err_col_name %in% colnames(df_id)) {
-        # If column already exists, add to it
-        df_id[df_row, err_col_name] <- list(lures_id$lure_error[lure_row])
-      } else {
-        # If column doesn't exist, create it
-        df_id[df_row, ncol(df_id) + 1] <- list(lures_id$lure_error[lure_row])
-        names(df_id)[ncol(df_id)] <- err_col_name
-      }
-  }
-
-  # Order columns
-  df_id <- df_id[,order(colnames(df_id))] |>
-      dplyr::relocate(dplyr::ends_with("_error")) |>
-      dplyr::relocate(dplyr::ends_with("_id"))
-
-  return(df_id)
-}
-
-
 #' Injection des repères d'une campagne mammifères dans la table
 #' landmarks de coleo.
 #'
 #' L'injection des repères pour les campagnes mammifères est différente
-#' puiqu'il y a des repères pour la caméra et pour les pièges. Nous procédons
-#' donc à l'injection successif de tous les repères.
+#' puiqu'il y a pour chaque observation un repère pour la caméra et un autre 
+#' pour le piège. Nous procédons donc à l'injection successif de tous les
+#' repères.
 #'
 #' Accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et
 #' performe l'injection de la table landmarks.
@@ -665,23 +565,19 @@ coleo_inject_mam_lures <- function(df_id) {
 #'
 coleo_inject_mam_landmarks <- function(df_id) {
   #--------------------------------------------------------------------------
-  # 1. Format data
-  #--------------------------------------------------------------------------
-  landCols <- names(df_id)[grepl("landmarks", names(df_id))]
-  # There might be multiple landmarks for the camera and for each lure
-  land_groups <- split(landCols, sub('^.*_([a-zA-Z]+$)', "\\1", landCols, perl = TRUE))
-  #--------------------------------------------------------------------------
-  # 2. Inject taxa names in ref_species table for camera landmark
+  # 1. Inject taxa names in ref_species table for camera landmark
   #--------------------------------------------------------------------------
   if ("landmarks_taxa_name_camera" %in% names(df_id)) {
     coleo_inject_ref_species(df_id[,"landmarks_taxa_name_camera"])
   }
   #--------------------------------------------------------------------------
-  # 3. Inject camera landmark
+  # 2. Inject camera landmark
   #--------------------------------------------------------------------------
-  # Remove _camera from colnames
+  # Remove `_camera` from colnames
   df_camera <- df_id
   names(df_camera)[grep("_camera", names(df_camera))] <- sub('_camera', "\\1", names(df_camera)[grep("_camera", names(df_camera))], perl = TRUE)
+  # Hide `lure_id` column name
+  names(df_camera)[names(df_camera) == "lure_id"] <- "lure_id_appat"
   # Prep requests
   requests <- df_camera |>
     coleo_injection_prep(db_table = "landmarks")
@@ -689,9 +585,15 @@ coleo_inject_mam_landmarks <- function(df_id) {
   response <- coleo_injection_execute(requests) # Real thing
   # Output
   injection_reponse_message("landmark_camera", response)
-  # Finalizing lures table injection
+  # Finalizing landmarks table injection
   df_id <- response |>
     coleo_injection_final()
+  
+  # Inject camera landmark into observation_landmarks_lookup table
+  df_id <- coleo_inject_table(df_id, "observation_landmarks_lookup")
+
+  # Bring back `lure_id` column name
+  names(df_id)[names(df_id) == "lure_id_appat"] <- "lure_id"
 
   # Rename camera columns
   which_camera <- grepl("landmarks", names(df_id)) & !grepl("_appat", names(df_id))
@@ -700,42 +602,40 @@ coleo_inject_mam_landmarks <- function(df_id) {
   names(df_id)[names(df_id) == "landmark_id"] <- "landmark_camera_id"
   names(df_id)[names(df_id) == "landmark_error"] <- "landmark_camera_error"
   #--------------------------------------------------------------------------
-  # 4. Inject one landmark for each lure_id
+  # 3. Inject lure landmark
   #--------------------------------------------------------------------------
-  # 1. get lure groups
-  lures_ids <- names(df_id)[grepl("lure_._id", names(df_id))]
-  lures <- split(lures_ids, grep("[[:digit:]]+", lures_ids))
-  # 2. loop through groups
-  for(lureGroup in lures) {
-    ## 2.1. rename landmarks columns and lure_id for the group
-    ## this will allow coleo_prep_data to know exactly which columns to use for injection
-    df_lure <- df_id
-    names(df_lure)[grep("_appat", names(df_lure))] <- sub('_appat', "\\1", names(df_lure)[grep("_appat", names(df_lure))], perl = TRUE)
-    names(df_lure)[names(df_lure) == lureGroup] <- "lure_id"
-    ## 2.2. Inject taxa_names in ref_species table for lure landmark
-    if ("landmarks_taxa_name" %in% names(df_lure)) {
-      coleo_inject_ref_species(df_lure[,"landmarks_taxa_name"])
-    }
-    ## 2.3. Prep requests
-    requests <- df_lure |>
-        coleo_injection_prep(db_table = "landmarks")
-    ## 2.4. Inject
-    response <- coleo_injection_execute(requests) # Real thing
-    ## 2.4.1. Output
-    land_id_name <- paste0("landmark_appat_", gsub('.*_([0-9]+)_.*', '\\1', lureGroup), "_id")
-    land_error_name <- paste0("landmark_appat_", gsub('.*_([0-9]+)_.*', '\\1', lureGroup), "_error")
-    injection_reponse_message(land_id_name, response)
-    ## 2.5. Save landmarks_id in df_id and rename it
-    df_appat_final <- response |>
-      coleo_injection_final()
-    df_id$landmark_id <- df_appat_final$landmark_id
-    df_id$landmark_error <- df_appat_final$landmark_error
+  # Remove `_appat` from colnames
+  df_appat <- df_id
+  names(df_appat)[grep("_appat", names(df_appat))] <- sub('_appat', "\\1", names(df_appat)[grep("_appat", names(df_appat))], perl = TRUE)
+  # Hide `device_id` column name
+  names(df_appat)[names(df_appat) == "device_id"] <- "device_id_camera"
+  # Prep requests
+  requests <- df_appat |>
+    coleo_injection_prep(db_table = "landmarks")
+  # Injection
+  response <- coleo_injection_execute(requests) # Real thing
+  # Output
+  injection_reponse_message("landmark_appat", response)
+  # Finalizing landmarks table injection
+  df_id <- response |>
+    coleo_injection_final()
+  
+  # Inject camera landmark into observation_landmarks_lookup table
+  df_id <- coleo_inject_table(df_id, "observation_landmarks_lookup")
 
-    names(df_id)[names(df_id) == "landmark_id"] <- land_id_name
-    names(df_id)[names(df_id) == "landmark_error"] <- land_error_name
-  }
+  # Bring back `device_id` column name
+  names(df_id)[names(df_id) == "device_id_camera"] <- "device_id"
 
-  # Order columns
+  # Rename appat columns
+  which_appat <- grepl("landmarks", names(df_id)) & !grepl("_camera", names(df_id))
+  names(df_id)[which_appat] <- paste0(names(df_id)[which_camera], "_appat")
+
+  names(df_id)[names(df_id) == "landmark_id"] <- "landmark_lure_id"
+  names(df_id)[names(df_id) == "landmark_error"] <- "landmark_lure_error"
+
+  #--------------------------------------------------------------------------
+  # 4. Order columns
+  #--------------------------------------------------------------------------
   df_id <- df_id[,order(colnames(df_id))] |>
       dplyr::relocate(dplyr::ends_with("_error")) |>
       dplyr::relocate(dplyr::ends_with("_id"))
@@ -766,7 +666,7 @@ coleo_inject_adne_landmarks <- function(df_id, campaign_type) {
   # It is necessary to skip their injection
   which_lac <- df_id$observations_extra_value_1 == "lac"
   no_lake_id <- df_id[!which_lac,] |>
-    coleo_inject_table(campaign_type = campaign_type, table = "landmarks")
+    coleo_inject_table(table = "landmarks")
 
   # Reassemble the dataframes
   with_lac <- df_id[which_lac,]
