@@ -331,7 +331,7 @@ with_mock_dir("injection of mammiferes lures", {
 })
 
 # Test coleo_inject_mam_landmarks
-with_mock_dir("injection of mammifères landmarks", {
+with_mock_dir("injection of mammiferes landmarks", {
 
   # Perform injection
   df_id <- coleo_inject_mam_landmarks(df_lures)
