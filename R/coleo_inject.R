@@ -93,7 +93,7 @@ coleo_inject <- function(df, media_path = NULL) {
       ## - observations_landmarks_lookup table is injected in this step
       df_id <- coleo_inject_mam_landmarks(df_id)
 
-    } else if (table == "observations_landmarks_lookup") {
+    } else if (campaign_type == "mammif\u00e8res" & table == "observations_landmarks_lookup") {
       ## observations_landmarks_lookup table for "mammifères" campaigns
       ## is injected in the previous step
       next
