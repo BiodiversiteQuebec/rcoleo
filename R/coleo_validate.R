@@ -235,21 +235,6 @@ coleo_validate <- function(data, media_path = NULL) {
 
 
   #------------------------------------------------------------------------
-  # Check that subsequent lures installs have different dates
-  #------------------------------------------------------------------------
-  lure_names <- grepl("lures_installed_at", dat_names)
-  if (any(lure_names)) {
-    dates_overlap <- apply(data, 1, function(x) {
-      dat_lures <- x[lure_names]
-      dat_lures <- dat_lures[!is.na(dat_lures)]
-      length(unique(dat_lures)) != length(dat_lures)
-    })
-
-    if (any(dates_overlap)) warning(paste0("--------------------------------------------------\nV\u00E9rifiez les dates d'installation des app\u00E2ts aux lignes ", paste(which(dates_overlap), collapse = ", "), ". Plusieurs app\u00E2ts pour une m\u00EAme observation partagent la m\u00EArme date d'installation.\n\n"))
-  }
-
-
-  #------------------------------------------------------------------------
   # Check that all campaigns without observations have all fields of
   # taxonomic level equal to or inferior to the observation are NA in
   # "empty" campaigns
