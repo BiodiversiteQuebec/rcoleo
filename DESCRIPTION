@@ -25,6 +25,7 @@ Imports:
     geojsonio,
     geojsonsf,
     httr2,
+    httpuv,
     jsonlite,
     purrr,
     readr,
