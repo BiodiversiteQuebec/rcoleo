@@ -25,7 +25,7 @@ Il est **fortement recommandé** d'enregistrer le jeton d'accès directement en 
 file.edit("~/.Renviron")
 ```
 
-cette linge va ouvrir un ficher text dans votre Rstudio. Rajoutez dans ce ficher un linge comme la suivante:
+cette linge va ouvrir un ficher text dans votre Rstudio. Ajoutez à ce ficher la ligne suivante:
 
 
 ```r
