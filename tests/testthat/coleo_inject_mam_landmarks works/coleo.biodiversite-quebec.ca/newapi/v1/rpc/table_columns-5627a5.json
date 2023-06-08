@@ -20,7 +20,7 @@
     {
         "column_name": "technicians",
         "data_type": "ARRAY",
-        "udt_name": "_varchar",
+        "udt_name": "_text",
         "is_nullable": "YES"
     },
     {

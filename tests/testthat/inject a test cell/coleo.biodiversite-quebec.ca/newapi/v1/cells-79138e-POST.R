@@ -1,7 +1,5 @@
 structure(list(method = "POST", url = "https://coleo.biodiversite-quebec.ca/newapi/v1/cells", 
-    status_code = 201L, headers = structure(list(Server = "nginx/1.18.0 (Ubuntu)", 
-        Date = "Wed, 19 Apr 2023 14:08:33 GMT", `Content-Type` = "application/json; charset=utf-8", 
-        `Transfer-Encoding` = "chunked", Connection = "keep-alive", 
-        Location = "/cells?id=eq.743", `Content-Range` = "*/*", 
-        `Content-Profile` = "public"), class = "httr2_headers"), 
-    body = charToRaw("[{\"id\":743,\"name\":\"Doriath\",\"cell_code\":\"FFF_ZZZ\",\"geom\":{\"type\":\"Polygon\",\"coordinates\":[[[-79.340288,48.511171],[-79.451258,48.4084],[-79.5175150698258,48.43971636114],[-79.5176355352339,48.5000133539952],[-79.517581626098,48.503401649012],[-79.5175785798052,48.5615006339734],[-79.5175785437023,48.5643904071127]]]},\"created_at\":\"2023-04-19T10:08:33.835673-04:00\",\"updated_at\":\"2023-04-19T10:08:33.835673-04:00\"}]")), class = "httr2_response")
+    status_code = 409L, headers = structure(list(Server = "nginx/1.18.0 (Ubuntu)", 
+        Date = "Thu, 08 Jun 2023 14:10:39 GMT", `Content-Type` = "application/json; charset=utf-8", 
+        `Transfer-Encoding` = "chunked", Connection = "keep-alive"), class = "httr2_headers"), 
+    body = charToRaw("{\"hint\":null,\"details\":\"Key (name, cell_code)=(Doriath, FFF_ZZZ) already exists.\",\"code\":\"23505\",\"message\":\"duplicate key value violates unique constraint \\\"cells_name_cell_code_key\\\"\"}")), class = "httr2_response")

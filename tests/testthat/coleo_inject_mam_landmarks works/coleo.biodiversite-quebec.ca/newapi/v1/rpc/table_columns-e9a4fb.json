@@ -1,0 +1,80 @@
+[
+    {
+        "column_name": "id",
+        "data_type": "integer",
+        "udt_name": "int4",
+        "is_nullable": "NO"
+    },
+    {
+        "column_name": "campaign_id",
+        "data_type": "integer",
+        "udt_name": "int4",
+        "is_nullable": "YES"
+    },
+    {
+        "column_name": "sd_card_codes",
+        "data_type": "ARRAY",
+        "udt_name": "_varchar",
+        "is_nullable": "YES"
+    },
+    {
+        "column_name": "cam_code",
+        "data_type": "character varying",
+        "udt_name": "varchar",
+        "is_nullable": "YES"
+    },
+    {
+        "column_name": "cam_h_cm",
+        "data_type": "double precision",
+        "udt_name": "float8",
+        "is_nullable": "YES"
+    },
+    {
+        "column_name": "mic_logger_code",
+        "data_type": "character varying",
+        "udt_name": "varchar",
+        "is_nullable": "YES"
+    },
+    {
+        "column_name": "mic_acc_code",
+        "data_type": "character varying",
+        "udt_name": "varchar",
+        "is_nullable": "YES"
+    },
+    {
+        "column_name": "mic_h_cm_acc",
+        "data_type": "double precision",
+        "udt_name": "float8",
+        "is_nullable": "YES"
+    },
+    {
+        "column_name": "mic_ultra_code",
+        "data_type": "character varying",
+        "udt_name": "varchar",
+        "is_nullable": "YES"
+    },
+    {
+        "column_name": "mic_h_cm_ultra",
+        "data_type": "double precision",
+        "udt_name": "float8",
+        "is_nullable": "YES"
+    },
+    {
+        "column_name": "mic_orientation",
+        "data_type": "USER-DEFINED",
+        "udt_name": "enum_devices_mic_orientation",
+        "is_nullable": "YES"
+    },
+    {
+        "column_name": "created_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO"
+    },
+    {
+        "column_name": "updated_at",
+        "data_type": "timestamp with time zone",
+        "udt_name": "timestamptz",
+        "is_nullable": "NO"
+    }
+]

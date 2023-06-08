@@ -8,6 +8,12 @@
         "opened_at": "2020-01-01",
         "geom": {
             "type": "Point",
+            "crs": {
+                "type": "name",
+                "properties": {
+                    "name": "EPSG:4326"
+                }
+            },
             "coordinates": [
                 -79.42757,
                 48.4366
