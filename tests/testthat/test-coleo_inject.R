@@ -252,7 +252,7 @@ with_mock_dir("injection of one table", {
 
 
 # Test coleo_inject_mam_landmarks
-with_mock_dir("coleo_inject_mam_landmarks works", {
+with_mock_dir("coleo_inject_mam_landmarks() works", {
 
   # Mock data
   data_mam <- structure(list(
@@ -329,7 +329,25 @@ with_mock_dir("coleo_inject_mam_landmarks works", {
   # Check that the data.frame contains lure_ids and lure_errors
   test_that("the data.frame contains lure_ids and lure_errors",
     expect_named(df_id,
-      c('campaign_id', 'landmark_appat_id', 'landmark_camera_id', 'lure_id', 'site_id', 'campaign_error', 'landmark_appat_error', 'landmark_camera_error', 'lure_error', 'campaigns_closed_at', 'campaigns_notes', 'campaigns_opened_at', 'campaigns_technicians', 'campaigns_type', 'devices_cam_code', 'devices_cam_h_cm', 'devices_sd_card_codes', 'efforts_notes', 'efforts_photo_count', 'efforts_recording_minutes', 'efforts_time_finish', 'efforts_time_start', 'landmarks_azimut_appat', 'landmarks_azimut_camera', 'landmarks_dbh_appat', 'landmarks_dbh_camera', 'landmarks_distance_appat', 'landmarks_distance_unit_appat', 'landmarks_geom_camera', 'landmarks_lat_appat', 'landmarks_lon_appat', 'landmarks_notes_appat', 'landmarks_notes_camera', 'landmarks_taxa_name_appat', 'landmarks_taxa_name_camera', 'landmarks_tree_code_appat', 'landmarks_tree_code_camera', 'landmarks_type_appat', 'landmarks_type_camera', 'lures_installed_at', 'lures_lure', 'media_name', 'media_og_extention', 'media_og_format', 'media_type', 'obs_species_taxa_name', 'obs_species_value', 'obs_species_variable', 'observations_date_obs', 'observations_extra_description_1', 'observations_extra_type_1', 'observations_extra_value_1', 'observations_extra_variable_1', 'observations_is_valid', 'observations_note', 'observations_time_obs', 'sites_site_code')
+      c("campaign_id", "landmark_camera_id", "landmark_lure_id", "lure_id", 
+        "observation_id", "site_id", "campaign_error", "landmark_camera_error", 
+        "landmark_lure_error", "lure_error", "observation_error", "campaigns_closed_at", 
+        "campaigns_notes", "campaigns_opened_at", "campaigns_technicians", 
+        "campaigns_type", "devices_cam_code", "devices_cam_h_cm", "devices_sd_card_codes", 
+        "efforts_notes", "efforts_photo_count", "efforts_recording_minutes", 
+        "efforts_time_finish", "efforts_time_start", "landmark_id_appat", 
+        "landmark_id_appat", "landmarks_azimut_appat", "landmarks_azimut_camera", 
+        "landmarks_dbh_appat", "landmarks_dbh_camera", "landmarks_distance_appat", 
+        "landmarks_distance_unit_appat", "landmarks_geom_appat", "landmarks_geom_camera", 
+        "landmarks_notes_appat", "landmarks_notes_camera", "landmarks_taxa_name_camera", 
+        "landmarks_tree_code_camera", "landmarks_type_camera", "landmarks_type_camera_appat", 
+        "lures_installed_at", "lures_lure", "media_name", "media_og_extention", 
+        "media_og_format", "media_type", "obs_species_taxa_name", "obs_species_value", 
+        "obs_species_variable", "observation_error_appat", "observation_error_appat", 
+        "observations_date_obs", "observations_extra", "observations_is_valid", 
+        "observations_landmarks_lookup_error_camera", "observations_landmarks_lookup_id_camera", 
+        "observations_note", "observations_time_obs", "sites_site_code"
+      )
     )
   )
 })
