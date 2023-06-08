@@ -23,9 +23,8 @@ exécutée. Elle doit être envoyée à l'API Coleo via
 \code{\link[httr2]{req_dry_run}}.
 }
 \description{
-Fonction utilisée dans \code{\link[rcoleo]{coleo_injection_prep}} et
-\code{\link[rcoleo]{coleo_inject_mam_lures}} pour la préparation de la
-colonne inject_request.
+Fonction utilisée dans \code{\link[rcoleo]{coleo_injection_prep}}
+pour la préparation de la colonne inject_request.
 }
 \details{
 Un processus "tidy" qui maintient la cohérence des données.

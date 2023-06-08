@@ -22,7 +22,6 @@ Son utilisation suit celle de \code{\link[rcoleo]{coleo_injection_execute}}
 dans le processus d'injection.
 
 La fonction est utilisée dans \code{\link[rcoleo]{coleo_inject_table}},
-\code{\link[rcoleo]{coleo_inject_media}},
-\code{\link[rcoleo]{coleo_inject_mam_lures}} et
+\code{\link[rcoleo]{coleo_inject_media}} et
 \code{\link[rcoleo]{coleo_inject_mam_landmarks}}
 }

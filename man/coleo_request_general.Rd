@@ -36,6 +36,7 @@ font sur le schéma api.
 coleo_request_general('cells', perform = FALSE, response_as_df = TRUE, schema = 'public')
 
 # Requête sur la fonction 'table_columns'
-coleo_request_general('rpc/table_columns', perform = FALSE, response_as_df = TRUE, 'table_name' = 'cells')
+coleo_request_general('rpc/table_columns', perform = FALSE, response_as_df = TRUE, 
+'table_name' = 'cells')
 
 }

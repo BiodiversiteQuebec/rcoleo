@@ -16,8 +16,9 @@ les landmark_X_error.
 }
 \description{
 L'injection des repères pour les campagnes mammifères est différente
-puiqu'il y a des repères pour la caméra et pour les pièges. Nous procédons
-donc à l'injection successif de tous les repères.
+puiqu'il y a pour chaque observation un repère pour la caméra et un autre
+pour le piège. Nous procédons donc à l'injection successif de tous les
+repères.
 }
 \details{
 Accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et

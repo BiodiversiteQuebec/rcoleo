@@ -22,7 +22,7 @@ les exécute. Son utilisation suit celle de
 }
 \details{
 Fonction utilisée dans \code{\link[rcoleo]{coleo_inject_table}},
-\code{\link[rcoleo]{coleo_inject_media}}, \code{\link[rcoleo]{coleo_inject_mam_lures}},
+\code{\link[rcoleo]{coleo_inject_media}},
 \code{\link[rcoleo]{coleo_inject_mam_landmarks}} et
 \code{\link[rcoleo]{coleo_inject_ref_species}}.
 }

@@ -4,13 +4,11 @@
 \alias{coleo_inject_table}
 \title{Injection des données dans une table de Coleo.}
 \usage{
-coleo_inject_table(df_id, campaign_type, table)
+coleo_inject_table(df_id, table)
 }
 \arguments{
 \item{df_id}{Un data.frame validé par \code{\link[rcoleo]{coleo_validate}}
 et contenant les id des lignes injectées dans la table campaigns.}
-
-\item{campaign_type}{Type de campagne auquel appartient le jeu de données.}
 
 \item{table}{Une table de coleo où inecter les données.}
 }
