@@ -197,7 +197,7 @@ with_mock_dir("injection_prep works", {
 
 })
 
-with_mock_dir("injection of all tables works", {
+with_mock_dir("coleo_inject() works", {
   # Mock data
   data <- structure(list(
     sites_site_code = c("139_87_H01", "139_87_H01"), campaigns_type = c("acoustique_chiroptères", "acoustique_chiroptères"), landmarks_lat = c(
@@ -225,7 +225,16 @@ with_mock_dir("injection of all tables works", {
 
   # Expect injection of all tables
   test_that("all tables injected", {
-    expect_named(out_inject, c('campaign_id', 'device_id', 'landmark_id', 'site_id', 'effort_id', 'observations_efforts_lookup_id', 'obs_specie_id', 'observation_id', 'campaign_error', 'device_error', 'effort_error', 'landmark_error', 'observation_error', 'observations_efforts_lookup_error', 'obs_specie_error', 'campaigns_closed_at', 'campaigns_opened_at', 'campaigns_type', 'devices_mic_ultra_code', 'efforts_recording_minutes', 'efforts_time_finish', 'efforts_time_start', 'landmarks_geom', 'observations_date_obs', 'observations_is_valid', 'observations_time_obs', 'sites_site_code', 'obs_species_taxa_name', 'obs_species_variable'))
+    expect_named(out_inject, c("campaign_id", "device_id", "site_id", "effort_id", "observations_efforts_lookup_id", 
+                              "landmark_id", "observations_landmarks_lookup_id", "obs_specie_id", 
+                              "observation_id", "campaign_error", "device_error", "effort_error", 
+                              "landmark_error", "observation_error", "observations_efforts_lookup_error", 
+                              "observations_landmarks_lookup_error", "obs_specie_error", "campaigns_closed_at", 
+                              "campaigns_opened_at", "campaigns_type", "devices_mic_ultra_code", 
+                              "efforts_recording_minutes", "efforts_time_finish", "efforts_time_start", 
+                              "landmarks_geom", "observations_date_obs", "observations_is_valid", 
+                              "observations_time_obs", "sites_site_code", "obs_species_taxa_name", 
+                              "obs_species_variable"))
   })
 })
 
