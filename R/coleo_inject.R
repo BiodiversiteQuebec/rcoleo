@@ -590,7 +590,7 @@ coleo_inject_mam_landmarks <- function(df_id) {
     coleo_injection_final()
   
   # Inject camera landmark into observation_landmarks_lookup table
-  df_id <- coleo_inject_table(df_id, "observation_landmarks_lookup")
+  df_id <- coleo_inject_table(df_id, "observations_landmarks_lookup")
 
   # Bring back `lure_id` column name
   names(df_id)[names(df_id) == "lure_id_appat"] <- "lure_id"
@@ -621,7 +621,7 @@ coleo_inject_mam_landmarks <- function(df_id) {
     coleo_injection_final()
   
   # Inject camera landmark into observation_landmarks_lookup table
-  df_id <- coleo_inject_table(df_id, "observation_landmarks_lookup")
+  df_id <- coleo_inject_table(df_id, "observations_landmarks_lookup")
 
   # Bring back `device_id` column name
   names(df_id)[names(df_id) == "device_id_camera"] <- "device_id"
