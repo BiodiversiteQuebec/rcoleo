@@ -24,8 +24,6 @@ Imports:
     dplyr (>= 1.0.7),
     geojsonio,
     geojsonsf,
-    httpuv,
-    httr,
     httr2,
     jsonlite,
     purrr,
