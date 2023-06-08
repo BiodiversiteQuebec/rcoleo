@@ -160,7 +160,7 @@ coleo_validate <- function(data, media_path = NULL) {
     # Validate directory existence
     if (!dir.exists(file.path(media_path))) warning("--------------------------------------------------\nV\U00E9rifiez le dU00E9pot des m\U00E9dias. ",  dput(media_path), " ", dput(media_path)," n'est pas un d\u00E9pot valide.\n\n")
     
-    media_exists <- sapply(data$media_name, function(file) {
+    media_exists <- sapply(data$media_name[!is.na(data$obs_species_taxa_name)], function(file) {
       file.exists(paste0(media_path, file))
     })
 
