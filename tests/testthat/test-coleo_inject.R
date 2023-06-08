@@ -314,7 +314,7 @@ with_mock_dir("injection of mammiferes lures", {
   class = "data.frame")
 
   # Perform injection
-  df_camp <- coleo_inject_table(data_mam, "mammifères", "campaigns")
+  df_camp <- coleo_inject_table(data_mam, "campaigns")
   df_lures <- coleo_inject_mam_lures(df_camp)
 
   # Check injection
