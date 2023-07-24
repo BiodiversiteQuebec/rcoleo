@@ -318,9 +318,11 @@ coleo_validate <- function(data, media_path = NULL) {
   # Test for non-breaking spaces
   #------------------------------------------------------------------------
   notSpace <- apply(data, 1, function(x) {
+    if(class(x) != "list"){
       grep("\u00A0", x) # non-breaking space
-    }) |>
-    as.logical()
+    }
+  }) |>
+      as.logical()
 
   if(any(notSpace)) warning("--------------------------------------------------\nV\u00E9rifiez la pr\u00E9sence d'espaces ins\u{00E9}cables aux lignes : ", paste0(which(notSpace), collapse = ", "), ", et remplacez les par des espaces standards\n\n")
 
