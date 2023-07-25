@@ -478,11 +478,38 @@ coleo_validate <- function(data, media_path = NULL) {
   req_tbls <- coleo_return_required_tables(campaign_type)
   req_tbls <- req_tbls[!grepl("lookup", req_tbls)]
 
+  ## Loop through tables
   for(table in req_tbls) {
-    tbl_cols <- dat_names[grepl(table, dat_names)]
-    nvals <- sum(!duplicated(data[,tbl_cols]))
+    requests <- data |>
+      coleo_injection_prep(db_table = table)
+    nvals <- nrow(requests)
 
+    ### Print message
     message(paste0(table, " : ", nvals))
+
+    ### Unnest data
+    ### Add id column
+    newname <- sub(table, pattern = "s$", replacement = "")
+    name_id <- paste0(newname, "_id")
+    ### Add a unique value to each row
+    data <- requests |>
+      dplyr::select(-inject_request) |>
+      dplyr::mutate(!!name_id := dplyr::row_number())
+    ### Select column names to keep
+    old_names <- coleo_get_column_names(table)$column_name
+    old_names <- old_names[!grepl("_id", old_names)]
+    which_old <- names(data) %in% old_names
+    ### Make new column names
+    new_names <- paste0(table, "_", names(data)[which_old])
+    ### Change column names to new names
+    names(data)[which_old] <- new_names
+    ### Unnest data
+    data <- data|>
+      dplyr::ungroup()
+    if("data" %in% colnames(data)) {
+    data <- data |>
+      tidyr::unnest(cols = c("data"))
+    }
   }
 
   message("\n==================================================\n\n")
