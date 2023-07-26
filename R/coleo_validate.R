@@ -419,18 +419,28 @@ coleo_validate <- function(data, media_path = NULL) {
 
   if(length(cols_date) > 0) {
 
-    # Check that the year contains 4 digits, the month 2, and the day 2 ---
-    na_in_dates <- c(FALSE)
+    # Function to check if a date has the right number of digits
+    has_valid_digits <- function(date) {
+      date_parts <- strsplit(date, "-", fixed = TRUE)[[1]]
+      all(nchar(date_parts) == c(4, 2, 2))
+    }
+
+    # Check date columns
     cols_ndigits <- sapply(cols_date, function(x) {
-      split <- strsplit(unlist(data[,x]), "-", fixed = TRUE)
-      na <- is.na(split)
-      na_in_dates <- c(na_in_dates, any(na))
-      split <- split[!na]
-      date_ndigits <- sapply(split, nchar)
-      all(date_ndigits[1,] == 4, date_ndigits[2,] == 2, date_ndigits[3,] == 2)
+      dates <- data[[x]]
+      non_na_dates <- dates[!is.na(dates)]
+      
+      # Check if all dates have 3 parts (year, month, day)
+      all_dates_valid <- all(sapply(non_na_dates, function(date) sum(length(strsplit(date, "-", fixed = TRUE)[[1]])) == 3))
+      
+      # Check if all dates have the right number of digits
+      all_digits_valid <- all(sapply(non_na_dates, has_valid_digits))
+      
+      all_dates_valid && all_digits_valid
     })
+
     is_ndigits_valid <- all(cols_ndigits)
-    is_na <- any(na_in_dates)
+    is_na <- any(is.na(data[cols_date]))
 
     if(!is_ndigits_valid | is_na) warning("--------------------------------------------------\nV\u00E9rifiez le format des valeurs de dates. Les dates doivent \u00EAtre du format YYYY-MM-DD.\n\n")
   }
