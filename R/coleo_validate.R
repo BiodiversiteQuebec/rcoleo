@@ -93,7 +93,7 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   # Check that all NAs are NAs
   #------------------------------------------------------------------------
-  is_char_na <- any(purrr::map_lgl(data, function(x) !is.list(x) && x == "NA"), na.rm = TRUE) |> suppressWarnings()
+  is_char_na <- any(apply(data, 2, function(x) sapply(x, function(y) any(!is.list(y) && y == "NA"))), na.rm = TRUE) |> suppressWarnings()
   if(is_char_na) {
     data[data == "NA"] <- NA
     warning("--------------------------------------------------\nV\u00E9rifiez les champs sans valeurs. Ils devraient \u00E2tre NA, mais certains contiennent la valeur de 'NA' en charact\u00e8res.\n\n")
