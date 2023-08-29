@@ -94,6 +94,7 @@ test_that("coleo_validate", {
   dat_test$campaigns_type <- "ADNe"
   dat_test$obs_edna_taxa_name <- "Insecta"
   dat_test$obs_species_taxa_name <- NULL
+  dat_test$observations_extra_variable_1 <- "level"
   dat_test$observations_extra_value_1 <- "lac"
   dat_test$landmarks_type <- NA_character_
   dat_test$landmarks_lat = dat_test$landmarks_lon <- 43
