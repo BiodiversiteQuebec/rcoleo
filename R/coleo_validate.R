@@ -138,7 +138,7 @@ coleo_validate <- function(data, media_path = NULL) {
 
   # Are all input columns of the right class? -----------------------------
   erroneous_cols <- dat_names[!class_of_col]
-  if(!all(class_of_col)) warning("--------------------------------------------------\nV\u00E9rifiez la classe des colonnes. Ces colonnes sont probl\u00E9matiques : \n", paste0(erroneous_cols, collapse = ", "), "\n\n")
+  if(!all(class_of_col)) warning("--------------------------------------------------\nV\u00E9rifiez la classe des colonnes. Ces colonnes sont ", paste0("probl","\U00E9","matiques "), " : \n", paste0(erroneous_cols, collapse = ", "), "\n\n")
 
 
   #------------------------------------------------------------------------
@@ -150,13 +150,21 @@ coleo_validate <- function(data, media_path = NULL) {
   # Missing sites ---------------------------------------------------------
   sites_x <- which(!unique(data$sites_site_code) %in% existing_sites$site_code)
 
-  if(!are_sites_exists) warning("--------------------------------------------------\nV\u00E9rifiez les sites ", paste0(unique(data$sites_site_code)[sites_x], collapse = ", "), " de la colonne sites_site_code ou injectez ces sites dans la table sites de coleo. Ces sites n'existent pas dans coleo.\n\n")
+  if(!are_sites_exists) warning("--------------------------------------------------\n", paste0("V","\U00E9","rifiez")," les sites ", paste0(unique(data$sites_site_code)[sites_x], collapse = ", "), " de la colonne sites_site_code ou injectez ces sites dans la table sites de coleo. Ces sites n'existent pas dans coleo.\n\n")
 
 
+  #------------------------------------------------------------------------
+  # Check that a media_path directory is provided
+  #------------------------------------------------------------------------
+  if ("media_name" %in% dat_names) {
+    # Validate directory existence
+    if (is.null(media_path)) warning("--------------------------------------------------\nLe chemin du répertoire contenant les ", paste0("m","\U00E9","dias"), " n'a pas ", paste0("\U00E9","t", "\U00E9", " pass", "\U00E9"), " à l'argument mendia_path. La validation des valeurs de la colonne media_name est ignorée.\n\n")
+  }
+  
   #------------------------------------------------------------------------
   # Check that all media_name files exists in the provided directory
   #------------------------------------------------------------------------
-  if ("media_name" %in% dat_names) {
+  if (("media_name" %in% dat_names) & !is.null(media_path)) {
     # Validate directory existence
     if (!dir.exists(file.path(media_path))) warning("--------------------------------------------------\n", paste0("V","\U00E9","rifiez")," le ",paste0("d","\U00E9","pot "), " des ", paste0("m","\U00E9","dias"), ". ",  dput(media_path), " ", dput(media_path)," n'est pas un ",paste0("d","\U00E9","pot "), "valide.\n\n")
     
@@ -477,8 +485,8 @@ coleo_validate <- function(data, media_path = NULL) {
     }) |>
       range()
 
-    message(paste0("==================================================\n\nValidation finale ! \n",
-    if ("obs_species_taxa_name" %in% dat_names) paste0("\n- V\u00E9rifiez les lignes qui repr\u00E9sentent des campagnes vides : il y a ", no_obs, " lignes sans observations. Celles-ci entraineront une erreur lors de l'injection.\n"),
+    message(paste0("==================================================\n\nValidation diagnostique :\n",
+    if ("obs_species_taxa_name" %in% dat_names) paste0("\n- V\u00E9rifiez les lignes qui repr\u00E9sentent des campagnes vides : il y a ", no_obs, " lignes sans observations. Celles-ci entraineront une erreur lors de l'injection des observations.\n"),
     "\n- V\u00E9rifiez que l'intervalle des dates", paste0(" inject\u00E9", "es "), "correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", "), " se trouvent dans l'intervalle de", paste0(" l'ann\u00E9", "e "), range_year[1], " \u00E0 ", range_year[2], " du mois ", range_month[1], " \u00E0 ", range_month[2], " et du jour ", range_day[1], "  \u00E0 ", range_day[2], ".\n\n- Si les", paste0(" donn\u00E9", "es"), " sont bonnes et qu'aucun autre message n'apparait, vous pouvez", paste0(" proc\u00E9", "der"), " \u00e0 l'injection des", paste0(" donn\u00E9", "es."), '\n'))
   }
 
