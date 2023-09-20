@@ -450,7 +450,8 @@ coleo_validate <- function(data, media_path = NULL) {
     is_ndigits_valid <- all(cols_ndigits)
     is_na <- any(is.na(data[cols_date]))
 
-    if(!is_ndigits_valid | is_na) warning("--------------------------------------------------\nV\u00E9rifiez le format des valeurs de dates. Les dates doivent \u00EAtre du format YYYY-MM-DD.\n\n")
+    if(!is_ndigits_valid) warning("--------------------------------------------------\nV\u00E9rifiez le format des valeurs de dates. Les dates doivent \u00EAtre du format YYYY-MM-DD.\n\n")
+    if(is_na) warning("--------------------------------------------------\nCertaines valeurs de date sont manquantes ou NA. Les lignes sans valeurs dans les colonnes campaigns_opened_at et observations_date_obs ne seront pas injectées dans leurs tables respectives.\n\n")
   }
 
   
