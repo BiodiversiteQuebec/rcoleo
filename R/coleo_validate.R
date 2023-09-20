@@ -511,8 +511,8 @@ coleo_validate <- function(data, media_path = NULL) {
     name_id <- paste0(newname, "_id")
     ### Add a unique value to each row
     data <- requests |>
-      dplyr::select(-inject_request) |>
-      dplyr::mutate(!!name_id := dplyr::row_number())
+      dplyr::select(-inject_request)
+    data[,name_id] <- 1:nrow(data)
     ### Select column names to keep
     old_names <- coleo_get_column_names(table)$column_name
     old_names <- old_names[!grepl("_id", old_names)]
