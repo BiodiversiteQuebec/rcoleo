@@ -4,10 +4,13 @@
 \alias{coleo_inject_cells}
 \title{Injection des cellules dans Coleo.}
 \usage{
-coleo_inject_cells(df)
+coleo_inject_cells(df, schema = "public")
 }
 \arguments{
 \item{df}{Un data.frame contenant une colonne \code{geom} de type polygon, cell_code et name.}
+
+\item{schema}{Schéma sur lequel faire la requête. Par défaut, le schéma
+public est utilisé.}
 }
 \description{
 Accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et

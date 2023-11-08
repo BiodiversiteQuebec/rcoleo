@@ -4,13 +4,16 @@
 \alias{coleo_inject}
 \title{Injecte un jeu de données dans Coleo.}
 \usage{
-coleo_inject(df, media_path = NULL)
+coleo_inject(df, media_path = NULL, schema = "public")
 }
 \arguments{
 \item{df}{Un data.frame validé par \code{\link[rcoleo]{coleo_validate}}}
 
 \item{media_path}{NULL par défault. Requis lorsqu'il y a des fichiers médias
 à injecter. Doit être le chemin local vers les fichiers médias à injecter.}
+
+\item{schema}{Schéma sur lequel faire la requête. Par défaut, le schéma
+public est utilisé.}
 }
 \value{
 Un message de succès ou d'échec de l'injection des lignes du

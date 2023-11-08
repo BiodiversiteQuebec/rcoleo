@@ -5,12 +5,15 @@
 \title{Injection des repères d'une campagne ADNe dans la table
 landmarks de coleo.}
 \usage{
-coleo_inject_adne_landmarks(df_id, campaign_type)
+coleo_inject_adne_landmarks(df_id, campaign_type, schema = "public")
 }
 \arguments{
 \item{df_id}{Un data.frame contenant une colonne campaign_id.}
 
 \item{campaign_type}{Type de la campagne. Doit être "ADNe".}
+
+\item{schema}{Schéma sur lequel faire la requête. Par défaut, le schéma
+public est utilisé.}
 }
 \value{
 Une data.frame avec une colonne landmark_X_id et une colonne pour
