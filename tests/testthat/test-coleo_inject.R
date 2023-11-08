@@ -1,205 +1,335 @@
-with_mock_dir("inject a test cell", {
+#############################################
+# Params
+#############################################
 
-  one_cell_list <- list(type = "Polygon",
-                        coordinates = list(
-                          list(c(-72.6689780388482, -37.8155440677891),
-                               c(-72.669795198413, -37.8164165487739))))
+# Function to generate a random cell
+random_cell <- function() {
 
-  # Test full injection process using coleo_inject
-  test_that("injection returns the correct response", {
-    expect_s3_class(coleo_inject(tibble::tibble(cell_code = "FFF_YYY",
-                                              name ="Morgoth",
-                                              geom = list(one_cell_list))),
-                    "data.frame")
-  })
+	# Define a set of words for the theme
+	theme_words <- c("hobbit", "elf", "dwarf", "wizard", "orc")
+	# Define a set of suffixes to add to the theme word
+	suffixes <- c("shire", "wood", "mountain", "forge", "keep")
+	# Define a set of prefixes to add to the theme word
+	prefixes <- c("Bilbo", "Gandalf", "Frodo", "Legolas", "Gimli")
 
-  one_cell_list <- list(type = "Polygon",
-                        coordinates = list(
-                          list(c(-79.340288, 48.511171),
-                               c(-79.451258, 48.4084),
-                               c(-79.5175150698258, 48.43971636114),
-                               c(-79.5176355352339, 48.5000133539952),
-                               c(-79.517581626098, 48.503401649012),
-                               c(-79.5175785798052, 48.5615006339734),
-                               c(-79.5175785437023, 48.5643904071127))))
+	# Generate a random name based on the theme
+	random_name <- paste0(sample(prefixes, 1), "'s ", sample(theme_words, 1), " of the ", sample(suffixes, 1))
 
-  # Test specific injection process using injection general
-  demo_test <- coleo_inject_general(cell_code = "FFF_XXX",
-                                    name ="Beleriad",
+	# Generate a random cell code
+	cell_code <- paste0(paste0(sample(LETTERS, 3), collapse = ""), "_", 
+						paste0(sample(LETTERS, 3), collapse = ""))
+	# Generate a random name
+	name <- paste0(sample(prefixes, 1), "'s ", sample(theme_words, 1), " of the ", sample(suffixes, 1))
+	# Generate geometry
+	geom <- list(type = "Polygon", 
+				coordinates = list(
+							list(c(-79.340288, 48.511171),
+								c(-79.451258, 48.4084),
+								c(-79.5175150698258, 48.43971636114),
+								c(-79.5176355352339, 48.5000133539952),
+								c(-79.517581626098, 48.503401649012),
+								c(-79.5175785798052, 48.5615006339734),
+								c(-79.5175785437023, 48.5643904071127)))
+	) # Return the coordinates as a list
+
+	# Return a tibble
+	return(tibble::tibble(cell_code = cell_code,
+							name = name,
+							geom = list(geom)))
+}
+
+
+#############################################
+# Test coleo_inject
+#############################################
+
+# Test that coleo_inject returns an output dataframe
+test_that("coleo_inject returns an output dataframe", {
+ 		output <- coleo_inject(random_cell(), schema = "coleo_test")
+ 	expect_s3_class(output, "data.frame")
+})
+
+# Test that coleo_inject performs a successful injection
+test_that("coleo_inject performs a successful injection", {
+  out <- coleo_inject(random_cell(), schema = "coleo_test")
+  expect_null(out$cell_error[[1]])
+})
+
+# Expect one dataframe with two row being returned
+test_that("coleo_inject injects all data", {
+
+	# Mock data
+	acoustique_data <- structure(list(
+			sites_site_code = c("139_87_H01", "139_87_H01"), campaigns_type = c("acoustique_chiroptères", "acoustique_chiroptères"), landmarks_lat = c(
+				45.00642,
+				45.00642
+			),
+			landmarks_lon = c(rnorm(1, mean = -73.81944, sd = 0.5), rnorm(1, mean = -73.81944, sd = 0.5)),
+			campaigns_opened_at = c("2018-04-24", "2018-04-24"), campaigns_closed_at = c("2018-04-25", "2018-04-25"),
+			devices_mic_ultra_code = c("SM3-42-5742", "SM3-42-5742"),
+			obs_species_taxa_name = c("Lasionycteris noctivagans", "Myotis lucifugus | Myotis septentrionalis | Myotis leibii"),
+			observations_is_valid = c(TRUE, TRUE),
+			observations_date_obs = c("2018-04-24", "2018-04-24"), obs_species_variable = c("présence", "présence"),
+			observations_time_obs = c("21:54:09", "21:47:31"),
+			efforts_time_start = c("19:52:30", "19:52:30"), efforts_time_finish = c("00:52:30", "00:52:30"),
+			efforts_recording_minutes = c(300L, 300L)
+			), 
+		row.names = 1:2, class = "data.frame")
+
+	# Perform injection
+	out_inject <- coleo_inject(acoustique_data, schema = "coleo_test")
+
+	# Expect a dataframe with two rows
+	expect_equal(nrow(out_inject), 2)
+
+	# Expect the right columns
+	expect_named(out_inject, c("campaign_id", "device_id", "site_id", "effort_id", "observations_efforts_lookup_id", 
+                            "landmark_id", "observations_landmarks_lookup_id", "obs_specie_id", 
+                            "observation_id", "campaign_error", "device_error", "effort_error", 
+                            "landmark_error", "observation_error", "observations_efforts_lookup_error", 
+                            "observations_landmarks_lookup_error", "obs_specie_error", "campaigns_closed_at", 
+                            "campaigns_opened_at", "campaigns_type", "devices_mic_ultra_code", 
+                            "efforts_recording_minutes", "efforts_time_finish", "efforts_time_start", 
+                            "landmarks_geom", "observations_date_obs", "observations_is_valid", 
+                            "observations_time_obs", "sites_site_code", "obs_species_taxa_name", 
+                            "obs_species_variable"))
+})
+
+
+#############################################
+# Test coleo_inject_general
+#############################################
+
+test_inject_general <- function(){
+  # Call the function with test data
+  test_cell <- random_cell()
+
+  # Prepare the request
+  demo_test <- coleo_inject_general(cell_code = test_cell$cell_code,
+                                    name = test_cell$name,
                                     endpoint = "cells",
-                                    geom = one_cell_list)
-  # demo_test$body
-  # httr2::req_dry_run(demo_test)
+                                    geom = test_cell$geom[[1]],
+                                    schema = "coleo_test")  
 
+  # Return the result
+  return(demo_test)
+}
+
+# Define the test for coleo_inject_general
+test_that("coleo_inject_general sends a valid request body", {
+  # Call the function with test data
+  demo_test <- test_inject_general()
+  # Perform the request
   demo_result <- httr2::req_perform(demo_test)
 
-  test_that("request body is a named list", {
-    expect_equal(names(demo_test$body$data), c("cell_code", "name", "geom"))
-    expect_equal(names(demo_test$body$data$geom), c("type", "coordinates"))
-    expect_type(demo_test$body$data, "list")
-  })
-
-  test_that("ID for new record is a number", expect_gt(coleo_extract_id(demo_result), 1L))
+  # Check that the request body is a named list
+  expect_equal(names(demo_test$body$data), c("cell_code", "name", "geom"))
+  expect_equal(names(demo_test$body$data$geom), c("type", "coordinates"))
+  expect_type(demo_test$body$data, "list")
+})
 
 
+#############################################
+# Test coleo_extract_id
+#
+# An integer value represented the generated
+# id is expected upon successful injection
+#############################################
+
+test_that("ID for new record is a number", {
+  # Call the function with test data
+  demo_test <- test_inject_general()
+  # Perform the request
+  demo_result <- httr2::req_perform(demo_test)
+
+  expect_gt(coleo_extract_id(demo_result), 1L)
+})
+
+
+#############################################
+# Test coleo_inject_general_df
+#############################################
+
+test_that("rowwise approach on a data frame yields the same output as a hand-crafted request", {
   ## create -- but don't perform -- the same request
-  injection_df <- tibble::tibble(cell_code = "FFF_XXX",
-                                 name ="Beleriad",
-                                 geom = list(one_cell_list))
+  test_cell <- random_cell()
+  injection_df <- tibble::tibble(cell_code = test_cell$cell_code,
+                                name = test_cell$name,
+                                geom = test_cell$geom)
+
+  demo_test <- coleo_inject_general(cell_code = test_cell$cell_code,
+                                    name = test_cell$name,
+                                    endpoint = "cells",
+                                    geom = test_cell$geom[[1]],
+                                    schema = "coleo_test")
 
   one_post_in_df <- injection_df |>
     dplyr::rowwise() |>
     dplyr::mutate(req = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells")))
 
-  test_that("rowwise approach on a data frame yields the same output as a hand-crafted request", {
-    expect_equivalent(unlist(demo_test$body), unlist(one_post_in_df$req[[1]]$body))
-  })
-
-  test_that("duplicate request columns cause error", {
-
-
-    dup_requests <- one_post_in_df
-
-    dup_requests$req2 <- dup_requests$req
-
-    expect_error(coleo_injection_execute(dup_reqests))
-  })
-
-  test_that("injection returns the correct response", {
-
-    one_post_prep <- tibble::tibble(cell_code = "FFF_ZZZ",
-                                        name = "Doriath",
-                                        geom = list(one_cell_list)) |>
-      dplyr::rowwise() |>
-      dplyr::mutate(req = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells")))
-
-
-    one_post_response <- one_post_prep |> coleo_injection_execute()
-
-
-    expect_true(all(c("result", "error", "success") %in% names(one_post_response)))
-    expect_s3_class(one_post_response$result[[1]], "httr2_response")
-    expect_equal(one_post_response$success, TRUE)
-
-  })
-
-  if (FALSE) {
-    # this does NOT work, because of the way that cur_data_all passes in the
-    # information. It passes in the geom as a list (which we don't want)
-
-    one_post_request <- coleo_inject_general_df(injection_df, endpoint = "cells")
-  }
-
+  # Test
+  expect_equivalent(unlist(demo_test$body), unlist(one_post_in_df$req[[1]]$body))
 })
 
 
-with_mock_dir("injection_prep works", {
-  test_that("injection prep and processing works", {
+#############################################
+# Test coleo_injection_execute
+#############################################
 
-    fake_land <- tibble::tribble(
-      ~campaign_id, ~trap_id, ~landmark_id, ~observation_date, ~observation_is_valid, ~sample_code, ~ref_taxa_rank, ~ref_taxa_tsn, ~ref_taxa_name, ~observation_taxa_name, ~observation_variable, ~observation_value, ~observation_notes,
-      862L,      49L,         614L,      "2020-06-30",                  TRUE,  "2020-0097",  "sous-classe",            NA, "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,                 NA,
-      862L,      49L,         614L,      "2020-06-30",                  TRUE,  "2020-0097",       "espèce",            NA, "Fake_beetleB",         "Fake_beetleB",           "abondance",                  6,                 NA,
-      862L,      49L,         614L,      "2020-06-30",                  TRUE,  "2020-0097",       "espèce",            NA, "Fake_beetleC",         "Fake_beetleC",           "abondance",                 10,                 NA,
-      862L,      49L,         614L,      "2020-06-30",                  TRUE,  "2020-0097",       "espèce",            NA, "Fake_beetleR",         "Fake_beetleR",           "abondance",                 11,                 NA,
-      862L,      50L,         615L,      "2020-06-30",                  TRUE,  "2020-0098",       "classe",            NA, "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,                 NA,
-      862L,      50L,         615L,      "2020-06-30",                  TRUE,  "2020-0098",       "classe",            NA, "Fake_beetleG",         "Fake_beetleG",           "abondance",                  1,                 NA,
-      862L,      50L,         615L,      "2020-06-30",                  TRUE,  "2020-0098",       "espèce",            NA, "Fake_beetleH",         "Fake_beetleH",           "abondance",                  1,                 NA,
-      863L,      51L,         616L,      "2020-07-21",                  TRUE,  "2020-0105",  "sous-classe",            NA, "Fake_beetleL",         "Fake_beetleL",           "abondance",                  3,                 NA
-    )
+test_that("coleo_injection_execute returns an error when request columns are duplicated", {
+ test_cell <- random_cell()
+  injection_df <- tibble::tibble(cell_code = test_cell$cell_code,
+                                name = test_cell$name,
+                                geom = test_cell$geom)
 
-    formatted_injections <- fake_land |> coleo_injection_prep("samples")
+  demo_test <- coleo_inject_general(cell_code = test_cell$cell_code,
+                                    name = test_cell$name,
+                                    endpoint = "cells",
+                                    geom = test_cell$geom[[1]],
+                                    schema = "coleo_test")
 
-    expect_s3_class(formatted_injections$inject_request[[1]], "httr2_request")
+  one_post_in_df <- injection_df |>
+    dplyr::rowwise() |>
+    dplyr::mutate(req = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells")))
 
-    # could also test content
+  dup_requests <- one_post_in_df
+  dup_requests$req2 <- dup_requests$req
 
+  expect_error(coleo_injection_execute(dup_reqests))
+})
 
+test_that("coleo_injection_execute returns the correct response", {
+  # Prepare the request
+  one_post_prep <- random_cell() |>
+    dplyr::rowwise() |>
+    dplyr::mutate(req = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells", schema = "coleo_test")))
+  
+  # Perform the request
+  one_post_response <- one_post_prep |> coleo_injection_execute()
 
-  })
-
-  test_that("finalizing function extracts the right thing", {
-
-   response_from_api <- structure(list(campaign_id = 862L, trap_id = 49L, landmark_id = 614L,
-    sample_code = "2020-0097", data = structure(list(structure(list(
-        observation_date = c("2020-06-30", "2020-06-30", "2020-06-30",
-        "2020-06-30"), observation_is_valid = c(TRUE, TRUE, TRUE,
-        TRUE), observation_taxa_name = c("Fake_beetleA",
-        "Fake_beetleB", "Fake_beetleC", "Fake_beetleR"), observation_variable = c("abondance",
-        "abondance", "abondance", "abondance"), observation_value = c(1,
-        6, 10, 11), observation_notes = structure(c(NA, NA, NA,
-        NA), class = "vctrs_unspecified")), row.names = c(NA,
-    -4L), class = c("tbl_df", "tbl", "data.frame"))), ptype = structure(list(
-        observation_date = character(0), observation_is_valid = logical(0),
-        observation_taxa_name = character(0),
-        observation_variable = character(0), observation_value = numeric(0),
-        observation_notes = structure(logical(0), class = "vctrs_unspecified")), class = c("tbl_df",
-    "tbl", "data.frame"), row.names = integer(0)), class = c("vctrs_list_of",
-    "vctrs_vctr", "list")), inject_request = list(structure(list(
-        url = "https://coleo.biodiversite-quebec.ca/api/v1/samples",
-        method = NULL, headers = list(Accept = "application/json",
-            `Content-Type` = "application/json", Authorization = "Bearer df9a563471baedb26dd9af3cc927b226be6fef1a1df233d83fb0aa3f338891e0",
-            useragent = "rcoleo"), body = list(data = list(campaign_id = 862L,
-            trap_id = 49L, landmark_id = 614L, sample_code = "2020-0097"),
-            type = "json", params = list(auto_unbox = TRUE, digits = 22,
-                null = "null")), fields = list(), options = list(),
-        policies = list(error_body = function (resp)
-        {
-            resp_json <- httr2::resp_body_json(resp)
-            server_message <- resp_json$message
-            error_message <- paste(resp_json$errors[[1]], collapse = ": ")
-            return(paste0(server_message, ": ", error_message))
-        })), class = "httr2_request")), result = list(structure(list(
-        method = "POST", url = "https://coleo.biodiversite-quebec.ca/api/v1/samples",
-        status_code = 201L, headers = structure(list(Server = "nginx/1.18.0 (Ubuntu)",
-            Date = "Sat, 12 Mar 2022 20:46:22 GMT", `Content-Type` = "application/json; charset=utf-8",
-            `Content-Length` = "170", Connection = "keep-alive",
-            `X-Powered-By` = "Express", `Access-Control-Allow-Origin` = "*",
-            Location = "/api/v1/samples/85", ETag = "W/\"aa-9hQysUBry8WJ+WyPrh6IyPy45GQ\""), class = "httr2_headers"),
-        body = as.raw(c(0x7b, 0x22, 0x69, 0x64, 0x22, 0x3a, 0x38,
-        0x35, 0x2c, 0x22, 0x74, 0x72, 0x61, 0x70, 0x5f, 0x69,
-        0x64, 0x22, 0x3a, 0x34, 0x39, 0x2c, 0x22, 0x73, 0x61,
-        0x6d, 0x70, 0x6c, 0x65, 0x5f, 0x63, 0x6f, 0x64, 0x65,
-        0x22, 0x3a, 0x22, 0x32, 0x30, 0x32, 0x30, 0x2d, 0x30,
-        0x30, 0x39, 0x37, 0x22, 0x2c, 0x22, 0x75, 0x70, 0x64,
-        0x61, 0x74, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x22, 0x3a,
-        0x22, 0x32, 0x30, 0x32, 0x32, 0x2d, 0x30, 0x33, 0x2d,
-        0x31, 0x32, 0x54, 0x32, 0x30, 0x3a, 0x34, 0x36, 0x3a,
-        0x32, 0x32, 0x2e, 0x33, 0x30, 0x32, 0x5a, 0x22, 0x2c,
-        0x22, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f,
-        0x61, 0x74, 0x22, 0x3a, 0x22, 0x32, 0x30, 0x32, 0x32,
-        0x2d, 0x30, 0x33, 0x2d, 0x31, 0x32, 0x54, 0x32, 0x30,
-        0x3a, 0x34, 0x36, 0x3a, 0x32, 0x32, 0x2e, 0x33, 0x30,
-        0x32, 0x5a, 0x22, 0x2c, 0x22, 0x64, 0x61, 0x74, 0x65,
-        0x5f, 0x73, 0x61, 0x6d, 0x70, 0x22, 0x3a, 0x6e, 0x75,
-        0x6c, 0x6c, 0x2c, 0x22, 0x6e, 0x6f, 0x74, 0x65, 0x73,
-        0x22, 0x3a, 0x6e, 0x75, 0x6c, 0x6c, 0x2c, 0x22, 0x74,
-        0x72, 0x61, 0x70, 0x49, 0x64, 0x22, 0x3a, 0x34, 0x39,
-        0x7d))), class = "httr2_response")), error = list(NULL),
-    success = TRUE), class = c("rowwise_df", "tbl_df", "tbl",
-"data.frame"), row.names = c(NA, -1L), groups = structure(list(
-    campaign_id = 862L, trap_id = 49L, landmark_id = 614L, sample_code = "2020-0097",
-    .rows = structure(list(1L), ptype = integer(0), class = c("vctrs_list_of",
-    "vctrs_vctr", "list"))), row.names = c(NA, -1L), class = c("tbl_df",
-"tbl", "data.frame")))
-
-   finalized_injection <- response_from_api |> coleo_injection_final()
+  # Tests
+  expect_true(all(c("result", "error", "success") %in% names(one_post_response)))
+  expect_s3_class(one_post_response$result[[1]], "httr2_response")
+  expect_equal(one_post_response$success, TRUE)
+})
 
 
-   # expect the new sample_id column
+#############################################
+# Test coleo_injection_prep
+#############################################
+
+test_that("coleo_injection_prep formats requests as an httr2 request", {
+
+  fake_land <- tibble::tribble(
+    ~campaign_id, ~trap_id, ~landmark_id, ~observation_date, ~observation_is_valid, ~sample_code, ~ref_taxa_rank, ~ref_taxa_tsn, ~ref_taxa_name, ~observation_taxa_name, ~observation_variable, ~observation_value, ~observation_notes,
+    862L,      49L,         614L,      "2020-06-30",                  TRUE,  "2020-0097",  "sous-classe",            NA, "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,                 NA,
+    862L,      49L,         614L,      "2020-06-30",                  TRUE,  "2020-0097",       "espèce",            NA, "Fake_beetleB",         "Fake_beetleB",           "abondance",                  6,                 NA,
+    862L,      49L,         614L,      "2020-06-30",                  TRUE,  "2020-0097",       "espèce",            NA, "Fake_beetleC",         "Fake_beetleC",           "abondance",                 10,                 NA,
+    862L,      49L,         614L,      "2020-06-30",                  TRUE,  "2020-0097",       "espèce",            NA, "Fake_beetleR",         "Fake_beetleR",           "abondance",                 11,                 NA,
+    862L,      50L,         615L,      "2020-06-30",                  TRUE,  "2020-0098",       "classe",            NA, "Fake_beetleA",         "Fake_beetleA",           "abondance",                  1,                 NA,
+    862L,      50L,         615L,      "2020-06-30",                  TRUE,  "2020-0098",       "classe",            NA, "Fake_beetleG",         "Fake_beetleG",           "abondance",                  1,                 NA,
+    862L,      50L,         615L,      "2020-06-30",                  TRUE,  "2020-0098",       "espèce",            NA, "Fake_beetleH",         "Fake_beetleH",           "abondance",                  1,                 NA,
+    863L,      51L,         616L,      "2020-07-21",                  TRUE,  "2020-0105",  "sous-classe",            NA, "Fake_beetleL",         "Fake_beetleL",           "abondance",                  3,                 NA
+  )
+
+  formatted_injections <- fake_land |> coleo_injection_prep("samples", schema = "coleo_test")
+
+  expect_s3_class(formatted_injections$inject_request[[1]], "httr2_request")
+
+  # could also test content
+})
+
+
+#############################################
+# Test coleo_injection_final
+#############################################
+
+test_that("finalizing function extracts the right thing", {
+	# Mock response from API
+   	response_from_api <- structure(list(campaign_id = 862L, trap_id = 49L, landmark_id = 614L,
+		sample_code = "2020-0097", data = structure(list(structure(list(
+			observation_date = c("2020-06-30", "2020-06-30", "2020-06-30",
+			"2020-06-30"), observation_is_valid = c(TRUE, TRUE, TRUE,
+			TRUE), observation_taxa_name = c("Fake_beetleA",
+			"Fake_beetleB", "Fake_beetleC", "Fake_beetleR"), observation_variable = c("abondance",
+			"abondance", "abondance", "abondance"), observation_value = c(1,
+			6, 10, 11), observation_notes = structure(c(NA, NA, NA,
+			NA), class = "vctrs_unspecified")), row.names = c(NA,
+		-4L), class = c("tbl_df", "tbl", "data.frame"))), ptype = structure(list(
+			observation_date = character(0), observation_is_valid = logical(0),
+			observation_taxa_name = character(0),
+			observation_variable = character(0), observation_value = numeric(0),
+			observation_notes = structure(logical(0), class = "vctrs_unspecified")), class = c("tbl_df",
+		"tbl", "data.frame"), row.names = integer(0)), class = c("vctrs_list_of",
+		"vctrs_vctr", "list")), inject_request = list(structure(list(
+			url = "https://coleo.biodiversite-quebec.ca/api/v1/samples",
+			method = NULL, headers = list(Accept = "application/json",
+				`Content-Type` = "application/json", Authorization = "Bearer df9a563471baedb26dd9af3cc927b226be6fef1a1df233d83fb0aa3f338891e0",
+				useragent = "rcoleo"), body = list(data = list(campaign_id = 862L,
+				trap_id = 49L, landmark_id = 614L, sample_code = "2020-0097"),
+				type = "json", params = list(auto_unbox = TRUE, digits = 22,
+					null = "null")), fields = list(), options = list(),
+			policies = list(error_body = function (resp)
+			{
+				resp_json <- httr2::resp_body_json(resp)
+				server_message <- resp_json$message
+				error_message <- paste(resp_json$errors[[1]], collapse = ": ")
+				return(paste0(server_message, ": ", error_message))
+			})), class = "httr2_request")), result = list(structure(list(
+			method = "POST", url = "https://coleo.biodiversite-quebec.ca/api/v1/samples",
+			status_code = 201L, headers = structure(list(Server = "nginx/1.18.0 (Ubuntu)",
+				Date = "Sat, 12 Mar 2022 20:46:22 GMT", `Content-Type` = "application/json; charset=utf-8",
+				`Content-Length` = "170", Connection = "keep-alive",
+				`X-Powered-By` = "Express", `Access-Control-Allow-Origin` = "*",
+				Location = "/api/v1/samples/85", ETag = "W/\"aa-9hQysUBry8WJ+WyPrh6IyPy45GQ\""), class = "httr2_headers"),
+			body = as.raw(c(0x7b, 0x22, 0x69, 0x64, 0x22, 0x3a, 0x38,
+			0x35, 0x2c, 0x22, 0x74, 0x72, 0x61, 0x70, 0x5f, 0x69,
+			0x64, 0x22, 0x3a, 0x34, 0x39, 0x2c, 0x22, 0x73, 0x61,
+			0x6d, 0x70, 0x6c, 0x65, 0x5f, 0x63, 0x6f, 0x64, 0x65,
+			0x22, 0x3a, 0x22, 0x32, 0x30, 0x32, 0x30, 0x2d, 0x30,
+			0x30, 0x39, 0x37, 0x22, 0x2c, 0x22, 0x75, 0x70, 0x64,
+			0x61, 0x74, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x22, 0x3a,
+			0x22, 0x32, 0x30, 0x32, 0x32, 0x2d, 0x30, 0x33, 0x2d,
+			0x31, 0x32, 0x54, 0x32, 0x30, 0x3a, 0x34, 0x36, 0x3a,
+			0x32, 0x32, 0x2e, 0x33, 0x30, 0x32, 0x5a, 0x22, 0x2c,
+			0x22, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f,
+			0x61, 0x74, 0x22, 0x3a, 0x22, 0x32, 0x30, 0x32, 0x32,
+			0x2d, 0x30, 0x33, 0x2d, 0x31, 0x32, 0x54, 0x32, 0x30,
+			0x3a, 0x34, 0x36, 0x3a, 0x32, 0x32, 0x2e, 0x33, 0x30,
+			0x32, 0x5a, 0x22, 0x2c, 0x22, 0x64, 0x61, 0x74, 0x65,
+			0x5f, 0x73, 0x61, 0x6d, 0x70, 0x22, 0x3a, 0x6e, 0x75,
+			0x6c, 0x6c, 0x2c, 0x22, 0x6e, 0x6f, 0x74, 0x65, 0x73,
+			0x22, 0x3a, 0x6e, 0x75, 0x6c, 0x6c, 0x2c, 0x22, 0x74,
+			0x72, 0x61, 0x70, 0x49, 0x64, 0x22, 0x3a, 0x34, 0x39,
+			0x7d))), class = "httr2_response")), error = list(NULL),
+		success = TRUE), class = c("rowwise_df", "tbl_df", "tbl",
+		"data.frame"), row.names = c(NA, -1L), groups = structure(list(
+			campaign_id = 862L, trap_id = 49L, landmark_id = 614L, sample_code = "2020-0097",
+			.rows = structure(list(1L), ptype = integer(0), class = c("vctrs_list_of",
+			"vctrs_vctr", "list"))), row.names = c(NA, -1L), class = c("tbl_df",
+		"tbl", "data.frame")))
+
+	# Estract ID and error messages from response
+   	finalized_injection <- response_from_api |> coleo_injection_final()
+
+
+   # Expect the new sample_id column
    expect_named(finalized_injection, c(
      "campaign_id", "landmark_id", "sample_id", "trap_id", "sample_error",
      "observation_date", "observation_is_valid", "observation_taxa_name",
      "observation_variable", "observation_value", "observation_notes",
      "samples_sample_code"
    ))
-   })
-
 })
 
-with_mock_dir("coleo_inject() works", {
+
+#############################################
+# Test coleo_injection_table
+#############################################
+
+test_that("coleo_inject_table return a data.frame and adds an id column", {
   # Mock data
-  data <- structure(list(
+  acoustique_data <- structure(list(
     sites_site_code = c("139_87_H01", "139_87_H01"), campaigns_type = c("acoustique_chiroptères", "acoustique_chiroptères"), landmarks_lat = c(
       45.00642,
       45.00642
@@ -215,45 +345,19 @@ with_mock_dir("coleo_inject() works", {
     efforts_recording_minutes = c(300L, 300L)
   ), row.names = 1:2, class = "data.frame")
 
-  # Perform injection
-  out_inject <- coleo_inject(data)
-
-  # Expect one dataframe with two row being returned
-  test_that("we get a dataframe of two rows", {
-    expect_equal(nrow(out_inject), 2)
-  })
-
-  # Expect injection of all tables
-  test_that("all tables injected", {
-    expect_named(out_inject, c("campaign_id", "device_id", "site_id", "effort_id", "observations_efforts_lookup_id", 
-                              "landmark_id", "observations_landmarks_lookup_id", "obs_specie_id", 
-                              "observation_id", "campaign_error", "device_error", "effort_error", 
-                              "landmark_error", "observation_error", "observations_efforts_lookup_error", 
-                              "observations_landmarks_lookup_error", "obs_specie_error", "campaigns_closed_at", 
-                              "campaigns_opened_at", "campaigns_type", "devices_mic_ultra_code", 
-                              "efforts_recording_minutes", "efforts_time_finish", "efforts_time_start", 
-                              "landmarks_geom", "observations_date_obs", "observations_is_valid", 
-                              "observations_time_obs", "sites_site_code", "obs_species_taxa_name", 
-                              "obs_species_variable"))
-  })
-})
-
-# Test coleo_inject_table
-with_mock_dir("injection of one table", {
-  df_out <- coleo_inject_table(data, "campaigns")
-
-
-  test_that("return a data.frame", {expect_s3_class(df_out, class = "data.frame")})
-
-  test_that("id column is added", {
-    expect_named(df_out, c('campaign_id', 'site_id', 'campaign_error', 'campaigns_closed_at', 'campaigns_opened_at', 'campaigns_type', 'sites_site_code', 'landmarks_lat', 'landmarks_lon', 'devices_mic_ultra_code', 'obs_species_taxa_name', 'observations_is_valid', 'observations_date_obs', 'obs_species_variable', 'observations_time_obs', 'efforts_time_start', 'efforts_time_finish', 'efforts_recording_minutes'))}
-  )
+	# Inject campaigns table
+	df_out <- coleo_inject_table(acoustique_data, "campaigns", schema = "coleo_test")
+	
+	expect_s3_class(df_out, class = "data.frame")
+	expect_named(df_out, c('campaign_id', 'site_id', 'campaign_error', 'campaigns_closed_at', 'campaigns_opened_at', 'campaigns_type', 'sites_site_code', 'landmarks_lat', 'landmarks_lon', 'devices_mic_ultra_code', 'obs_species_taxa_name', 'observations_is_valid', 'observations_date_obs', 'obs_species_variable', 'observations_time_obs', 'efforts_time_start', 'efforts_time_finish', 'efforts_recording_minutes'))
 })
 
 
+#############################################
 # Test coleo_inject_mam_landmarks
-with_mock_dir("coleo_inject_mam_landmarks() works", {
+#############################################
 
+test_mam_injection <- function() {
   # Mock data
   data_mam <- structure(list(
     campaigns_type = c("mammifères", "mammifères"),
@@ -315,39 +419,52 @@ with_mock_dir("coleo_inject_mam_landmarks() works", {
   row.names = c(NA, -2L),
   class = "data.frame")
 
+	# Perform injection
+	df_camp <- coleo_inject_table(data_mam, "campaigns", schema = "coleo_test")
+	df_lures <- coleo_inject_table(df_camp, "lures", schema = "coleo_test")
+	df_cam <- coleo_inject_table(df_lures, "devices", schema = "coleo_test")
+	df_obs <- coleo_inject_table(df_lures, "observations", schema = "coleo_test")
+	df_id <- coleo_inject_mam_landmarks(df_obs, schema = "coleo_test")
+
+  # Return the data.frame
+  return(df_id)
+}
+
+
+# Check injection
+# - a data.frame is a list
+test_that("injection of landmarks return a data.frame", {
   # Perform injection
-  df_camp <- coleo_inject_table(data_mam, "campaigns")
-  df_lures <- coleo_inject_table(df_camp, "lures")
-  df_cam <- coleo_inject_table(df_lures, "devices")
-  df_obs <- coleo_inject_table(df_lures, "observations")
-  df_id <- coleo_inject_mam_landmarks(df_obs)
+  df_id <- test_mam_injection()
+	
+	# Check that the output is a data.frame
+	expect_type(df_id, "list")
+})
 
-  # Check injection
-  # - a data.frame is a list
-  test_that("injection of landmarks return a data.frame", expect_type(df_id, "list"))
+# Check that the data.frame contains lure_ids and lure_errors
+test_that("the data.frame contains lure_ids and lure_errors", {
+  # Perform injection
+  df_id <- test_mam_injection()
 
-  # Check that the data.frame contains lure_ids and lure_errors
-  test_that("the data.frame contains lure_ids and lure_errors",
-    expect_named(df_id,
-      c("campaign_id", "landmark_camera_id", "landmark_lure_id", "lure_id", 
-        "observation_id", "site_id", "campaign_error", "landmark_camera_error", 
-        "landmark_lure_error", "lure_error", "observation_error", "campaigns_closed_at", 
-        "campaigns_notes", "campaigns_opened_at", "campaigns_technicians", 
-        "campaigns_type", "devices_cam_code", "devices_cam_h_cm", "devices_sd_card_codes", 
-        "efforts_notes", "efforts_photo_count", "efforts_recording_minutes", 
-        "efforts_time_finish", "efforts_time_start", "landmark_id_appat", 
-        "landmark_id_appat", "landmarks_azimut_appat", "landmarks_azimut_camera", 
-        "landmarks_dbh_appat", "landmarks_dbh_camera", "landmarks_distance_appat", 
-        "landmarks_distance_unit_appat", "landmarks_geom_appat", "landmarks_geom_camera", 
-        "landmarks_notes_appat", "landmarks_notes_camera", "landmarks_taxa_name_camera", 
-        "landmarks_tree_code_camera", "landmarks_type_camera", "landmarks_type_camera_appat", 
-        "lures_installed_at", "lures_lure", "media_name", "media_og_extention", 
-        "media_og_format", "media_type", "obs_species_taxa_name", "obs_species_value", 
-        "obs_species_variable", "observation_error_appat", "observation_error_appat", 
-        "observations_date_obs", "observations_extra", "observations_is_valid", 
-        "observations_landmarks_lookup_error_camera", "observations_landmarks_lookup_id_camera", 
-        "observations_note", "observations_time_obs", "sites_site_code"
-      )
+  expect_named(df_id,
+    c("campaign_id", "landmark_camera_id", "landmark_lure_id", "lure_id", 
+      "observation_id", "site_id", "campaign_error", "landmark_camera_error", 
+      "landmark_lure_error", "lure_error", "observation_error", "campaigns_closed_at", 
+      "campaigns_notes", "campaigns_opened_at", "campaigns_technicians", 
+      "campaigns_type", "devices_cam_code", "devices_cam_h_cm", "devices_sd_card_codes", 
+      "efforts_notes", "efforts_photo_count", "efforts_recording_minutes", 
+      "efforts_time_finish", "efforts_time_start", "landmark_id_appat", 
+      "landmark_id_appat", "landmarks_azimut_appat", "landmarks_azimut_camera", 
+      "landmarks_dbh_appat", "landmarks_dbh_camera", "landmarks_distance_appat", 
+      "landmarks_distance_unit_appat", "landmarks_geom_appat", "landmarks_geom_camera", 
+      "landmarks_notes_appat", "landmarks_notes_camera", "landmarks_taxa_name_camera", 
+      "landmarks_tree_code_camera", "landmarks_type_camera", "landmarks_type_camera_appat", 
+      "lures_installed_at", "lures_lure", "media_name", "media_og_extention", 
+      "media_og_format", "media_type", "obs_species_taxa_name", "obs_species_value", 
+      "obs_species_variable", "observation_error_appat", "observation_error_appat", 
+      "observations_date_obs", "observations_extra", "observations_is_valid", 
+      "observations_landmarks_lookup_error_camera", "observations_landmarks_lookup_id_camera", 
+      "observations_note", "observations_time_obs", "sites_site_code"
     )
   )
 })

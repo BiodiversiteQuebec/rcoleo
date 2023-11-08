@@ -5,10 +5,13 @@
 \title{Injection des repères d'une campagne mammifères dans la table
 landmarks de coleo.}
 \usage{
-coleo_inject_mam_landmarks(df_id)
+coleo_inject_mam_landmarks(df_id, schema = "public")
 }
 \arguments{
 \item{df_id}{Un data.frame contenant une colonne campaign_id.}
+
+\item{schema}{Schéma sur lequel faire la requête. Par défaut, le schéma
+public est utilisé.}
 }
 \value{
 Une data.frame avec une colonne landmark_X_id et une colonne pour

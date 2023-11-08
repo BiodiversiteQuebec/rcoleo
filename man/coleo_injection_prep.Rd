@@ -4,12 +4,15 @@
 \alias{coleo_injection_prep}
 \title{Prépare un jeu de données pour l'injection dans Coleo.}
 \usage{
-coleo_injection_prep(df, db_table)
+coleo_injection_prep(df, db_table, schema = "public")
 }
 \arguments{
 \item{df}{Un data.frame formaté par \code{\link[rcoleo]{coleo_prep_input_data}}.}
 
 \item{db_table}{La table de la base de données coleo dans laquelle les données doivent être injectées.}
+
+\item{schema}{Schéma sur lequel faire la requête. Par défaut, le schéma
+public est utilisé.}
 }
 \value{
 Le même data.frame, avec une colonne supplémentaire qui contient la requête httr2. NOTE - le data.frame est retourné \code{rowwise} pour faciliter l'injection.

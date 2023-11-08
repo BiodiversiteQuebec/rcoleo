@@ -4,10 +4,13 @@
 \alias{coleo_inject_ref_species}
 \title{Injection des colonnes taxa_names dans la table ref_species de coleo.}
 \usage{
-coleo_inject_ref_species(taxa_col)
+coleo_inject_ref_species(taxa_col, schema = "public")
 }
 \arguments{
 \item{taxa_col}{Un vecteur de taxa_names à injecter.}
+
+\item{schema}{Schéma sur lequel faire la requête. Par défaut, le schéma
+public est utilisé.}
 }
 \description{
 Accepte un vecteur de noms de taxons et performe l'injection de la table

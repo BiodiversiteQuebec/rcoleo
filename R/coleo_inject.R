@@ -7,6 +7,8 @@
 #' @param df Un data.frame validé par \code{\link[rcoleo]{coleo_validate}}
 #' @param media_path NULL par défault. Requis lorsqu'il y a des fichiers médias
 #' à injecter. Doit être le chemin local vers les fichiers médias à injecter.
+#' @param schema Schéma sur lequel faire la requête. Par défaut, le schéma
+#' public est utilisé.
 #'
 #' @return Un message de succès ou d'échec de l'injection des lignes du
 #' data.frame par table et le data.frame retourné par
@@ -14,7 +16,7 @@
 
 #' @export
 
-coleo_inject <- function(df, media_path = NULL) {
+coleo_inject <- function(df, media_path = NULL, schema = 'public') {
   #--------------------------------------------------------------------------
   # 0. Injection process for cells and sites
   # - data <- coleo_read_shape(fileName)
@@ -29,14 +31,14 @@ coleo_inject <- function(df, media_path = NULL) {
          dplyr::mutate(geom = list(geojsonsf::sf_geojson(sf::st_sf(geom)))) |>
         tibble::as_tibble()
     }
-    df_id <- coleo_inject_cells(df)
+    df_id <- coleo_inject_cells(df, schema = schema)
 
     return(df_id)
   }
 
   # Sites
   if("sites_type" %in% colnames(df)) {
-    df_id <- coleo_inject_table(df, "sites")
+    df_id <- coleo_inject_table(df, "sites", schema = schema)
 
     # plumber-api trigger to update portal data
     browseURL("https://coleo.biodiversite-quebec.ca/r-update-api/update/all")
@@ -64,7 +66,7 @@ coleo_inject <- function(df, media_path = NULL) {
   #--------------------------------------------------------------------------
   # 2. Inject campaigns table
   #--------------------------------------------------------------------------
-  df_id <- coleo_inject_table(df, "campaigns")
+  df_id <- coleo_inject_table(df, "campaigns", schema = schema)
 
   if(!any(sapply(df_id$campaign_error, is.null))) {
     cat("Only data for successfully injected campaigns are injected in the next tables. These following lines failed to inject: ", paste0(which(!sapply(df_id$campaign_error, is.null)), collapse = ", "), "\n")
@@ -113,7 +115,7 @@ coleo_inject <- function(df, media_path = NULL) {
 
     } else {
       ## Regular table injections
-      df_id <- coleo_inject_table(df_id, table)
+      df_id <- coleo_inject_table(df_id, table, schema = schema)
     }
   }
 
@@ -256,12 +258,14 @@ coleo_injection_execute <- function(df){
 #'
 #' @param df Un data.frame formaté par \code{\link[rcoleo]{coleo_prep_input_data}}.
 #' @param db_table La table de la base de données coleo dans laquelle les données doivent être injectées.
+#' @param schema Schéma sur lequel faire la requête. Par défaut, le schéma
+#' public est utilisé.
 #' 
 #' @return Le même data.frame, avec une colonne supplémentaire qui contient la requête httr2. NOTE - le data.frame est retourné \code{rowwise} pour faciliter l'injection.
 #' 
 #' @export
 
-coleo_injection_prep <- function(df, db_table){
+coleo_injection_prep <- function(df, db_table, schema = 'public'){
 
   # prep the data by nesting unneeded columns, renaming those remaining, and adding these to a request
 
@@ -276,18 +280,18 @@ coleo_injection_prep <- function(df, db_table){
 
     df_prep <- df |>
       coleo_prep_input_data(db_table) |>
-      dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::across(dplyr::any_of(colnames_of_tbl)), endpoint = db_table)))
+      dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::across(dplyr::any_of(colnames_of_tbl)), endpoint = db_table, schema = schema)))
 
   } else if (db_table == "ref_species") {
     # ref_species is the only table where the table name and the endpoint name are NOT THE SAME
     # here we hard-code the difference. This lets us stay with the convention of using the table name as the argument (not the endpoint name)
     df_prep <- df |>
       coleo_prep_input_data(db_table) |>
-      dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "taxa")))
+      dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "taxa", schema = schema)))
   } else {
     df_prep <- df |>
       coleo_prep_input_data(db_table) |>
-      dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = db_table)))
+      dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = db_table, schema = schema)))
 
   }
 
@@ -400,16 +404,17 @@ injection_reponse_message <- function(table, response) {
 #' @param df_id Un data.frame validé par \code{\link[rcoleo]{coleo_validate}}
 #' et contenant les id des lignes injectées dans la table campaigns.
 #' @param table Une table de coleo où inecter les données.
+#' @param schema Schéma sur lequel faire la requête.
 #'
 #' @return Le même data.frame, avec les id des lignes injectées dans la table
 #' et une colonne pour les erreurs.
 #'
-coleo_inject_table <- function(df_id, table) {
+coleo_inject_table <- function(df_id, table, schema = 'public') {
   #--------------------------------------------------------------------------
   # 1. Prep request
   #--------------------------------------------------------------------------
   requests <- df_id |>
-      coleo_injection_prep(db_table = table)
+      coleo_injection_prep(db_table = table, schema = schema)
 
   #--------------------------------------------------------------------------
   # 2. Requests executions
@@ -446,16 +451,18 @@ coleo_inject_table <- function(df_id, table) {
 #' \code{\link[rcoleo]{coleo_injection_final}}.
 #'
 #' @param df Un data.frame contenant une colonne `geom` de type polygon, cell_code et name.
+#' @param schema Schéma sur lequel faire la requête. Par défaut, le schéma
+#' public est utilisé.
 #'
 #' @export
-coleo_inject_cells <- function(df) {
+coleo_inject_cells <- function(df, schema = 'public') {
   #--------------------------------------------------------------------------
   # 1. Prep request
   #--------------------------------------------------------------------------
   requests <- df |>
     dplyr::rowwise() |>
     dplyr::mutate(inject_request = list(
-      coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells")
+      coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells", schema = schema)
     ))
   #--------------------------------------------------------------------------
   # 2. Requests executions
@@ -559,11 +566,13 @@ coleo_inject_media <- function(df_id, server_dir = "observation", file_dir) {
 #' La fonction est utilisée par \code{\link[rcoleo]{coleo_inject}}.
 #'
 #' @param df_id Un data.frame contenant une colonne campaign_id.
+#' @param schema Schéma sur lequel faire la requête. Par défaut, le schéma
+#' public est utilisé.
 #'
 #' @return Une data.frame avec une colonne landmark_X_id et une colonne pour
 #' les landmark_X_error.
 #'
-coleo_inject_mam_landmarks <- function(df_id) {
+coleo_inject_mam_landmarks <- function(df_id, schema = 'public') {
   #--------------------------------------------------------------------------
   # 1. Inject taxa names in ref_species table for camera landmark
   #--------------------------------------------------------------------------
@@ -580,7 +589,7 @@ coleo_inject_mam_landmarks <- function(df_id) {
   names(df_camera)[names(df_camera) == "lure_id"] <- "lure_id_appat"
   # Prep requests
   requests <- df_camera |>
-    coleo_injection_prep(db_table = "landmarks")
+    coleo_injection_prep(db_table = "landmarks", schema = schema)
   # Injection
   response <- coleo_injection_execute(requests) # Real thing
   # Output
@@ -590,7 +599,7 @@ coleo_inject_mam_landmarks <- function(df_id) {
     coleo_injection_final()
   
   # Inject camera landmark into observation_landmarks_lookup table
-  df_id <- coleo_inject_table(df_id, "observations_landmarks_lookup")
+  df_id <- coleo_inject_table(df_id, "observations_landmarks_lookup", schema = schema)
 
   # Bring back `lure_id` column name
   names(df_id)[names(df_id) == "lure_id_appat"] <- "lure_id"
@@ -611,7 +620,7 @@ coleo_inject_mam_landmarks <- function(df_id) {
   names(df_appat)[names(df_appat) == "device_id"] <- "device_id_camera"
   # Prep requests
   requests <- df_appat |>
-    coleo_injection_prep(db_table = "landmarks")
+    coleo_injection_prep(db_table = "landmarks", schema = schema)
   # Injection
   response <- coleo_injection_execute(requests) # Real thing
   # Output
@@ -621,7 +630,7 @@ coleo_inject_mam_landmarks <- function(df_id) {
     coleo_injection_final()
   
   # Inject camera landmark into observation_landmarks_lookup table
-  df_id <- coleo_inject_table(df_id, "observations_landmarks_lookup")
+  df_id <- coleo_inject_table(df_id, "observations_landmarks_lookup", schema = schema)
 
   # Bring back `device_id` column name
   names(df_id)[names(df_id) == "device_id_camera"] <- "device_id"
@@ -656,17 +665,19 @@ coleo_inject_mam_landmarks <- function(df_id) {
 #'
 #' @param df_id Un data.frame contenant une colonne campaign_id.
 #' @param campaign_type Type de la campagne. Doit être "ADNe".
+#' @param schema Schéma sur lequel faire la requête. Par défaut, le schéma
+#' public est utilisé.
 #'
 #' @return Une data.frame avec une colonne landmark_X_id et une colonne pour
 #' les landmark_X_error.
 #'
-coleo_inject_adne_landmarks <- function(df_id, campaign_type) {
+coleo_inject_adne_landmarks <- function(df_id, campaign_type, schema = 'public') {
   # Obervations at the lake scale for "ADNe" campaigns do not have landmarks
   # Landmarks are injected even if there is no data with NA lat lon
   # It is necessary to skip their injection
   which_lac <- df_id$observations_extra_value_1 == "lac"
   no_lake_id <- df_id[!which_lac,] |>
-    coleo_inject_table(table = "landmarks")
+    coleo_inject_table(table = "landmarks", schema = schema)
 
   # Reassemble the dataframes
   with_lac <- df_id[which_lac,]
@@ -696,8 +707,10 @@ coleo_inject_adne_landmarks <- function(df_id, campaign_type) {
 #' \code{\link[rcoleo]{coleo_inject_mam_landmarks}}.
 #'
 #' @param taxa_col Un vecteur de taxa_names à injecter.
+#' @param schema Schéma sur lequel faire la requête. Par défaut, le schéma
+#' public est utilisé.
 #'
-coleo_inject_ref_species <- function(taxa_col) {
+coleo_inject_ref_species <- function(taxa_col, schema = 'public') {
   # Remove duplicated names
   taxa_col <- as.data.frame(taxa_col)
   taxa_col <- taxa_col[!duplicated(taxa_col),] |>
@@ -706,7 +719,7 @@ coleo_inject_ref_species <- function(taxa_col) {
 
   if (length(taxa_col) > 0) {
     taxa_col |>
-      coleo_injection_prep(db_table = "ref_species") |>
+      coleo_injection_prep(db_table = "ref_species", schema = schema) |>
       coleo_injection_execute()
   }
 }

@@ -4,13 +4,15 @@
 \alias{coleo_inject_table}
 \title{Injection des données dans une table de Coleo.}
 \usage{
-coleo_inject_table(df_id, table)
+coleo_inject_table(df_id, table, schema = "public")
 }
 \arguments{
 \item{df_id}{Un data.frame validé par \code{\link[rcoleo]{coleo_validate}}
 et contenant les id des lignes injectées dans la table campaigns.}
 
 \item{table}{Une table de coleo où inecter les données.}
+
+\item{schema}{Schéma sur lequel faire la requête.}
 }
 \value{
 Le même data.frame, avec les id des lignes injectées dans la table
