@@ -168,9 +168,10 @@ coleo_validate <- function(data, media_path = NULL) {
     # Validate directory existence
     if (!dir.exists(file.path(media_path))) warning("--------------------------------------------------\n", paste0("V","\U00E9","rifiez")," le ",paste0("d","\U00E9","pot "), " des ", paste0("m","\U00E9","dias"), ". ",  dput(media_path), " ", dput(media_path)," n'est pas un ",paste0("d","\U00E9","pot "), "valide.\n\n")
     
+    photos <- dir(media_path)
     media_exists <- sapply(data$media_name[!is.na(data$obs_species_taxa_name)], function(file) {
-      file.exists(paste0(media_path, file))
-    })
+      file %in% photos
+      })
 
     if(any(!media_exists)) warning("--------------------------------------------------\n", paste0("V","\U00E9","rifiez")," les noms des ", paste0("m","\U00E9","dias"), " aux lignes ",  paste(which(!media_exists), collapse = ", "), " de la colonne media_name. Cette colonne contient des noms qui ne correspondent à aucun document dans le ", paste0("d","\U00E9","pot "), dput(media_path),".\n\n")
   }
