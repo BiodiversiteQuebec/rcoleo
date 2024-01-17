@@ -137,6 +137,12 @@ test_that("coleo_validate", {
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez le format des valeurs d'heure*")
 
+  ## Test that Na values in time columns are detected
+  dat_test <- dat
+
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "Certaines valeurs de date sont manquantes ou NA*")
+
   ## Test that date format respects the YYYY-MM-DD convention
   dat_test <- dat
   dat_test$observations_date_obs <- "95-05-15"
@@ -145,14 +151,12 @@ test_that("coleo_validate", {
                          regexp = "Vérifiez le format des valeurs de dates.*")
 
   ## Test that the range of dates are returned
-  dat_test <- dat
+  dat_test <- dat[-1,]
 
   testthat::expect_message(coleo_validate(dat_test),
                          regexp = "*Vérifiez que l'intervalle des dates injectées correspond aux attentes.*")
 
   ## Test that number of entries per table is correct
-  dat_test <- dat
-
   testthat::expect_message(coleo_validate(dat_test),
                          regexp = "*Résumé des injections par table*")
   testthat::expect_message(coleo_validate(dat_test), regexp = "*campaigns : 1*")
