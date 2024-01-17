@@ -637,7 +637,7 @@ coleo_inject_mam_landmarks <- function(df_id, schema = 'public') {
 
   # Rename appat columns
   which_appat <- grepl("landmarks", names(df_id)) & !grepl("_camera", names(df_id))
-  names(df_id)[which_appat] <- paste0(names(df_id)[which_camera], "_appat")
+  names(df_id)[which_appat] <- paste0(names(df_id)[which_appat], "_appat")
 
   names(df_id)[names(df_id) == "landmark_id"] <- "landmark_lure_id"
   names(df_id)[names(df_id) == "landmark_error"] <- "landmark_lure_error"
