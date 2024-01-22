@@ -92,12 +92,19 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
     # Case-specific injections
     if (campaign_type == "mammif\u00e8res" & table == "landmarks") {
       ## Landmarks table for "mammifères" campaigns
+      ## - observations is injected before landmarks
       ## - observations_landmarks_lookup table is injected in this step
+      df_id <- coleo_inject_table(df_id, "observations", schema = schema)
       df_id <- coleo_inject_mam_landmarks(df_id)
 
     } else if (campaign_type == "mammif\u00e8res" & table == "observations_landmarks_lookup") {
       ## observations_landmarks_lookup table for "mammifères" campaigns
       ## is injected in the previous step
+      next
+
+    } else if (campaign_type == "mammif\u00e8res" & table == "observations") {
+      ## observations table for "mammifères" campaigns
+      ## is injected before the landmarks table, in the previous step
       next
 
     } else if (table == "media") {
@@ -525,9 +532,9 @@ coleo_inject_media <- function(df_id, server_dir = "observation", file_dir) {
         ## Error body
         httr2::req_error(body = coleo_error_message) |>
         ## Send file
-        httr2::req_body_multipart(list(
+        httr2::req_body_multipart(
           media = curl::form_file(paste0(file_dir, "/", media_name)),
-          type = "image"))
+          type = "image")
     ))
 
   #--------------------------------------------------------------------------
