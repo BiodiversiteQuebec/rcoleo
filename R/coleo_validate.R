@@ -394,25 +394,31 @@ coleo_validate <- function(data, media_path = NULL) {
   if (length(cols_time) > 0) {
 
     # Check time format (HH:MM:SS) ----------------------------------------
-    # Na_cols
-    no_na_tbls <- c("cells", "sites", "campaigns", "efforts", "environments", "devices", "lures", "traps", "landmarks", "samples", "thermographs")
-    which_no_na_tbls <- sapply(no_na_tbls, function(x) grepl(x, dat_names) |> which()) |> unlist() |> unique()
-    na_cols <- dat_names[-which_no_na_tbls]
-    #
-    na_in_time <- c(FALSE)
     cols_format <- sapply(cols_time, function(x) {
       split <- strsplit(unlist(data[,x]), ":", fixed = TRUE)
       na <- is.na(split)
-      # Accept NAs in certain cols when campaign is empty
-      na_in_time <- ifelse(x %in% na_cols, c(na_in_time, FALSE), c(na_in_time, any(na)))
+      # Accept NAs
+      # na_in_time <- c(na_in_time, any(na))
       split <- split[!na]
+      # If there is no time, return TRUE
+      if (length(split) == 0) return(TRUE)
+      # Else, check if all time have 3 parts (hour, minute, second)
       time_ndigits <- sapply(split, nchar)
       possibly_time_digits(time_ndigits)
     })
     is_time_format <- all(cols_format)
-    is_time_na <- any(na_in_time)
+    if(!all(cols_format)) warning("--------------------------------------------------\nV\u00E9rifiez le format des valeurs d'heure des colonnes ", dput(names(cols_format)[!cols_format]), ". L'heure doit etre du format \"HH:MM:SS\".\n\n")
 
-    if(!is_time_format | is_time_na) warning("--------------------------------------------------\nV\u00E9rifiez le format des valeurs d'heure. L'heure doit etre du format \"HH:MM:SS\".\n\n")
+    # Check if there is NAs ------------------------------------------------
+    na_in_time <- sapply(cols_time, function(x) {
+      split <- strsplit(unlist(data[,x]), ":", fixed = TRUE)
+      na <- is.na(split)
+      any(na)
+    })
+    if("observations_time_obs" %in% names(na_in_time)){
+      which_time_obs <- which("observations_time_obs" == names(na_in_time))
+      if(na_in_time[which_time_obs]) warning("--------------------------------------------------\nCertaines valeurs de temps sont manquantes ou NA. Les lignes sans valeurs dans la colonne observations_time_obs ne seront pas inject\u00E9es dans la table observations.\n\n")
+    }
   }
 
 

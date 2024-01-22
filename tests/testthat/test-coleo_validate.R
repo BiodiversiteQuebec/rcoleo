@@ -10,6 +10,7 @@ dat <- data.frame(stringsAsFactors = FALSE,
                   campaigns_opened_at = c("2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24", "2018-05-24"),
                   observations_is_valid = c(NA, TRUE, TRUE, TRUE, TRUE, TRUE),
                   obs_species_taxa_name = c(NA, "Camponotus pennsylvanicus","Ceraticelus laetabilis","Insecta","Insecta","Trochosa terricola"),
+                  obs_species_parent_taxa_name = c(NA, "Insecta","Insecta","Insecta","Insecta","Insecta"),
                   obs_species_variable = c(NA, "abondance","abondance","abondance","abondance","abondance"),
                   obs_species_value = c(NA, 2, 2, 1, 4, 1))
 
@@ -56,7 +57,7 @@ test_that("coleo_validate", {
   ## taxonomic level equal to or inferior to the observation are NA in 
   ## "empty" campaigns
   dat_test <- dat
-  dat_test$ref_species_rank[1] <- "espèce"
+  dat_test$obs_species_parent_taxa_name[1] <- "Insecta"
 
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez les lignes sans observation.*")
@@ -137,6 +138,12 @@ test_that("coleo_validate", {
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez le format des valeurs d'heure*")
 
+  ## Test that Na values in time columns are detected
+  dat_test <- dat
+
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "Certaines valeurs de date sont manquantes ou NA*")
+
   ## Test that date format respects the YYYY-MM-DD convention
   dat_test <- dat
   dat_test$observations_date_obs <- "95-05-15"
@@ -145,14 +152,12 @@ test_that("coleo_validate", {
                          regexp = "Vérifiez le format des valeurs de dates.*")
 
   ## Test that the range of dates are returned
-  dat_test <- dat
+  dat_test <- dat[-1,]
 
   testthat::expect_message(coleo_validate(dat_test),
                          regexp = "*Vérifiez que l'intervalle des dates injectées correspond aux attentes.*")
 
   ## Test that number of entries per table is correct
-  dat_test <- dat
-
   testthat::expect_message(coleo_validate(dat_test),
                          regexp = "*Résumé des injections par table*")
   testthat::expect_message(coleo_validate(dat_test), regexp = "*campaigns : 1*")
