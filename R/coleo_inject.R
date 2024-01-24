@@ -46,35 +46,41 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
     return(df_id)
   }
 
-  #--------------------------------------------------------------------------
+  #==========================================================================
   # 1. Extract tables to be injected
-  #--------------------------------------------------------------------------
+  #==========================================================================
   campaign_type <- unique(df$campaigns_type)
   tables <- coleo_return_required_tables(campaign_type)
 
-  # Remove observations_lookup table for vegetation campaigns that do not have efforts
-  # or landmarks
-  ## observations_efforts_lookup
-  if (campaign_type == "v\u00e9g\u00e9tation_transect" & !any(grepl("efforts", names(df)))) {
-    tables <- tables[!tables %in% "observations_efforts_lookup"]
-  }
-  ## observations_landmarks_lookup
-  if (campaign_type == "v\u00e9g\u00e9tation_transect" & !any(grepl("landmarks", names(df)))) {
-    tables <- tables[!tables %in% "observations_landmarks_lookup"]
-  }
-
-  #--------------------------------------------------------------------------
+  #==========================================================================
   # 2. Inject campaigns table
-  #--------------------------------------------------------------------------
-  df_id <- coleo_inject_table(df, "campaigns", schema = schema)
+  #
+  # - Campaigns table are injected differently for mammifères campaigns
+  #==========================================================================
+  if (campaign_type == "v\u00e9g\u00e9tation_transect") {
+    # Remove observations_lookup table for vegetation campaigns that do not have efforts
+    # or landmarks
+    ## observations_efforts_lookup
+    if (!any(grepl("efforts", names(df)))) {
+      tables <- tables[!tables %in% "observations_efforts_lookup"]
+    }
+    ## observations_landmarks_lookup
+    if (!any(grepl("landmarks", names(df)))) {
+      tables <- tables[!tables %in% "landmarks"]
+      tables <- tables[!tables %in% "observations_landmarks_lookup"]
+    }
+    df_id <- coleo_inject_vegetation_transect_campaigns(df)
+  } else {
+    df_id <- coleo_inject_table(df, "campaigns", schema = schema)
+  }
 
   if(!any(sapply(df_id$campaign_error, is.null))) {
     cat("Only data for successfully injected campaigns are injected in the next tables. These following lines failed to inject: ", paste0(which(!sapply(df_id$campaign_error, is.null)), collapse = ", "), "\n")
-    }
+  }
 
-  #--------------------------------------------------------------------------
+  #==========================================================================
   # 3. Inject other tables
-  #--------------------------------------------------------------------------
+  #==========================================================================
   for (table in tables[-1]) {
 
     # Injection of taxa_name in ref_species table
@@ -729,4 +735,83 @@ coleo_inject_ref_species <- function(taxa_col, schema = 'public') {
       coleo_injection_prep(db_table = "ref_species", schema = schema) |>
       coleo_injection_execute()
   }
+}
+
+
+#' Injection des campagnes végétation_transect dans la table campaigns de coleo.
+#'
+#' Les campagnes de transects de végétation nécessitent tout d'abord de vérifier si les campagnes existent.
+#' 
+#' Accepte un data.frame validé par \code{\link[rcoleo]{coleo_validate}} et performe
+#' l'injection de la table campaigns.
+#'
+#' La fonction est utilisée par \code{\link[rcoleo]{coleo_inject}}.
+#'
+#' @param df_id Un data.frame contenant les données de végétation_transect à injecter.
+#' @param schema Schéma sur lequel faire la requête.
+#'
+#' @return Une data.frame avec une colonne campaign_id et une colonne pour
+#' les campaign_error.
+#'
+coleo_inject_vegetation_transect_campaigns <- function(df_id, schema = 'public') {
+  # La distinction entre les nouvelles campagnes et celles déjà existantes est effectuée en utilisant les colonnes site_id, campaigns_opened_at et sites_site_code. On suppose que les techniciens sont les mêmes, car cette colonne n'est pas utilisée dans les critères d'unicité. Cela vise à limiter la duplication des campagnes dans coleo en cas de changements dans le formatage des noms.
+  # L'injection se fait en trois étapes :
+  #   1. Check if campaigns already exists in coleo
+  #   2. Inject campaigns that are not in coleo
+  #   3. Inject other tables
+
+  #-------------------------------------------------------------------------
+  # 1. Check if campaigns already exists in coleo
+  #-------------------------------------------------------------------------
+  # Get veg_campaigns in coleo
+  veg_campaigns <- coleo_request_general(endpoint = "campaigns", response = TRUE, schema = schema, "type" = "eq.végétation_transect")
+
+  # If no campaigns in coleo, inject all campaigns
+  if (nrow(veg_campaigns) == 0) return(coleo_inject_table(df_id, "campaigns", schema = schema))
+
+  # If campaigns in coleo, check if any in df_id
+  veg_campaigns <- subset(veg_campaigns, select = c(id, site_id, opened_at))
+
+  # Add site_code to veg_campaigns
+  site_code <- coleo_request_general(endpoint = "sites", response = TRUE, schema = schema, "id" = paste0("in.(",paste(veg_campaigns$site_id, collapse = ","), ")")) |>
+    dplyr::select(id, site_code)
+
+  # Join veg_campaigns and site_code
+  veg_campaigns <- veg_campaigns |>
+    dplyr::left_join(site_code, by = c("site_id" = "id")) |>
+    dplyr::rename(campaign_id = id, campaigns_opened_at = opened_at, sites_site_code = site_code)
+
+  # Check if existing veg_campaigns in df
+  df_c_id <- df_id |>
+    dplyr::left_join(veg_campaigns, by = c("sites_site_code", "campaigns_opened_at")) |>
+    as.data.frame()
+
+  #-------------------------------------------------------------------------
+  # 2. Isolate campaigns to be injected
+  #-------------------------------------------------------------------------
+  ## Isolate campaigns that are already in coleo
+  df_camp <- df_c_id[!is.na(df_c_id$campaign_id),] |>
+    dplyr::mutate(campaign_error = NA) |>
+    dplyr::relocate(campaign_id, site_id, campaign_error)
+  
+  ## Isolate campaigns that are not yet in coleo
+  df <- df_c_id[is.na(df_c_id$campaign_id),] |> subset(select=-campaign_id) |> subset(select=-site_id)
+
+  #-------------------------------------------------------------------------
+  # 3. Inject campaigns that are not in coleo
+  #-------------------------------------------------------------------------
+  if (any(is.na(df$campaign_id))) df_id <- coleo_inject_table(df, "campaigns", schema = schema)
+
+  #-------------------------------------------------------------------------
+  # 4. Bind all campaigns
+  #-------------------------------------------------------------------------
+  # Join df_id (injected campaigns) to df_camp (existing campaigns)
+  if (nrow(df) > 0) {
+    df_id <- dplyr::bind_rows(df_id, df_camp)
+  } else {
+    df_id <- df_camp
+  }
+
+  # Return the results
+  return(df_id)
 }

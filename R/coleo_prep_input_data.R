@@ -17,7 +17,7 @@
 coleo_prep_input_data <- function(df, db_table) {
 
   # Convert character NAs to actual NAs
-  df[df == "NA"] <- NA
+  # df[df == "NA"] <- NA
 
   # Add cell_id to sites table
   if (db_table == "sites") {
@@ -41,7 +41,8 @@ coleo_prep_input_data <- function(df, db_table) {
       dplyr::select(-sites_site_code, -coleo_id) |>
       dplyr::relocate(site_id) |>
       tidyr::unnest(cols = c(data)) |>
-      dplyr::ungroup()
+      dplyr::ungroup() |>
+      suppressMessages()
   }
 
   # Format extra columns

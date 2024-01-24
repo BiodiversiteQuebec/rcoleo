@@ -364,7 +364,7 @@ test_mam_injection <- function() {
     sites_site_code = c("97_90_F01", "97_90_F01"),
     campaigns_opened_at = c("2020-06-29", "2020-06-29"),
     campaigns_closed_at = c("2020-10-22", "2020-10-22"),
-    campaigns_technicians = list("Isabelle Dumais", "Isabelle Dumais"),
+    campaigns_technicians = list("I Dumais", "I Dumais"),
     campaigns_notes = c("time lapse", "mouvement"),
     efforts_recording_minutes = c(1000L, NA),
     efforts_photo_count = c(NA, 1001L),
@@ -468,4 +468,46 @@ test_that("the data.frame contains lure_ids and lure_errors", {
     "observations_note", "observations_time_obs", "sites_site_code"
     )
   )
+})
+
+
+#############################################
+# Test coleo_inject_vegetation_transect_campaigns
+#############################################
+
+test_veg_transect_injection <- function() {
+  # Mock data
+  data_vegetation_transect <- structure(list(campaigns_type = c("végétation_transect", "végétation_transect"),
+    sites_site_code = c("141_124_H01", "141_124_H01"),
+    campaigns_opened_at = c("2020-07-22", "2020-07-22"), 
+    campaigns_technicians = list(c("C Lang", "E Carignan"), c("C Lang", "E Carignan")),
+    efforts_samp_surf = c(100, 100),
+    efforts_samp_surf_unit = c("m2", "m2"), 
+    efforts_notes = c(NA_character_, NA_character_),
+    observations_date_obs = c("2020-07-22", "2020-07-22"),
+    observations_stratum = c("arbustive", "arbustive"), 
+    obs_species_taxa_name = c("Ilex mucronata", "Picea mariana"),
+    obs_species_variable = c("catégorie_recouvrement", "catégorie_recouvrement"),
+    obs_species_value_string = c("2", "3"),
+    observations_notes = c(NA_character_, NA_character_), 
+    obs_species_parent_taxa_name = c("Plantae", "Plantae")), 
+  row.names = 1:2,
+  class = "data.frame")
+
+  # Perform injection
+  df_camp <- coleo_inject_vegetation_transect_campaigns(data_vegetation_transect, schema = "coleo_test")
+}
+
+# Check injection
+# - a data.frame is a list
+test_that("injection of vegetation_transect campaigns return a data.frame", {
+  # Perform injection
+  df_id <- test_veg_transect_injection()
+	
+	# Check that the output is a data.frame
+	expect_type(df_id, "list")
+
+  # Check that the data.frame contains a campaign_id column
+  expect_true("campaign_id" %in% names(df_id))
+  expect_true(all(!is.na(df_id$campaign_id)))
 })
