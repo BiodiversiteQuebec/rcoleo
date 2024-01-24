@@ -162,6 +162,32 @@ test_that("coleo_validate", {
                          regexp = "*Résumé des injections par table*")
   testthat::expect_message(coleo_validate(dat_test), regexp = "*campaigns : 1*")
 
+  ## Test that the warning message includes the number of observations missing
+  dat_test <- dat
+  testthat::expect_match(missing_obs(dat_test, nvals = 6),
+                         regexp = "*1 lignes sans taxon observé entraineront un \u00E9chec d'injection)*")
+
+  ## Test that the warning message includes the number of vegetation campaigns already in coleo
+  dat_test <- structure(list(campaigns_type = c("végétation_transect", "végétation_transect"),
+    sites_site_code = c("141_124_H01", "141_124_H01"),
+    campaigns_opened_at = c("2020-07-22", "2020-07-22"), 
+    campaigns_technicians = list(c("C Lang", "E Carignan"), c("C Lang", "E Carignan")),
+    efforts_samp_surf = c(100, 100),
+    efforts_samp_surf_unit = c("m2", "m2"), 
+    efforts_notes = c(NA_character_, NA_character_),
+    observations_date_obs = c("2020-07-22", "2020-07-22"),
+    observations_stratum = c("arbustive", "arbustive"), 
+    obs_species_taxa_name = c("Ilex mucronata", "Picea mariana"),
+    obs_species_variable = c("catégorie_recouvrement", "catégorie_recouvrement"),
+    obs_species_value_string = c("2", "3"),
+    observations_notes = c(NA_character_, NA_character_), 
+    obs_species_parent_taxa_name = c("Plantae", "Plantae")), 
+  row.names = 1:2,
+  class = "data.frame")
+
+  testthat::expect_match(new_vegetation_transect_campaigns(dat_test, nvals = 6),
+                         regexp = "*campagnes existent d\u00E9j\u00E0 dans coleo)*")
+  
 })
 
 

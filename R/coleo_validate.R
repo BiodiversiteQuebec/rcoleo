@@ -70,6 +70,9 @@ coleo_validate <- function(data, media_path = NULL) {
   # Remove media table names from required columns
   media_names <- grepl("media_", req_col_diff, fixed = TRUE)
   if (any(media_names)) req_col_diff <- req_col_diff[!media_names]
+  # Remove observations_is_valid from required columns
+  obs_is_valid <- grepl("observations_is_valid", req_col_diff, fixed = TRUE)
+  if (any(obs_is_valid)) req_col_diff <- req_col_diff[!obs_is_valid]
   # Return warning if there's a mismatch ----------------------------------
   if(length(req_col_diff) != 0) warning("--------------------------------------------------\nV\u00E9rifiez que les bons noms de colonnes sont utilis\u00E9s et que toutes les colonnes requises sont pr\u00E9sentes. Les colonnes absentes sont : \n", paste0("- ", req_col_diff, collapse = "\n- "), "\n\n")
 
@@ -461,7 +464,7 @@ coleo_validate <- function(data, media_path = NULL) {
     if(is_na) warning("--------------------------------------------------\nCertaines valeurs de date sont manquantes ou NA. Les lignes sans valeurs dans les colonnes campaigns_opened_at et observations_date_obs ne seront pas injectées dans leurs tables respectives.\n\n")
   }
 
-  
+
   #------------------------------------------------------------------------
   # Diagnistics
   #
@@ -510,8 +513,17 @@ coleo_validate <- function(data, media_path = NULL) {
       coleo_injection_prep(db_table = table)
     nvals <- nrow(requests)
 
+    ### Prep message
+    message <- paste0(table, " : ", nvals)
+
+    ### Update message with campaigns that need to be injected (végétation_transect only)
+    if (campaign_type == "végétation_transect" & table == "campaigns")  message <- new_vegetation_transect_campaigns(data, nvals)
+
+    ### Update message with missing observations
+    if (any(is.na(data$obs_species_taxa_name)) & table == "observations")  message <- missing_obs(data, nvals)
+
     ### Print message
-    message(paste0(table, " : ", nvals))
+    message(message)
 
     ### Unnest data
     ### Add id column
@@ -563,4 +575,76 @@ coleo_validate <- function(data, media_path = NULL) {
   #     if(!all(are_right_stratum_400, na.rm = TRUE)) warning("--------------------------------------------------\nV\u00E9rifiez les valeurs de strate pour les observations des placettes de 400m2. La seule valeur admissible est 'arborescente', exception faite des observations suppl\u00E9mentaire qui sont identifi\u00E9es dans la colonne 'observations_extra_variable_1'.\n\n")
   #   }
   # }
+}
+
+
+
+#' Fonction pour calculer le nombre de nouvelles campagnes de transects de végétation
+#'
+#' Cette fonction calcule le nombre de nouvelles campagnes et de campagnes existantes dans le dataframe,
+#' et met à jour le message en conséquence.
+#'
+#' @param df_id Le dataframe contenant les données à injecter.
+#' @param nvals Le nombre total de campagnes.
+#'
+#' @return Le message mis à jour.
+#'
+new_vegetation_transect_campaigns <- function(data, nvals){
+  veg_campaigns <- coleo_request_general(endpoint = "campaigns", response = TRUE, schema = 'public', "type" = "eq.végétation_transect")
+  if (length(veg_campaigns) > 0) {
+    veg_campaigns <- subset(veg_campaigns, select = c(id, site_id, opened_at))
+    # Add site_code to veg_campaigns
+    site_code <- coleo_request_general(endpoint = "sites", response = TRUE, schema = 'public', "id" = paste0("in.(",paste(veg_campaigns$site_id, collapse = ","), ")")) |>
+      dplyr::select(id, site_code)
+    # Join veg_campaigns and site_code
+    veg_campaigns <- veg_campaigns |>
+      dplyr::left_join(site_code, by = c("site_id" = "id")) |>
+      dplyr::rename(campaign_id = id, campaigns_opened_at = opened_at, sites_site_code = site_code)
+    # Check if existing veg_campaigns in data
+    df_c_id <- data |>
+      dplyr::left_join(veg_campaigns, by = c("sites_site_code", "campaigns_opened_at")) |>
+      as.data.frame()
+    ## Isolate campaigns that are not yet in coleo
+    df <- df_c_id[is.na(df_c_id$campaign_id),] |> subset(select=-campaign_id) |> subset(select=-site_id)
+
+    if (nrow(df) > 0) {
+      requests_new <- df |>
+        coleo_injection_prep(db_table = 'campaigns')
+      nvals_new <- nrow(requests_new)
+    } else {
+      nvals_new <- 0
+    }
+  } else {
+    nvals_new <- nvals
+  }
+
+  ## Calculate number of existing campaigns
+  nvals_exist <- nvals - nvals_new
+
+  ### Update message
+  message <- paste0("campaigns", " : ", nvals_new, " (", nvals_exist, " campagnes existent d\u00E9j\u00E0 dans coleo)")
+
+  return(message)
+}
+
+
+#' Fonction pour calculer le nombre d'observations qui échoueront lors de l'injection
+#'
+#' Cette fonction calcule le nombre d'observations qui échoueront lors de l'injection
+#' et met à jour le message en conséquence.
+#'
+#' @param df_id Le dataframe contenant les données à injecter.
+#' @param nvals Le nombre total de campagnes.
+#'
+#' @return Le message mis à jour.
+#'
+missing_obs <- function(data, nvals){
+  # Check if there are missing observations
+  na_obs <- sum(is.na(data$obs_species_taxa_name), na.rm = TRUE)
+  nvals_new <- nvals - na_obs
+
+  ### Update message
+  message <- paste0("observations", " : ", nvals_new, " (", na_obs, " lignes sans taxon observé entraineront un \u00E9chec d'injection)")
+
+  return(message)
 }
