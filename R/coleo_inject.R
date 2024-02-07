@@ -292,18 +292,18 @@ coleo_injection_prep <- function(df, db_table, schema = 'public'){
     colnames_of_tbl <- coleo_get_column_names(tbl = db_table)$column_name
 
     df_prep <- df |>
-      coleo_prep_input_data(db_table) |>
+      coleo_prep_input_data(db_table, schema = schema) |>
       dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::across(dplyr::any_of(colnames_of_tbl)), endpoint = db_table, schema = schema)))
 
   } else if (db_table == "ref_species") {
     # ref_species is the only table where the table name and the endpoint name are NOT THE SAME
     # here we hard-code the difference. This lets us stay with the convention of using the table name as the argument (not the endpoint name)
     df_prep <- df |>
-      coleo_prep_input_data(db_table) |>
+      coleo_prep_input_data(db_table, schema = schema) |>
       dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "taxa", schema = schema)))
   } else {
     df_prep <- df |>
-      coleo_prep_input_data(db_table) |>
+      coleo_prep_input_data(db_table, schema = schema) |>
       dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = db_table, schema = schema)))
 
   }

@@ -4,12 +4,14 @@
 \alias{coleo_request_by_code}
 \title{Requête sur coléo par code}
 \usage{
-coleo_request_by_code(human_code, table, perform = TRUE)
+coleo_request_by_code(human_code, table, schema = "public", perform = TRUE)
 }
 \arguments{
 \item{human_code}{Code de site ou de cellule.}
 
 \item{table}{Table de la base de données à accéder. Seuls "cells" et "sites" sont supportés pour l'instant.}
+
+\item{schema}{Schéma de la base de données à accéder. Par défaut, "public".}
 
 \item{perform}{TRUE par default. Ne performe pas la requête et retourne l'object httr2 request si FALSE.}
 }

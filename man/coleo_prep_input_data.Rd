@@ -4,12 +4,14 @@
 \alias{coleo_prep_input_data}
 \title{Preparer les données pour injection}
 \usage{
-coleo_prep_input_data(df, db_table)
+coleo_prep_input_data(df, db_table, schema = "public")
 }
 \arguments{
 \item{df}{le dataframe à preparer}
 
 \item{db_table}{la table ciblée dans la base de données}
+
+\item{schema}{le schéma de la base de données}
 }
 \value{
 un tbl, nested

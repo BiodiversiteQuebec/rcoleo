@@ -61,11 +61,12 @@ coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FAL
 #'
 #' @param human_code Code de site ou de cellule.
 #' @param table Table de la base de données à accéder. Seuls "cells" et "sites" sont supportés pour l'instant.
+#' @param schema Schéma de la base de données à accéder. Par défaut, "public".
 #' @param perform TRUE par default. Ne performe pas la requête et retourne l'object httr2 request si FALSE.
 #'
 #' @return si perform = TRUE, la réponse est retournée. Si perform = FALSE, la requête httr2 est retournée.
 #' @export
-coleo_request_by_code <- function(human_code, table, perform = TRUE){
+coleo_request_by_code <- function(human_code, table, schema = "public", perform = TRUE){
   # endpoint or whatever
   requested_code <- list(human_code)
   requested_code <- paste0("eq.", requested_code[[1]])
@@ -76,7 +77,7 @@ coleo_request_by_code <- function(human_code, table, perform = TRUE){
                                   sites = "site_code",
                                   stop("idk what to do with that"))
 
-  written_req <- coleo_begin_req('public') |>
+  written_req <- coleo_begin_req(schema) |>
     httr2::req_url_path_append(table) |>
     httr2::req_url_query(!!!requested_code)
 
