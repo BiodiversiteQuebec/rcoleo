@@ -61,3 +61,35 @@ coleo_begin_req <- function(schema){
                        "useragent" = "rcoleo") |>
     httr2::req_error(body = coleo_error_message)
 }
+
+
+####################
+# Fonctions de base pour les médias
+####################
+
+ # Config de base pour les médias
+media_server <- function(){
+  s <- Sys.getenv("COLEOMEDIA_SERVER")
+  if (s==''){
+    if(file.exists(".local-server")){
+      s <- as.character(readRDS(".local-server"))
+    }else{
+      s <- "https://coleo.biodiversite-quebec.ca/upload/"
+    }
+   }
+   return(s)
+ }
+
+#' Pépare une requête générique à l'API de coleo-media
+#'
+#' @param server_dir Dossier sur le serveur où faire la requête
+#'
+#' @return Un objet httr2 request
+coleo_media_begin_req <- function(server_dir){
+  paste0(media_server(), server_dir, "/") |>
+    httr2::request() |>
+    httr2::req_headers("Accept" = "application/json",
+                       `Content-type` = "multipart/form-data",
+                       "Authorization" = paste("Bearer", bearer())) |>
+    httr2::req_error(body = coleo_error_message)
+}

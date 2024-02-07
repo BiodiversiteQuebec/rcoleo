@@ -520,27 +520,21 @@ coleo_inject_cells <- function(df, schema = 'public') {
 coleo_inject_media <- function(df_id, server_dir = "observation", file_dir) {
   #--------------------------------------------------------------------------
   # 1. Prep request
-  #--------------------------lures------------------------------------------------
-  url <- paste0(server(), "/upload/", server_dir, "/")
-
+  #--------------------------------------------------------------------------
   medias_requests <- df_id |>
     dplyr::rowwise() |>
     dplyr::mutate(inject_request = list(
       ## Form request
-      httr2::request(url) |>
-        httr2::req_headers(
-          `Content-type` = "multipart/form-data",
-          Authorization = paste("Bearer", bearer())
-        ) |>
-        ## Add id to request URL
-        ## - Can be observation_id, campaign_id, etc.
-        httr2::req_url_path_append(!!as.name(paste0(server_dir, "_id"))) |>
+      coleo_media_begin_req(server_dir) |>
+      ## Add id to request URL
+      ## - Can be observation_id, campaign_id, etc.
+      httr2::req_url_path_append(!!as.name(paste0(server_dir, "_id"))) |>
         ## Error body
         httr2::req_error(body = coleo_error_message) |>
-        ## Send file
-        httr2::req_body_multipart(
-          media = curl::form_file(paste0(file_dir, "/", media_name)),
-          type = "image")
+      ## Send file
+      httr2::req_body_multipart(
+        media = curl::form_file(paste0(file_dir, "/", media_name)),
+        type = "image")
     ))
 
   #--------------------------------------------------------------------------
