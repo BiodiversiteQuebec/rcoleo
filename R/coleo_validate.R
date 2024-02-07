@@ -341,18 +341,20 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   # Check that complexes of species are correctly formated
   #------------------------------------------------------------------------
-  is_complexes <- grepl("|", data$obs_species_taxa_name) |> which()
-  if(!length(is_complexes) == 0) {
-    cplx_valid <-sapply(data$obs_species_taxa_name[is_complexes], function(cplx) {
-      cplx_split <- strsplit(cplx, "|", fixed = TRUE) |> 
-        unlist() |>
-        stringr::str_trim()
-      cplx_formated <- paste(cplx_split, collapse = " | ")
-      identical(cplx, cplx_formated)
-    })
+  if ("obs_species_taxa_name" %in% dat_names) {
+    is_complexes <- grepl("|", data$obs_species_taxa_name) |> which()
+    if(!length(is_complexes) == 0) {
+      cplx_valid <-sapply(data$obs_species_taxa_name[is_complexes], function(cplx) {
+        cplx_split <- strsplit(cplx, "|", fixed = TRUE) |> 
+          unlist() |>
+          stringr::str_trim()
+        cplx_formated <- paste(cplx_split, collapse = " | ")
+        identical(cplx, cplx_formated)
+      })
 
-    if(!all(cplx_valid)) warning("--------------------------------------------------\nV\u00E9rifiez le format des complexes d'esp\u00e8ces : certain complexes sont incorrectement format\u00E9s. Les taxons composants le complexe doivent être s\u00E9par\u00E9s par une barre verticale flanqu\u00E9e d'un espace de chaque côt\u00E9 \" | \". Exemple : \"Acer saccharum | Acer negundo\"\n\n")
+      if(!all(cplx_valid)) warning("--------------------------------------------------\nV\u00E9rifiez le format des complexes d'esp\u00e8ces : certain complexes sont incorrectement format\u00E9s. Les taxons composants le complexe doivent être s\u00E9par\u00E9s par une barre verticale flanqu\u00E9e d'un espace de chaque côt\u00E9 \" | \". Exemple : \"Acer saccharum | Acer negundo\"\n\n")
 
+    }
   }
 
 
@@ -520,7 +522,9 @@ coleo_validate <- function(data, media_path = NULL) {
     if (campaign_type == "végétation_transect" & table == "campaigns")  message <- new_vegetation_transect_campaigns(data, nvals)
 
     ### Update message with missing observations
-    if (any(is.na(data$obs_species_taxa_name)) & table == "observations")  message <- missing_obs(data, nvals)
+    if ("obs_species_taxa_name" %in% dat_names) {
+      if (any(is.na(data$obs_species_taxa_name)) & table == "observations")  message <- missing_obs(data, nvals)
+    }
 
     ### Print message
     message(message)
