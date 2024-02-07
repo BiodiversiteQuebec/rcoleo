@@ -120,12 +120,6 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
       ### 1. Inject media files into coleo
       df_id <- coleo_inject_media(df_id, server_dir = 'observation', media_path)
 
-    } else if (campaign_type == "ADNe" & table == "landmarks") {
-      ## Obervations at the lake scale for "ADNe" campaigns do not have landmarks
-      ## Landmarks are injected even if there is no data with NA lat lon
-      ## It is necessary to skip their injection
-      df_id <- coleo_inject_adne_landmarks(df_id, campaign_type)
-
     } else {
       ## Regular table injections
       df_id <- coleo_inject_table(df_id, table, schema = schema)
@@ -529,8 +523,6 @@ coleo_inject_media <- function(df_id, server_dir = "observation", file_dir) {
       ## Add id to request URL
       ## - Can be observation_id, campaign_id, etc.
       httr2::req_url_path_append(!!as.name(paste0(server_dir, "_id"))) |>
-        ## Error body
-        httr2::req_error(body = coleo_error_message) |>
       ## Send file
       httr2::req_body_multipart(
         media = curl::form_file(paste0(file_dir, "/", media_name)),
@@ -656,47 +648,6 @@ coleo_inject_mam_landmarks <- function(df_id, schema = 'public') {
       dplyr::relocate(dplyr::ends_with("_error")) |>
       dplyr::relocate(dplyr::ends_with("_id"))
 
-  return(df_id)
-}
-
-
-#' Injection des repères d'une campagne ADNe dans la table
-#' landmarks de coleo.
-#'
-#' L'injection des repèes ADNe est différente des autres de par la structure du jeu de données (tel que formaté par le template). Les observation à l'échelle du lac n'ont pas de repères alors que celles à l'échelle de la station ont des repères.
-#'
-#' Accepte un data.frame validè par \code{\link[rcoleo]{coleo_validate}} et performe
-#' l'injection de la table landmarks.
-#'
-#' La fonction est utilisée par \code{\link[rcoleo]{coleo_inject}}.
-#'
-#' @param df_id Un data.frame contenant une colonne campaign_id.
-#' @param campaign_type Type de la campagne. Doit être "ADNe".
-#' @param schema Schéma sur lequel faire la requête. Par défaut, le schéma
-#' public est utilisé.
-#'
-#' @return Une data.frame avec une colonne landmark_X_id et une colonne pour
-#' les landmark_X_error.
-#'
-coleo_inject_adne_landmarks <- function(df_id, campaign_type, schema = 'public') {
-  # Obervations at the lake scale for "ADNe" campaigns do not have landmarks
-  # Landmarks are injected even if there is no data with NA lat lon
-  # It is necessary to skip their injection
-  which_lac <- df_id$observations_extra_value_1 == "lac"
-  no_lake_id <- df_id[!which_lac,] |>
-    coleo_inject_table(table = "landmarks", schema = schema)
-
-  # Reassemble the dataframes
-  with_lac <- df_id[which_lac,]
-  with_lac[setdiff(names(no_lake_id), names(with_lac))] <- NA_character_
-  df_id <- rbind(no_lake_id, with_lac[names(no_lake_id)])
-
-  # Order columns
-  df_id <- df_id[,order(colnames(df_id))] |>
-      dplyr::relocate(dplyr::ends_with("_error")) |>
-      dplyr::relocate(dplyr::ends_with("_id"))
-
-  # Return the results
   return(df_id)
 }
 
