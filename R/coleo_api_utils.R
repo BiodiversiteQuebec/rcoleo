@@ -74,7 +74,7 @@ media_server <- function(){
     if(file.exists(".local-server")){
       s <- as.character(readRDS(".local-server"))
     }else{
-      s <- "https://coleo.biodiversite-quebec.ca/upload/"
+      s <- "https://biodiversite-quebec.ca/upload/"
     }
    }
    return(s)
