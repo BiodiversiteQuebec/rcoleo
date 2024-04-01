@@ -2,7 +2,7 @@
 # functions in this script make GET requests for specific information from
 # the database
 
-# coleo_request_general runs any query on any table
+# coleo_request_general runs any query on any table, view or function
 # coleo_request_code only works for cells and sites
 ###########################################################################
 
@@ -16,7 +16,7 @@
 #' @param perform TRUE par default. Retourne un objet httr2 request et pas de requête effectuée si FALSE.
 #' @param response_as_df FALSE par défaut. Retroune un data.frame si TRUE.
 #' @param schema Schema qui contient les fonctions ou tables de l'appel
-#' @param ... Paramètres de requête pour la base de données coleo (dans le format 'nom = valeur')
+#' @param ... Paramètres de requête pour la base de données coleo (dans le format 'nom' = 'valeur')
 #'
 #' @return Object httr2 response si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
 #' @export
@@ -86,6 +86,39 @@ coleo_request_by_code <- function(human_code, table, schema = "public", perform 
   } else {
     return(written_req)
   }
+}
+
+
+#' Requête de type 'GET' sur les tables de données par type d'inventaire de coleo
+#'
+#' Cette fonction permet de faire une requête sur les tables de données de l'API de coleo.
+#' 
+#' @param survey_type Type d'inventaire. Les types d'inventaires supportés sont 'vegetation', 'acoustique_anoures', 'acoustique_chiropteres', 'acoustique_oiseaux', 'acoustique_orthopteres' et 'adne_corrige', 'benthos', 'decomposition_sol', 'insectes_sol', 'mammiferes', 'odonates', 'papilionides', 'physicochimie_terrain', 'zooplancton'.
+#' @param view 'short' par défaut. Type de vue des données à retourner. 'short' retourne les données de base, 'long' retourne les données dans le format gabarit d'injection (requiert accès prévilégier).
+#' @param ... Paramètres de requête pour la base de données coleo (dans le format 'nom' = 'valeur')
+#'
+#' @return Tibble contenant les données de l'inventaire.
+#' @export
+#' 
+#' @examples
+#' # Requête pour les inventaires de type 'végétation'
+#' coleo_request_data(survey_type = 'vegetation', view = 'short')
+#' 
+coleo_request_data <- function(survey_type, view = 'short', ...){
+
+  request_info <- list(...)
+
+  # endpoint
+  endpoint <- paste0('gabarit_', survey_type, '_', view)
+
+  written_req <- coleo_begin_req('api') |>
+    httr2::req_url_path_append(endpoint) |>
+    httr2::req_url_query(!!!request_info)
+
+  out <- httr2::req_perform(written_req)
+  out <- coleo_resp_df(out, written_req)
+
+  return(out)
 }
 
 
