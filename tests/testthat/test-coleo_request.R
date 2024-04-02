@@ -91,6 +91,21 @@ with_mock_dir("Site processing works correctly", {
 
 })
 
+
+test_that("coleo_request_data returns expected output", {
+  # Test case 1: survey_type = 'vegetation', view = 'short'
+  result1 <- coleo_request_data(survey_type = 'vegetation', view = 'short')
+  expect_is(result1, "tbl_df")
+  expect_equal(ncol(result1), 18) # Assuming there are 18 columns of data for vegetation inventory
+
+  # Test case 2: survey_type = 'acoustique_anoures', view = 'long'
+  result2 <- coleo_request_data(survey_type = 'acoustique_anoures', view = 'long')
+  expect_is(result2, "tbl_df")
+  expect_equal(ncol(result2), 22) # Assuming there are 22 rows of data for acoustique_anoures inventory
+
+  # Add more test cases for other survey types and views...
+})
+
 # with_mock_dir("coleo_request_by_code", {
 #   # request ALL the cells
 #   all_cells <- coleo_request_by_code(human_code = NULL, table = "cells")
