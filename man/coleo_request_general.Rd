@@ -22,7 +22,7 @@ la requête est faite sur une fonction, il est nécessaire d'ajouter 'rpc/' deva
 
 \item{schema}{Schema qui contient les fonctions ou tables de l'appel}
 
-\item{...}{Paramètres de requête pour la base de données coleo (dans le format 'nom = valeur')}
+\item{...}{Paramètres de requête pour la base de données coleo (dans le format 'nom' = 'valeur')}
 }
 \value{
 Object httr2 response si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
