@@ -245,81 +245,20 @@ test_that("coleo_injection_prep formats requests as an httr2 request", {
 #############################################
 
 test_that("finalizing function extracts the right thing", {
-	# Mock response from API
-   	response_from_api <- structure(list(campaign_id = 862L, trap_id = 49L, landmark_id = 614L,
-		sample_code = "2020-0097", data = structure(list(structure(list(
-			observation_date = c("2020-06-30", "2020-06-30", "2020-06-30",
-			"2020-06-30"), observation_is_valid = c(TRUE, TRUE, TRUE,
-			TRUE), observation_taxa_name = c("Fake_beetleA",
-			"Fake_beetleB", "Fake_beetleC", "Fake_beetleR"), observation_variable = c("abondance",
-			"abondance", "abondance", "abondance"), observation_value = c(1,
-			6, 10, 11), observation_notes = structure(c(NA, NA, NA,
-			NA), class = "vctrs_unspecified")), row.names = c(NA,
-		-4L), class = c("tbl_df", "tbl", "data.frame"))), ptype = structure(list(
-			observation_date = character(0), observation_is_valid = logical(0),
-			observation_taxa_name = character(0),
-			observation_variable = character(0), observation_value = numeric(0),
-			observation_notes = structure(logical(0), class = "vctrs_unspecified")), class = c("tbl_df",
-		"tbl", "data.frame"), row.names = integer(0)), class = c("vctrs_list_of",
-		"vctrs_vctr", "list")), inject_request = list(structure(list(
-			url = "https://coleo.biodiversite-quebec.ca/api/v1/samples",
-			method = NULL, headers = list(Accept = "application/json",
-				`Content-Type` = "application/json", Authorization = "Bearer df9a563471baedb26dd9af3cc927b226be6fef1a1df233d83fb0aa3f338891e0",
-				useragent = "rcoleo"), body = list(data = list(campaign_id = 862L,
-				trap_id = 49L, landmark_id = 614L, sample_code = "2020-0097"),
-				type = "json", params = list(auto_unbox = TRUE, digits = 22,
-					null = "null")), fields = list(), options = list(),
-			policies = list(error_body = function (resp)
-			{
-				resp_json <- httr2::resp_body_json(resp)
-				server_message <- resp_json$message
-				error_message <- paste(resp_json$errors[[1]], collapse = ": ")
-				return(paste0(server_message, ": ", error_message))
-			})), class = "httr2_request")), result = list(structure(list(
-			method = "POST", url = "https://coleo.biodiversite-quebec.ca/api/v1/samples",
-			status_code = 201L, headers = structure(list(Server = "nginx/1.18.0 (Ubuntu)",
-				Date = "Sat, 12 Mar 2022 20:46:22 GMT", `Content-Type` = "application/json; charset=utf-8",
-				`Content-Length` = "170", Connection = "keep-alive",
-				`X-Powered-By` = "Express", `Access-Control-Allow-Origin` = "*",
-				Location = "/api/v1/samples/85", ETag = "W/\"aa-9hQysUBry8WJ+WyPrh6IyPy45GQ\""), class = "httr2_headers"),
-			body = as.raw(c(0x7b, 0x22, 0x69, 0x64, 0x22, 0x3a, 0x38,
-			0x35, 0x2c, 0x22, 0x74, 0x72, 0x61, 0x70, 0x5f, 0x69,
-			0x64, 0x22, 0x3a, 0x34, 0x39, 0x2c, 0x22, 0x73, 0x61,
-			0x6d, 0x70, 0x6c, 0x65, 0x5f, 0x63, 0x6f, 0x64, 0x65,
-			0x22, 0x3a, 0x22, 0x32, 0x30, 0x32, 0x30, 0x2d, 0x30,
-			0x30, 0x39, 0x37, 0x22, 0x2c, 0x22, 0x75, 0x70, 0x64,
-			0x61, 0x74, 0x65, 0x64, 0x5f, 0x61, 0x74, 0x22, 0x3a,
-			0x22, 0x32, 0x30, 0x32, 0x32, 0x2d, 0x30, 0x33, 0x2d,
-			0x31, 0x32, 0x54, 0x32, 0x30, 0x3a, 0x34, 0x36, 0x3a,
-			0x32, 0x32, 0x2e, 0x33, 0x30, 0x32, 0x5a, 0x22, 0x2c,
-			0x22, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x5f,
-			0x61, 0x74, 0x22, 0x3a, 0x22, 0x32, 0x30, 0x32, 0x32,
-			0x2d, 0x30, 0x33, 0x2d, 0x31, 0x32, 0x54, 0x32, 0x30,
-			0x3a, 0x34, 0x36, 0x3a, 0x32, 0x32, 0x2e, 0x33, 0x30,
-			0x32, 0x5a, 0x22, 0x2c, 0x22, 0x64, 0x61, 0x74, 0x65,
-			0x5f, 0x73, 0x61, 0x6d, 0x70, 0x22, 0x3a, 0x6e, 0x75,
-			0x6c, 0x6c, 0x2c, 0x22, 0x6e, 0x6f, 0x74, 0x65, 0x73,
-			0x22, 0x3a, 0x6e, 0x75, 0x6c, 0x6c, 0x2c, 0x22, 0x74,
-			0x72, 0x61, 0x70, 0x49, 0x64, 0x22, 0x3a, 0x34, 0x39,
-			0x7d))), class = "httr2_response")), error = list(NULL),
-		success = TRUE), class = c("rowwise_df", "tbl_df", "tbl",
-		"data.frame"), row.names = c(NA, -1L), groups = structure(list(
-			campaign_id = 862L, trap_id = 49L, landmark_id = 614L, sample_code = "2020-0097",
-			.rows = structure(list(1L), ptype = integer(0), class = c("vctrs_list_of",
-			"vctrs_vctr", "list"))), row.names = c(NA, -1L), class = c("tbl_df",
-		"tbl", "data.frame")))
+  # Prepare the request
+  one_post_prep <- random_cell() |>
+    dplyr::rowwise() |>
+    dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "cells", schema = "coleo_test")))
+  
+  # Perform the request
+  response_from_api <- one_post_prep |> coleo_injection_execute()
 
 	# Estract ID and error messages from response
-   	finalized_injection <- response_from_api |> coleo_injection_final()
+  finalized_injection <- response_from_api |> coleo_injection_final()
 
 
    # Expect the new sample_id column
-   expect_named(finalized_injection, c(
-     "campaign_id", "landmark_id", "sample_id", "trap_id", "sample_error",
-     "observation_date", "observation_is_valid", "observation_taxa_name",
-     "observation_variable", "observation_value", "observation_notes",
-     "samples_sample_code"
-   ))
+   expect_named(finalized_injection, c("cell_id", "cell_error", "cells_cell_code", "cells_geom", "cells_name"))
 })
 
 
