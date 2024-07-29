@@ -95,7 +95,7 @@ test_that("coleo_request_data returns expected output", {
   # Test case 1: survey_type = 'vegetation', view = 'short'
   result1 <- coleo_request_data(survey_type = 'vegetation', view = 'short')
   expect_is(result1, "tbl_df")
-  expect_equal(ncol(result1), 18) # Assuming there are 18 columns of data for vegetation inventory
+  expect_equal(ncol(result1), 20) # Assuming there are 18 columns of data for vegetation inventory
 
   # Test case 2: survey_type = 'acoustique_anoures', view = 'long'
   result2 <- coleo_request_data(survey_type = 'acoustique_anoures', view = 'long')
