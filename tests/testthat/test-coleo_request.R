@@ -4,7 +4,7 @@ without_internet({
   test_that("coleo_request makes a good request", {
 
     expect_GET(coleo_request_general(endpoint = "cells", response_as_df = FALSE, schema = "public", 'cell_code' = "eq.foo"),
-               url = "https://coleo.biodiversite-quebec.ca/newapi/v1/cells?cell_code=eq.foo")
+               url = "https://coleo.biodiversite-quebec.ca/newapi/v2/cells?cell_code=eq.foo")
   })
 })
 

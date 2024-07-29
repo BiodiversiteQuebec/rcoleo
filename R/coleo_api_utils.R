@@ -17,7 +17,7 @@ server <- function(){
 base <- function() {
   path <- Sys.getenv("COLEOAPI_PATH")
   if (path==''){
-    path="/newapi/v1"
+    path="/newapi/v2"
   }
   return(path)
 }
