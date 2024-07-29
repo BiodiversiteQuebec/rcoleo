@@ -64,9 +64,8 @@ with_mock_dir("site id download and extraction", {
     resp_body <- httr2::resp_body_json(real_site)[[1]]
 
     # should be 11 columns of info for this site
-    expect_equal(length(names(resp_body)), 11)
-
-  })
+  expect_equal(length(names(resp_body)), 12)
+})
 
   test_that("can coleo_pluck_id correctly", {
     expect_equal(coleo_extract_id(real_site), 94)
