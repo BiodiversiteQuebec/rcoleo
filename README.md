@@ -14,7 +14,7 @@ Ce paquet R expose les services `postgREST` de l'API de Coléo. Coléo est un sy
 ## Installer le paquet `rcoleo`
 
 ```r
-devtools::install_github("ReseauBiodiversiteQuebec/rcoleo")
+devtools::install_github("BiodiversiteQuebec/rcoleo")
 ```
 
 ## S'authentifier auprès de l'API
