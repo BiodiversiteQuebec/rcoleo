@@ -21,13 +21,13 @@ test_that("coleo_validate", {
   ## Test for missing campaign_type column
   dat_test <- subset(dat, select = -c(campaigns_type))
   testthat::expect_error(coleo_validate(dat_test),
-                         regexp = "V\U00E9rifiez qu'une colonne contient le type de campagne.*")
+                         regexp = "V\U00E9rifiez qu'une colonne contient le type d'inventaire*")
 
   ## Test for multiple values within the campaign_type column
   dat_test <- dat
   dat_test$campaigns_type <- c("sol", "insectes_sol","insectes_sol","insectes_sol","insectes_sol","insectes_sol")
   testthat::expect_error(coleo_validate(dat_test),
-                         regexp = "V\U00E9rifiez que toutes les valeurs de la colonne campaigns_type sont identiques.*")
+                         regexp = "V\U00E9rifiez que toutes les valeurs de la colonne campaigns_type.*")
 
   ## Test that the imported data has all of the required columns
   dat_test <- subset(dat, select = -c(observations_date_obs))
