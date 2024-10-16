@@ -18,13 +18,9 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   # Check that there is a campaign type column and that it contains a unique value
   #------------------------------------------------------------------------
-  # Pursue only if there is a campaign type column
-  if(!assertthat::has_name(data, "campaigns_type")) stop("V\u00E9rifiez qu'une colonne contient le type de campagne et que son nom de colonne correspond \u00e0 campaigns_type \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
-
-  # Pursue only if there is a campaign type value
-  campaign_type <- unique(data$campaigns_type)
+  campaign_type <- coleo_return_campaign_type(data)
   campaigns <- coleo_return_valid_campaigns()
-  if(!(length(campaign_type) == 1 && campaign_type %in% campaigns)) stop("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+  if(!campaign_type %in% campaigns) stop("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
 
 
   #------------------------------------------------------------------------
@@ -65,7 +61,7 @@ coleo_validate <- function(data, media_path = NULL) {
   # Check that the imported data has all of the required columns
   #------------------------------------------------------------------------
   # Compare required column names to present columns ----------------------
-  req_columns <- coleo_return_cols(campaign_type, required.columns = TRUE)$noms_de_colonnes
+  req_columns <- tbl[tbl$colonne_requise==TRUE,]$noms_de_colonnes
   req_col_diff <- setdiff(req_columns, true_nms)
   # Remove media table names from required columns
   media_names <- grepl("media_", req_col_diff, fixed = TRUE)
@@ -143,6 +139,23 @@ coleo_validate <- function(data, media_path = NULL) {
   erroneous_cols <- dat_names[!class_of_col]
   if(!all(class_of_col)) warning("--------------------------------------------------\nV\u00E9rifiez la classe des colonnes. Ces colonnes sont ", paste0("probl","\U00E9","matiques "), " : \n", paste0(erroneous_cols, collapse = ", "), "\n\n")
 
+  #------------------------------------------------------------------------
+  # Check that all cells exists in coleo
+  #------------------------------------------------------------------------
+  if ("cells_cell_code" %in% dat_names) {
+    existing_cells <- coleo_request_general(endpoint = "cells", response_as_df = TRUE, schema = 'public')
+    
+    are_cells_exists <- all(unique(data$cells_cell_code) %in% existing_cells$cell_code)
+    # Missing cells ---------------------------------------------------------
+    cells_x <- which(!unique(data$cells_cell_code) %in% existing_cells$cell_code)
+    if (length(cells_x) > 10) {
+      missing_cells <- paste0(paste0(unique(data$cells_cell_code)[cells_x[1:10]], collapse = ", "), " [...",length(cells_x)-10," tronquées]")
+    } else {
+      missing_cells <- paste0(unique(data$cells_cell_code)[cells_x], collapse = ", ")
+    }
+
+    if(!are_cells_exists) warning("--------------------------------------------------\n", paste0("V","\U00E9","rifiez")," les cellules ", missing_cells, " de la colonne cells_cell_code ou injectez ces cellules dans la table cells de coleo. Ces cellules n'existent pas dans coleo.\n\n")
+  }
 
   #------------------------------------------------------------------------
   # Check that all sites exists in coleo
@@ -152,8 +165,13 @@ coleo_validate <- function(data, media_path = NULL) {
   are_sites_exists <- all(unique(data$sites_site_code) %in% existing_sites$site_code)
   # Missing sites ---------------------------------------------------------
   sites_x <- which(!unique(data$sites_site_code) %in% existing_sites$site_code)
+  if (length(sites_x) > 10) {
+    missing_sites <- paste0(paste0(unique(data$sites_site_code)[sites_x[1:10]], collapse = ", ")," [...",length(sites_x)-10," tronqués]")
+  } else {
+    missing_sites <- paste0(unique(data$sites_site_code)[sites_x], collapse = ", ")
+  }
 
-  if(!are_sites_exists) warning("--------------------------------------------------\n", paste0("V","\U00E9","rifiez")," les sites ", paste0(unique(data$sites_site_code)[sites_x], collapse = ", "), " de la colonne sites_site_code ou injectez ces sites dans la table sites de coleo. Ces sites n'existent pas dans coleo.\n\n")
+  if(!are_sites_exists) warning("--------------------------------------------------\n", paste0("V","\U00E9","rifiez")," les sites ", missing_sites, " de la colonne sites_site_code ou injectez ces sites dans la table sites de coleo. Ces sites n'existent pas dans coleo.\n\n")
 
 
   #------------------------------------------------------------------------
@@ -460,7 +478,15 @@ coleo_validate <- function(data, media_path = NULL) {
     })
 
     is_ndigits_valid <- all(cols_ndigits)
-    is_na <- any(is.na(data[cols_date]))
+
+    ## Remove columns with all NA
+    all_na = sapply(cols_date, function(x) {
+      dates <- data[[x]]
+      non_na_dates <- dates[!is.na(dates)]
+      length(non_na_dates) == 0
+    })
+    non_na_date_cols <- cols_date[!all_na]
+    is_na <- any(is.na(data[cols_date[cols_date %in% req_columns]])) | any(is.na(data[non_na_date_cols]))
 
     if(!is_ndigits_valid) warning("--------------------------------------------------\nV\u00E9rifiez le format des valeurs de dates. Les dates doivent \u00EAtre du format YYYY-MM-DD.\n\n")
     if(is_na) warning("--------------------------------------------------\nCertaines valeurs de date sont manquantes ou NA. Les lignes sans valeurs dans les colonnes campaigns_opened_at et observations_date_obs ne seront pas injectées dans leurs tables respectives.\n\n")
@@ -475,23 +501,23 @@ coleo_validate <- function(data, media_path = NULL) {
   # - Check number of campaigns, empty campaigns, observations
   #------------------------------------------------------------------------
   # Check that the values are within a decent range -----------------------
-  if(length(cols_date) > 0) {
+  if(length(non_na_date_cols) > 0) {
     # Year
-    range_year <- sapply(data[cols_date], function(x) {
+    range_year <- sapply(data[non_na_date_cols], function(x) {
       split <- strsplit(unlist(x), "-", fixed = TRUE)
       split <- split[!is.na(split)]
       range(as.numeric(sapply(split, `[[`, 1)))
     }) |>
       range()
     # Month
-    range_month <- sapply(data[cols_date], function(x) {
+    range_month <- sapply(data[non_na_date_cols], function(x) {
       split <- strsplit(unlist(x), "-", fixed = TRUE)
       split <- split[!is.na(split)]
       range(as.numeric(sapply(split, `[[`, 2)))
     }) |>
       range()
     # Day
-    range_day <- sapply(data[cols_date], function(x) {
+    range_day <- sapply(data[non_na_date_cols], function(x) {
       split <- strsplit(unlist(x), "-", fixed = TRUE)
       split <- split[!is.na(split)]
       range(as.numeric(sapply(split, `[[`, 3)))

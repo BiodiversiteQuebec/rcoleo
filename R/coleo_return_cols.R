@@ -10,11 +10,8 @@ coleo_return_cols <- function(campaign_type, required.columns = FALSE) {
   #-------------------------------------------------------------------------------
   # Vérifier que campaign_type est un choix valide
   #-------------------------------------------------------------------------------
-  all_camp_types <- coleo_request_general("rpc/get_enum_values",
-    'enum_type' = "enum_campaigns_type", response_as_df = TRUE) |>
-    unlist(use.names = FALSE)
-  assertthat::assert_that(campaign_type %in% all_camp_types,
-                          msg = "Entrez un type de campagne valide")
+  campaigns <- coleo_return_valid_campaigns()
+  if (!campaign_type %in% campaigns) stop("Entrez un type de campagne valide")
   #-------------------------------------------------------------------------------
   # Tables requises pour un type de campagne
   #-------------------------------------------------------------------------------
@@ -63,14 +60,26 @@ coleo_return_cols <- function(campaign_type, required.columns = FALSE) {
                                      classe = classe,
                                      valeurs_acceptees = valeurs_acceptees))
   #-------------------------------------------------------------------------------
-  # site_code est requis pour l'injection
+  # site_code ou cell_code est requis pour l'injection
   #-------------------------------------------------------------------------------
-  site_code_row <- data.frame(table = "sites",
-                              noms_de_champs = "site_code",
+  is_remote_sensing <- campaign_type %in% coleo_get_enum_values("enum_remote_sensing_indicators_name")
+  location_code_row <- data.frame(table = ifelse(is_remote_sensing, "cells", "sites"),
+                              noms_de_champs = ifelse(is_remote_sensing, "cell_code", "site_code"),
                               colonne_requise = "TRUE",
                               classe = "character",
                               valeurs_acceptees = NA_character_)
-  df <- rbind(df,site_code_row)
+  df <- rbind(df, location_code_row)
+    #-------------------------------------------------------------------------------
+  # remote_sensing_indicators_name est requis pour l'injection des inventaires de télédétection
+  #-------------------------------------------------------------------------------
+  if (is_remote_sensing) {
+    remote_sensing_row <- data.frame(table = "remote_sensing_indicators",
+                                     noms_de_champs = "name",
+                                     colonne_requise = "TRUE",
+                                     classe = "character",
+                                     valeurs_acceptees = coleo_get_enum_values("enum_remote_sensing_indicators_name"))
+    df <- rbind(df, remote_sensing_row)
+  }
   #-------------------------------------------------------------------------------
   # Special column class pour injection
   #-------------------------------------------------------------------------------

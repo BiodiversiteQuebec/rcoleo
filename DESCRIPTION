@@ -1,6 +1,6 @@
 Package: rcoleo
 Title: rcoleo
-Version: 3.0.0
+Version: 3.1.0
 Authors@R: c(
     person("Steve", "Vissault", , "steve.vissault@usherbrooke.ca", role = "aut",
            comment = c(ORCID = "0000-0002-0866-4376")),
@@ -14,8 +14,8 @@ Description: Injection et retrait des données collectées dans le cadre du
     programme de suivi de la biodiversité via l'API de Coléo, un système
     d'information sur la biodiversité du Québec.
 License: MIT + file LICENSE
-URL: https://github.com/ReseauBiodiversiteQuebec/rcoleo
-BugReports: https://github.com/ReseauBiodiversiteQuebec/rcoleo/issues
+URL: https://github.com/biodiversitequebec/rcoleo
+BugReports: https://github.com/biodiversitequebec/rcoleo/issues
 Depends: 
     R (>= 4.1.0)
 Imports: 

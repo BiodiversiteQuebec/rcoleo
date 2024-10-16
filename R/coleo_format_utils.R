@@ -8,10 +8,8 @@
 #' @export
 #' 
 coleo_format <- function(dataFrame) {
-  # DataFrame infos
-  campaign_type <- unique(dataFrame$campaigns_type)
-  assertthat::assert_that(length(campaign_type) == 1,
-    msg = "Le type de campagne doit être unique")
+  # Get required columns for the campaign type
+  campaign_type <- coleo_return_campaign_type(dataFrame)
   data_cols <- coleo_return_cols(campaign_type)
 
   # Format columns

@@ -16,6 +16,11 @@ coleo_read <- function(filePath) {
   # Catch the file extension
   ex <- strsplit(basename(filePath), split="\\.")[[1]][2]
 
+  # Test that the extension is acceptable
+  if (!ex %in% c("csv", "xls", "xlsx", "shp")) {
+    stop("Seuls les documents csv, shp et les gabarits coleo sont pris en charge au moment. Veuillez soumettre les donn\u00e9es dans un format support\u00e9.")
+  }
+
   # Read the data
   if (ex == "csv") dataFile <- coleo_read_csv(filePath)
   else if (ex %in% c("xls", "xlsx")) dataFile <- coleo_read_template(filePath)
@@ -29,20 +34,15 @@ coleo_read <- function(filePath) {
   # Format the data
   # - Except for shapefiles
   #-----------------------------------------------------------------------------
-  # Test that the extension is acceptable
-  if (!ex %in% c("csv", "xls", "xlsx")) stop("Seuls les documents csv, shp et les gabarits coleo sont pris en charge au moment. Veuillez soumettre les donn\u00e9es dans un format support\u00e9.")
-  else if ("campaigns_type" %in% names(dataFile)) {
-    # Format dataset
-    dataFile <- coleo_format(dataFile)
-
-    return(dataFile)
-  } else if ("sites_type" %in% colnames(dataFile)) {
+  if ("sites_type" %in% colnames(dataFile)) {
     # Format sites dataset
     dataFile$sites_lat <- as.numeric(dataFile$sites_lat)
     dataFile$sites_lon <- as.numeric(dataFile$sites_lon)
 
-    return(dataFile)
-  }
+  } else {
+    # Format dataset
+    dataFile <- coleo_format(dataFile)
+  } 
 
   return(dataFile)
 }
