@@ -33,6 +33,19 @@ coleo_prep_input_data <- function(df, db_table, schema = "public") {
       suppressMessages()
   }
 
+  # Add remote_sensing_indicator_id to required table
+  if (db_table == "remote_sensing_events") {
+    df <- df |>
+      dplyr::nest_by(remote_sensing_indicators_name) |>
+      dplyr::mutate(coleo_id = list(coleo_request_by_code(human_code = remote_sensing_indicators_name, table = "remote_sensing_indicators", schema = schema)),
+            remote_sensing_indicator_id = coleo_extract_id(coleo_id)) |>
+      dplyr::select(-remote_sensing_indicators_name, -coleo_id) |>
+      dplyr::relocate(remote_sensing_indicator_id) |>
+      tidyr::unnest(cols = c(data)) |>
+      dplyr::ungroup() |>
+      suppressMessages()
+  }
+
   # Campaigns table specific manipulations
   if (db_table == "campaigns") {
     ## Add site_id to campaigns table

@@ -75,6 +75,7 @@ coleo_request_by_code <- function(human_code, table, schema = "public", perform 
   names(requested_code) <- switch(table,
                                   cells = "cell_code",
                                   sites = "site_code",
+                                  remote_sensing_indicators = "name",
                                   stop("idk what to do with that"))
 
   written_req <- coleo_begin_req(schema) |>
