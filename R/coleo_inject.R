@@ -49,7 +49,7 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
   #==========================================================================
   # 1. Extract tables to be injected
   #==========================================================================
-  campaign_type <- unique(df$campaigns_type)
+  campaign_type <- coleo_return_campaign_type(df)
   tables <- coleo_return_required_tables(campaign_type)
 
   #==========================================================================
@@ -70,13 +70,21 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
       tables <- tables[!tables %in% "observations_landmarks_lookup"]
     }
     df_id <- coleo_inject_vegetation_transect_campaigns(df)
-  } else {
+  ## Inject campaigns
+  } else if ("campaigns_type" %in% colnames(df)) {
     df_id <- coleo_inject_table(df, "campaigns", schema = schema)
-  }
-
-  if(!any(sapply(df_id$campaign_error, is.null))) {
+    if(!any(sapply(df_id$campaign_error, is.null))) {
     cat("Only data for successfully injected campaigns are injected in the next tables. These following lines failed to inject: ", paste0(which(!sapply(df_id$campaign_error, is.null)), collapse = ", "), "\n")
   }
+  ## Inject remote sensing events
+  } else if ("remote_sensing_events_date_start" %in% colnames(df)) {
+    df_id <- coleo_inject_table(df, "remote_sensing_events", schema = schema)
+    if(!any(sapply(df_id$remote_sensing_event_error, is.null))) {
+    cat("Only data for successfully injected remote sensing indicators are injected in the next tables. These following lines failed to inject: ", paste0(which(!sapply(df_id$remote_sensing_indicators_error, is.null)), collapse = ", "), "\n")
+    }
+  }
+
+  
 
   #==========================================================================
   # 3. Inject other tables
