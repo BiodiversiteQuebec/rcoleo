@@ -29,6 +29,14 @@ test_that("coleo_validate", {
   testthat::expect_error(coleo_validate(dat_test),
                          regexp = "V\U00E9rifiez que toutes les valeurs de la colonne campaigns_type.*")
 
+  ## Test that remote_sensing indicators are recognized as campaigns types (1.e., 1 entry in remote_sensing_events table)
+  dat_test <- data.frame(remote_sensing_indicators_name = c("NDSI", "NDSI"),
+                         cells_cell_code = c("105_101", "105_101"),
+                         remote_sensing_events_date_start = c("2020-07-22", "2020-07-22"),
+                         remote_sensing_obs_metric = c("max", "min"),
+                         remote_sensing_obs_value = c(0.5, 0.2))
+  testthat::expect_message(coleo_validate(dat_test), regexp = "*remote_sensing_events : 1*")
+
   ## Test that the imported data has all of the required columns
   dat_test <- subset(dat, select = -c(observations_date_obs))
   testthat::expect_warning(coleo_validate(dat_test),
