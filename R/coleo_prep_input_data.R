@@ -20,8 +20,8 @@ coleo_prep_input_data <- function(df, db_table, schema = "public") {
   # Convert character NAs to actual NAs
   # df[df == "NA"] <- NA
 
-  # Add cell_id to sites table
-  if (db_table == "sites") {
+  # Add cell_id to required table
+  if (db_table == "sites" | db_table == "remote_sensing_events") {
     df <- df |>
       dplyr::nest_by(cells_cell_code) |>
       dplyr::mutate(coleo_id = list(coleo_request_by_code(human_code = cells_cell_code, table = "cells", schema = schema)),
@@ -29,7 +29,8 @@ coleo_prep_input_data <- function(df, db_table, schema = "public") {
       dplyr::select(-cells_cell_code, -coleo_id) |>
       dplyr::relocate(cell_id) |>
       tidyr::unnest(cols = c(data)) |>
-      dplyr::ungroup()
+      dplyr::ungroup() |>
+      suppressMessages()
   }
 
   # Campaigns table specific manipulations

@@ -51,14 +51,14 @@ coleo_return_required_name_table <- function(db_table) {
 
 
 
-#' Retourne un vecteur contenant les noms valides de campagnes
+#' Retourne un vecteur contenant les noms valides de campagnes incluant les indicateurs de télédétection
 #'
 #'
 #' @return vecteur de charactères contenant tous les types de capagnes valides
 #' @export
 #'
 coleo_return_valid_campaigns <- function(){
-  campaigns <- coleo_get_enum_values("enum_campaigns_type")
+  campaigns <- c(coleo_get_enum_values("enum_campaigns_type"), coleo_get_enum_values("enum_remote_sensing_indicators_name"))
 
   return(campaigns)
 }
@@ -96,4 +96,29 @@ coleo_return_required_tables <- function(camp_type) {
   tbls <- full_tbl[full_tbl[,camp_type]==1, "table"][[1]]
 
   return(tbls)
+}
+
+
+#' Retourne le 'campaign_type' d'un jeu de données pour tous types d'inventaires.
+#' 
+#' @param data un jeu de données
+#' 
+#' @return le 'campaign_type' du jeu de données
+#' 
+#' @export
+#' 
+coleo_return_campaign_type <- function(data) {
+  # Get required columns for the campaign type
+  if (is.null(data$campaigns_type)) {
+    # Remote sensing campaigns
+    campaign_type <- unique(data$remote_sensing_indicators_name)
+  } else {
+    campaign_type <- unique(data$campaigns_type)
+  }
+
+  # Check if there is a single campaign type
+  if (length(campaign_type) > 1) stop("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type (ou remote_sensing_indicators_name) sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+  if (length(campaign_type) == 0) stop("V\u00E9rifiez qu'une colonne contient le type d'inventaire (campaigns_type ou remote_sensing_indicators_name) et que son nom de colonne correspond \u00e0 campaigns_type \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+
+  return(campaign_type)
 }
