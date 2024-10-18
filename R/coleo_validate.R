@@ -271,13 +271,13 @@ coleo_validate <- function(data, media_path = NULL) {
   # - Test only for campaigns with obs_species
   #------------------------------------------------------------------------
   # Identify columns that need and need not to be NA if campaigns are empty
-    no_na_tbls <- c("cells", "sites", "campaigns", "efforts", "environments", "devices", "lures", "traps", "landmarks", "samples", "thermographs")
-    which_no_na_tbls <- sapply(no_na_tbls, function(x) grepl(x, dat_names) |> which()) |> unlist() |> unique()
-    na_cols <- dat_names[-which_no_na_tbls]
+  no_na_tbls <- c("cells", "sites", "campaigns", "efforts", "environments", "devices", "lures", "traps", "landmarks", "samples", "thermographs")
+  which_no_na_tbls <- sapply(no_na_tbls, function(x) grepl(x, dat_names) |> which()) |> unlist() |> unique()
+  na_cols <- dat_names[-which_no_na_tbls]
+  no_obs <- 0
   if ("obs_species_taxa_name" %in% dat_names) {
     # Loop through rows to validate that observations related fields are NA if no observations
     row_not_empty <- c()
-    no_obs <- 0
     for (row in 1:nrow(data)) {
       is_obs_na <- data$obs_species_taxa_name[row] |> is.na()
       ## If no observation, then all fields of taxonomic level equal or lower to the observation need to be NA
@@ -454,44 +454,15 @@ coleo_validate <- function(data, media_path = NULL) {
       grepl("_date", tbl$noms_de_colonnes, fixed = TRUE)]
   cols_date <- cols_date_name[cols_date_name %in% dat_names]
 
-
   if(length(cols_date) > 0) {
+    ## Validate number of digits
+    date_digits_message <- coleo_validate_date_digits(data, dat_names, cols_date)
+    if (!is.na(date_digits_message)) warning(date_digits_message)
 
-    # Function to check if a date has the right number of digits
-    has_valid_digits <- function(date) {
-      date_parts <- strsplit(date, "-", fixed = TRUE)[[1]]
-      all(nchar(date_parts) == c(4, 2, 2))
-    }
-
-    # Check date columns
-    cols_ndigits <- sapply(cols_date, function(x) {
-      dates <- data[[x]]
-      non_na_dates <- dates[!is.na(dates)]
-      
-      # Check if all dates have 3 parts (year, month, day)
-      all_dates_valid <- all(sapply(non_na_dates, function(date) sum(length(strsplit(date, "-", fixed = TRUE)[[1]])) == 3))
-      
-      # Check if all dates have the right number of digits
-      all_digits_valid <- all(sapply(non_na_dates, has_valid_digits))
-      
-      all_dates_valid && all_digits_valid
-    })
-
-    is_ndigits_valid <- all(cols_ndigits)
-
-    ## Remove columns with all NA
-    all_na = sapply(cols_date, function(x) {
-      dates <- data[[x]]
-      non_na_dates <- dates[!is.na(dates)]
-      length(non_na_dates) == 0
-    })
-    non_na_date_cols <- cols_date[!all_na]
-    is_na <- any(is.na(data[cols_date[cols_date %in% req_columns]])) | any(is.na(data[non_na_date_cols]))
-
-    if(!is_ndigits_valid) warning("--------------------------------------------------\nV\u00E9rifiez le format des valeurs de dates. Les dates doivent \u00EAtre du format YYYY-MM-DD.\n\n")
-    if(is_na) warning("--------------------------------------------------\nCertaines valeurs de date sont manquantes ou NA. Les lignes sans valeurs dans les colonnes campaigns_opened_at et observations_date_obs ne seront pas injectées dans leurs tables respectives.\n\n")
+    ## Check if required date columns has NA values
+    date_na_message <- coleo_validate_required_date_na(data, cols_date, tbl)
+    if (!is.na(date_na_message)) warning(date_na_message)
   }
-
 
   #------------------------------------------------------------------------
   # Diagnistics
@@ -500,34 +471,9 @@ coleo_validate <- function(data, media_path = NULL) {
   # - Check that hours are within a decent range
   # - Check number of campaigns, empty campaigns, observations
   #------------------------------------------------------------------------
-  # Check that the values are within a decent range -----------------------
-  if(length(non_na_date_cols) > 0) {
-    # Year
-    range_year <- sapply(data[non_na_date_cols], function(x) {
-      split <- strsplit(unlist(x), "-", fixed = TRUE)
-      split <- split[!is.na(split)]
-      range(as.numeric(sapply(split, `[[`, 1)))
-    }) |>
-      range()
-    # Month
-    range_month <- sapply(data[non_na_date_cols], function(x) {
-      split <- strsplit(unlist(x), "-", fixed = TRUE)
-      split <- split[!is.na(split)]
-      range(as.numeric(sapply(split, `[[`, 2)))
-    }) |>
-      range()
-    # Day
-    range_day <- sapply(data[non_na_date_cols], function(x) {
-      split <- strsplit(unlist(x), "-", fixed = TRUE)
-      split <- split[!is.na(split)]
-      range(as.numeric(sapply(split, `[[`, 3)))
-    }) |>
-      range()
-
-    message(paste0("==================================================\n\nValidation diagnostique :\n",
-    if ("obs_species_taxa_name" %in% dat_names) paste0("\n- V\u00E9rifiez les lignes qui repr\u00E9sentent des campagnes vides : il y a ", no_obs, " lignes sans observations. Celles-ci entraineront une erreur lors de l'injection des observations.\n"),
-    "\n- V\u00E9rifiez que l'intervalle des dates", paste0(" inject\u00E9", "es "), "correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", "), " se trouvent dans l'intervalle de", paste0(" l'ann\u00E9", "e "), range_year[1], " \u00E0 ", range_year[2], " du mois ", range_month[1], " \u00E0 ", range_month[2], " et du jour ", range_day[1], "  \u00E0 ", range_day[2], ".\n\n- Si les", paste0(" donn\u00E9", "es"), " sont bonnes et qu'aucun autre message n'apparait, vous pouvez", paste0(" proc\u00E9", "der"), " \u00e0 l'injection des", paste0(" donn\u00E9", "es."), '\n'))
-  }
+  # Check that the dates values are within a decent range ---------------------
+  date_range_message <- coleo_validate_date_range(data, cols_date)
+  if (!is.na(date_range_message)) message(date_range_message)
 
   # Check number of entries per table -------------------------------------
   message("---\n\nRésumé des injections par table :\n")
@@ -675,6 +621,123 @@ missing_obs <- function(data, nvals){
 
   ### Update message
   message <- paste0("observations", " : ", nvals_new, " (", na_obs, " lignes sans taxon observé entraineront un \u00E9chec d'injection)")
+
+  return(message)
+}
+
+
+#' Validation du format des dates
+#'
+#'
+#' @param data Le dataframe contenant les données à injecter.
+#' @param dat_names Les noms des colonnes du dataframe.
+#' @param cols_date Les noms des colonnes contenant des date.
+#'
+#' @return Le message de validation.
+#'
+coleo_validate_date_digits <- function(data, dat_names, cols_date) {
+  # Initiate message
+  message <- NA
+
+  # Helper function to check if a date has the right number of digits
+  has_valid_digits <- function(date) {
+    date_parts <- strsplit(date, "-", fixed = TRUE)[[1]]
+    all(nchar(date_parts) == c(4, 2, 2))
+  }
+
+  # Check date columns
+  cols_ndigits <- sapply(cols_date, function(x) {
+    dates <- data[[x]]
+    non_na_dates <- dates[!is.na(dates)]
+    
+    # Check if all dates have 3 parts (year, month, day)
+    all_dates_valid <- all(sapply(non_na_dates, function(date) sum(length(strsplit(date, "-", fixed = TRUE)[[1]])) == 3))
+    
+    # Check if all dates have the right number of digits
+    all_digits_valid <- all(sapply(non_na_dates, has_valid_digits))
+    
+    all_dates_valid && all_digits_valid
+  })
+  is_ndigits_valid <- all(cols_ndigits)
+
+
+  if(!is_ndigits_valid) message <- "--------------------------------------------------\nV\u00E9rifiez le format des valeurs de dates. Les dates doivent \u00EAtre du format YYYY-MM-DD.\n\n"
+
+  return(message)
+}
+
+
+#' Validation de la présence de valeurs NA dans les colonnes de date
+#'
+#'
+#' @param data Le dataframe contenant les données à injecter.
+#' @param cols_date Les noms des colonnes contenant des date.
+#' @param tbl La table de la base de données à laquelle les données seront injectées.
+#'
+#' @return Le message de validation.
+#'
+coleo_validate_required_date_na <- function(data, cols_date, tbl) {
+  # Initiate message
+  message <- NA
+    
+  all_na <- coleo_validate_empty_cols(data, cols_date)
+
+  non_na_date_cols <- cols_date[!all_na]
+  req_cols <- tbl[tbl$colonne_requise==TRUE,]$noms_de_colonnes
+  is_na <- any(is.na(data[cols_date[cols_date %in% req_cols]])) | any(is.na(data[non_na_date_cols]))
+
+
+  if(is_na) message <- ("--------------------------------------------------\nCertaines valeurs de date sont manquantes ou NA. Les lignes sans valeurs dans les colonnes campaigns_opened_at, observations_date_obs ou remote_sensing_events_date_start ne seront pas injectées dans leurs tables respectives.\n\n")
+
+  return(message)
+}
+
+
+#' Validation des colonnes vides
+#'
+#'
+#' @param data Le dataframe contenant les données à injecter.
+#' @param columns Les noms des colonnes à valider.
+#'
+#' @return Le vecteur booléen représentant si la colonne est vide.
+#'
+coleo_validate_empty_cols <- function(data, columns) {
+  all_na <- sapply(columns, function(x) {
+    cols <- data[[x]]
+    non_na_cols <- cols[!is.na(cols)]
+    length(non_na_cols) == 0
+  })
+  
+  return(all_na)
+}
+
+
+#' Validation de la présence de valeurs NA dans les colonnes de date
+#'
+#'
+#' @param data Le dataframe contenant les données à injecter.
+#' @param cols_date Les noms des colonnes contenant des dates.
+#' @param no_obs Le nombre d'observations sans taxon.
+#'
+#' @return Le message de validation.
+#'
+coleo_validate_date_range <- function(data, cols_date, no_obs = 0) {
+  dates <- unlist(data[cols_date])
+  dates <- dates[!is.na(dates)]
+  # Extract date parts for valid dates
+  split <- strsplit(dates, "-", fixed = TRUE)
+  split <- split[sapply(split, length) == 3]
+  if (length(split) == 0) return(NA)
+  # Year
+  range_year <- range(as.numeric(sapply(split, `[[`, 1)))
+  # Month
+  range_month <- range(as.numeric(sapply(split, `[[`, 2)))
+  # Day
+  range_day <- range(as.numeric(sapply(split, `[[`, 3)))
+
+  message <- paste0("==================================================\n\nValidation diagnostique :\n",
+  if ("obs_species_taxa_name" %in% names(data)) paste0("\n- V\u00E9rifiez les lignes qui repr\u00E9sentent des campagnes vides : il y a ", no_obs, " lignes sans observations. Celles-ci entraineront une erreur lors de l'injection des observations.\n"),
+  "\n- V\u00E9rifiez que l'intervalle des dates", paste0(" inject\u00E9", "es "), "correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", "), " se trouvent dans l'intervalle de", paste0(" l'ann\u00E9", "e "), range_year[1], " \u00E0 ", range_year[2], " du mois ", range_month[1], " \u00E0 ", range_month[2], " et du jour ", range_day[1], "  \u00E0 ", range_day[2], ".\n\n- Si les", paste0(" donn\u00E9", "es"), " sont bonnes et qu'aucun autre message n'apparait, vous pouvez", paste0(" proc\u00E9", "der"), " \u00e0 l'injection des", paste0(" donn\u00E9", "es."), '\n')
 
   return(message)
 }

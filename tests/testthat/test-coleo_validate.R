@@ -155,7 +155,10 @@ test_that("coleo_validate", {
   ## Test that date format respects the YYYY-MM-DD convention
   dat_test <- dat
   dat_test$observations_date_obs <- "95-05-15"
-
+  testthat::expect_warning(coleo_validate(dat_test),
+                         regexp = "Vérifiez le format des valeurs de dates.*")
+  dat_test <- dat
+  dat_test$observations_date_obs <- "2020_05_15"
   testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "Vérifiez le format des valeurs de dates.*")
 
