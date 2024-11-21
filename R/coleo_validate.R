@@ -467,13 +467,12 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   # Diagnistics
   #
-  # - Check that dates are within a decent range
-  # - Check that hours are within a decent range
-  # - Check number of campaigns, empty campaigns, observations
+  # - Check number of empty observations, and dates range
+  # - Check number of entries per table
   #------------------------------------------------------------------------
-  # Check that the dates values are within a decent range ---------------------
-  date_range_message <- coleo_validate_date_range(data, cols_date)
-  if (!is.na(date_range_message)) message(date_range_message)
+  # Check that the dates values are within a decent range -----------------
+  diags_message <- coleo_validate_diagnostics(data, cols_date, no_obs)
+  if (!is.na(diags_message)) message(diags_message)
 
   # Check number of entries per table -------------------------------------
   message("---\n\nRésumé des injections par table :\n")
@@ -721,7 +720,7 @@ coleo_validate_empty_cols <- function(data, columns) {
 #'
 #' @return Le message de validation.
 #'
-coleo_validate_date_range <- function(data, cols_date, no_obs = 0) {
+coleo_validate_diagnostics <- function(data, cols_date, no_obs = 0) {
   dates <- unlist(data[cols_date])
   dates <- dates[!is.na(dates)]
   # Extract date parts for valid dates
