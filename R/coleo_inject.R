@@ -70,8 +70,11 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
       tables <- tables[!tables %in% "observations_landmarks_lookup"]
     }
     df_id <- coleo_inject_vegetation_transect_campaigns(df)
+  ## Indicators do not require injecting in the campaigns table
+  } else if (campaign_type %in% c("phénologie_indicateur")) {
+    tables <- c("void", tables)
   ## Inject campaigns
-  } else if ("campaigns_type" %in% colnames(df)) {
+  } else if (("campaigns_type" %in% colnames(df)) & ("campaigns_opened_at" %in% colnames(df))) {
     df_id <- coleo_inject_table(df, "campaigns", schema = schema)
     if(!any(sapply(df_id$campaign_error, is.null))) {
     cat("Only data for successfully injected campaigns are injected in the next tables. These following lines failed to inject: ", paste0(which(!sapply(df_id$campaign_error, is.null)), collapse = ", "), "\n")
