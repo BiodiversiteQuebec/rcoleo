@@ -93,3 +93,13 @@ coleo_media_begin_req <- function(server_dir){
                        "Authorization" = paste("Bearer", bearer())) |>
     httr2::req_error(body = coleo_error_message)
 }
+
+#' Déclencheur de l'API plumber pour mettre à jour les données du portail
+#' 
+#' Cette fonction déclenche la mise à jour des données du portail.
+#' 
+#' @return Void. Ouvre le navigateur à l'endpoint de mise à jour.
+coleo_plumber_update <- function(){
+  browseURL("https://coleo.biodiversite-quebec.ca/r-update-api/update/no")
+}
+
