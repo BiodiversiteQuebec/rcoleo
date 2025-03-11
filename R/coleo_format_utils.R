@@ -47,6 +47,9 @@ coleo_format <- function(dataFrame) {
     }
   }
 
+    # Remove "NA" values
+    dataFrame[dataFrame == "NA"] <- NA
+
   return(dataFrame)
 }
 
