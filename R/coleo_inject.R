@@ -98,6 +98,7 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
       if(!any(sapply(df_id$campaign_error, is.null))) {
       cat("Seules les données des campagnes injectées avec succès sont injectées dans les tables suivantes. Les lignes suivantes n'ont pas pu être injectées : ", paste0(which(!sapply(df_id$campaign_error, is.null)), collapse = ", "), "\n")
       }
+      next
     }
 
     # Injection of taxa_name in ref_species table
@@ -132,10 +133,12 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
       if (is.null(media_path)) stop("The local path to media files is missing. Media files and table could not be injected")
       ### 1. Inject media files into coleo
       df_id <- coleo_inject_media(df_id, server_dir = 'observation', media_path)
+      next
 
     } else {
       ## Regular table injections
       df_id <- coleo_inject_table(df_id, table, schema = schema)
+      next
     }
   }
 
