@@ -79,13 +79,13 @@ coleo_return_valid_site_types <- function(){
 
 #' Trouver les tables requises pour un type de campagne donné
 #'
-#'
 #' @param camp_type un type de campagne valide.
+#' @param col_names un vecteur de charactères contenant les noms des colonnes d'un jeu de données.
 #'
 #' @return Un vecteur contenant les noms des tables requises pour le type de campagne donné.
 #'
 #' @export
-coleo_return_required_tables <- function(camp_type) {
+coleo_return_required_tables <- function(camp_type, col_names = NULL) {
 
   full_tbl <- coleo_get_required_tables()
 
@@ -94,6 +94,17 @@ coleo_return_required_tables <- function(camp_type) {
                           msg = "Cette campagne ne fait pas partie des choix possibles de coleo_get_required_tables.R")
 
   tbls <- full_tbl[full_tbl[,camp_type]==1, "table"][[1]]
+
+  # If col_names is not NULL, check if the tables are required
+  if (!is.null(col_names)) {
+    if (!any(grepl("efforts", col_names))) {
+      tables <- tables[!tables %in% "observations_efforts_lookup"]
+    }
+    if (!any(grepl("landmarks", col_names))) {
+      tables <- tables[!tables %in% "landmarks"]
+      tables <- tables[!tables %in% "observations_landmarks_lookup"]
+    }
+  }
 
   return(tbls)
 }
@@ -116,14 +127,6 @@ coleo_return_campaign_type <- function(data) {
   } else {
     return(NULL)
   }
-  
-  # Validate the campaign type
-  if (length(campaign_type) > 1) {
-    stop("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type (ou remote_sensing_indicators_name) sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
-  }
-  if (length(campaign_type) == 0) {
-    stop("V\u00E9rifiez qu'une colonne contient le type d'inventaire (campaigns_type ou remote_sensing_indicators_name) et que son nom de colonne correspond \u00e0 campaigns_type \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
-  }
-  
+ 
   return(campaign_type)
 }
