@@ -128,13 +128,5 @@ coleo_return_campaign_type <- function(data) {
     return(NULL)
   }
   
-  # Validate the campaign type
-  if (length(campaign_type) > 1) {
-    stop("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type (ou remote_sensing_indicators_name) sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
-  }
-  if (length(campaign_type) == 0) {
-    stop("V\u00E9rifiez qu'une colonne contient le type d'inventaire (campaigns_type ou remote_sensing_indicators_name) et que son nom de colonne correspond \u00e0 campaigns_type \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
-  }
-  
   return(campaign_type)
 }
