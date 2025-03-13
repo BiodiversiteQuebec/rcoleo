@@ -127,6 +127,6 @@ coleo_return_campaign_type <- function(data) {
   } else {
     return(NULL)
   }
-  
+ 
   return(campaign_type)
 }
