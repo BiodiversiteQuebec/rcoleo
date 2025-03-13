@@ -79,13 +79,13 @@ coleo_return_valid_site_types <- function(){
 
 #' Trouver les tables requises pour un type de campagne donné
 #'
-#'
 #' @param camp_type un type de campagne valide.
+#' @param col_names un vecteur de charactères contenant les noms des colonnes d'un jeu de données.
 #'
 #' @return Un vecteur contenant les noms des tables requises pour le type de campagne donné.
 #'
 #' @export
-coleo_return_required_tables <- function(camp_type) {
+coleo_return_required_tables <- function(camp_type, col_names = NULL) {
 
   full_tbl <- coleo_get_required_tables()
 
@@ -94,6 +94,17 @@ coleo_return_required_tables <- function(camp_type) {
                           msg = "Cette campagne ne fait pas partie des choix possibles de coleo_get_required_tables.R")
 
   tbls <- full_tbl[full_tbl[,camp_type]==1, "table"][[1]]
+
+  # If col_names is not NULL, check if the tables are required
+  if (!is.null(col_names)) {
+    if (!any(grepl("efforts", col_names))) {
+      tables <- tables[!tables %in% "observations_efforts_lookup"]
+    }
+    if (!any(grepl("landmarks", col_names))) {
+      tables <- tables[!tables %in% "landmarks"]
+      tables <- tables[!tables %in% "observations_landmarks_lookup"]
+    }
+  }
 
   return(tbls)
 }

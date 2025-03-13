@@ -47,7 +47,7 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
   # vegetation phenology goes into Indicators schéma (not campaigns)
   if ("vegetation_phenology_date_greening" %in% colnames(df)) {
     if (schema != "indicators") {
-      stop("Ces données doivent être injectées dans le schéma *indicators*")
+      stop("Ces données doivent être injectées dans le schéma *indicators* de la facon suivante `coleo_inject(data, schema = 'indicators')`.")
     }
     df_id <- coleo_inject_table(df_id, "vegetation_phenology", schema = schéma)
     coleo_plumber_update()
@@ -77,9 +77,9 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
     return(df_id)
   }
 
-  
+
   #==========================================================================
-  # 3. Inject tables
+  # 3. Inject data that are campaigns
   #==========================================================================
   # Check there is a campaign_type
   if (is.null(campaign_type)) {
@@ -88,14 +88,7 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
   }
 
   # Get required tables
-  tables <- coleo_return_required_tables(campaign_type)
-  if (!any(grepl("efforts", names(df)))) {
-    tables <- tables[!tables %in% "observations_efforts_lookup"]
-  }
-  if (!any(grepl("landmarks", names(df)))) {
-    tables <- tables[!tables %in% "landmarks"]
-    tables <- tables[!tables %in% "observations_landmarks_lookup"]
-  }
+  tables <- coleo_return_required_tables(campaign_type, colnames(df))
 
   # Inject tables
   for (table in tables) {
@@ -119,23 +112,19 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
       }
     }
 
-    # Case-specific injections
-    if (campaign_type == "mammif\u00e8res" & table == "landmarks") {
-      ## Landmarks table for "mammifères" campaigns
-      ## - observations is injected before landmarks
-      ## - observations_landmarks_lookup table is injected in this step
-      df_id <- coleo_inject_table(df_id, "observations", schema = schema)
-      df_id <- coleo_inject_mam_landmarks(df_id)
-
-    } else if (campaign_type == "mammif\u00e8res" & table == "observations_landmarks_lookup") {
-      ## observations_landmarks_lookup table for "mammifères" campaigns
-      ## is injected in the previous step
-      next
-
-    } else if (campaign_type == "mammif\u00e8res" & table == "observations") {
-      ## observations table for "mammifères" campaigns
-      ## is injected before the landmarks table, in the previous step
-      next
+    # Case-specific injections ------------------------------------------------
+    if (campaign_type == "mammif\u00e8res") {
+      if (table == "landmarks") {
+        ## Landmarks table for "mammifères" campaigns
+        ## - observations is injected before landmarks
+        ## - observations_landmarks_lookup table is injected in this step
+        df_id <- coleo_inject_table(df_id, "observations", schema = schema)
+        df_id <- coleo_inject_mam_landmarks(df_id)
+      } else if (table == "observations_landmarks_lookup") {
+        next
+      } else if (table == "observations") {
+        next
+      }
 
     } else if (table == "media") {
       ## The special case of media files
@@ -151,7 +140,7 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
   }
 
   #==========================================================================
-  # 4. Trigger to update portal data
+  # 4. Trigger portal data update
   #==========================================================================
   coleo_plumber_update()
 
