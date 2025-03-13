@@ -819,19 +819,22 @@ coleo_validate_coordinates_projection <- function(data, dat_names, bbox = c(-90,
 #' }
 
 coleo_validate_coordinates <- function(data, dat_names, bbox = c(-79.76, 44.99, -57.10, 62.59)) {
+  lat_names <- grepl("lat", dat_names)
+  lon_names <- grepl("lon", dat_names)
+  
   lat_error = lon_error = FALSE
 
   if (any(lat_names)) {
     lat_range <- unlist(data[,lat_names]) |> range(na.rm = TRUE)
-    if (lat_range[2] > Quebec_bbox[4] | lat_range[1] < Quebec_bbox[2]) lat_error <- TRUE
+    if (lat_range[2] > bbox[4] | lat_range[1] < bbox[2]) lat_error <- TRUE
   }
   if (any(lon_names)) {
     lon_range <- unlist(data[,lon_names]) |> range(na.rm = TRUE)
-    if (lon_range[2] > Quebec_bbox[3] | lon_range[1] < Quebec_bbox[1]) lon_error <- TRUE
+    if (lon_range[2] > bbox[3] | lon_range[1] < bbox[1]) lon_error <- TRUE
   }
 
   message <- NA
-  if (lat_error | lon_error) message <- paste0("--------------------------------------------------\nV\u00E9rifiez les coordonnées. Des valeurs sont à l'extérieur du Québec.\n\n")
+  if (lat_error | lon_error) message <- paste0("--------------------------------------------------\nV\u00E9rifiez les coordonnées. Certaines valeurs se trouvent à l'extérieur du Québec.\n\n")
 
   return(message)
 }
