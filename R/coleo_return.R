@@ -108,17 +108,22 @@ coleo_return_required_tables <- function(camp_type) {
 #' @export
 #' 
 coleo_return_campaign_type <- function(data) {
-  # Get required columns for the campaign type
-  if (is.null(data$campaigns_type)) {
-    # Remote sensing campaigns
+  # Check for the presence of required columns
+  if ("campaigns_type" %in% colnames(data)) {
+    campaign_type <- unique(data$campaigns_type)
+  } else if ("remote_sensing_indicators_name" %in% colnames(data)) {
     campaign_type <- unique(data$remote_sensing_indicators_name)
   } else {
-    campaign_type <- unique(data$campaigns_type)
+    return(NULL)
   }
-
-  # Check if there is a single campaign type
-  if (length(campaign_type) > 1) stop("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type (ou remote_sensing_indicators_name) sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
-  if (length(campaign_type) == 0) stop("V\u00E9rifiez qu'une colonne contient le type d'inventaire (campaigns_type ou remote_sensing_indicators_name) et que son nom de colonne correspond \u00e0 campaigns_type \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
-
+  
+  # Validate the campaign type
+  if (length(campaign_type) > 1) {
+    stop("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type (ou remote_sensing_indicators_name) sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+  }
+  if (length(campaign_type) == 0) {
+    stop("V\u00E9rifiez qu'une colonne contient le type d'inventaire (campaigns_type ou remote_sensing_indicators_name) et que son nom de colonne correspond \u00e0 campaigns_type \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+  }
+  
   return(campaign_type)
 }
