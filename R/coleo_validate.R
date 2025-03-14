@@ -19,6 +19,10 @@ coleo_validate <- function(data, media_path = NULL) {
   # Check that there is a campaign type column and that it contains a unique value
   #------------------------------------------------------------------------
   campaign_type <- coleo_return_campaign_type(data)
+  if (is.null(campaign_type)) stop("V\u00E9rifiez qu'une colonne contient le type d'inventaire (campaigns_type ou remote_sensing_indicators_name) et que son nom de colonne correspond \u00e0 campaigns_type \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+  if (length(campaign_type) > 1) stop("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type (ou remote_sensing_indicators_name) sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+  if (length(campaign_type) == 0) stop("V\u00E9rifiez qu'une colonne contient le type d'inventaire (campaigns_type ou remote_sensing_indicators_name) et que son nom de colonne correspond \u00e0 campaigns_type \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+  
   campaigns <- coleo_return_valid_campaigns()
   if(!campaign_type %in% campaigns) stop("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
 
@@ -179,7 +183,7 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   if ("media_name" %in% dat_names) {
     # Validate directory existence
-    if (is.null(media_path)) warning("--------------------------------------------------\nLe chemin du répertoire contenant les ", paste0("m","\U00E9","dias"), " n'a pas ", paste0("\U00E9","t", "\U00E9", " pass", "\U00E9"), " à l'argument mendia_path. La validation des valeurs de la colonne media_name est ignorée.\n\n")
+    if (is.null(media_path)) warning("--------------------------------------------------\nLe chemin du répertoire contenant les ", paste0("m","\U00E9","dias"), " n'a pas ", paste0("\U00E9","t", "\U00E9", " pass", "\U00E9"), " \u00E0 l'argument mendia_path. La validation des valeurs de la colonne media_name est ignorée.\n\n")
   }
   
   #------------------------------------------------------------------------
@@ -216,7 +220,7 @@ coleo_validate <- function(data, media_path = NULL) {
       camp_dat <- data[!duplicated(data[, camp_w_notes_cols]), camp_cols]
       dupl_camp <- camp_dat$sites_site_code[duplicated(camp_dat)]
       ## Warning message
-      warning("--------------------------------------------------\nV\u00E9rifiez les commentaires de campagnes (colonne campaigns_notes). Les commentaires de campagnes doivent normalement \u00EAtre saisis pour toutes les lignes de cette campagne. Ces campagnes sont à risque d'être dupliqu\u00E9es :\n", paste(dupl_camp, collapse = ", "),".\n\n")
+      warning("--------------------------------------------------\nV\u00E9rifiez les commentaires de campagnes (colonne campaigns_notes). Les commentaires de campagnes doivent normalement \u00EAtre saisis pour toutes les lignes de cette campagne. Ces campagnes sont \u00E0 risque d'être dupliqu\u00E9es :\n", paste(dupl_camp, collapse = ", "),".\n\n")
     }
   }
 
@@ -252,6 +256,21 @@ coleo_validate <- function(data, media_path = NULL) {
     }
   }
   
+  #------------------------------------------------------------------------
+  # Check that all coordinates are within a valid range
+  #
+  # Québec bbox:  -79.76, 44.99, -57.10, 62.59
+  #------------------------------------------------------------------------
+  # Check that all coordinates are within valid range ---------------------
+  proj_validation <- coleo_validate_coordinates_projection(data, dat_names)
+  if (!is.na(proj_validation)) warning(proj_validation)
+
+
+  # Check that all latitudes and longitudes  are within valid range -------
+  Quebec_bbox <- c(-79.76, 44.99, -57.10, 62.59) # xmin, ymin, xmax, ymax
+  bbox_validation <- coleo_validate_coordinates(data, dat_names, Quebec_bbox)
+
+  if (!is.na(bbox_validation)) warning(bbox_validation)
   
   #------------------------------------------------------------------------
   # Check that azimut columns have values within 0 and 360
@@ -737,6 +756,89 @@ coleo_validate_diagnostics <- function(data, cols_date, no_obs = 0) {
   message <- paste0("==================================================\n\nValidation diagnostique :\n",
   if ("obs_species_taxa_name" %in% names(data)) paste0("\n- V\u00E9rifiez les lignes qui repr\u00E9sentent des campagnes vides : il y a ", no_obs, " lignes sans observations. Celles-ci entraineront une erreur lors de l'injection des observations.\n"),
   "\n- V\u00E9rifiez que l'intervalle des dates", paste0(" inject\u00E9", "es "), "correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", "), " se trouvent dans l'intervalle de", paste0(" l'ann\u00E9", "e "), range_year[1], " \u00E0 ", range_year[2], " du mois ", range_month[1], " \u00E0 ", range_month[2], " et du jour ", range_day[1], "  \u00E0 ", range_day[2], ".\n\n- Si les", paste0(" donn\u00E9", "es"), " sont bonnes et qu'aucun autre message n'apparait, vous pouvez", paste0(" proc\u00E9", "der"), " \u00e0 l'injection des", paste0(" donn\u00E9", "es."), '\n')
+
+  return(message)
+}
+
+#' Valider les Coordonnées
+#'
+#' Cette fonction valide les coordonnées dans un jeu de données donné pour s'assurer qu'elles se situent dans des plages valides du système de coordonnées géographique EPSG:4326.
+#'
+#' @param data Un dataframe contenant les coordonnées à valider.
+#' @param dat_names Un vecteur de caractères des noms de colonnes dans le dataframe qui contiennent les valeurs de latitude et de longitude.
+#' @param bbox Un vecteur de 4 éléments représentant la boîte englobante des coordonnées géographiques. Par défaut, la boîte englobante est [-90, 90, -180, 180].
+#'
+#' @details
+#' La fonction valide que les valeurs de latitude sont dans la plage [-90, 90] et que les valeurs de longitude sont dans la plage [-180, 180].
+#'
+#' @return Cette fonction retourne un message d'avertissement si des coordonnées sont hors des plages valides.
+#'
+#' @examples
+#' \dontrun{
+#' data <- data.frame(lat = c(45, 50, 60), lon = c(-70, -75, -80))
+#' dat_names <- c("lat", "lon")
+#' bbox <- c(-90, 90, -180, 180)
+#' coleo_validate_coordinates(data, dat_names)
+#' }
+coleo_validate_coordinates_projection <- function(data, dat_names, bbox = c(-90, 90, -180, 180)) {
+  lat_names <- grepl("lat", dat_names)
+  lon_names <- grepl("lon", dat_names)
+
+  lat_error = lon_error = FALSE
+
+  if (any(lat_names)) {
+    lat_range <- unlist(data[,lat_names]) |> range(na.rm = TRUE)
+    if (lat_range[2] > bbox[2] | lat_range[1] < bbox[1]) lat_error <- TRUE
+  }
+  if (any(lon_names)) {
+    lon_range <- unlist(data[,lon_names]) |> range(na.rm = TRUE)
+    if (lon_range[2] > bbox[4] | lon_range[1] < bbox[3]) lon_error <- TRUE
+  }
+  
+  message <- NA
+  if (lat_error | lon_error) message <- paste0("--------------------------------------------------\nV\u00E9rifiez la projection des coordonnées pour qu'elles soient en EPSG:4326. Des valeurs ne respectent pas le système de coordonnées géographiques requis.\n\n")
+
+  return(message)
+}
+
+#' Valider les Coordonnées
+#'
+#' Cette fonction valide les coordonnées dans un jeu de données donné pour s'assurer qu'elles se situent dans la boîte englobante du Québec.
+#'
+#' @param data Un dataframe contenant les coordonnées à valider.
+#' @param dat_names Un vecteur de caractères des noms de colonnes dans le dataframe qui contiennent les valeurs de latitude et de longitude.
+#' @param bbox Un vecteur de 4 éléments représentant la boîte englobante des coordonnées géographiques. Par défaut, la boîte englobante du Québec est [-79.76, 44.99, -57.10, 62.59].
+#'
+#' @details
+#' La fonction vérifie que les valeurs de latitude et de longitude se situent dans la boîte englobante du Québec (xmin: -79.76, ymin: 44.99, xmax: -57.10, ymax: 62.59).
+#'
+#' @return Cette fonction retourne un message d'avertissement si des coordonnées sont hors des plages valides.
+#'
+#' @examples
+#' \dontrun{
+#' data <- data.frame(lat = c(45, 50, 60), lon = c(-70, -75, -80))
+#' dat_names <- c("lat", "lon")
+#' bbox <- c(-79.76, 44.99, -57.10, 62.59)
+#' coleo_validate_coordinates(data, dat_names, bbox)
+#' }
+
+coleo_validate_coordinates <- function(data, dat_names, bbox = c(-79.76, 44.99, -57.10, 62.59)) {
+  lat_names <- grepl("lat", dat_names)
+  lon_names <- grepl("lon", dat_names)
+  
+  lat_error = lon_error = FALSE
+
+  if (any(lat_names)) {
+    lat_range <- unlist(data[,lat_names]) |> range(na.rm = TRUE)
+    if (lat_range[2] > bbox[4] | lat_range[1] < bbox[2]) lat_error <- TRUE
+  }
+  if (any(lon_names)) {
+    lon_range <- unlist(data[,lon_names]) |> range(na.rm = TRUE)
+    if (lon_range[2] > bbox[3] | lon_range[1] < bbox[1]) lon_error <- TRUE
+  }
+
+  message <- NA
+  if (lat_error | lon_error) message <- paste0("--------------------------------------------------\nV\u00E9rifiez les coordonnées. Certaines valeurs se trouvent à l'extérieur du Québec.\n\n")
 
   return(message)
 }
