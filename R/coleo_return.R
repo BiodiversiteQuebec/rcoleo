@@ -98,11 +98,11 @@ coleo_return_required_tables <- function(camp_type, col_names = NULL) {
   # If col_names is not NULL, check if the tables are required
   if (!is.null(col_names)) {
     if (!any(grepl("efforts", col_names))) {
-      tables <- tables[!tables %in% "observations_efforts_lookup"]
+      tbls <- tbls[!tbls %in% "observations_efforts_lookup"]
     }
     if (!any(grepl("landmarks", col_names))) {
-      tables <- tables[!tables %in% "landmarks"]
-      tables <- tables[!tables %in% "observations_landmarks_lookup"]
+      tbls <- tbls[!tbls %in% "landmarks"]
+      tbls <- tbls[!tbls %in% "observations_landmarks_lookup"]
     }
   }
 
