@@ -21,7 +21,7 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
   campaign_type <- coleo_return_campaign_type(df)
 
   #==========================================================================
-  # 1. Injection process for data that are not campaigns
+  # 1. Injection process for data that are not regular campaigns
   #==========================================================================
   # Cells
   # - Only cells have a geom column
@@ -45,9 +45,9 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
   }
 
   # vegetation phenology goes into Indicators schéma (not campaigns)
-  if ("vegetation_phenology_date_greening" %in% colnames(df)) {
+  if (campaign_type == "ph\u00e9nologie_indicateur") {
     if (schema != "indicators") {
-      stop("Ces données doivent être injectées dans le schéma *indicators* de la facon suivante `coleo_inject(data, schema = 'indicators')`.")
+      stop("Ces donn\u00e9es doivent être inject\u00e9es dans le schéma *indicators* de la facon suivante `coleo_inject(data, schema = 'indicators')`.")
     }
     df_id <- coleo_inject_table(df_id, "vegetation_phenology", schema = schéma)
     coleo_plumber_update()
@@ -56,7 +56,7 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
 
   # Végétation_transect
   if (campaign_type == "v\u00e9g\u00e9tation_transect") {
-    df_id <- coleo_inject_table(df, "vegetation_transect", schema = schema)
+    df_id <- coleo_inject_vegetation_transect_campaigns(df, schema = schema)
     coleo_plumber_update()
     return(df_id)
   }
@@ -80,6 +80,10 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
 
   #==========================================================================
   # 3. Inject data that are campaigns
+  #
+  # Exceptions 
+  # - mammifères campaigns (landmarks table)
+  # - media files
   #==========================================================================
   # Check there is a campaign_type
   if (is.null(campaign_type)) {
@@ -773,6 +777,17 @@ coleo_inject_vegetation_transect_campaigns <- function(df_id, schema = 'public')
     df_id <- dplyr::bind_rows(df_id, df_camp)
   } else {
     df_id <- df_camp
+  }
+
+  #-------------------------------------------------------------------------
+  # 5. Inject other tables
+  #-------------------------------------------------------------------------
+  # Get required tables
+  tables <- coleo_return_required_tables(campaign_type, colnames(df))
+  tables <- tables[!tables %in% c("campaigns")]
+
+  for (table in tables) {
+    df_id <- coleo_inject_table(df_id, table, schema = schema)
   }
 
   # Return the results
