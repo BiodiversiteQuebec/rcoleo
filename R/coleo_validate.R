@@ -426,7 +426,12 @@ coleo_validate <- function(data, media_path = NULL) {
   if("obs_species_variable" %in% dat_names) {
     presence_rows <- which(data$obs_species_variable == "pr\u00E9sence")
     if(length(presence_rows) > 0) {
+      is_true <- TRUE
+      if(all(unique(data$obs_species_value[presence_rows]) != 1, na.rm = TRUE)) {
+        is_true <- FALSE
+      } else {
       is_true <- all(data$obs_species_value[presence_rows] == 1)
+      }
 
       if(!is_true) warning("--------------------------------------------------\nV\u00E9rifiez les valeurs de la colonne obs_species_value. Les lignes qui contiennent la valeur \"pr\u00E9sence\" dans la colonne obs_species_variable doivent avoir la valeur 1 dans la colonne obs_species_value.\n\n")
     }
