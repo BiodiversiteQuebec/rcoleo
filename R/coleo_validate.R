@@ -19,12 +19,24 @@ coleo_validate <- function(data, media_path = NULL) {
   # Check that there is a campaign type column and that it contains a unique value
   #------------------------------------------------------------------------
   campaign_type <- coleo_return_campaign_type(data)
-  if (is.null(campaign_type)) stop("V\u00E9rifiez qu'une colonne contient le type d'inventaire (campaigns_type ou remote_sensing_indicators_name) et que son nom de colonne correspond \u00e0 campaigns_type \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
-  if (length(campaign_type) > 1) stop("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type (ou remote_sensing_indicators_name) sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
-  if (length(campaign_type) == 0) stop("V\u00E9rifiez qu'une colonne contient le type d'inventaire (campaigns_type ou remote_sensing_indicators_name) et que son nom de colonne correspond \u00e0 campaigns_type \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+  if (is.null(campaign_type)) {
+    warning("V\u00E9rifiez qu'une colonne contient le type d'inventaire (campaigns_type ou remote_sensing_indicators_name) et que son nom de colonne correspond \u00e0 campaigns_type. Le type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+    return(NULL)
+  }
+  if (length(campaign_type) > 1) {
+    warning("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type (ou remote_sensing_indicators_name) sont identiques et que la valeur est un type de campagne valide. Le type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+    return(NULL)
+  }
+  if (length(campaign_type) == 0) {
+    warning("V\u00E9rifiez qu'une colonne contient le type d'inventaire (campaigns_type ou remote_sensing_indicators_name) et que son nom de colonne correspond \u00e0 campaigns_type Le type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+    return(NULL)
+  }
   
   campaigns <- coleo_return_valid_campaigns()
-  if(!campaign_type %in% campaigns) stop("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. \nLe type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+  if(!campaign_type %in% campaigns) {
+    warning("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. Le type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+    return(NULL)
+  }
 
 
   #------------------------------------------------------------------------
