@@ -101,8 +101,10 @@ coleo_validate <- function(data, media_path = NULL) {
   possible_col_diff <- possible_col_diff[!which_extra]
   # Accept media_name column ----------------------------------------------
   possible_col_diff <- possible_col_diff[which(possible_col_diff != "media_name")]
+  # campaigns_type has already been validated -----------------------------
+  possible_col_diff <- possible_col_diff[which(possible_col_diff != "campaigns_type")]
 
-  if(length(possible_col_diff) != 0) warning("--------------------------------------------------\nV\u00E9rifiez que les bons noms de colonnes sont utilis\u00E9s et que les colonnes superflues sont", paste0(" retir\u00E9", "es"), ".\n", "\n\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n\n")
+  if(length(possible_col_diff) != 0) warning("--------------------------------------------------\nV\u00E9rifiez que les bons noms de colonnes sont utilis\u00E9s et que les colonnes superflues sont", paste0(" retir\u00E9", "es"), ".\n", "\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n\n")
 
 
   #------------------------------------------------------------------------
