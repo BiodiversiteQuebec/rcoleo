@@ -18,7 +18,8 @@ coleo_read <- function(filePath) {
 
   # Test that the extension is acceptable
   if (!ex %in% c("csv", "xls", "xlsx", "shp")) {
-    stop("Seuls les documents csv, shp et les gabarits coleo sont pris en charge au moment. Veuillez soumettre les donn\u00e9es dans un format support\u00e9.")
+    warning("Seuls les documents csv, shp et les gabarits coleo sont pris en charge au moment. Veuillez soumettre les donn\u00e9es dans un format support\u00e9.")
+    return(NULL)
   }
 
   # Read the data
