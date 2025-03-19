@@ -47,7 +47,7 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
   # vegetation phenology goes into Indicators schéma (not campaigns)
   if (campaign_type == "ph\u00e9nologie_indicateur") {
     if (schema != "indicators") {
-      stop("Ces donn\u00e9es doivent être inject\u00e9es dans le schéma *indicators* de la facon suivante `coleo_inject(data, schema = 'indicators')`.")
+      stop("Ces donn\u00e9es doivent être inject\u00e9es dans le sch\u00e9ma *indicators* : `coleo_inject(data, schema = 'indicators')`.")
     }
     df_id <- coleo_inject_table(df_id, "vegetation_phenology", schema = schéma)
     coleo_plumber_update()

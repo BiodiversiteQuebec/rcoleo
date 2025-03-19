@@ -8,11 +8,12 @@
 #' @export
 #'
 coleo_validate <- function(data, media_path = NULL) {
+  warning_flag <- FALSE
 
   #------------------------------------------------------------------------
   # Increase default warning message length
   #------------------------------------------------------------------------
-  options(warning.length = 2000L)
+  options(warning.length = 2000L, warn = 1)
 
 
   #------------------------------------------------------------------------
@@ -20,21 +21,21 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   campaign_type <- coleo_return_campaign_type(data)
   if (is.null(campaign_type)) {
-    warning("V\u00E9rifiez qu'une colonne contient le type d'inventaire (campaigns_type ou remote_sensing_indicators_name) et que son nom de colonne correspond \u00e0 campaigns_type. Le type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+    warning("V\u00E9rifiez qu'une colonne contient le type d'inventaire (campaigns_type ou remote_sensing_indicators_name) et que son nom de colonne correspond \u00e0 campaigns_type. Le type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n", call. = FALSE)
     return(NULL)
   }
   if (length(campaign_type) > 1) {
-    warning("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type (ou remote_sensing_indicators_name) sont identiques et que la valeur est un type de campagne valide. Le type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+    warning("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type (ou remote_sensing_indicators_name) sont identiques et que la valeur est un type de campagne valide. Le type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n", call. = FALSE)
     return(NULL)
   }
   if (length(campaign_type) == 0) {
-    warning("V\u00E9rifiez qu'une colonne contient le type d'inventaire (campaigns_type ou remote_sensing_indicators_name) et que son nom de colonne correspond \u00e0 campaigns_type Le type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+    warning("V\u00E9rifiez qu'une colonne contient le type d'inventaire (campaigns_type ou remote_sensing_indicators_name) et que son nom de colonne correspond \u00e0 campaigns_type Le type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n", call. = FALSE)
     return(NULL)
   }
   
   campaigns <- coleo_return_valid_campaigns()
   if(!campaign_type %in% campaigns) {
-    warning("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. Le type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n\n")
+    warning("V\u00E9rifiez que toutes les valeurs de la colonne campaigns_type sont identiques et que la valeur est un type de campagne valide. Le type de campagne est n\u00E9cessaire pour les prochaines \u00E9tapes de validation.\n", call. = FALSE)
     return(NULL)
   }
 
@@ -86,7 +87,10 @@ coleo_validate <- function(data, media_path = NULL) {
   obs_is_valid <- grepl("observations_is_valid", req_col_diff, fixed = TRUE)
   if (any(obs_is_valid)) req_col_diff <- req_col_diff[!obs_is_valid]
   # Return warning if there's a mismatch ----------------------------------
-  if(length(req_col_diff) != 0) warning("--------------------------------------------------\nV\u00E9rifiez que les bons noms de colonnes sont utilis\u00E9s et que toutes les colonnes requises sont pr\u00E9sentes. Les colonnes absentes sont : \n", paste0("- ", req_col_diff, collapse = "\n- "), "\n\n")
+  if(length(req_col_diff) != 0) {
+    warning("V\u00E9rifiez que les bons noms de colonnes sont utilis\u00E9s et que toutes les colonnes requises sont pr\u00E9sentes. Les colonnes absentes sont : \n", paste0("- ", req_col_diff, collapse = "\n- "), "\n", call. = FALSE)
+    warning_flag <- TRUE
+  }
 
 
   #------------------------------------------------------------------------
@@ -104,7 +108,10 @@ coleo_validate <- function(data, media_path = NULL) {
   # campaigns_type has already been validated -----------------------------
   possible_col_diff <- possible_col_diff[which(possible_col_diff != "campaigns_type")]
 
-  if(length(possible_col_diff) != 0) warning("--------------------------------------------------\nV\u00E9rifiez que les bons noms de colonnes sont utilis\u00E9s et que les colonnes superflues sont", paste0(" retir\u00E9", "es"), ".\n", "\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n\n")
+  if(length(possible_col_diff) != 0) {
+    warning("V\u00E9rifiez que les bons noms de colonnes sont utilis\u00E9s et que les colonnes superflues sont", paste0(" retir\u00E9", "es"), ".\n", "\nLes colonnes au nom invalide sont : \n", paste0(possible_col_diff, collapse = ", "), "\n", call. = FALSE)
+    warning_flag <- TRUE
+  }
 
 
   #------------------------------------------------------------------------
@@ -113,7 +120,8 @@ coleo_validate <- function(data, media_path = NULL) {
   is_char_na <- any(apply(data, 2, function(x) sapply(x, function(y) any(!is.list(y)) && any(y == "NA"))), na.rm = TRUE) |> suppressWarnings()
   if(is_char_na) {
     data[data == "NA"] <- NA
-    warning("--------------------------------------------------\nV\u00E9rifiez les champs sans valeurs. Ils devraient \u00E2tre NA, mais certains contiennent la valeur de 'NA' en charact\u00e8res.\n\n")
+    warning("V\u00E9rifiez les champs sans valeurs. Ils devraient \u00E2tre NA, mais certains contiennent la valeur de 'NA' en charact\u00e8res.\n", call. = FALSE)
+    warning_flag <- TRUE
   }
   
 
@@ -155,7 +163,10 @@ coleo_validate <- function(data, media_path = NULL) {
 
   # Are all input columns of the right class? -----------------------------
   erroneous_cols <- dat_names[!class_of_col]
-  if(!all(class_of_col)) warning("--------------------------------------------------\nV\u00E9rifiez la classe des colonnes. Ces colonnes sont ", paste0("probl","\U00E9","matiques "), " : \n", paste0(erroneous_cols, collapse = ", "), "\n\n")
+  if(!all(class_of_col)) {
+    warning("V\u00E9rifiez la classe des colonnes. Ces colonnes sont ", paste0("probl","\U00E9","matiques "), " : \n", paste0(erroneous_cols, collapse = ", "), "\n", call. = FALSE)
+    warning_flag <- TRUE
+  }
 
   #------------------------------------------------------------------------
   # Check that all cells exists in coleo
@@ -172,7 +183,10 @@ coleo_validate <- function(data, media_path = NULL) {
       missing_cells <- paste0(unique(data$cells_cell_code)[cells_x], collapse = ", ")
     }
 
-    if(!are_cells_exists) warning("--------------------------------------------------\n", paste0("V","\U00E9","rifiez")," les cellules ", missing_cells, " de la colonne cells_cell_code ou injectez ces cellules dans la table cells de coleo. Ces cellules n'existent pas dans coleo.\n\n")
+    if(!are_cells_exists) {
+      warning(paste0("V","\U00E9","rifiez")," les cellules ", missing_cells, " de la colonne cells_cell_code ou injectez ces cellules dans la table cells de coleo. Ces cellules n'existent pas dans coleo.\n", call. = FALSE)
+      warning_flag <- TRUE
+    }
   }
 
   #------------------------------------------------------------------------
@@ -189,7 +203,10 @@ coleo_validate <- function(data, media_path = NULL) {
     missing_sites <- paste0(unique(data$sites_site_code)[sites_x], collapse = ", ")
   }
 
-  if(!are_sites_exists) warning("--------------------------------------------------\n", paste0("V","\U00E9","rifiez")," les sites ", missing_sites, " de la colonne sites_site_code ou injectez ces sites dans la table sites de coleo. Ces sites n'existent pas dans coleo.\n\n")
+  if(!are_sites_exists) {
+    warning(paste0("V","\U00E9","rifiez")," les sites ", missing_sites, " de la colonne sites_site_code ou injectez ces sites dans la table sites de coleo. Ces sites n'existent pas dans coleo.\n", call. = FALSE)
+    warning_flag <- TRUE
+  }
 
 
   #------------------------------------------------------------------------
@@ -197,7 +214,10 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   if ("media_name" %in% dat_names) {
     # Validate directory existence
-    if (is.null(media_path)) warning("--------------------------------------------------\nLe chemin du répertoire contenant les ", paste0("m","\U00E9","dias"), " n'a pas ", paste0("\U00E9","t", "\U00E9", " pass", "\U00E9"), " \u00E0 l'argument mendia_path. La validation des valeurs de la colonne media_name est ignorée.\n\n")
+    if (is.null(media_path)) {
+      warning("Le chemin du répertoire contenant les ", paste0("m","\U00E9","dias"), " n'a pas ", paste0("\U00E9","t", "\U00E9", " pass", "\U00E9"), " \u00E0 l'argument mendia_path. La validation des valeurs de la colonne media_name est ignorée.\n", call. = FALSE)
+      warning_flag <- TRUE
+    }
   }
   
   #------------------------------------------------------------------------
@@ -205,14 +225,17 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   if (("media_name" %in% dat_names) & !is.null(media_path)) {
     # Validate directory existence
-    if (!dir.exists(file.path(media_path))) warning("--------------------------------------------------\n", paste0("V","\U00E9","rifiez")," le ",paste0("d","\U00E9","pot "), " des ", paste0("m","\U00E9","dias"), ". ",  dput(media_path), " ", dput(media_path)," n'est pas un ",paste0("d","\U00E9","pot "), "valide.\n\n")
+    if (!dir.exists(file.path(media_path))) warning(paste0("V","\U00E9","rifiez")," le ",paste0("d","\U00E9","pot "), " des ", paste0("m","\U00E9","dias"), ". ",  dput(media_path), " ", dput(media_path)," n'est pas un ",paste0("d","\U00E9","pot "), "valide.\n", call. = FALSE)
     
     photos <- dir(media_path)
     media_exists <- sapply(data$media_name[!is.na(data$obs_species_taxa_name)], function(file) {
       file %in% photos
       })
 
-    if(any(!media_exists)) warning("--------------------------------------------------\n", paste0("V","\U00E9","rifiez")," les noms des ", paste0("m","\U00E9","dias"), " aux lignes ",  paste(which(!media_exists), collapse = ", "), " de la colonne media_name. Cette colonne contient des noms qui ne correspondent à aucun document dans le ", paste0("d","\U00E9","pot "), dput(media_path),".\n\n")
+    if(any(!media_exists)) {
+      warning(paste0("V","\U00E9","rifiez")," les noms des ", paste0("m","\U00E9","dias"), " aux lignes ",  paste(which(!media_exists), collapse = ", "), " de la colonne media_name. Cette colonne contient des noms qui ne correspondent à aucun document dans le ", paste0("d","\U00E9","pot "), dput(media_path),".\n", call. = FALSE)
+      warning_flag <- TRUE
+    }
   }
 
 
@@ -234,7 +257,8 @@ coleo_validate <- function(data, media_path = NULL) {
       camp_dat <- data[!duplicated(data[, camp_w_notes_cols]), camp_cols]
       dupl_camp <- camp_dat$sites_site_code[duplicated(camp_dat)]
       ## Warning message
-      warning("--------------------------------------------------\nV\u00E9rifiez les commentaires de campagnes (colonne campaigns_notes). Les commentaires de campagnes doivent normalement \u00EAtre saisis pour toutes les lignes de cette campagne. Ces campagnes sont \u00E0 risque d'être dupliqu\u00E9es :\n", paste(dupl_camp, collapse = ", "),".\n\n")
+      warning("V\u00E9rifiez les commentaires de campagnes (colonne campaigns_notes). Les commentaires de campagnes doivent normalement \u00EAtre saisis pour toutes les lignes de cette campagne. Ces campagnes sont \u00E0 risque d'être dupliqu\u00E9es :\n", paste(dupl_camp, collapse = ", "),".\n", call. = FALSE)
+      warning_flag <- TRUE
     }
   }
 
@@ -250,7 +274,8 @@ coleo_validate <- function(data, media_path = NULL) {
       efforts_dat <- data[!duplicated(data[, efforts_w_notes_cols]), efforts_cols]
       dupl_efforts <- efforts_dat$sites_site_code[duplicated(efforts_dat)]
       ## Warning message
-      warning("--------------------------------------------------\nV\u00E9rifiez les commentaires des efforts (colonne efforts_notes). Les commentaires des efforts doivent \u00EAtre saisis pour toutes les lignes de l'effort. Ces efforts sont dupliqu\u00E9s :\n", paste(dupl_efforts, collapse = ", "),".\n\n")
+      warning("V\u00E9rifiez les commentaires des efforts (colonne efforts_notes). Les commentaires des efforts doivent \u00EAtre saisis pour toutes les lignes de l'effort. Ces efforts sont dupliqu\u00E9s :\n", paste(dupl_efforts, collapse = ", "),".\n", call. = FALSE)
+      warning_flag <- TRUE
     }
   }
 
@@ -266,7 +291,8 @@ coleo_validate <- function(data, media_path = NULL) {
       land_dat <- data[!duplicated(data[, land_w_notes_cols]), land_cols]
       dupl_land <- land_dat$sites_site_code[duplicated(land_dat)]
       ## Warning message
-      warning("--------------------------------------------------\nV\u00E9rifiez les commentaires des rep\u00E8res (colonne landmarks_notes). Les commentaires des rep\u00E8res doivent \u00EAtre saisis pour toutes les lignes du rep\u00E8re. Ces rep\u00E8res sont dupliqu\u00E9s :\n", paste(dupl_land, collapse = ", "),".\n\n")
+      warning("V\u00E9rifiez les commentaires des rep\u00E8res (colonne landmarks_notes). Les commentaires des rep\u00E8res doivent \u00EAtre saisis pour toutes les lignes du rep\u00E8re. Ces rep\u00E8res sont dupliqu\u00E9s :\n", paste(dupl_land, collapse = ", "),".\n", call. = FALSE)
+      warning_flag <- TRUE
     }
   }
   
@@ -277,14 +303,20 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   # Check that all coordinates are within valid range ---------------------
   proj_validation <- coleo_validate_coordinates_projection(data, dat_names)
-  if (!is.na(proj_validation)) warning(proj_validation)
+  if (!is.na(proj_validation)) {
+    warning(proj_validation, call. = FALSE)
+    warning_flag <- TRUE
+  }
 
 
   # Check that all latitudes and longitudes  are within valid range -------
   Quebec_bbox <- c(-79.76, 44.99, -57.10, 62.59) # xmin, ymin, xmax, ymax
   bbox_validation <- coleo_validate_coordinates(data, dat_names, Quebec_bbox)
 
-  if (!is.na(bbox_validation)) warning(bbox_validation)
+  if (!is.na(bbox_validation)) {
+    warning(bbox_validation, call. = FALSE)
+    warning_flag <- TRUE
+  }
   
   #------------------------------------------------------------------------
   # Check that azimut columns have values within 0 and 360
@@ -293,7 +325,10 @@ coleo_validate <- function(data, media_path = NULL) {
   if (any(azimut_names)) {
     azimut_range <- unlist(data[,azimut_names]) |> range(na.rm = TRUE)
 
-    if (azimut_range[2] > 360 | azimut_range[1] < 0) warning(paste0("--------------------------------------------------\nV\u00E9rifiez les valeurs d'azimut. Les valeurs doivent \u00EAtre entre 0 et 360.\n\n"))
+    if (azimut_range[2] > 360 | azimut_range[1] < 0) {
+      warning(paste0("V\u00E9rifiez les valeurs d'azimut. Les valeurs doivent \u00EAtre entre 0 et 360.\n", call. = FALSE))
+      warning_flag <- TRUE
+    }
   }
 
 
@@ -322,7 +357,10 @@ coleo_validate <- function(data, media_path = NULL) {
       }
     }
 
-    if(!is.null(row_not_empty)) warning(paste0("--------------------------------------------------\nV\u00E9rifiez les lignes sans observation. Les champs qui d\u00E9crivent le jeu de donn\u00E9es, la localisation de l\'\u00E9chantillonnage et les d\u00E9tails sur la campagne d'\u00E9chantillonnage doivent être remplis, mais tous les autres champs qui d\u00E9crivent l\'observation doivent être laiss\u00E9s vide.\n\n"))
+    if(!is.null(row_not_empty)) {
+      warning(paste0("V\u00E9rifiez les lignes sans observation. Les champs qui d\u00E9crivent le jeu de donn\u00E9es, la localisation de l\'\u00E9chantillonnage et les d\u00E9tails sur la campagne d'\u00E9chantillonnage doivent être remplis, mais tous les autres champs qui d\u00E9crivent l\'observation doivent être laiss\u00E9s vide.\n", call. = FALSE))
+      warning_flag <- TRUE
+    }
   }
 
 
@@ -338,7 +376,10 @@ coleo_validate <- function(data, media_path = NULL) {
     if (length(lac_rows) > 0) {
       is_true <- all(is.na(data[lac_rows, c("landmarks_type", "landmarks_lat", "landmarks_lon")]))
 
-      if(!is_true) warning(paste0("--------------------------------------------------\nV\u00E9rifiez les observations faites \u00e0 l'\u{00E9}chelle du lac. Les colonnes landmarks_type, landmarks_lat et landmarks_lon doivent être laiss\u00E9es vide pour ces lignes\n\n"))
+      if(!is_true) {
+        warning(paste0("V\u00E9rifiez les observations faites \u00e0 l'\u{00E9}chelle du lac. Les colonnes landmarks_type, landmarks_lat et landmarks_lon doivent être laiss\u00E9es vide pour ces lignes\n", call. = FALSE))
+        warning_flag <- TRUE
+      }
     }
 
     # Check that all station observations have landmarks
@@ -347,7 +388,10 @@ coleo_validate <- function(data, media_path = NULL) {
     if(length(station_rows) > 0) {
       is_true <- all(!is.na(data[station_rows, c("landmarks_type", "landmarks_lat", "landmarks_lon")]))
       
-      if(!is_true) warning(paste0("--------------------------------------------------\nV\u00E9rifiez les observations qui se rattachent aux stations. Les colonnes landmarks_type, landmarks_lat et landmarks_lon doivent être remplies pour ces lignes\n\n"))
+      if(!is_true) {
+        warning(paste0("V\u00E9rifiez les observations qui se rattachent aux stations. Les colonnes landmarks_type, landmarks_lat et landmarks_lon doivent être remplies pour ces lignes\n", call. = FALSE))
+        warning_flag <- TRUE
+      }
     }
   }
 
@@ -375,7 +419,10 @@ coleo_validate <- function(data, media_path = NULL) {
   names(cols_valid_values) <- tbl$noms_de_colonnes[invalid_cols]
   col_names <- tbl$noms_de_colonnes[invalid_cols]
 
-  if(!all(valid_col_values)) warning("--------------------------------------------------\nV\u00E9rifiez les valeurs contenues dans les colonnes. Ces colonnes contiennent des valeurs invalides : \n", paste0(col_names, collapse = ", "), "\n\nLes valeurs possibles pour ces colonnes sont : \n", paste0(col_names, ": ", cols_valid_values, collapse = "\n"), "\n\n")
+  if(!all(valid_col_values)) {
+    warning("V\u00E9rifiez les valeurs contenues dans les colonnes. Ces colonnes contiennent des valeurs invalides : \n", paste0(col_names, collapse = ", "), "\nLes valeurs possibles pour ces colonnes sont : \n", paste0(col_names, ": ", cols_valid_values, collapse = "\n"), "\n", call. = FALSE)
+    warning_flag <- TRUE
+  }
 
   #------------------------------------------------------------------------
   # Test for non-breaking spaces
@@ -387,7 +434,10 @@ coleo_validate <- function(data, media_path = NULL) {
   }) |>
       as.logical()
 
-  if(any(notSpace)) warning("--------------------------------------------------\nV\u00E9rifiez la pr\u00E9sence d'espaces ins\u{00E9}cables aux lignes : ", paste0(which(notSpace), collapse = ", "), ", et remplacez les par des espaces standards\n\n")
+  if(any(notSpace)) {
+    warning("V\u00E9rifiez la pr\u00E9sence d'espaces ins\u{00E9}cables aux lignes : ", paste0(which(notSpace), collapse = ", "), ", et remplacez les par des espaces standards\n", call. = FALSE)
+    warning_flag <- TRUE
+  }
 
   #------------------------------------------------------------------------
   # Check that complexes of species are correctly formated
@@ -403,7 +453,10 @@ coleo_validate <- function(data, media_path = NULL) {
         identical(cplx, cplx_formated)
       })
 
-      if(!all(cplx_valid)) warning("--------------------------------------------------\nV\u00E9rifiez le format des complexes d'esp\u00e8ces : certain complexes sont incorrectement format\u00E9s. Les taxons composants le complexe doivent être s\u00E9par\u00E9s par une barre verticale flanqu\u00E9e d'un espace de chaque côt\u00E9 \" | \". Exemple : \"Acer saccharum | Acer negundo\"\n\n")
+      if(!all(cplx_valid)) {
+        warning("V\u00E9rifiez le format des complexes d'esp\u00e8ces : certain complexes sont incorrectement format\u00E9s. Les taxons composants le complexe doivent être s\u00E9par\u00E9s par une barre verticale flanqu\u00E9e d'un espace de chaque côt\u00E9 \" | \". Exemple : \"Acer saccharum | Acer negundo\"\n", call. = FALSE)
+        warning_flag <- TRUE
+      }
 
     }
   }
@@ -418,7 +471,10 @@ coleo_validate <- function(data, media_path = NULL) {
     possible_vars <- c(possible_vars, NA) # Accept NAs in empty campaigns
     are_vars_valid <- all(var %in% possible_vars)
 
-    if(!are_vars_valid) warning("--------------------------------------------------\nV\u00E9rifiez les valeurs ", dput(var[!var %in% possible_vars]), " de la colonne obs_species_variable ou injectez ces valeurs dans la table attributes. Cette colonne contient une valeur qui n'est pas une valeur de la table attributes.\n\n")
+    if(!are_vars_valid) {
+      warning("V\u00E9rifiez les valeurs ", dput(var[!var %in% possible_vars]), " de la colonne obs_species_variable ou injectez ces valeurs dans la table attributes. Cette colonne contient une valeur qui n'est pas une valeur de la table attributes.\n", call. = FALSE)
+      warning_flag <- TRUE
+    }
   }
 
 
@@ -435,7 +491,10 @@ coleo_validate <- function(data, media_path = NULL) {
       is_true <- all(data$obs_species_value[presence_rows] == 1)
       }
 
-      if(!is_true) warning("--------------------------------------------------\nV\u00E9rifiez les valeurs de la colonne obs_species_value. Les lignes qui contiennent la valeur \"pr\u00E9sence\" dans la colonne obs_species_variable doivent avoir la valeur 1 dans la colonne obs_species_value.\n\n")
+      if(!is_true) {
+        warning("V\u00E9rifiez les valeurs de la colonne obs_species_value. Les lignes qui contiennent la valeur \"pr\u00E9sence\" dans la colonne obs_species_variable doivent avoir la valeur 1 dans la colonne obs_species_value.\n", call. = FALSE)
+        warning_flag <- TRUE
+      }
     }
   }
 
@@ -468,7 +527,10 @@ coleo_validate <- function(data, media_path = NULL) {
       possibly_time_digits(time_ndigits)
     })
     is_time_format <- all(cols_format)
-    if(!all(cols_format)) warning("--------------------------------------------------\nV\u00E9rifiez le format des valeurs d'heure des colonnes ", dput(names(cols_format)[!cols_format]), ". L'heure doit etre du format \"HH:MM:SS\".\n\n")
+    if(!all(cols_format)) {
+      warning("V\u00E9rifiez le format des valeurs d'heure des colonnes ", dput(names(cols_format)[!cols_format]), ". L'heure doit etre du format \"HH:MM:SS\".\n", call. = FALSE)
+      warning_flag <- TRUE
+    }
 
     # Check if there is NAs ------------------------------------------------
     na_in_time <- sapply(cols_time, function(x) {
@@ -478,7 +540,10 @@ coleo_validate <- function(data, media_path = NULL) {
     })
     if("observations_time_obs" %in% names(na_in_time)){
       which_time_obs <- which("observations_time_obs" == names(na_in_time))
-      if(na_in_time[which_time_obs]) warning("--------------------------------------------------\nCertaines valeurs de temps sont manquantes ou NA. Les lignes sans valeurs dans la colonne observations_time_obs ne seront pas inject\u00E9es dans la table observations.\n\n")
+      if(na_in_time[which_time_obs]) {
+        warning("Certaines valeurs de temps sont manquantes ou NA. Les lignes sans valeurs dans la colonne observations_time_obs ne seront pas inject\u00E9es dans la table observations.\n", call. = FALSE)
+        warning_flag <- TRUE
+      }
     }
   }
 
@@ -495,11 +560,17 @@ coleo_validate <- function(data, media_path = NULL) {
   if(length(cols_date) > 0) {
     ## Validate number of digits
     date_digits_message <- coleo_validate_date_digits(data, dat_names, cols_date)
-    if (!is.na(date_digits_message)) warning(date_digits_message)
+    if (!is.na(date_digits_message)) {
+      warning(date_digits_message, call. = FALSE)
+      warning_flag <- TRUE
+    }
 
     ## Check if required date columns has NA values
     date_na_message <- coleo_validate_required_date_na(data, cols_date, tbl)
-    if (!is.na(date_na_message)) warning(date_na_message)
+    if (!is.na(date_na_message)) {
+      warning(date_na_message, call. = FALSE)
+      warning_flag <- TRUE
+    }
   }
 
   #------------------------------------------------------------------------
@@ -508,12 +579,13 @@ coleo_validate <- function(data, media_path = NULL) {
   # - Check number of empty observations, and dates range
   # - Check number of entries per table
   #------------------------------------------------------------------------
+  cat("\n==================================================\n\nValidation diagnostique :\n\n")
   # Check that the dates values are within a decent range -----------------
   diags_message <- coleo_validate_diagnostics(data, cols_date, no_obs)
-  if (!is.na(diags_message)) message(diags_message)
+  if (!is.na(diags_message)) cat(diags_message)
 
   # Check number of entries per table -------------------------------------
-  message("---\n\nRésumé des injections par table :\n")
+  cat("---\n\nRésumé des injections par table :\n\n")
 
   req_tbls <- coleo_return_required_tables(campaign_type)
   req_tbls <- req_tbls[!grepl("lookup", req_tbls)]
@@ -535,8 +607,8 @@ coleo_validate <- function(data, media_path = NULL) {
       if (any(is.na(data$obs_species_taxa_name)) & table == "observations")  message <- missing_obs(data, nvals)
     }
 
-    ### Print message
-    message(message)
+    ### Print message to
+    cat(message, "\n")
 
     ### Unnest data
     ### Add id column
@@ -563,7 +635,7 @@ coleo_validate <- function(data, media_path = NULL) {
     }
   }
 
-  message("\n==================================================\n\n")
+  cat("\n\n==================================================\n\n")
 
   #------------------------------------------------------------------------
   # Campaign-specific validation
@@ -698,7 +770,7 @@ coleo_validate_date_digits <- function(data, dat_names, cols_date) {
   is_ndigits_valid <- all(cols_ndigits)
 
 
-  if(!is_ndigits_valid) message <- "--------------------------------------------------\nV\u00E9rifiez le format des valeurs de dates. Les dates doivent \u00EAtre du format YYYY-MM-DD.\n\n"
+  if(!is_ndigits_valid) message <- "V\u00E9rifiez le format des valeurs de dates. Les dates doivent \u00EAtre du format YYYY-MM-DD.\n"
 
   return(message)
 }
@@ -724,7 +796,7 @@ coleo_validate_required_date_na <- function(data, cols_date, tbl) {
   is_na <- any(is.na(data[cols_date[cols_date %in% req_cols]])) | any(is.na(data[non_na_date_cols]))
 
 
-  if(is_na) message <- ("--------------------------------------------------\nCertaines valeurs de date sont manquantes ou NA. Les lignes sans valeurs dans les colonnes campaigns_opened_at, observations_date_obs ou remote_sensing_events_date_start ne seront pas injectées dans leurs tables respectives.\n\n")
+  if(is_na) message <- ("Certaines valeurs de date sont manquantes ou NA. Les lignes sans valeurs dans les colonnes campaigns_opened_at, observations_date_obs ou remote_sensing_events_date_start ne seront pas injectées dans leurs tables respectives.\n")
 
   return(message)
 }
@@ -772,9 +844,9 @@ coleo_validate_diagnostics <- function(data, cols_date, no_obs = 0) {
   # Day
   range_day <- range(as.numeric(sapply(split, `[[`, 3)))
 
-  message <- paste0("==================================================\n\nValidation diagnostique :\n",
+  message <- paste0(
   if ("obs_species_taxa_name" %in% names(data)) paste0("\n- V\u00E9rifiez les lignes qui repr\u00E9sentent des campagnes vides : il y a ", no_obs, " lignes sans observations. Celles-ci entraineront une erreur lors de l'injection des observations.\n"),
-  "\n- V\u00E9rifiez que l'intervalle des dates", paste0(" inject\u00E9", "es "), "correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", "), " se trouvent dans l'intervalle de", paste0(" l'ann\u00E9", "e "), range_year[1], " \u00E0 ", range_year[2], " du mois ", range_month[1], " \u00E0 ", range_month[2], " et du jour ", range_day[1], "  \u00E0 ", range_day[2], ".\n\n- Si les", paste0(" donn\u00E9", "es"), " sont bonnes et qu'aucun autre message n'apparait, vous pouvez", paste0(" proc\u00E9", "der"), " \u00e0 l'injection des", paste0(" donn\u00E9", "es."), '\n')
+  "\n- Validez que l'intervalle des dates", paste0(" inject\u00E9", "es "), "correspond aux attentes. Les valeurs de dates des colonnes ", paste0(cols_date, collapse = ", "), " se trouvent dans l'intervalle de", paste0(" l'ann\u00E9", "e "), range_year[1], " \u00E0 ", range_year[2], " du mois ", range_month[1], " \u00E0 ", range_month[2], " et du jour ", range_day[1], "  \u00E0 ", range_day[2], ".\n\n")
 
   return(message)
 }
@@ -815,7 +887,7 @@ coleo_validate_coordinates_projection <- function(data, dat_names, bbox = c(-90,
   }
   
   message <- NA
-  if (lat_error | lon_error) message <- paste0("--------------------------------------------------\nV\u00E9rifiez la projection des coordonnées pour qu'elles soient en EPSG:4326. Des valeurs ne respectent pas le système de coordonnées géographiques requis.\n\n")
+  if (lat_error | lon_error) message <- paste0("V\u00E9rifiez la projection des coordonnées pour qu'elles soient en EPSG:4326. Des valeurs ne respectent pas le système de coordonnées géographiques requis.\n")
 
   return(message)
 }
@@ -857,7 +929,7 @@ coleo_validate_coordinates <- function(data, dat_names, bbox = c(-79.76, 44.99, 
   }
 
   message <- NA
-  if (lat_error | lon_error) message <- paste0("--------------------------------------------------\nV\u00E9rifiez les coordonnées. Certaines valeurs se trouvent à l'extérieur du Québec.\n\n")
+  if (lat_error | lon_error) message <- paste0("V\u00E9rifiez les coordonnées. Certaines valeurs se trouvent à l'extérieur du Québec.\n")
 
   return(message)
 }
