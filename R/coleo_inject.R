@@ -45,13 +45,8 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
   }
 
   # vegetation phenology goes into Indicators schéma (not campaigns)
-  if (campaign_type == "ph\u00e9nologie_indicateur") {
-    if (schema != "indicators") {
-      stop("Ces donn\u00e9es doivent être inject\u00e9es dans le sch\u00e9ma *indicators* : `coleo_inject(data, schema = 'indicators')`.")
-    }
-    df_id <- coleo_inject_table(df_id, "vegetation_phenology", schema = schéma)
-    coleo_plumber_update()
-    return(df_id)
+  if (campaign_type == "ph\u00e9nologie_indicateur" & schema != "indicators") {
+    stop("Ces donn\u00e9es doivent être inject\u00e9es dans le sch\u00e9ma *indicators* : `coleo_inject(data, schema = 'indicators')`.", call. = FALSE)
   }
 
   # Végétation_transect
@@ -321,7 +316,6 @@ coleo_injection_prep <- function(df, db_table, schema = 'public'){
     df_prep <- df |>
       coleo_prep_input_data(db_table, schema = schema) |>
       dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = db_table, schema = schema)))
-
   }
 
   return(df_prep)
