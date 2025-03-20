@@ -660,6 +660,12 @@ coleo_validate <- function(data, media_path = NULL) {
   #     if(!all(are_right_stratum_400, na.rm = TRUE)) warning("--------------------------------------------------\nV\u00E9rifiez les valeurs de strate pour les observations des placettes de 400m2. La seule valeur admissible est 'arborescente', exception faite des observations suppl\u00E9mentaire qui sont identifi\u00E9es dans la colonne 'observations_extra_variable_1'.\n\n")
   #   }
   # }
+
+  if (warning_flag) {
+    warning("Des erreurs ont \u00E9t\u00E9 d\u00E9tect\u00E9es lors de la validation des donn\u00E9es. Veuillez les corriger et valider à nouveau.\n")
+  } else {
+    cat("Les donn\u00E9es ont \u00E9t\u00E9 valid\u00E9es avec succ\u00E8s !\n")
+  }
 }
 
 
