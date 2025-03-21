@@ -20,13 +20,13 @@ test_that("coleo_validate", {
 
   ## Test for missing campaign_type column
   dat_test <- subset(dat, select = -c(campaigns_type))
-  testthat::expect_error(coleo_validate(dat_test),
+  testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "V\U00E9rifiez qu'une colonne contient le type d'inventaire*")
 
   ## Test for multiple values within the campaign_type column
   dat_test <- dat
   dat_test$campaigns_type <- c("sol", "insectes_sol","insectes_sol","insectes_sol","insectes_sol","insectes_sol")
-  testthat::expect_error(coleo_validate(dat_test),
+  testthat::expect_warning(coleo_validate(dat_test),
                          regexp = "V\U00E9rifiez que toutes les valeurs de la colonne campaigns_type.*")
 
   ## Test that remote_sensing indicators are recognized as campaigns types (1.e., 1 entry in remote_sensing_events table)
@@ -35,7 +35,7 @@ test_that("coleo_validate", {
                          remote_sensing_events_date_start = c("2020-07-22", "2020-07-22"),
                          remote_sensing_obs_metric = c("max", "min"),
                          remote_sensing_obs_value = c(0.5, 0.2))
-  testthat::expect_message(coleo_validate(dat_test), regexp = "*remote_sensing_events : 1*")
+  testthat::expect_output(coleo_validate(dat_test), regexp = "*remote_sensing_events : 1*")
 
   ## Test that the imported data has all of the required columns
   dat_test <- subset(dat, select = -c(observations_date_obs))
@@ -165,13 +165,13 @@ test_that("coleo_validate", {
   ## Test that the range of dates are returned
   dat_test <- dat[-1,]
 
-  testthat::expect_message(coleo_validate(dat_test),
+  testthat::expect_output(coleo_validate(dat_test),
                          regexp = "*Vérifiez que l'intervalle des dates injectées correspond aux attentes.*")
 
   ## Test that number of entries per table is correct
-  testthat::expect_message(coleo_validate(dat_test),
+  testthat::expect_output(coleo_validate(dat_test),
                          regexp = "*Résumé des injections par table*")
-  testthat::expect_message(coleo_validate(dat_test), regexp = "*campaigns : 1*")
+  testthat::expect_output(coleo_validate(dat_test), regexp = "*campaigns : 1*")
 
   ## Test that the warning message includes the number of observations missing
   dat_test <- dat
