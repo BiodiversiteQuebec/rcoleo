@@ -755,14 +755,14 @@ coleo_inject_vegetation_transect_campaigns <- function(df_id, schema = 'public')
   #-------------------------------------------------------------------------
   # 3. Inject campaigns that are not in coleo
   #-------------------------------------------------------------------------
-  if (any(is.na(df$campaign_id))) df_id <- coleo_inject_table(df, "campaigns", schema = schema)
+  if (any(is.na(df_c_id$campaign_id))) df_id <- coleo_inject_table(df, "campaigns", schema = schema)
 
   #-------------------------------------------------------------------------
   # 4. Bind all campaigns
   #-------------------------------------------------------------------------
   # Join df_id (injected campaigns) to df_camp (existing campaigns)
   if (nrow(df) > 0) {
-    df_id <- dplyr::bind_rows(df_id, df_camp)
+    df_id <- rbind(df_id, df_camp)
   } else {
     df_id <- df_camp
   }
@@ -771,7 +771,7 @@ coleo_inject_vegetation_transect_campaigns <- function(df_id, schema = 'public')
   # 5. Inject other tables
   #-------------------------------------------------------------------------
   # Get required tables
-  tables <- coleo_return_required_tables(campaign_type, colnames(df))
+  tables <- coleo_return_required_tables("v\u00e9g\u00e9tation_transect", colnames(df))
   tables <- tables[!tables %in% c("campaigns")]
 
   for (table in tables) {
