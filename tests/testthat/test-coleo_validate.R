@@ -166,7 +166,7 @@ test_that("coleo_validate", {
   dat_test <- dat[-1,]
 
   testthat::expect_output(coleo_validate(dat_test),
-                         regexp = "*Vérifiez que l'intervalle des dates injectées correspond aux attentes.*")
+                         regexp = "*Validez que l'intervalle des dates injectées correspond aux attentes.*")
 
   ## Test that number of entries per table is correct
   testthat::expect_output(coleo_validate(dat_test),
