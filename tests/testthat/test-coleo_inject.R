@@ -99,7 +99,7 @@ test_that("coleo_inject injects all data", {
 test_that("coleo_inject injects remote sensing data", {
 
 	# Mock data
-	rs_data <- structure(list(remote_sensing_indicators_name = "NDSI", cells_cell_code = "105_101", 
+	rs_data <- structure(list(remote_sensing_indicators_name = "NDSI", cells_cell_code = "CLI_DUC", 
     remote_sensing_events_date_start = paste0(sample(1000:3000,1),"-02-24"), remote_sensing_events_date_end = NA_character_, 
     remote_sensing_obs_metric = "max", remote_sensing_obs_value = 90), row.names = 1L, class = "data.frame")
 
@@ -107,7 +107,7 @@ test_that("coleo_inject injects remote sensing data", {
 	out_inject <- coleo_inject(rs_data, schema = "coleo_test")
 
 	# Expect a dataframe with 1 rows
-	expect_true(is.null(out_inject$remote_sensing_event_error[[1]]))
+	expect_null(out_inject$remote_sensing_event_error[[1]])
 })
 
 
