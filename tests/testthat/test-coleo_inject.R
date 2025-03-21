@@ -99,7 +99,7 @@ test_that("coleo_inject injects all data", {
 test_that("coleo_inject injects remote sensing data", {
 
 	# Mock data
-	rs_data <- structure(list(remote_sensing_indicators_name = "NDSI", cells_cell_code = "CLI_DUC", 
+	rs_data <- structure(list(remote_sensing_indicators_name = "NDSI", cells_cell_code = "xxx_xxx", 
     remote_sensing_events_date_start = paste0(sample(1000:3000,1),"-02-24"), remote_sensing_events_date_end = NA_character_, 
     remote_sensing_obs_metric = "max", remote_sensing_obs_value = 90), row.names = 1L, class = "data.frame")
 
@@ -453,7 +453,7 @@ test_veg_transect_injection <- function() {
   # Mock data
   data_vegetation_transect <- structure(list(campaigns_type = c("végétation_transect", "végétation_transect"),
     sites_site_code = c("141_124_H01", "141_124_H01"),
-    campaigns_opened_at = c("2020-07-22", "2020-07-22"), 
+    campaigns_opened_at = rep(paste0(sample(1000:3000,1), "-07-22"), 2), 
     campaigns_technicians = list(c("C Lang", "E Carignan"), c("C Lang", "E Carignan")),
     efforts_samp_surf = c(100, 100),
     efforts_samp_surf_unit = c("m2", "m2"), 
