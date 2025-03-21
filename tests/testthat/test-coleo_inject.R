@@ -110,6 +110,26 @@ test_that("coleo_inject injects remote sensing data", {
 	expect_null(out_inject$remote_sensing_event_error[[1]])
 })
 
+# phénologie_indicateur data
+test_that("coleo_inject injects phénologie_indicateur data", {
+
+  # Mock data
+  phenology_data <- structure(
+    list(
+      campaigns_type = "phénologie_indicateur", 
+      sites_site_code = "141_124_H01", 
+      vegetation_phenology_cam_code = "test_cam",
+      vegetation_phenology_date_greening = paste0(sample(1000:3000,1),"-02-24"), 
+      vegetation_phenology_date_senesence = paste0(sample(1000:3000,1),"-02-25"), 
+      vegetation_phenology_photo_count = 1,
+      phenology_value = 90
+      ), 
+    row.names = 1L, class = "data.frame"
+  )
+
+  # Expect error if the schema is not indicators
+  expect_error(coleo_inject(phenology_data, schema = "coleo_test"))
+})
 
 #############################################
 # Test coleo_inject_general
