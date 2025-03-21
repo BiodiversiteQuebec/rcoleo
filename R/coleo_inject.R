@@ -56,22 +56,6 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
     return(df_id)
   }
 
-  # Remote sensing indicators
-  if ("remote_sensing_indicators_name" %in% colnames(df)) {
-    ## Inject remote sensing events (equivalent to campaigns)
-    df_id <- coleo_inject_table(df, "remote_sensing_events", schema = schema)
-    if(!any(sapply(df_id$remote_sensing_event_error, is.null))) {
-    cat("Seules les données des indicateurs de télédétection injectées avec succès sont injectées dans les tables suivantes. Les lignes suivantes n'ont pas pu être injectées : ", paste0(which(!sapply(df_id$remote_sensing_event_error, is.null)), collapse = ", "), "\n")
-    }
-    ## Inject remaining tables
-    tables <- coleo_return_required_tables(campaign_type)
-    tables <- tables[!tables %in% c("remote_sensing_events")]
-    for (table in tables) {
-      df_id <- coleo_inject_table(df_id, table, schema = schema)
-    }
-    return(df_id)
-  }
-
 
   #==========================================================================
   # 3. Inject data that are campaigns
@@ -96,6 +80,16 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
       df_id <- coleo_inject_table(df, "campaigns", schema = schema)
       if(!any(sapply(df_id$campaign_error, is.null))) {
       cat("Seules les données des campagnes injectées avec succès sont injectées dans les tables suivantes. Les lignes suivantes n'ont pas pu être injectées : ", paste0(which(!sapply(df_id$campaign_error, is.null)), collapse = ", "), "\n")
+      }
+      next
+    }
+
+    ## Remote sensing indicators
+    if (table == "remote_sensing_events") {
+      ## Inject remote sensing events (equivalent to campaigns)
+      df_id <- coleo_inject_table(df, "remote_sensing_events", schema = schema)
+      if(!any(sapply(df_id$remote_sensing_event_error, is.null))) {
+      cat("Seules les données des indicateurs de télédétection injectées avec succès sont injectées dans les tables suivantes. Les lignes suivantes n'ont pas pu être injectées : ", paste0(which(!sapply(df_id$remote_sensing_event_error, is.null)), collapse = ", "), "\n")
       }
       next
     }
