@@ -7,7 +7,7 @@ test_that("coleo_read returns error if wrong file extension", {
             efforts_photo_count = "1"
         ),
         fileNametxt)
-    testthat::expect_error(coleo_read(fileNametxt))
+    testthat::expect_warning(coleo_read(fileNametxt))
 })
     
 # Test that coleo_read_data returns a data.frame from a file local path

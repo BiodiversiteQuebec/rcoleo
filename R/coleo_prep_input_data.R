@@ -47,11 +47,13 @@ coleo_prep_input_data <- function(df, db_table, schema = "public") {
   }
 
   # Campaigns table specific manipulations
-  if (db_table == "campaigns") {
+  if (db_table %in% c("campaigns", "vegetation_phenology")) {
+    sites_schema <- ifelse(schema != "coleo_test", "public", schema) # sites table is in public schema, except for tests
+  
     ## Add site_id to campaigns table
     df <- df |>
       dplyr::nest_by(sites_site_code) |>
-      dplyr::mutate(coleo_id = list(coleo_request_by_code(human_code = sites_site_code, table = "sites", schema = schema)),
+      dplyr::mutate(coleo_id = list(coleo_request_by_code(human_code = sites_site_code, table = "sites", schema = sites_schema)),
             site_id = coleo_extract_id(coleo_id)) |>
       dplyr::select(-sites_site_code, -coleo_id) |>
       dplyr::relocate(site_id) |>

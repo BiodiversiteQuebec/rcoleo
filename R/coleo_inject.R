@@ -21,7 +21,7 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
   campaign_type <- coleo_return_campaign_type(df)
 
   #==========================================================================
-  # 1. Injection process for data that are not campaigns
+  # 1. Injection process for data that are not regular campaigns
   #==========================================================================
   # Cells
   # - Only cells have a geom column
@@ -45,41 +45,24 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
   }
 
   # vegetation phenology goes into Indicators schéma (not campaigns)
-  if ("vegetation_phenology_date_greening" %in% colnames(df)) {
-    if (schema != "indicators") {
-      stop("Ces données doivent être injectées dans le schéma *indicators* de la facon suivante `coleo_inject(data, schema = 'indicators')`.")
-    }
-    df_id <- coleo_inject_table(df_id, "vegetation_phenology", schema = schéma)
-    coleo_plumber_update()
-    return(df_id)
+  if (campaign_type == "ph\u00e9nologie_indicateur" & schema != "indicators") {
+    stop("Ces donn\u00e9es doivent être inject\u00e9es dans le sch\u00e9ma *indicators* : `coleo_inject(data, schema = 'indicators')`.", call. = FALSE)
   }
 
   # Végétation_transect
   if (campaign_type == "v\u00e9g\u00e9tation_transect") {
-    df_id <- coleo_inject_table(df, "vegetation_transect", schema = schema)
+    df_id <- coleo_inject_vegetation_transect_campaigns(df, schema = schema)
     coleo_plumber_update()
-    return(df_id)
-  }
-
-  # Remote sensing indicators
-  if ("remote_sensing_indicators_name" %in% colnames(df)) {
-    ## Inject remote sensing events (equivalent to campaigns)
-    df_id <- coleo_inject_table(df, "remote_sensing_events", schema = schema)
-    if(!any(sapply(df_id$remote_sensing_event_error, is.null))) {
-    cat("Seules les données des indicateurs de télédétection injectées avec succès sont injectées dans les tables suivantes. Les lignes suivantes n'ont pas pu être injectées : ", paste0(which(!sapply(df_id$remote_sensing_event_error, is.null)), collapse = ", "), "\n")
-    }
-    ## Inject remaining tables
-    tables <- coleo_return_required_tables(campaign_type)
-    tables <- tables[!tables %in% c("remote_sensing_events")]
-    for (table in tables) {
-      df_id <- coleo_inject_table(df_id, table, schema = schema)
-    }
     return(df_id)
   }
 
 
   #==========================================================================
   # 3. Inject data that are campaigns
+  #
+  # Exceptions 
+  # - mammifères campaigns (landmarks table)
+  # - media files
   #==========================================================================
   # Check there is a campaign_type
   if (is.null(campaign_type)) {
@@ -97,6 +80,16 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
       df_id <- coleo_inject_table(df, "campaigns", schema = schema)
       if(!any(sapply(df_id$campaign_error, is.null))) {
       cat("Seules les données des campagnes injectées avec succès sont injectées dans les tables suivantes. Les lignes suivantes n'ont pas pu être injectées : ", paste0(which(!sapply(df_id$campaign_error, is.null)), collapse = ", "), "\n")
+      }
+      next
+    }
+
+    ## Remote sensing indicators
+    if (table == "remote_sensing_events") {
+      ## Inject remote sensing events (equivalent to campaigns)
+      df_id <- coleo_inject_table(df, "remote_sensing_events", schema = schema)
+      if(!any(sapply(df_id$remote_sensing_event_error, is.null))) {
+      cat("Seules les données des indicateurs de télédétection injectées avec succès sont injectées dans les tables suivantes. Les lignes suivantes n'ont pas pu être injectées : ", paste0(which(!sapply(df_id$remote_sensing_event_error, is.null)), collapse = ", "), "\n")
       }
       next
     }
@@ -317,7 +310,6 @@ coleo_injection_prep <- function(df, db_table, schema = 'public'){
     df_prep <- df |>
       coleo_prep_input_data(db_table, schema = schema) |>
       dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = db_table, schema = schema)))
-
   }
 
   return(df_prep)
@@ -763,16 +755,27 @@ coleo_inject_vegetation_transect_campaigns <- function(df_id, schema = 'public')
   #-------------------------------------------------------------------------
   # 3. Inject campaigns that are not in coleo
   #-------------------------------------------------------------------------
-  if (any(is.na(df$campaign_id))) df_id <- coleo_inject_table(df, "campaigns", schema = schema)
+  if (any(is.na(df_c_id$campaign_id))) df_id <- coleo_inject_table(df, "campaigns", schema = schema)
 
   #-------------------------------------------------------------------------
   # 4. Bind all campaigns
   #-------------------------------------------------------------------------
   # Join df_id (injected campaigns) to df_camp (existing campaigns)
   if (nrow(df) > 0) {
-    df_id <- dplyr::bind_rows(df_id, df_camp)
+    df_id <- rbind(df_id, df_camp)
   } else {
     df_id <- df_camp
+  }
+
+  #-------------------------------------------------------------------------
+  # 5. Inject other tables
+  #-------------------------------------------------------------------------
+  # Get required tables
+  tables <- coleo_return_required_tables("v\u00e9g\u00e9tation_transect", colnames(df))
+  tables <- tables[!tables %in% c("campaigns")]
+
+  for (table in tables) {
+    df_id <- coleo_inject_table(df_id, table, schema = schema)
   }
 
   # Return the results
