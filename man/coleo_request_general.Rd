@@ -28,7 +28,7 @@ la requête est faite sur une fonction, il est nécessaire d'ajouter 'rpc/' deva
 \item{...}{Paramètres de requête pour la base de données coleo (dans le format 'nom' = 'valeur')}
 }
 \value{
-Liste d'objects httr2 response si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
+Liste d'objects JSON parsed si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
 }
 \description{
 Cette fonction permet de faire une requête sur l'API de coleo. Les requêtes de type GET se

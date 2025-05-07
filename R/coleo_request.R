@@ -19,7 +19,7 @@
 #' @param page_size Nombre d'items par page. Par défaut, 10000.
 #' @param ... Paramètres de requête pour la base de données coleo (dans le format 'nom' = 'valeur')
 #'
-#' @return Liste d'objects httr2 response si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
+#' @return Liste d'objects JSON parsed si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
 #' @export
 #' 
 #' @examples
