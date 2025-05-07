@@ -34,6 +34,11 @@ coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FAL
 
   request_info <- list(...)
 
+  # Check for length of request_info as there is a size limit imposed by NGINX
+  if (sum(nchar(request_info)) > 2500) {
+    stop("Trop d'\u00e9l\u00e9ments fournis dans les arguments de la requ\u00eate (limite de 2500 caract\u00e8res). Veuillez diviser la requ\u00eate en blocs plus petits.")
+  }
+
   written_req <- coleo_begin_req(schema) |>
     httr2::req_url_path_append(endpoint) |>
     httr2::req_url_query(!!!request_info)
