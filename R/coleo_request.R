@@ -15,10 +15,11 @@
 #' la requête est faite sur une fonction, il est nécessaire d'ajouter 'rpc/' devant le nom de la fonction.
 #' @param perform TRUE par default. Retourne un objet httr2 request et pas de requête effectuée si FALSE.
 #' @param response_as_df FALSE par défaut. Retroune un data.frame si TRUE.
-#' @param schema Schema qui contient les fonctions ou tables de l'appel
+#' @param schema Schema qui contient les fonctions ou tables de l'appel.
+#' @param page_size Nombre d'items par page. Par défaut, 10000.
 #' @param ... Paramètres de requête pour la base de données coleo (dans le format 'nom' = 'valeur')
 #'
-#' @return Object httr2 response si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
+#' @return Liste d'objects JSON parsed si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
 #' @export
 #' 
 #' @examples
@@ -29,20 +30,55 @@
 #' coleo_request_general('rpc/table_columns', perform = FALSE, response_as_df = TRUE, 
 #' 'table_name' = 'cells')
 #' 
-coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FALSE, schema = 'api', ...){
+coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FALSE, schema = 'api', page_size = 10000, ...){
 
-    request_info <- list(...)
+  request_info <- list(...)
+
+  # Check for length of request_info as there is a size limit imposed by NGINX
+  if (sum(nchar(request_info)) > 2500) {
+    stop("Trop d'\u00e9l\u00e9ments fournis dans les arguments de la requ\u00eate (limite de 2500 caract\u00e8res). Veuillez diviser la requ\u00eate en blocs plus petits.")
+  }
 
   written_req <- coleo_begin_req(schema) |>
     httr2::req_url_path_append(endpoint) |>
     httr2::req_url_query(!!!request_info)
 
   if(perform) {
-    out <- httr2::req_perform(written_req)
+    all_data <- list()
+    start <- 0
 
-    if (response_as_df) out <- coleo_resp_df(out, written_req)
+    # Pagination
+    repeat {
+      # Set the Range header for pagination
+      written_req <- written_req |>
+        httr2::req_headers(Range = sprintf("%d-%d", start, start + page_size - 1))
+      resp <- httr2::req_perform(written_req)
+      data <-  httr2::resp_body_json(resp, simplifyVector = TRUE)
+      all_data <- append(all_data, list(data))
 
-    return(out)
+      # Check if there are more pages
+      content_range <- httr2::resp_headers(resp)[["content-range"]]
+      if (is.null(content_range) || !grepl(".*/", content_range)) {
+        stop("Le header 'content-range' est manquant ou malformé.")
+      }
+
+      # Extract total number of items from the content-range header
+      total <- as.integer(sub(".*/", "", content_range))
+      start <- start + page_size
+
+      # Check if we have reached the end of the data
+      if (start >= total) break    
+    }
+
+    # Combine data from all pages
+    if (response_as_df) {
+      all_data_df <- do.call(rbind, lapply(all_data, function(x) as.data.frame(x))) |>
+        tibble::as_tibble()
+      
+      return(all_data_df)
+    }
+
+    return(all_data)
   } else {
     return(written_req)
   }
@@ -112,33 +148,8 @@ coleo_request_data <- function(survey_type, view = 'short', ...){
   # endpoint
   endpoint <- paste0('gabarit_', survey_type, '_', view)
 
-  written_req <- coleo_begin_req('api') |>
-    httr2::req_url_path_append(endpoint) |>
-    httr2::req_url_query(!!!request_info)
+  out <- coleo_request_general(endpoint, perform = TRUE, response_as_df = TRUE, schema = 'api', ...)
 
-  out <- httr2::req_perform(written_req)
-  out <- coleo_resp_df(out, written_req)
-
-  return(out)
-}
-
-
-#' Converti un objet httr2 response en un tibble.
-#'
-#' Si la réponse contient plusieurs pages, la fonction accède à chacune et les
-#' joints en un seul data.frame
-#'
-#' @param resp objet httr2 response de coleo.
-#' @param written_req Requête passée à l'API de coleo.
-#'
-#' @return si perform = TRUE, la réponse est retournée. Si perform = FALSE, la requête httr2 est retournée.
-#' @export
-coleo_resp_df <- function(resp, written_req){
-  # is there pages?
-  header_names <- names(resp$headers)
-    # No 'Content-Range'
-    out <- httr2::resp_body_json(resp, simplifyVector = TRUE) |>
-      tibble::as_tibble()
   return(out)
 }
 

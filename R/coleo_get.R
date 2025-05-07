@@ -11,8 +11,8 @@ coleo_get_column_names <- function(tbl){
 
 
 coleo_get_enum_values <- function(enum_col_name){
-  coleo_request_general('rpc/get_enum_values', 'enum_type' = enum_col_name) |>
-    httr2::resp_body_json() |> purrr::flatten() |> purrr::flatten_chr()
+  coleo_request_general('rpc/get_enum_values', 'enum_type' = enum_col_name, response_as_df=TRUE) |> 
+    unlist(use.names = FALSE)
 }
 
 
