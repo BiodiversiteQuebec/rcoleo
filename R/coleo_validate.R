@@ -875,7 +875,7 @@ coleo_validate_diagnostics <- function(data, cols_date, no_obs = 0) {
 #' data <- data.frame(lat = c(45, 50, 60), lon = c(-70, -75, -80))
 #' dat_names <- c("lat", "lon")
 #' bbox <- c(-90, 90, -180, 180)
-#' coleo_validate_coordinates(data, dat_names)
+#' coleo_validate_coordinates_projection(data, dat_names)
 #' }
 coleo_validate_coordinates_projection <- function(data, dat_names, bbox = c(-90, 90, -180, 180)) {
   lat_names <- grepl("lat", dat_names)
