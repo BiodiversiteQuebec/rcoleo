@@ -52,11 +52,9 @@ coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FAL
 
       content_range <- httr2::resp_headers(resp)[["content-range"]]
       total <- as.integer(sub(".*/", "", content_range))
-      cat(sprintf("\rProgression: %d%%", round(start / total * 100)))
       start <- start + page_size
       if (start >= total) break    
     }
-    cat("\rProgression: 100%\n")
 
     # Combine data from all pages
     if (response_as_df) {
