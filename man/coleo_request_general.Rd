@@ -9,6 +9,7 @@ coleo_request_general(
   perform = TRUE,
   response_as_df = FALSE,
   schema = "api",
+  page_size = 10000,
   ...
 )
 }
@@ -20,12 +21,14 @@ la requête est faite sur une fonction, il est nécessaire d'ajouter 'rpc/' deva
 
 \item{response_as_df}{FALSE par défaut. Retroune un data.frame si TRUE.}
 
-\item{schema}{Schema qui contient les fonctions ou tables de l'appel}
+\item{schema}{Schema qui contient les fonctions ou tables de l'appel.}
+
+\item{page_size}{Nombre d'items par page. Par défaut, 10000.}
 
 \item{...}{Paramètres de requête pour la base de données coleo (dans le format 'nom' = 'valeur')}
 }
 \value{
-Object httr2 response si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
+Liste d'objects httr2 response si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
 }
 \description{
 Cette fonction permet de faire une requête sur l'API de coleo. Les requêtes de type GET se
