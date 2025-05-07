@@ -44,15 +44,24 @@ coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FAL
 
     # Pagination
     repeat {
+      # Set the Range header for pagination
       written_req <- written_req |>
         httr2::req_headers(Range = sprintf("%d-%d", start, start + page_size - 1))
       resp <- httr2::req_perform(written_req)
       data <-  httr2::resp_body_json(resp, simplifyVector = TRUE)
       all_data <- append(all_data, list(data))
 
+      # Check if there are more pages
       content_range <- httr2::resp_headers(resp)[["content-range"]]
+      if (is.null(content_range) || !grepl(".*/", content_range)) {
+        stop("Le header 'content-range' est manquant ou malformé.")
+      }
+
+      # Extract total number of items from the content-range header
       total <- as.integer(sub(".*/", "", content_range))
       start <- start + page_size
+
+      # Check if we have reached the end of the data
       if (start >= total) break    
     }
 
