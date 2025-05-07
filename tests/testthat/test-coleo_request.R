@@ -84,3 +84,8 @@ test_that("coleo_request_general handles absence of data correctly", {
   expect_length(coleo_request_general(endpoint = "cells", schema = "public", 'cell_code' = "eq.non_existent_code"), 1)
   expect_equal(coleo_request_general(endpoint = "cells", schema = "public", 'cell_code' = "eq.non_existent_code")[[1]], list())
 })
+
+test_that("coleo_request_general handles large parameters correctly", {
+  # Test with a large number of parameters
+  expect_error(coleo_request_general(endpoint = "cells", perform = TRUE, response_as_df = FALSE, schema = 'api', 'param' = paste0("in.(",paste(rep("value", 10000), collapse = ","), ")")), "Trop d'éléments")
+})
