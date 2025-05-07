@@ -4,10 +4,12 @@
 \alias{coleo_return_required_tables}
 \title{Trouver les tables requises pour un type de campagne donné}
 \usage{
-coleo_return_required_tables(camp_type)
+coleo_return_required_tables(camp_type, col_names = NULL)
 }
 \arguments{
 \item{camp_type}{un type de campagne valide.}
+
+\item{col_names}{un vecteur de charactères contenant les noms des colonnes d'un jeu de données.}
 }
 \value{
 Un vecteur contenant les noms des tables requises pour le type de campagne donné.
