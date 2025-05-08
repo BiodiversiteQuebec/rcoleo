@@ -249,15 +249,19 @@ coleo_validate <- function(data, media_path = NULL) {
   notes_cols <- grepl("_notes", dat_names) # Get all campaigns columns
   notes_cols[grep('obs', dat_names)] <- FALSE # Exclude obs columns from duplication check
   notes_tables <- gsub("_notes", "", names(data)[notes_cols])
-  notes_tables_duplicated <- sapply(notes_tables, function(x) {
-    table_cols <- grep(x, dat_names) # Get all campaigns columns
-    table_cols_wo_notes <- table_cols[!grepl("_notes", dat_names[table_cols])]
-    notes_dupl <- !identical(data[!duplicated(data[, table_cols]), table_cols], data[!duplicated(data[, table_cols_wo_notes]), table_cols])
-  })
-  ## Warning message
-  warning("Des duplications ont \u00E9t\u00E9 d\u00E9tect\u00E9es dans les commentaires des tables suivantes : ", paste(names(notes_tables_duplicated)[notes_tables_duplicated], collapse = ", "), ". Assurez-vous que les commentaires sont identiques pour toutes les lignes d'une m\u00EAme entr\u00E9e.\n", call. = FALSE)
-  warning_flag <- TRUE
-  
+  if (length(notes_tables) > 0){
+    notes_tables_duplicated <- FALSE
+    notes_tables_duplicated <- sapply(notes_tables, function(x) {
+      table_cols <- grep(x, dat_names) # Get all campaigns columns
+      table_cols_wo_notes <- table_cols[!grepl("_notes", dat_names[table_cols])]
+      notes_dupl <- !identical(data[!duplicated(data[, table_cols]), table_cols], data[!duplicated(data[, table_cols_wo_notes]), table_cols])
+    })
+    ## Warning message
+    if (any(notes_tables_duplicated)) {
+      warning("Des duplications ont \u00E9t\u00E9 d\u00E9tect\u00E9es dans les commentaires des tables suivantes : ", paste(names(notes_tables_duplicated)[notes_tables_duplicated], collapse = ", "), ". Assurez-vous que les commentaires sont identiques pour toutes les lignes d'une m\u00EAme entr\u00E9e.\n", call. = FALSE)
+      warning_flag <- TRUE
+    }
+  }
   
   #------------------------------------------------------------------------
   # Check that all coordinates are within a valid range
