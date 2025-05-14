@@ -78,7 +78,7 @@ test_that("coleo_validate", {
   dat_test$campaigns_notes[2] <- 'Note'
 
   testthat::expect_warning(coleo_validate(dat_test),
-                         regexp = "V\u00E9rifiez les commentaires de campagnes*")
+                         regexp = "*Des duplications ont été détectées dans les commentaires des tables suivantes : campaigns*")
   ### efforts_notes
   dat_test <- dat
   dat_test$campaigns_type <- "acoustique_chiroptères"
@@ -88,14 +88,14 @@ test_that("coleo_validate", {
   dat_test$efforts_notes[2] <- 'Note'
 
   testthat::expect_warning(coleo_validate(dat_test),
-                         regexp = "V\u00E9rifiez les commentaires des efforts*")
+                         regexp = "*Des duplications ont été détectées dans les commentaires : efforts*")
   ### landmarks_notes
   dat_test <- dat
   dat_test$landmarks_notes <- NA
   dat_test$landmarks_notes[2] <- 'Note'
 
   testthat::expect_warning(coleo_validate(dat_test),
-                         regexp = "V\u00E9rifiez les commentaires des rep\u00E8res*")
+                         regexp = "*Des duplications ont été détectées dans les commentaires : landmarks*")
 
   ## Test that all (and only) ADNe campaigns observations made at the ## station level have landmarks
   dat_test <- dat
@@ -201,8 +201,21 @@ test_that("coleo_validate", {
   
 })
 
+## Test that scientific names do not contain punctuation
+test_that("coleo_validate", {
+  dat_test <- dat
+  dat_test$obs_species_taxa_name[2] <- "Camponotus pennsylvanicus."
+  testthat::expect_warning(coleo_validate(dat_test),
+                           regexp = "*Des caractères de ponctuation ont été détectés*")
+})
 
-
+## Test that non-ASCII characters are detected
+test_that("coleo_validate", {
+  dat_test <- dat
+  dat_test$obs_species_taxa_name[2] <- "Camponotus pennsylvanicus\u00A0"
+  testthat::expect_warning(coleo_validate(dat_test),
+                           regexp = "*Des caractères non ASCII ont été détectés*")
+})
 
 
 
