@@ -409,7 +409,7 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   # Check taxonomy
   #------------------------------------------------------------------------
-  # Check for non-ASCII caracters
+  # Check for non-ASCII characters
   are_non_ascii <- is_ascii(data, dat_names)
   if (!is.na(are_non_ascii)) {
     warning(are_non_ascii, call. = FALSE)
