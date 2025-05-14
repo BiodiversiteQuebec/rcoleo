@@ -201,8 +201,21 @@ test_that("coleo_validate", {
   
 })
 
+## Test that scientific names do not contail punctuation
+test_that("coleo_validate", {
+  dat_test <- dat
+  dat_test$obs_species_taxa_name[2] <- "Camponotus pennsylvanicus."
+  testthat::expect_warning(coleo_validate(dat_test),
+                           regexp = "Vérifiez la présence de ponctuation dans les noms scientifiques*")
+})
 
-
+## Test that non-ASCII characters are detected
+test_that("coleo_validate", {
+  dat_test <- dat
+  dat_test$obs_species_taxa_name[2] <- "Camponotus pennsylvanicus\u00A0"
+  testthat::expect_warning(coleo_validate(dat_test),
+                           regexp = "Vérifiez la présence de caractères non-ASCII*")
+})
 
 
 
