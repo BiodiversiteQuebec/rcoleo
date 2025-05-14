@@ -201,7 +201,7 @@ test_that("coleo_validate", {
   
 })
 
-## Test that scientific names do not contail punctuation
+## Test that scientific names do not contain punctuation
 test_that("coleo_validate", {
   dat_test <- dat
   dat_test$obs_species_taxa_name[2] <- "Camponotus pennsylvanicus."
