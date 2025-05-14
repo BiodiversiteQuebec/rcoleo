@@ -240,58 +240,25 @@ coleo_validate <- function(data, media_path = NULL) {
 
 
   #------------------------------------------------------------------------
-  # Check that campaigns, efforts and landmarks are not duplicated by comments
+  # Check that there is are no duplicated table entries by comments
   #
-  # - A comment added to a campaigns using the campaigns_notes column may
+  # - Eg. A comment added to a campaigns using the campaigns_notes column may
   #  cause the campaign to be duplicated if the comment is not the same
   #  for every row of the campaign.
   #------------------------------------------------------------------------
-  # Campaigns with notes --------------------------------------------------
-  if ("campaigns_notes" %in% dat_names) {
-    # Get all unique campaigns
-    camp_w_notes_cols <- c("sites_site_code", dat_names[grepl("campaigns_", dat_names)])
-    camp_cols <- camp_w_notes_cols["campaigns_notes" != camp_w_notes_cols]
-    camp_dupl <- identical(data[!duplicated(data[, camp_cols]), camp_cols], data[!duplicated(data[, camp_w_notes_cols]), camp_cols])
-    if (!camp_dupl) {
-      ## Get duplicated campaigns
-      camp_dat <- data[!duplicated(data[, camp_w_notes_cols]), camp_cols]
-      dupl_camp <- camp_dat$sites_site_code[duplicated(camp_dat)]
-      ## Warning message
-      warning("V\u00E9rifiez les commentaires de campagnes (colonne campaigns_notes). Les commentaires de campagnes doivent normalement \u00EAtre saisis pour toutes les lignes de cette campagne. Ces campagnes sont \u00E0 risque d'être dupliqu\u00E9es :\n", paste(dupl_camp, collapse = ", "),".\n", call. = FALSE)
-      warning_flag <- TRUE
-    }
-  }
-
-  # Efforts with notes ----------------------------------------------------
-  if ("efforts_notes" %in% dat_names) {
-    # Get all unique campaigns
-    efforts_w_notes_cols <- dat_names[grepl("efforts_", dat_names) | grepl("campaigns_", dat_names) | grepl("sites_site_code", dat_names)]
-    efforts_cols <- efforts_w_notes_cols["efforts_notes" != efforts_w_notes_cols]
-    efforts_dupl <- identical(data[!duplicated(data[, efforts_cols]), efforts_cols], data[!duplicated(data[, efforts_w_notes_cols]), efforts_cols])
-
-    if (!efforts_dupl) {
-      ## Get duplicated efforts
-      efforts_dat <- data[!duplicated(data[, efforts_w_notes_cols]), efforts_cols]
-      dupl_efforts <- efforts_dat$sites_site_code[duplicated(efforts_dat)]
-      ## Warning message
-      warning("V\u00E9rifiez les commentaires des efforts (colonne efforts_notes). Les commentaires des efforts doivent \u00EAtre saisis pour toutes les lignes de l'effort. Ces efforts sont dupliqu\u00E9s :\n", paste(dupl_efforts, collapse = ", "),".\n", call. = FALSE)
-      warning_flag <- TRUE
-    }
-  }
-
-  # landmarks with notes --------------------------------------------------
-  if ("landmarks_notes" %in% dat_names) {
-    # Get all unique campaigns
-    land_w_notes_cols <- dat_names[grepl("landmarks_", dat_names) | grepl("campaigns_", dat_names) | grepl("sites_site_code", dat_names)]
-    land_cols <- land_w_notes_cols["landmarks_notes" != land_w_notes_cols]
-    land_dupl <- identical(data[!duplicated(data[, land_cols]), land_cols], data[!duplicated(data[, land_w_notes_cols]), land_cols])
-
-    if (!land_dupl) {
-      ## Get duplicated landmarks
-      land_dat <- data[!duplicated(data[, land_w_notes_cols]), land_cols]
-      dupl_land <- land_dat$sites_site_code[duplicated(land_dat)]
-      ## Warning message
-      warning("V\u00E9rifiez les commentaires des rep\u00E8res (colonne landmarks_notes). Les commentaires des rep\u00E8res doivent \u00EAtre saisis pour toutes les lignes du rep\u00E8re. Ces rep\u00E8res sont dupliqu\u00E9s :\n", paste(dupl_land, collapse = ", "),".\n", call. = FALSE)
+  notes_cols <- grepl("_notes", dat_names) # Get all campaigns columns
+  notes_cols[grep('obs', dat_names)] <- FALSE # Exclude obs columns from duplication check
+  notes_tables <- gsub("_notes", "", names(data)[notes_cols])
+  if (length(notes_tables) > 0){
+    notes_tables_duplicated <- FALSE
+    notes_tables_duplicated <- sapply(notes_tables, function(x) {
+      table_cols <- grep(x, dat_names) # Get all campaigns columns
+      table_cols_wo_notes <- table_cols[!grepl("_notes", dat_names[table_cols])]
+      notes_dupl <- !identical(data[!duplicated(data[, table_cols]), table_cols], data[!duplicated(data[, table_cols_wo_notes]), table_cols])
+    })
+    ## Warning message
+    if (any(notes_tables_duplicated)) {
+      warning("Des duplications ont \u00E9t\u00E9 d\u00E9tect\u00E9es dans les commentaires des tables suivantes : ", paste(names(notes_tables_duplicated)[notes_tables_duplicated], collapse = ", "), ". Assurez-vous que les commentaires sont identiques pour toutes les lignes d'une m\u00EAme entr\u00E9e.\n", call. = FALSE)
       warning_flag <- TRUE
     }
   }
@@ -875,7 +842,7 @@ coleo_validate_diagnostics <- function(data, cols_date, no_obs = 0) {
 #' data <- data.frame(lat = c(45, 50, 60), lon = c(-70, -75, -80))
 #' dat_names <- c("lat", "lon")
 #' bbox <- c(-90, 90, -180, 180)
-#' coleo_validate_coordinates(data, dat_names)
+#' coleo_validate_coordinates_projection(data, dat_names)
 #' }
 coleo_validate_coordinates_projection <- function(data, dat_names, bbox = c(-90, 90, -180, 180)) {
   lat_names <- grepl("lat", dat_names)

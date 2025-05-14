@@ -7,10 +7,10 @@ Le processus d'injection requiert des données saisies dans un gabarit d'injecti
 
 ## 0. Formater le jeu de données
 
-Les données doivent d'abord être saisies dans un gabarit. Les gabarits sont spécifiques à chaque inventaire. 
+Les données doivent d'abord être saisies dans un **gabarit**. Les gabarits sont spécifiques à chaque inventaire. 
+Le gabarit d'injection de données est un fichier Excel qui contient des colonnes pour chaque champ requis par la base de données. Il est important de suivre le format du gabarit pour que les données soient correctement injectées.
 
-[Accédez aux gabarits](gabarits/).
-
+Complétez la [liste de vérification](checklist.md) pour vous assurer que les données sont prêtes à être injectées.
 
 ## 1. Charger le jeu de données
 
