@@ -407,8 +407,23 @@ coleo_validate <- function(data, media_path = NULL) {
   }
 
   #------------------------------------------------------------------------
-  # Check that complexes of species are correctly formated
+  # Check taxonomy
   #------------------------------------------------------------------------
+  # Check for non-ASCII caracters
+  are_non_ascii <- is_ascii(data, dat_names)
+  if (!is.na(are_non_ascii)) {
+    warning(are_non_ascii, call. = FALSE)
+    warning_flag <- TRUE
+  }
+
+  # Check for punctuation
+  is_punct <- is_punctuation(data, dat_names)
+  if (!is.na(is_punct)) {
+    warning(is_punct, call. = FALSE)
+    warning_flag <- TRUE
+  }
+
+  # Check that complexes of species are correctly formated
   if ("obs_species_taxa_name" %in% dat_names) {
     is_complexes <- grepl("|", data$obs_species_taxa_name) |> which()
     if(!length(is_complexes) == 0) {
@@ -904,5 +919,62 @@ coleo_validate_coordinates <- function(data, dat_names, bbox = c(-79.76, 44.99, 
   message <- NA
   if (lat_error | lon_error) message <- paste0("V\u00E9rifiez les coordonnées. Certaines valeurs se trouvent à l'extérieur du Québec.\n")
 
+  return(message)
+}
+
+
+#' Validate the presence of non ASCII characters in given columns of a dataframe
+#'
+#' @param data A dataframe containing the data to be validated.
+#' @param dat_names A vector of column names in the dataframe.
+#'
+#' @return A message if non ASCII characters are found.
+#'
+is_ascii <- function(data, dat_names) {
+  taxon_col_names <- grepl("taxa", dat_names) | grepl("taxo", dat_names) | grepl("scientific_name", dat_names)
+  ascii_error <- FALSE
+
+  # Check for non ASCII characters in taxon columns
+  if (any(taxon_col_names)) {
+    taxon_names <- unlist(data[,taxon_col_names])
+    ascii_error <- any(grepl("[^\x01-\x7F]", taxon_names, perl = TRUE))
+  }
+
+  if (ascii_error) {
+    message <- paste0("V\u00E9rifiez les noms de taxons. Des caract\u00E8res non ASCII ont \u00E9t\u00E9 d\u00E9tect\u00E9s dans les colonnes suivantes : ", paste0(dat_names[taxon_col_names], collapse = ", "), ".\n")
+  } else {
+    message <- NA
+  }
+  return(message)
+}
+
+
+#' Validate the presence of punctuation in given columns of a dataframe
+#' 
+#' This function checks for the presence of punctuation characters in specified columns of a dataframe. Accepts `|` as a separator for taxon names.
+#' 
+#' @param data A dataframe containing the data to be validated.
+#' @param dat_names A vector of column names in the dataframe.
+#' 
+#' @return A message if punctuation is found.
+#'
+is_punctuation <- function(data, dat_names) {
+  taxon_col_names <- grepl("taxa", dat_names) | grepl("taxo", dat_names) | grepl("scientific_name", dat_names)
+  if (!any(taxon_col_names)) return(NA)
+  
+  taxon_names <- as.character(unlist(data[, taxon_col_names]))
+  taxon_names <- taxon_names[!is.na(taxon_names)]
+  
+  # Regex: tout caractère de ponctuation sauf a-z, espaces et "|"
+  invalid <- grepl("[^A-Za-z|[:space:]]", taxon_names)
+  
+  if (any(invalid)) {
+    message <- paste0(
+      "V\u00E9rifiez les noms de taxons. Des caract\u00E8res de ponctuation ont \u00E9t\u00E9 d\u00E9tect\u00E9s dans les noms suivants : ",
+      paste0(taxon_names[invalid], collapse = ", "), ".\n"
+    )
+  } else {
+    message <- NA
+  }
   return(message)
 }
