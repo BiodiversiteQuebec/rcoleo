@@ -73,11 +73,11 @@ coleo_return_cols <- function(campaign_type, required.columns = FALSE) {
   # remote_sensing_indicators_name est requis pour l'injection des inventaires de télédétection
   #-------------------------------------------------------------------------------
   if (is_remote_sensing) {
-    remote_sensing_row <- data.frame(table = "remote_sensing_indicators",
+    remote_sensing_row <- tibble::tibble(table = "remote_sensing_indicators",
                                      noms_de_champs = "name",
                                      colonne_requise = "TRUE",
                                      classe = "character",
-                                     valeurs_acceptees = coleo_get_enum_values("enum_remote_sensing_indicators_name"))
+                                     valeurs_acceptees = list(coleo_get_enum_values("enum_remote_sensing_indicators_name")))
     df <- rbind(df, remote_sensing_row)
   }
   #-------------------------------------------------------------------------------
