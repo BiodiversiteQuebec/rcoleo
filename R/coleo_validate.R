@@ -966,7 +966,7 @@ is_punctuation <- function(data, dat_names) {
   taxon_names <- taxon_names[!is.na(taxon_names)]
   
   # Regex: tout caractère de ponctuation sauf a-z, espaces et "|"
-  invalid <- grepl("[^A-Za-z|[:space:]]", taxon_names)
+  invalid <- unique(grepl("[^A-Za-z|[:space:]]", taxon_names))
   
   if (any(invalid)) {
     message <- paste0(
