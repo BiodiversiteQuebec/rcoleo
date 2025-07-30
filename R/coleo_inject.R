@@ -44,8 +44,9 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
     return(df_id)
   }
 
-  # vegetation phenology goes into Indicators schéma (not campaigns)
-  if (grepl("indicateur", campaign_type) & schema != "indicators") {
+  # Indicators go into indicators schéma (not campaigns)
+  indicator_campaigns <- coleo_return_indicator_campaigns()
+  if (campaign_type %in% indicator_campaigns & schema != "indicators") {
     stop("Ces donn\u00e9es doivent être inject\u00e9es dans le sch\u00e9ma *indicators* : `coleo_inject(data, schema = 'indicators')`.", call. = FALSE)
   }
 
@@ -95,7 +96,7 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
     }
 
     ## Inject table in indicators schema without campaigns prior injection
-    if (grepl("indicateur", campaign_type) & table == tables[1]) {
+    if (campaign_type %in% indicator_campaigns & table == tables[1]) {
       df_id <- coleo_inject_table(df, table, schema = schema)
       next
     }
