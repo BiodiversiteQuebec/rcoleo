@@ -1,6 +1,6 @@
 Package: rcoleo
 Title: rcoleo
-Version: 3.2.3
+Version: 3.3.0
 Authors@R: c(
     person("Steve", "Vissault", , "steve.vissault@usherbrooke.ca", role = "aut",
            comment = c(ORCID = "0000-0002-0866-4376")),
