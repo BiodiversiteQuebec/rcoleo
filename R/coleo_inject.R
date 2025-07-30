@@ -293,9 +293,10 @@ coleo_injection_prep <- function(df, db_table, schema = 'public'){
 
   # unless it is observations
 
-  if(db_table == "observations") {
-    colnames_of_tbl <- coleo_get_column_names(tbl = db_table)$column_name
+  colnames_of_tbl <- coleo_get_column_names(tbl = db_table)$column_name
+  is_there_site_id <- "site_id" %in% colnames_of_tbl
 
+  if(db_table == "observations") {
     df_prep <- df |>
       coleo_prep_input_data(db_table, schema = schema) |>
       dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::across(dplyr::any_of(colnames_of_tbl)), endpoint = db_table, schema = schema)))
@@ -308,7 +309,7 @@ coleo_injection_prep <- function(df, db_table, schema = 'public'){
       dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "taxa", schema = schema)))
   } else {
     df_prep <- df |>
-      coleo_prep_input_data(db_table, schema = schema) |>
+      coleo_prep_input_data(db_table, site_id = is_there_site_id, schema = schema) |>
       dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = db_table, schema = schema)))
   }
 
