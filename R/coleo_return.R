@@ -58,7 +58,7 @@ coleo_return_required_name_table <- function(db_table) {
 #' @export
 #'
 coleo_return_valid_campaigns <- function(){
-  campaigns <- c(coleo_get_enum_values("enum_campaigns_type"), coleo_get_enum_values("enum_remote_sensing_indicators_name"))
+  campaigns <- c(coleo_get_enum_values("enum_campaigns_type"), coleo_get_enum_values("enum_remote_sensing_indicators_name"), "niveau_eau_indicateur")
 
   return(campaigns)
 }
