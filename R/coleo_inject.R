@@ -45,7 +45,7 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
   }
 
   # vegetation phenology goes into Indicators schéma (not campaigns)
-  if (campaign_type == "ph\u00e9nologie_indicateur" & schema != "indicators") {
+  if (grepl("indicateur", campaign_type) & schema != "indicators") {
     stop("Ces donn\u00e9es doivent être inject\u00e9es dans le sch\u00e9ma *indicators* : `coleo_inject(data, schema = 'indicators')`.", call. = FALSE)
   }
 
@@ -91,6 +91,12 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
       if(!any(sapply(df_id$remote_sensing_event_error, is.null))) {
       cat("Seules les données des indicateurs de télédétection injectées avec succès sont injectées dans les tables suivantes. Les lignes suivantes n'ont pas pu être injectées : ", paste0(which(!sapply(df_id$remote_sensing_event_error, is.null)), collapse = ", "), "\n")
       }
+      next
+    }
+
+    ## Inject table in indicators schema without campaigns prior injection
+    if (grepl("indicateur", campaign_type) & table == tables[1]) {
+      df_id <- coleo_inject_table(df, table, schema = schema)
       next
     }
 
