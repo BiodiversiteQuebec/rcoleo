@@ -215,7 +215,7 @@ coleo_validate <- function(data, media_path = NULL) {
   if ("media_name" %in% dat_names) {
     # Validate directory existence
     if (is.null(media_path)) {
-      warning("Le chemin du répertoire contenant les ", paste0("m","\U00E9","dias"), " n'a pas ", paste0("\U00E9","t", "\U00E9", " pass", "\U00E9"), " \u00E0 l'argument mendia_path. La validation des valeurs de la colonne media_name est ignorée.\n", call. = FALSE)
+      warning("Le chemin du répertoire contenant les ", paste0("m","\U00E9","dias"), " n'a pas ", paste0("\U00E9","t", "\U00E9", " pass", "\U00E9"), " \u00E0 l'argument media_path. La validation des valeurs de la colonne media_name est ignorée.\n", call. = FALSE)
       warning_flag <- TRUE
     }
   }
@@ -624,7 +624,7 @@ coleo_validate <- function(data, media_path = NULL) {
   # }
 
   if (warning_flag) {
-    warning("Des erreurs ont \u00E9t\u00E9 d\u00E9tect\u00E9es lors de la validation des donn\u00E9es. Veuillez les corriger et valider à nouveau.\n")
+    warning("Des avis ont \u00E9t\u00E9 \u00E9mis lors de la validation des donn\u00E9es. Veuillez en prendre connaissance et, lorsque n\u00E9cessaire, apporter les corrections et valider à nouveau.\n")
   } else {
     cat("Les donn\u00E9es ont \u00E9t\u00E9 valid\u00E9es avec succ\u00E8s !\n")
   }
@@ -917,6 +917,7 @@ is_ascii <- function(data, dat_names) {
   # Check for non ASCII characters in taxon columns
   if (any(taxon_col_names)) {
     taxon_names <- unlist(data[,taxon_col_names])
+    taxon_names <- sort(unique(taxon_names))
     ascii_error <- any(grepl("[^\x01-\x7F]", taxon_names, perl = TRUE))
   }
 
@@ -944,9 +945,10 @@ is_punctuation <- function(data, dat_names) {
   
   taxon_names <- as.character(unlist(data[, taxon_col_names]))
   taxon_names <- taxon_names[!is.na(taxon_names)]
+  taxon_names <- sort(unique(taxon_names))
   
   # Regex: tout caractère de ponctuation sauf a-z, espaces et "|"
-  invalid <- unique(grepl("[^A-Za-z|[:space:]]", taxon_names))
+  invalid <- grepl("[^A-Za-z|[:space:]]", taxon_names)
   
   if (any(invalid)) {
     message <- paste0(
