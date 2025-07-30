@@ -1,3 +1,5 @@
+INDICATOR_CAMPAIGNS <- c("ph\u00e9nologie_indicateur", "niveau_eau_indicateur")
+
 ########################
 # Fonctions qui retournent des données formatées issues de requêtes à coleo
 ########################
@@ -51,14 +53,27 @@ coleo_return_required_name_table <- function(db_table) {
 
 
 
-#' Retourne un vecteur contenant les noms valides de campagnes incluant les indicateurs de télédétection
+#' Retourne un vecteur contenant les noms valides de campagnes de type indicateurs
 #'
 #'
-#' @return vecteur de charactères contenant tous les types de capagnes valides
+#' @return vecteur de charactères contenant tous les types de campagnes valides
+#' @export
+#'
+coleo_return_indicator_campaigns <- function(){
+  campaigns <- c(INDICATOR_CAMPAIGNS, coleo_get_enum_values("enum_remote_sensing_indicators_name"))
+
+  return(campaigns)
+}
+
+
+#' Retourne un vecteur contenant les noms valides de campagnes incluant les indicateurs
+#'
+#'
+#' @return vecteur de charactères contenant tous les types de campagnes valides
 #' @export
 #'
 coleo_return_valid_campaigns <- function(){
-  campaigns <- c(coleo_get_enum_values("enum_campaigns_type"), coleo_get_enum_values("enum_remote_sensing_indicators_name"))
+  campaigns <- c(coleo_get_enum_values("enum_campaigns_type"), coleo_return_indicator_campaigns())
 
   return(campaigns)
 }

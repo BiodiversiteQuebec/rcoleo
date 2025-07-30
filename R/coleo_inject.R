@@ -44,8 +44,9 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
     return(df_id)
   }
 
-  # vegetation phenology goes into Indicators schéma (not campaigns)
-  if (campaign_type == "ph\u00e9nologie_indicateur" & schema != "indicators") {
+  # Indicators go into indicators schéma (not campaigns)
+  indicator_campaigns <- coleo_return_indicator_campaigns()
+  if (campaign_type %in% indicator_campaigns & schema != "indicators") {
     stop("Ces donn\u00e9es doivent être inject\u00e9es dans le sch\u00e9ma *indicators* : `coleo_inject(data, schema = 'indicators')`.", call. = FALSE)
   }
 
@@ -91,6 +92,12 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
       if(!any(sapply(df_id$remote_sensing_event_error, is.null))) {
       cat("Seules les données des indicateurs de télédétection injectées avec succès sont injectées dans les tables suivantes. Les lignes suivantes n'ont pas pu être injectées : ", paste0(which(!sapply(df_id$remote_sensing_event_error, is.null)), collapse = ", "), "\n")
       }
+      next
+    }
+
+    ## Inject table in indicators schema without campaigns prior injection
+    if (campaign_type %in% indicator_campaigns & table == tables[1]) {
+      df_id <- coleo_inject_table(df, table, schema = schema)
       next
     }
 
@@ -293,9 +300,10 @@ coleo_injection_prep <- function(df, db_table, schema = 'public'){
 
   # unless it is observations
 
-  if(db_table == "observations") {
-    colnames_of_tbl <- coleo_get_column_names(tbl = db_table)$column_name
+  colnames_of_tbl <- coleo_get_column_names(tbl = db_table)$column_name
+  is_there_site_id <- "site_id" %in% colnames_of_tbl
 
+  if(db_table == "observations") {
     df_prep <- df |>
       coleo_prep_input_data(db_table, schema = schema) |>
       dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::across(dplyr::any_of(colnames_of_tbl)), endpoint = db_table, schema = schema)))
@@ -308,7 +316,7 @@ coleo_injection_prep <- function(df, db_table, schema = 'public'){
       dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = "taxa", schema = schema)))
   } else {
     df_prep <- df |>
-      coleo_prep_input_data(db_table, schema = schema) |>
+      coleo_prep_input_data(db_table, site_id = is_there_site_id, schema = schema) |>
       dplyr::mutate(inject_request = list(coleo_inject_general_df(dplyr::cur_data_all(), endpoint = db_table, schema = schema)))
   }
 

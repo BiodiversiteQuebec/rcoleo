@@ -11,11 +11,13 @@
 #'
 #' @param df le dataframe à preparer
 #' @param db_table la table ciblée dans la base de données
+#' @param site_id si TRUE, ajoute la colonne site_id
+#'   (par défaut FALSE)
 #' @param schema le schéma de la base de données
 #'
 #' @return un tbl, nested
 #' @export
-coleo_prep_input_data <- function(df, db_table, schema = "public") {
+coleo_prep_input_data <- function(df, db_table, site_id = FALSE, schema = "public") {
 
   # Convert character NAs to actual NAs
   # df[df == "NA"] <- NA
@@ -47,7 +49,7 @@ coleo_prep_input_data <- function(df, db_table, schema = "public") {
   }
 
   # Campaigns table specific manipulations
-  if (db_table %in% c("campaigns", "vegetation_phenology")) {
+  if (site_id) {
     sites_schema <- ifelse(schema != "coleo_test", "public", schema) # sites table is in public schema, except for tests
   
     ## Add site_id to campaigns table
