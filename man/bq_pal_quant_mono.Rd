@@ -2,12 +2,13 @@
 % Please edit documentation in R/bq_color_palettes.R
 \name{bq_pal_quant_mono}
 \alias{bq_pal_quant_mono}
-\title{Retourne un vecteur de valeurs hex pour des couleurs Biodiversité Québec quantitative
-#' @param color couleur de base, par défaut "orange"}
+\title{Retourne un vecteur de valeurs hex pour des couleurs Biodiversité Québec quantitative}
 \usage{
 bq_pal_quant_mono(color = "orange", size = 10)
 }
 \arguments{
+\item{color}{couleur de base, par défaut "orange"}
+
 \item{size}{nombre de couleurs à retourner, par défaut 10}
 }
 \value{
@@ -15,7 +16,6 @@ vecteur de couleurs hexadécimales
 }
 \description{
 Retourne un vecteur de valeurs hex pour des couleurs Biodiversité Québec quantitative
-#' @param color couleur de base, par défaut "orange"
 }
 \examples{
 library(scales); show_col(bq_pal_quant_mono("orange", 10))

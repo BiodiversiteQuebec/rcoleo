@@ -2,18 +2,13 @@
 % Please edit documentation in R/bq_color_palettes.R
 \name{bq_colors}
 \alias{bq_colors}
-\title{Retourne un vecteur de valeurs hex pour les couleurs Biodiversité Québec
-#' @description
-Cette fonction retourne un vecteur de valeurs hexadécimales
-correspondant aux couleurs utilisées par Biodiversité Québec.
-#' @return Un vecteur de valeurs hexadécimales pour les couleurs Biodiversité Québec.}
+\title{Retourne un vecteur de valeurs hex pour les couleurs Biodiversité Québec}
 \usage{
 bq_colors()
 }
+\value{
+Un vecteur de valeurs hexadécimales pour les couleurs Biodiversité Québec.
+}
 \description{
 Retourne un vecteur de valeurs hex pour les couleurs Biodiversité Québec
-#' @description
-Cette fonction retourne un vecteur de valeurs hexadécimales
-correspondant aux couleurs utilisées par Biodiversité Québec.
-#' @return Un vecteur de valeurs hexadécimales pour les couleurs Biodiversité Québec.
 }
