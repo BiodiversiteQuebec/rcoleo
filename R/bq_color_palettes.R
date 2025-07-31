@@ -1,11 +1,10 @@
+
 #' Retourne un vecteur de valeurs hex pour les couleurs Biodiversité Québec
-#' @description
-#' Cette fonction retourne un vecteur de valeurs hexadécimales
-#' correspondant aux couleurs utilisées par Biodiversité Québec.
+#'
 #' @return Un vecteur de valeurs hexadécimales pour les couleurs Biodiversité Québec.
 #' @export
 #'
-bq_colors <- function(){
+bq_colors <- function() {
   list(
   vert_base='#2e483e',
   jaune_base='#e0b658',
