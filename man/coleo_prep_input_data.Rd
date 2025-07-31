@@ -4,12 +4,15 @@
 \alias{coleo_prep_input_data}
 \title{Preparer les données pour injection}
 \usage{
-coleo_prep_input_data(df, db_table, schema = "public")
+coleo_prep_input_data(df, db_table, site_id = FALSE, schema = "public")
 }
 \arguments{
 \item{df}{le dataframe à preparer}
 
 \item{db_table}{la table ciblée dans la base de données}
+
+\item{site_id}{si TRUE, ajoute la colonne site_id
+(par défaut FALSE)}
 
 \item{schema}{le schéma de la base de données}
 }

@@ -1,6 +1,6 @@
 Package: rcoleo
 Title: rcoleo
-Version: 3.3.1
+Version: 3.4.0
 Authors@R: c(
     person("Steve", "Vissault", , "steve.vissault@usherbrooke.ca", role = "aut",
            comment = c(ORCID = "0000-0002-0866-4376")),
@@ -50,4 +50,4 @@ VignetteBuilder:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
