@@ -78,7 +78,7 @@ bq_pal_quant_bi <- function(color1="vert", color2="bleu", ton='base', size=10){
 #' @param size nombre de couleurs à retourner, par défaut 10
 #' @return vecteur de couleurs hexadécimales
 #' @examples library(scales); show_col(bq_pal_quant_tri("orange", "bleu", "vert", "base", 10))
-#' @examples library(scales); show_col(bq_pal_quant_tri("orange", "bleu", "vert", "fonce, 10))
+#' @examples library(scales); show_col(bq_pal_quant_tri("orange", "bleu", "vert", "fonce", 10))
 #' @export  
 bq_pal_quant_tri <- function(color1="orange", color2="bleu", color3="vert", ton='base', size=10){
   colorRampPalette(c(bq_colors()[[paste0(color1, "_", ton)]], 

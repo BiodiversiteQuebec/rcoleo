@@ -2,13 +2,13 @@
 % Please edit documentation in R/coleo_return.R
 \name{coleo_return_valid_campaigns}
 \alias{coleo_return_valid_campaigns}
-\title{Retourne un vecteur contenant les noms valides de campagnes incluant les indicateurs de télédétection}
+\title{Retourne un vecteur contenant les noms valides de campagnes incluant les indicateurs}
 \usage{
 coleo_return_valid_campaigns()
 }
 \value{
-vecteur de charactères contenant tous les types de capagnes valides
+vecteur de charactères contenant tous les types de campagnes valides
 }
 \description{
-Retourne un vecteur contenant les noms valides de campagnes incluant les indicateurs de télédétection
+Retourne un vecteur contenant les noms valides de campagnes incluant les indicateurs
 }
