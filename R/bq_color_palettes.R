@@ -37,6 +37,7 @@ bq_colors <- function(){
 #'
 #' @param size nombre de couleurs à retourner, par défaut 5
 #' @return vecteur de couleurs hexadécimales
+#' @examples library(scales); show_col(bq_pal_qual(8))
 #' @export
 #'
 bq_pal_qual <- function(size=5) {
@@ -47,6 +48,7 @@ bq_pal_qual <- function(size=5) {
 #'#' @param color couleur de base, par défaut "orange"
 #' @param size nombre de couleurs à retourner, par défaut 10
 #' @return vecteur de couleurs hexadécimales
+#' @examples library(scales); show_col(bq_pal_quant_mono("orange", 10))
 #' @export
 bq_pal_quant_mono <- function(color="orange",size=10){
   colorRampPalette(c(bq_colors()[[paste0(color, "_clair")]], 
@@ -59,6 +61,9 @@ bq_pal_quant_mono <- function(color="orange",size=10){
 #' @param color2 couleur de base 2, par défaut "bleu"
 #' @param ton ton de couleur. Base, fonce ou clair. Par défaut "base"
 #' @param size nombre de couleurs à retourner, par défaut 10
+#' @return vecteur de couleurs hexadécimales
+#' @examples library(scales); show_col(bq_pal_quant_bi("vert", "bleu", "base", 10))
+#' @examples library(scales); show_col(bq_pal_quant_bi("orange", "bleu", "fonce", 10))
 #' @export
 bq_pal_quant_bi <- function(color1="vert", color2="bleu", ton='base', size=10){
   colorRampPalette(c(bq_colors()[[paste0(color1, "_", ton)]], 
@@ -71,6 +76,9 @@ bq_pal_quant_bi <- function(color1="vert", color2="bleu", ton='base', size=10){
 #' @param color3 couleur de base 3, par défaut "vert"
 #' @param ton ton de couleur. Base, fonce ou clair. Par défaut "base"
 #' @param size nombre de couleurs à retourner, par défaut 10
+#' @return vecteur de couleurs hexadécimales
+#' @examples library(scales); show_col(bq_pal_quant_tri("orange", "bleu", "vert", "base", 10))
+#' @examples library(scales); show_col(bq_pal_quant_tri("orange", "bleu", "vert", "fonce, 10))
 #' @export  
 bq_pal_quant_tri <- function(color1="orange", color2="bleu", color3="vert", ton='base', size=10){
   colorRampPalette(c(bq_colors()[[paste0(color1, "_", ton)]], 
