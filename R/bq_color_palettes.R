@@ -10,7 +10,7 @@ bq_colors <- function() {
   jaune_base='#e0b658',
   bleu_base='#7bb5b1',
   orange_base='#a6612d',
-  beige_base='#fcf8ee',
+  beige_base='#fceecc',
   gris_base='#7a7a7a',
   vert_secondaire='#4a6b5c',
   jaune_secondaire='#f0d28c',
