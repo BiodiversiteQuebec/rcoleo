@@ -1,4 +1,4 @@
-INDICATOR_CAMPAIGNS <- c("ph\u00e9nologie_indicateur", "niveau_eau_indicateur")
+INDICATOR_CAMPAIGNS <- c("ph\u00e9nologie_indicateur", "niveau_eau_indicateur", "benthos_isb_indicateur")
 
 ########################
 # Fonctions qui retournent des données formatées issues de requêtes à coleo
