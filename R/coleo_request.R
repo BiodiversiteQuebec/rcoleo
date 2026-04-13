@@ -44,7 +44,8 @@ coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FAL
     httr2::req_url_query(!!!request_info)
 
   if (output_geometry) {
-    header$`Accept` <- "application/geo+json"
+    written_req <- written_req |>
+      httr2::req_headers("Accept" = "application/geo+json")
   }
 
   if(perform) {
