@@ -33,3 +33,6 @@ inst/doc
 
 # example data
 *.xlsx
+
+# test and dev folder
+.scratch*
