@@ -30,7 +30,7 @@
 #' coleo_request_general('rpc/table_columns', perform = FALSE, response_as_df = TRUE, 
 #' 'table_name' = 'cells')
 #' 
-coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FALSE, schema = 'api', page_size = 10000, ...){
+coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FALSE, output_geometry = FALSE, schema = 'api', page_size = 10000, ...){
 
   request_info <- list(...)
 
@@ -42,6 +42,10 @@ coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FAL
   written_req <- coleo_begin_req(schema) |>
     httr2::req_url_path_append(endpoint) |>
     httr2::req_url_query(!!!request_info)
+
+  if (output_geometry) {
+    header$`Accept` <- "application/geo+json"
+  }
 
   if(perform) {
     all_data <- list()
