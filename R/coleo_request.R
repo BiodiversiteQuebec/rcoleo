@@ -14,23 +14,23 @@
 #' @param endpoint Nom du endpoint de l'API de coleo sur lequel la requête doit être effectuée. Si 
 #' la requête est faite sur une fonction, il est nécessaire d'ajouter 'rpc/' devant le nom de la fonction.
 #' @param perform TRUE par default. Retourne un objet httr2 request et pas de requête effectuée si FALSE.
-#' @param response_as_df FALSE par défaut. Retroune un data.frame si TRUE.
+#' @param output_geometry FALSE par défaut. Retourne un objet sf si TRUE.
 #' @param schema Schema qui contient les fonctions ou tables de l'appel.
 #' @param page_size Nombre d'items par page. Par défaut, 10000.
 #' @param ... Paramètres de requête pour la base de données coleo (dans le format 'nom' = 'valeur')
 #'
-#' @return Liste d'objects JSON parsed si perform = TRUE et un tibble si response_as_df = TRUE, un objet httr2 request si perform = FALSE.
+#' @return Liste d'objects JSON parsed si perform = TRUE et un objet sf si output_geometry = TRUE, un objet httr2 request si perform = FALSE.
 #' @export
 #' 
 #' @examples
 #' # Requête sur la table 'cells'
-#' coleo_request_general('cells', perform = FALSE, response_as_df = TRUE, schema = 'public')
+#' coleo_request_general('cells', perform = FALSE, output_geometry = FALSE, schema = 'public')
 #' 
 #' # Requête sur la fonction 'table_columns'
-#' coleo_request_general('rpc/table_columns', perform = FALSE, response_as_df = TRUE, 
+#' coleo_request_general('rpc/table_columns', perform = FALSE, output_geometry = FALSE, 
 #' 'table_name' = 'cells')
 #' 
-coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FALSE, schema = 'api', page_size = 10000, ...){
+coleo_request_general <- function(endpoint, perform = TRUE, output_geometry = FALSE, schema = 'api', page_size = 10000, ...){
 
   request_info <- list(...)
 
@@ -43,7 +43,12 @@ coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FAL
     httr2::req_url_path_append(endpoint) |>
     httr2::req_url_query(!!!request_info)
 
-  if(perform) {
+  if (output_geometry) {
+    written_req <- written_req |>
+      httr2::req_headers("Accept" = "application/geo+json")
+  }
+
+  if (perform) {
     all_data <- list()
     start <- 0
 
@@ -52,8 +57,17 @@ coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FAL
       # Set the Range header for pagination
       written_req <- written_req |>
         httr2::req_headers(Range = sprintf("%d-%d", start, start + page_size - 1))
+
       resp <- httr2::req_perform(written_req)
-      data <-  httr2::resp_body_json(resp, simplifyVector = TRUE)
+
+      if (output_geometry) {
+        textresp <- httr2::resp_body_string(resp, encoding = "UTF-8")
+        data <- sf::st_read(textresp, quiet = TRUE)
+      } else {
+        textresp <- httr2::resp_body_string(resp, encoding = "UTF-8")
+        data <- jsonlite::fromJSON(textresp, flatten = TRUE)
+      }
+
       all_data <- append(all_data, list(data))
 
       # Check if there are more pages
@@ -67,23 +81,23 @@ coleo_request_general <- function(endpoint, perform = TRUE, response_as_df = FAL
       start <- start + page_size
 
       # Check if we have reached the end of the data
-      if (start >= total) break    
+      if (start >= total) break
     }
 
     # Combine data from all pages
-    if (response_as_df) {
-      all_data_df <- do.call(rbind, lapply(all_data, function(x) as.data.frame(x))) |>
+    if (output_geometry) {
+      all_data_df <- do.call(rbind, all_data) |>
+        sf::st_transform(crs = 4326)
+      return(all_data_df)
+    } else {
+      all_data_df <- do.call(rbind, all_data) |>
         tibble::as_tibble()
-      
       return(all_data_df)
     }
-
-    return(all_data)
   } else {
     return(written_req)
   }
 }
-
 
 
 
@@ -148,7 +162,7 @@ coleo_request_data <- function(survey_type, view = 'short', ...){
   # endpoint
   endpoint <- paste0('gabarit_', survey_type, '_', view)
 
-  out <- coleo_request_general(endpoint, perform = TRUE, response_as_df = TRUE, schema = 'api', ...)
+  out <- coleo_request_general(endpoint, perform = TRUE, output_geometry =  FALSE, schema = 'api', ...)
 
   return(out)
 }
