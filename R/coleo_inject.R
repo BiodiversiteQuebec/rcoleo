@@ -114,19 +114,16 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
     }
 
     # Case-specific injections ------------------------------------------------
-    if (campaign_type == "mammif\u00e8res") {
-      if (table == "landmarks") {
+    if (campaign_type == "mammif\u00e8res" & table == "landmarks") {
         ## Landmarks table for "mammifères" campaigns
         ## - observations is injected before landmarks
         ## - observations_landmarks_lookup table is injected in this step
         df_id <- coleo_inject_table(df_id, "observations", schema = schema)
         df_id <- coleo_inject_mam_landmarks(df_id)
-      } else if (table == "observations_landmarks_lookup") {
+      } else if (campaign_type == "mammif\u00e8res" &table == "observations_landmarks_lookup") {
         next
-      } else if (table == "observations") {
+      } else if (campaign_type == "mammif\u00e8res" &table == "observations") {
         next
-      }
-
     } else if (table == "media") {
       ## The special case of media files
       ### 0. Check that path to media files is provided
