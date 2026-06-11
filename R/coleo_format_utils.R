@@ -110,7 +110,8 @@ coleo_format_extra_col <- function(df, db_table) {
 
   df <- tibble::as_tibble(df)
 
-  df$extra <- jsonlite::toJSON(NA_character_)
+  df$extra <- vector("list", nrow(df))
+  empty_obj <- setNames(list(), character(0))
 
   extra_col_groups <- split(extraCols, strsplit(extraCols, "_") |>
     purrr::map_chr(tail, 1))
@@ -166,7 +167,7 @@ coleo_format_extra_col <- function(df, db_table) {
       }
     }
 
-    df$extra[i] <- jsonlite::toJSON(extra_list, auto_unbox = TRUE)
+    df$extra[[i]] <- if (length(extra_list) > 0) extra_list else empty_obj
   }
 
 
