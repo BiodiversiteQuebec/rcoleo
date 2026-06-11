@@ -208,10 +208,15 @@ coleo_inject_general_df <- function(df_one_row, schema = 'public', endpoint) {
       df_one_row_ls["technicians"] <- df_one_row_ls["technicians"][[1]]
     }
   }
-    if (any(names(df_one_row_ls) %in% "geom")) {
-      df_one_row_ls["geom"] <- df_one_row_ls["geom"][[1]]
-    }
+  
+  if (any(names(df_one_row_ls) %in% "geom")) {
+    df_one_row_ls["geom"] <- df_one_row_ls["geom"][[1]]
+  }
 
+  if (any(names(df_one_row_ls) %in% "extra")) {
+    df_one_row_ls["extra"] <- df_one_row_ls["extra"][[1]]
+  }
+  
   df_one_row_ls$data <- NULL
 
   # drop all NULL or NA columns
