@@ -172,7 +172,7 @@ coleo_validate <- function(data, media_path = NULL) {
   # Check that all cells exists in coleo
   #------------------------------------------------------------------------
   if ("cells_cell_code" %in% dat_names) {
-    existing_cells <- coleo_request_general(endpoint = "cells", output_geometry = FALSE, schema = 'public')
+    existing_cells <- coleo_request_general(endpoint = "cells", schema = 'public')
     
     are_cells_exists <- all(unique(data$cells_cell_code) %in% existing_cells$cell_code)
     # Missing cells ---------------------------------------------------------
@@ -192,7 +192,7 @@ coleo_validate <- function(data, media_path = NULL) {
   #------------------------------------------------------------------------
   # Check that all sites exists in coleo
   #------------------------------------------------------------------------
-  existing_sites <- coleo_request_general(endpoint = "sites", output_geometry = FALSE, schema = 'public')
+  existing_sites <- coleo_request_general(endpoint = "sites", schema = 'public')
   
   are_sites_exists <- all(unique(data$sites_site_code) %in% existing_sites$site_code)
   # Missing sites ---------------------------------------------------------
@@ -643,11 +643,11 @@ coleo_validate <- function(data, media_path = NULL) {
 #' @return Le message mis à jour.
 #'
 new_vegetation_transect_campaigns <- function(data, nvals){
-  veg_campaigns <- coleo_request_general(endpoint = "campaigns", output_geometry = FALSE, response = TRUE, schema = 'public', "type" = "eq.végétation_transect")
+  veg_campaigns <- coleo_request_general(endpoint = "campaigns", response = TRUE, schema = 'public', "type" = "eq.végétation_transect")
   if (length(veg_campaigns) > 0) {
     veg_campaigns <- subset(veg_campaigns, select = c(id, site_id, opened_at))
     # Add site_code to veg_campaigns
-    site_code <- coleo_request_general(endpoint = "sites", output_geometry = FALSE, response = TRUE, schema = 'public', "id" = paste0("in.(",paste(veg_campaigns$site_id, collapse = ","), ")")) |>
+    site_code <- coleo_request_general(endpoint = "sites", response = TRUE, schema = 'public', "id" = paste0("in.(",paste(veg_campaigns$site_id, collapse = ","), ")")) |>
       dplyr::select(id, site_code)
     # Join veg_campaigns and site_code
     veg_campaigns <- veg_campaigns |>

@@ -14,7 +14,7 @@
 #' @param endpoint Nom du endpoint de l'API de coleo sur lequel la requête doit être effectuée. Si 
 #' la requête est faite sur une fonction, il est nécessaire d'ajouter 'rpc/' devant le nom de la fonction.
 #' @param perform TRUE par default. Retourne un objet httr2 request et pas de requête effectuée si FALSE.
-#' @param output_geometry TRUE par défaut. Retourne un objet sf si TRUE.
+#' @param output_geometry FALSE par défaut. Retourne un objet sf si TRUE.
 #' @param schema Schema qui contient les fonctions ou tables de l'appel.
 #' @param page_size Nombre d'items par page. Par défaut, 10000.
 #' @param ... Paramètres de requête pour la base de données coleo (dans le format 'nom' = 'valeur')
@@ -30,7 +30,7 @@
 #' coleo_request_general('rpc/table_columns', perform = FALSE, output_geometry = TRUE,
 #' 'table_name' = 'cells')
 #' 
-coleo_request_general <- function(endpoint, perform = TRUE, output_geometry = TRUE, schema = 'api', page_size = 10000, ...){
+coleo_request_general <- function(endpoint, perform = TRUE, output_geometry = FALSE, schema = 'api', page_size = 10000, ...){
 
   request_info <- list(...)
 
