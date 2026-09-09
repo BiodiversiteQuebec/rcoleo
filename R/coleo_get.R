@@ -6,12 +6,12 @@
 ## convenience functions for extracting the columns of a table, and the types of a column
 
 coleo_get_column_names <- function(tbl){
-  coleo_request_general('rpc/table_columns', output_geometry = FALSE, 'table_name' = tbl)
+  coleo_request_general('rpc/table_columns', 'table_name' = tbl)
 }
 
 
 coleo_get_enum_values <- function(enum_col_name){
-  coleo_request_general('rpc/get_enum_values', 'enum_type' = enum_col_name, output_geometry = FALSE) |> 
+  coleo_request_general('rpc/get_enum_values', 'enum_type' = enum_col_name) |>
     unlist(use.names = FALSE)
 }
 
@@ -22,7 +22,7 @@ coleo_get_enum_values <- function(enum_col_name){
 #'
 #' @return un data frame de la table attributes ou des valeurs contenues dans un champ
 coleo_get_attributes_table <- function(column = NULL) {
-  attributes_df <- coleo_request_general('attributes', output_geometry = FALSE, 'schema'='public')
+  attributes_df <- coleo_request_general('attributes', 'schema'='public')
 
   if(!is.null(column)) {
     out <- attributes_df[,column]

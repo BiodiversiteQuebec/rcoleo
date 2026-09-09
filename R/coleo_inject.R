@@ -729,7 +729,7 @@ coleo_inject_vegetation_transect_campaigns <- function(df_id, schema = 'public')
   # 1. Check if campaigns already exists in coleo
   #-------------------------------------------------------------------------
   # Get veg_campaigns in coleo
-  veg_campaigns <- coleo_request_general(endpoint = "campaigns", output_geometry = FALSE, response = TRUE, schema = schema, "type" = "eq.végétation_transect")
+  veg_campaigns <- coleo_request_general(endpoint = "campaigns", response = TRUE, schema = schema, "type" = "eq.végétation_transect")
 
   # If no campaigns in coleo, inject all campaigns
   if (nrow(veg_campaigns) == 0) return(coleo_inject_table(df_id, "campaigns", schema = schema))
@@ -738,7 +738,7 @@ coleo_inject_vegetation_transect_campaigns <- function(df_id, schema = 'public')
   veg_campaigns <- subset(veg_campaigns, select = c(id, site_id, opened_at))
 
   # Add site_code to veg_campaigns
-  site_code <- coleo_request_general(endpoint = "sites", output_geometry = FALSE, response = TRUE, schema = schema, "id" = paste0("in.(",paste(veg_campaigns$site_id, collapse = ","), ")")) |>
+  site_code <- coleo_request_general(endpoint = "sites", response = TRUE, schema = schema, "id" = paste0("in.(",paste(veg_campaigns$site_id, collapse = ","), ")")) |>
     dplyr::select(id, site_code)
 
   # Join veg_campaigns and site_code
