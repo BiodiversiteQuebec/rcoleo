@@ -90,6 +90,8 @@ coleo_request_general <- function(endpoint, perform = TRUE, output_geometry = FA
         sf::st_transform(crs = 4326)
       return(all_data_df)
     } else {
+      all_data <- Filter(function(x) length(x) > 0, all_data)
+      if (length(all_data) == 0) return(tibble::tibble())
       all_data_df <- do.call(rbind, all_data) |>
         tibble::as_tibble()
       return(all_data_df)
