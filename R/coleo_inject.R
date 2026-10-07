@@ -731,50 +731,53 @@ coleo_inject_vegetation_transect_campaigns <- function(df_id, schema = 'public')
   # Get veg_campaigns in coleo
   veg_campaigns <- coleo_request_general(endpoint = "campaigns", schema = schema, "type" = "eq.végétation_transect")
 
-  # If no campaigns in coleo, inject all campaigns
-  if (nrow(veg_campaigns) == 0) return(coleo_inject_table(df_id, "campaigns", schema = schema))
-
-  # If campaigns in coleo, check if any in df_id
-  veg_campaigns <- subset(veg_campaigns, select = c(id, site_id, opened_at))
-
-  # Add site_code to veg_campaigns
-  site_code <- coleo_request_general(endpoint = "sites", schema = schema, "id" = paste0("in.(",paste(veg_campaigns$site_id, collapse = ","), ")")) |>
-    dplyr::select(id, site_code)
-
-  # Join veg_campaigns and site_code
-  veg_campaigns <- veg_campaigns |>
-    dplyr::left_join(site_code, by = c("site_id" = "id")) |>
-    dplyr::rename(campaign_id = id, campaigns_opened_at = opened_at, sites_site_code = site_code)
-
-  # Check if existing veg_campaigns in df
-  df_c_id <- df_id |>
-    dplyr::left_join(veg_campaigns, by = c("sites_site_code", "campaigns_opened_at")) |>
-    as.data.frame()
-
-  #-------------------------------------------------------------------------
-  # 2. Isolate campaigns to be injected
-  #-------------------------------------------------------------------------
-  ## Isolate campaigns that are already in coleo
-  df_camp <- df_c_id[!is.na(df_c_id$campaign_id),] |>
-    dplyr::mutate(campaign_error = NA) |>
-    dplyr::relocate(campaign_id, site_id, campaign_error)
-  
-  ## Isolate campaigns that are not yet in coleo
-  df <- df_c_id[is.na(df_c_id$campaign_id),] |> subset(select=-campaign_id) |> subset(select=-site_id)
-
-  #-------------------------------------------------------------------------
-  # 3. Inject campaigns that are not in coleo
-  #-------------------------------------------------------------------------
-  if (any(is.na(df_c_id$campaign_id))) df_id <- coleo_inject_table(df, "campaigns", schema = schema)
-
-  #-------------------------------------------------------------------------
-  # 4. Bind all campaigns
-  #-------------------------------------------------------------------------
-  # Join df_id (injected campaigns) to df_camp (existing campaigns)
-  if (nrow(df) > 0) {
-    df_id <- rbind(df_id, df_camp)
+  # If no campaigns in coleo, inject all campaigns, then continue with the other tables
+  if (nrow(veg_campaigns) == 0) {
+    df <- df_id
+    df_id <- coleo_inject_table(df_id, "campaigns", schema = schema)
   } else {
-    df_id <- df_camp
+    # If campaigns in coleo, check if any in df_id
+    veg_campaigns <- subset(veg_campaigns, select = c(id, site_id, opened_at))
+
+    # Add site_code to veg_campaigns
+    site_code <- coleo_request_general(endpoint = "sites", schema = schema, "id" = paste0("in.(",paste(veg_campaigns$site_id, collapse = ","), ")")) |>
+      dplyr::select(id, site_code)
+
+    # Join veg_campaigns and site_code
+    veg_campaigns <- veg_campaigns |>
+      dplyr::left_join(site_code, by = c("site_id" = "id")) |>
+      dplyr::rename(campaign_id = id, campaigns_opened_at = opened_at, sites_site_code = site_code)
+
+    # Check if existing veg_campaigns in df
+    df_c_id <- df_id |>
+      dplyr::left_join(veg_campaigns, by = c("sites_site_code", "campaigns_opened_at")) |>
+      as.data.frame()
+
+    #-----------------------------------------------------------------------
+    # 2. Isolate campaigns to be injected
+    #-----------------------------------------------------------------------
+    ## Isolate campaigns that are already in coleo
+    df_camp <- df_c_id[!is.na(df_c_id$campaign_id),] |>
+      dplyr::mutate(campaign_error = NA) |>
+      dplyr::relocate(campaign_id, site_id, campaign_error)
+
+    ## Isolate campaigns that are not yet in coleo
+    df <- df_c_id[is.na(df_c_id$campaign_id),] |> subset(select=-campaign_id) |> subset(select=-site_id)
+
+    #-----------------------------------------------------------------------
+    # 3. Inject campaigns that are not in coleo
+    #-----------------------------------------------------------------------
+    if (any(is.na(df_c_id$campaign_id))) df_id <- coleo_inject_table(df, "campaigns", schema = schema)
+
+    #-----------------------------------------------------------------------
+    # 4. Bind all campaigns
+    #-----------------------------------------------------------------------
+    # Join df_id (injected campaigns) to df_camp (existing campaigns)
+    if (nrow(df) > 0) {
+      df_id <- rbind(df_id, df_camp)
+    } else {
+      df_id <- df_camp
+    }
   }
 
   #-------------------------------------------------------------------------
