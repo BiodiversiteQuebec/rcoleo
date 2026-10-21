@@ -51,7 +51,7 @@ coleo_inject <- function(df, media_path = NULL, schema = 'public') {
   }
 
   # Végétation_transect
-  if (campaign_type == "v\u00e9g\u00e9tation_transect") {
+  if (campaign_type == "v\u00e9g\u00e9tation") {
     df_id <- coleo_inject_vegetation_transect_campaigns(df, schema = schema)
     coleo_plumber_update()
     return(df_id)
@@ -729,7 +729,7 @@ coleo_inject_vegetation_transect_campaigns <- function(df_id, schema = 'public')
   # 1. Check if campaigns already exists in coleo
   #-------------------------------------------------------------------------
   # Get veg_campaigns in coleo
-  veg_campaigns <- coleo_request_general(endpoint = "campaigns", schema = schema, "type" = "eq.végétation_transect")
+  veg_campaigns <- coleo_request_general(endpoint = "campaigns", schema = schema, "type" = "eq.végétation")
 
   # If no campaigns in coleo, inject all campaigns, then continue with the other tables
   if (nrow(veg_campaigns) == 0) {
@@ -784,7 +784,7 @@ coleo_inject_vegetation_transect_campaigns <- function(df_id, schema = 'public')
   # 5. Inject other tables
   #-------------------------------------------------------------------------
   # Get required tables
-  tables <- coleo_return_required_tables("v\u00e9g\u00e9tation_transect", colnames(df))
+  tables <- coleo_return_required_tables("v\u00e9g\u00e9tation", colnames(df))
   tables <- tables[!tables %in% c("campaigns")]
 
   for (table in tables) {
